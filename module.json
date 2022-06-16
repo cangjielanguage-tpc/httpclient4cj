@@ -1,0 +1,12 @@
+{
+  "cjc_version": "0.27.1",
+  "organization": "core",
+  "name": "okhttp",
+  "description": "nothing here",
+  "version": "1.0.0",
+  "requires": {},
+  "package_requires": {},
+  "foreign_requires": {},
+  "output_type": "executable",
+  "command_option": ""
+}

@@ -1,0 +1,105 @@
+/*
+ * Copyright (c) Cangjie Library Team 2022-2022. All rights reserved.
+ * Description:
+ */
+
+/**
+ * @file The file declars the ConcurrentQueue class.
+ */
+
+package okhttp
+
+from std import sync.*
+from std import collection.ArrayList
+
+
+/**
+ * The class is ConcurrentQueue<T>
+ * @since
+ */
+public class ConcurrentQueue<T> <:  Iterable<T>{
+    private let maxQueueMemory: Int64
+
+    private var list: ArrayList<T> = ArrayList<T>(32)
+
+    private let m: ReentrantMutex = ReentrantMutex()
+
+    /**
+     * The Function is init constructor
+     *
+     * @param The param is size of Int64
+     *
+     * @since
+     */
+    public init(size: Int64) {
+        this.maxQueueMemory = size
+    }
+
+    /**
+     * The Function is init constructor
+     *
+     *
+     * @since
+     */
+    public init() {
+        this.maxQueueMemory = 1024
+    }
+
+   public func iterator(): Iterator<T> {
+        return list.iterator()
+    }
+
+    /**
+     * The Function is add
+     *
+     * @param The param is item of T
+     *
+     * @since
+     */
+    public func add(item: T) {
+        m.lock()
+        try {
+            this.list.add(item)
+        } finally {
+            m.unlock()
+        }
+    }
+
+    /**
+     * The Function is pull
+     *
+     *
+     * @return The return type of Option<T>
+     * @since
+     */
+    public func poll(): Option<T> {
+        m.lock()
+        try {
+            let ret = this.list.get(0)
+            return match (ret) {
+                case Some(v) =>
+                    this.list.remove(0)
+                    return ret
+                case None => ret
+            }
+        } finally {
+            m.unlock()
+        }
+    }
+
+    /**
+     * The Function is recycle
+     *
+     *
+     * @since
+     */
+    public func recycle() {
+        synchronized(m) {
+            this.list.clear()
+        }
+    }
+
+    public func toArrayList(): ArrayList<T> {
+        return list
+    }
+}
