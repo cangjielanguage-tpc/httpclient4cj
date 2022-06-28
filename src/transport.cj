@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) Cangjie Library Team 2022-2022. All rights resvered.
+ */
+
+/**
+ * @file
+ * The file declars the Transport class.
+ */
 package okhttp
 
 from std import time.*
@@ -9,32 +17,58 @@ from std import socket.*
 from encoding import url.*
 from net import http.*
 
+/* let member readLength type is Int64 */
 let readLength: Int64 = 4096
 
+/* let member DEFAULT_PROTOCOL_PORT */
 let DEFAULT_PROTOCOL_PORT = HashMap<String, String>(
     [("http", "80"),("https", "443"),("socks5", "1080")]
 )
 
 
+/**
+ * The class is Transport
+ * @author guo_tingtingtekla,luoyukai4
+ * @since 0.29.3
+ */
 public class Transport {
+    /* var member proxy type is Option<(http.Request) -> URL> */
     var proxy: Option<(http.Request) -> URL> = Option<(http.Request) -> URL>.None
 
+    /** var member tlsHandshakeTimeout type is Duration */
     public var tlsHandshakeTimeout: Duration = Duration.second()
 
+    /* var member maxIdleConns type is Int64 */
     var maxIdleConns: Int64 = 0
 
+    /* var member idleConnTimeout type is Duration */
     var idleConnTimeout: Duration = Duration.second()
 
+    /* var member expectContinueTimeout type is Duration */
     var expectContinueTimeout: Duration = Duration.second()
 
+    /* var member forceAttemptHTTP2 type is Bool */
     var forceAttemptHTTP2: Bool = false
 
+    /* var member overtime type is Time */
     private var overtime: Time = Time.now()
 
+    /* var member clientOverTimeDur type is Option<Duration> */
     private var clientOverTimeDur: Option<Duration> = None
 
+    /*
+     * The Function is init constructor
+     *
+     * @since 0.29.3
+     */
     init() {}
 
+    /**
+     * The Function is getDefault
+     *
+     * @return Type of Transport
+     * @since 0.29.3
+     */
     public static func getDefault(): Transport {
         var defaultTransport = Transport()
         defaultTransport.proxy = Option<(http.Request) -> URL>.None
@@ -46,6 +80,14 @@ public class Transport {
         return defaultTransport
     }
 
+    /**
+     * The Function is roundTrip
+     *
+     * @param req of http.Request
+     *
+     * @return Type of PersistConn
+     * @since 0.29.3
+     */
     public func roundTrip(req: http.Request): PersistConn{
         var reqss = req.body as StringStream
         var reqs: String = String(reqss.getOrThrow().getChars())
@@ -83,6 +125,14 @@ public class Transport {
         return PersistConn(Option<Socket>.None)
     }
 
+    /*
+     * The Function is getConn
+     *
+     * @param request of http.Request
+     *
+     * @return Type of Option<PersistConn>
+     * @since 0.29.3
+     */
     private func getConn(request: http.Request): Option<PersistConn> {
         var host:String = request.url.hostname()
         var port:UInt16 = 80
@@ -106,11 +156,27 @@ public class Transport {
 
     }
 
+    /**
+     * The Function is validMethod
+     *
+     * @param method of String
+     *
+     * @return Type of Bool
+     * @since 0.29.3
+     */
     public static func validMethod(method: String): Bool {
         // return method.size() > 0 && indexFunc(method, isNotToken(0)) == -1
         return true
     }
 
+    /*
+     * The Function is requiresHTTP1
+     *
+     * @param r of http.Request
+     *
+     * @return Type of Bool
+     * @since 0.29.3
+     */
     private func requiresHTTP1(r: http.Request): Bool {
         var con = match (r.header.get("Connection")) {
             case Some(x) => x
@@ -124,6 +190,14 @@ public class Transport {
         return true
     }
 
+    /*
+     * The Function is canonicalAddrs
+     *
+     * @param url of URL
+     *
+     * @return Type of String
+     * @since 0.29.3
+     */
     private func canonicalAddrs(url: URL): String {
         var addr: String = url.hostname()
         var vRes: (String, String) = idnaASCII(addr)
@@ -137,6 +211,15 @@ public class Transport {
         return joinHostPort(addr, port)
     }
 
+    /*
+     * The Function is joinHostPort
+     *
+     * @param host of String
+     * @param port of String
+     *
+     * @return Type of String
+     * @since 0.29.3
+     */
     private func joinHostPort(host: String, port: String): String {
         var res = match (host.indexOf(":")) {
             case Some(x) => x
@@ -148,6 +231,14 @@ public class Transport {
         return "${host} : ${port}"
     }
 
+    /*
+     * The Function is idnaASCII
+     *
+     * @param v of String
+     *
+     * @return Type of (String, String)
+     * @since 0.29.3
+     */
     private func idnaASCII(v: String): (String, String) {
         if (isASCII(v)) {
             return (v, "")
@@ -155,6 +246,14 @@ public class Transport {
         return toASCII(v)
     }
 
+    /*
+     * The Function is toASCII
+     *
+     * @param s of String
+     *
+     * @return Type of (String, String)
+     * @since 0.29.3
+     */
     private func toASCII(s: String): (String, String) {
         if (isASCII(s)) {
             return (s, "")
@@ -179,6 +278,15 @@ public class Transport {
         return (String(output.getChars()), "")
     }
 
+    /*
+     * The Function is encode
+     *
+     * @param prefix of String
+     * @param s of String
+     *
+     * @return Type of (String, String)
+     * @since 0.29.3
+     */
     private func encode(prefix: String, s: String): (String, String) {
         var output = StringStream(prefix)
         var b = 0
@@ -249,6 +357,16 @@ public class Transport {
         return (String(output.getChars()), "")
     }
 
+    /*
+     * The Function is adaptcj
+     *
+     * @param d of Int64
+     * @param n of Int64
+     * @param flag of Bool)
+     *
+     * @return Type of Int64
+     * @since 0.29.3
+     */
     private func adaptcj(d: Int64, n: Int64, flag: Bool) : Int64 {
         var delta = d
         if (flag) {
@@ -265,6 +383,14 @@ public class Transport {
         return k + 36 * delta / (delta + 38)
     }
 
+    /*
+     * The Function is encodeDigit
+     *
+     * @param digit of Int64)
+     *
+     * @return Type of Char
+     * @since 0.29.3
+     */
     private func encodeDigit (digit: Int64) : Char {
         if (0< digit && digit < 26) {
             return chr(UInt32(digit) + UInt32(ord('a')))
@@ -275,6 +401,14 @@ public class Transport {
         }
     }
 
+    /*
+     * The Function is isASCII
+     *
+     * @param s of String
+     *
+     * @return Type of Bool
+     * @since 0.29.3
+     */
     private func isASCII(s: String): Bool {
         for (temp in s) {
             if (Int64(ord(temp)) >= Int64(0x80)) {
@@ -284,30 +418,61 @@ public class Transport {
         return true
     }
 
+    /**
+     * The Function is setClientOverTimeDur
+     *
+     * @param durTime of Option<Duration>, and the Default value is None
+     * @since 0.29.3
+     */
     public func setClientOverTimeDur(durTime!: Option<Duration> = None) {
         this.clientOverTimeDur = durTime
     }
 }
 
+/* let member CRLF_CRLF type is Array<Byte> */
 let CRLF_CRLF: Array<Byte> = b"\r\n\r\n"
+/* let member CRLF type is Array<Byte> */
 let CRLF: Array<Byte> = b"\r\n"
+/* let member SP */
 let SP = b" "
+/* let member TRIM_BYTE type is Array<Byte> */
 let TRIM_BYTE: Array<Byte> = SP
 
+/**
+ * The class is PersistConn
+ * @author guo_tingtingtekla,luoyukai4
+ * @since 0.29.3
+ */
 public class PersistConn {
+    /* var member client type is Socket */
     private var client: Socket
+    /* var member clientoTimeDuration type is Option<Duration> */
     private var clientoTimeDuration: Option<Duration> = None
 
+    /* var member respHead type is Header */
     private var respHead: Header = Header()
+    /* var member allBuf type is ByteArrayStream */
     private var allBuf: ByteArrayStream = ByteArrayStream()
+    /* var member parsedIndex type is Int64 */
     private var parsedIndex: Int64 = 0
+    /* var member isParsingHeader type is Bool */
     private var isParsingHeader: Bool = true
+    /* var member isChunked type is Bool */
     private var isChunked: Bool = false
 
+    /* var member proto type is String */
     private var proto: String = String()
+    /* var member status type is String */
     private var status: String = String()
+    /* var member statusCode type is Int64 */
     private var statusCode: Int64 = 200
 
+    /**
+     * The Function is init constructor
+     *
+     * @param conn of Option<Socket>
+     * @since 0.29.3
+     */
     public init(conn : Option<Socket>) {
         this.client = match(conn) {
             case None => throw HttpException( "socket connect exception" )
@@ -315,6 +480,14 @@ public class PersistConn {
         }
     }
 
+    /**
+     * The Function is roundTripTrans
+     *
+     * @param request of http.Request
+     *
+     * @return Type of http.Response
+     * @since 0.29.3
+     */
     public func roundTripTrans(request: http.Request): http.Response {
         this.execRw(request)
         if (this.allBuf.isEmpty()) {
@@ -331,10 +504,22 @@ public class PersistConn {
         return resp
     }
 
+    /**
+     * The Function is setClientoTimeDuration
+     *
+     * @param clientoTime of Option<Duration>, and the Default value is None
+     * @since 0.29.3
+     */
     public func setClientoTimeDuration(clientoTime!: Option<Duration> = None) {
         this.clientoTimeDuration = clientoTime
     }
 
+    /*
+     * The Function is execRw
+     *
+     * @param request of http.Request
+     * @since 0.29.3
+     */
     private func execRw(request: http.Request){
         var requestStream: StringStream = StringStream("")
         request.write(requestStream)
@@ -406,6 +591,14 @@ public class PersistConn {
         }
     }
 
+    /*
+     * The Function is ReadBytesToBuffer
+     *
+     * @param readBuf of Array<Byte>
+     *
+     * @return Type of Int64
+     * @since 0.29.3
+     */
     private func ReadBytesToBuffer( readBuf: Array<Byte>): Int64 {
         var lenNum: Int64 = -1
         match(this.clientoTimeDuration){
@@ -433,6 +626,12 @@ public class PersistConn {
         }
         return lenNum
     }
+    /**
+     * The Function is parseHead
+     *
+     * @return Type of Unit
+     * @since 0.29.3
+     */
     public func parseHead(): Unit {
         if (this.parsedIndex == 0) {
             var crlfIndex = match(this.allBuf.indexOf(CRLF, start: 0)) {
@@ -489,6 +688,14 @@ public class PersistConn {
         }
     }
 
+    /**
+     * The Function is parseBody
+     *
+     * @param request of http.Request)
+     *
+     * @return Type of StringStream
+     * @since 0.29.3
+     */
     public func parseBody(request: http.Request) : StringStream {
         if (request.method.toString() == "HEAD") {
             return StringStream("")
@@ -525,6 +732,14 @@ public class PersistConn {
     }
 }
 
+/**
+ * The Function is toArray
+ *
+ * @param a of Array<UInt8>)
+ *
+ * @return Type of Array<Char>
+ * @since 0.29.3
+ */
 public func toArray(a: Array<UInt8>) : Array<Char> {
     var buf2 = Array<Char>(a.size(), item: '\0')
     for (i in 0..buf2.size()) {
@@ -533,6 +748,14 @@ public func toArray(a: Array<UInt8>) : Array<Char> {
     return buf2
 }
 
+/**
+ * The Function is toArray
+ *
+ * @param a of Array<Char>)
+ *
+ * @return Type of Array<UInt8>
+ * @since 0.29.3
+ */
 public func toArray(a: Array<Char>) : Array<UInt8> {
     var buf2 = Array<UInt8>(a.size(), item: 0)
     for (i in 0..buf2.size()) {
@@ -541,11 +764,28 @@ public func toArray(a: Array<Char>) : Array<UInt8> {
     return buf2
 }
 
+/**
+ * The Function is toArray
+ *
+ * @param a of ArrayList<String>)
+ *
+ * @return Type of Array<String>
+ * @since 0.29.3
+ */
 public func toArray(a: ArrayList<String>) : Array<String> {
     return Array<String> (a.size(), {i => a[i]})
 }
 
 
+/*
+ * The Function is closeBody
+ *
+ * @param req of http.Request
+ * @param panic of Bool, and the Default value is true
+ *
+ * @return Type of Unit
+ * @since 0.29.3
+ */
 func closeBody(req: http.Request, panic!: Bool = true): Unit {
     if (req.body is ReadCloseStream){
         match (req.body as ReadCloseStream) {
@@ -563,10 +803,27 @@ func closeBody(req: http.Request, panic!: Bool = true): Unit {
 
 
 
+/*
+ * The class is HttpException inherited from RuntimeException
+ * @author guo_tingtingtekla,luoyukai4
+ * @since 0.29.3
+ */
 class HttpException <: RuntimeException {
+    /**
+     * The Function is init constructor
+     *
+     * @param message of String
+     * @since 0.29.3
+     */
     public init(message: String) {
         super(message)
     }
+    /*
+     * The Function is getClassName
+     *
+     * @return Type of String
+     * @since 0.29.3
+     */
     protected open override func getClassName(): String {
         return "HttpException"
     }

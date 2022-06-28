@@ -1,0 +1,29 @@
+// EXEC: cjc %import-path %L %l %f
+// EXEC: ./main
+
+from okhttp import okhttp.*
+from std import io.*
+main (){
+    let response = Response.builder().build()
+    let ss: StringStream = StringStream("abcdefG")
+    let body: ResponseBody = ResponseBody(BufferStream(ss))
+    response.getRequest()
+    response.getProtocol()
+    response.getCode()
+    response.isSuccess()
+    response.getMessage()
+    response.getHeaders("name")
+    try {
+        let header = response.getHeader("name")
+        let header2 = response.getHeader("Connection", "close")
+    } catch(e: Exception) {
+        println("case pass")
+    }
+    response.getHeaders()
+    response.getBody(body)
+    response.isRedirect()
+    response.close()
+    response.toString()
+    return 0
+}
+

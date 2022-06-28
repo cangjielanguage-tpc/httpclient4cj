@@ -6,7 +6,7 @@
 <img alt="" src="https://img.shields.io/badge/release-v0.0.1-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjc-v0.29.3-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjcov-90%25-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjcov-91%25-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
 
@@ -49,12 +49,32 @@ OkHttp 是一个高效的 HTTP 客户端, 代码参考: https://github.com/squar
 .
 ├── README.md
 ├── doc
-│   ├── assets     
+│   ├── assets
+│   ├── cjcov     
+│   ├── api.md  
 │   ├── design.md  
 │   ├── proposal.md
 │   └── xxx_lib.md 
 ├── src
-│   └── Template.cj
+│   ├── Builder.cj
+│   ├── Call.cj
+│   ├── CallBack.cj
+│   ├── ConnectInterceptor.cj
+│   ├── Dispatcher.cj
+│   ├── Interceptor.cj
+│   ├── OkHttpClient.cj
+│   ├── OkHttpClientBuilder.cj
+│   ├── Protocol.cj
+│   ├── Queue.cj
+│   ├── Request.cj
+│   ├── RequestBuilder.cj
+│   └── Response.cj
+│   └── ResponseBody.cj
+│   └── ResponseBuilder.cj
+│   └── RetryAndFollowUpInterceptor.cj
+│   └── StatusLine.cj
+│   └── Util.cj
+│   └── transport.cj
 └── test   
     ├── HLT
     ├── LLT
@@ -67,16 +87,16 @@ OkHttp 是一个高效的 HTTP 客户端, 代码参考: https://github.com/squar
 
 ### 接口说明
 
-主要是核心类和成员函数说明
+主要是核心类和成员函数说明,详情见 [API](./doc/api.md)
 
-#### class xxx
+#### class OkHttpClient
 
-##### func yyy
+##### func builder
 
 成员函数功能描述
 
 ```cangjie
-func yyy(): Unit
+public static func builder(): OkHttpClientBuilder
 ```
 
 ## <img alt="" src="./doc/assets/readme-icon-compile.png" style="display: inline-block;" width=3%/>编译执行
@@ -90,7 +110,7 @@ cpm update
 cpm build
 ```
 
-### xx示例
+### 示例
 
 示例描述
 
@@ -105,11 +125,6 @@ var client: OkHttpClient = OkHttpClient().builder()
 
 ```
 
-执行结果如下：
-
-```shell
-xxx
-```
 
 
 

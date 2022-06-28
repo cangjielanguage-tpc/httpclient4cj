@@ -1,10 +1,10 @@
 /*
- * Copyright (c) Cangjie Library Team 2022-2022. All rights reserved.
- * Description:
+ * Copyright (c) Cangjie Library Team 2022-2022. All rights resvered.
  */
 
 /**
- * @file The file declars the ConcurrentQueue class.
+ * @file
+ * The file declars the ConcurrentQueue<T> class.
  */
 
 package okhttp
@@ -14,22 +14,25 @@ from std import collection.ArrayList
 
 
 /**
- * The class is ConcurrentQueue<T>
- * @since
+ * The class is ConcurrentQueue<T> inherited from Iterable<T>
+ * @author guo_tingtingtekla,luoyukai4
+ * @since 0.29.3
  */
 public class ConcurrentQueue<T> <:  Iterable<T>{
+    /* let member maxQueueMemory type is Int64 */
     private let maxQueueMemory: Int64
 
+    /* var member list type is ArrayList<T> */
     private var list: ArrayList<T> = ArrayList<T>(32)
 
+    /* let member m type is ReentrantMutex */
     private let m: ReentrantMutex = ReentrantMutex()
 
     /**
      * The Function is init constructor
      *
-     * @param The param is size of Int64
-     *
-     * @since
+     * @param size of Int64
+     * @since 0.29.3
      */
     public init(size: Int64) {
         this.maxQueueMemory = size
@@ -38,13 +41,18 @@ public class ConcurrentQueue<T> <:  Iterable<T>{
     /**
      * The Function is init constructor
      *
-     *
-     * @since
+     * @since 0.29.3
      */
     public init() {
         this.maxQueueMemory = 1024
     }
 
+   /**
+    * The Function is iterator
+    *
+    * @return Type of Iterator<T>
+    * @since 0.29.3
+    */
    public func iterator(): Iterator<T> {
         return list.iterator()
     }
@@ -52,9 +60,8 @@ public class ConcurrentQueue<T> <:  Iterable<T>{
     /**
      * The Function is add
      *
-     * @param The param is item of T
-     *
-     * @since
+     * @param item of T
+     * @since 0.29.3
      */
     public func add(item: T) {
         m.lock()
@@ -66,11 +73,10 @@ public class ConcurrentQueue<T> <:  Iterable<T>{
     }
 
     /**
-     * The Function is pull
+     * The Function is poll
      *
-     *
-     * @return The return type of Option<T>
-     * @since
+     * @return Type of Option<T>
+     * @since 0.29.3
      */
     public func poll(): Option<T> {
         m.lock()
@@ -87,11 +93,11 @@ public class ConcurrentQueue<T> <:  Iterable<T>{
         }
     }
 
+
     /**
      * The Function is recycle
      *
-     *
-     * @since
+     * @since 0.29.3
      */
     public func recycle() {
         synchronized(m) {
@@ -99,6 +105,12 @@ public class ConcurrentQueue<T> <:  Iterable<T>{
         }
     }
 
+    /**
+     * The Function is toArrayList
+     *
+     * @return Type of ArrayList<T>
+     * @since 0.29.3
+     */
     public func toArrayList(): ArrayList<T> {
         return list
     }

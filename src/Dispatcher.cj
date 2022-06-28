@@ -1,13 +1,39 @@
+/*
+ * Copyright (c) Cangjie Library Team 2022-2022. All rights resvered.
+ */
+
+/**
+ * @file
+ * The file declars the Dispatcher class.
+ */
 package okhttp
 
 
+/**
+ * The class is Dispatcher
+ * @author guo_tingtingtekla,luoyukai4
+ * @since 0.29.3
+ */
 public class Dispatcher{
+    /* var member maxRequests type is Int64 */
     private var maxRequests: Int64 = 64
+    /* var member maxRequestsPerHost type is Int64 */
     private var maxRequestsPerHost: Int64 = 5
+    /* var member readyAsyncCalls type is ConcurrentQueue<AsyncCall> */
     private var readyAsyncCalls: ConcurrentQueue<AsyncCall>  =  ConcurrentQueue<AsyncCall>()
+    /* var member runningAsyncCalls type is ConcurrentQueue<AsyncCall> */
     private var runningAsyncCalls: ConcurrentQueue<AsyncCall>  =  ConcurrentQueue<AsyncCall>()
+    /* var member runningSyncCalls type is ConcurrentQueue<RealCall> */
     private var runningSyncCalls: ConcurrentQueue<RealCall>  =  ConcurrentQueue<RealCall>()
 
+    /**
+     * The Function is setMaxRequests
+     *
+     * @param maxRequests of Int64
+     *
+     * @return Type of Unit
+     * @since 0.29.3
+     */
     public func setMaxRequests(maxRequests: Int64): Unit {
         if (maxRequests < 1) {
           throw IllegalArgumentException("max < 1:${ maxRequests}")
@@ -16,10 +42,26 @@ public class Dispatcher{
 
         promoteAndExecute();
     }
+    /**
+     * The Function is executed
+     *
+     * @param call of RealCall
+     *
+     * @return Type of Unit
+     * @since 0.29.3
+     */
     public func executed( call: RealCall): Unit{
         runningSyncCalls.add(call);
     }
 
+    /**
+     * The Function is enqueue
+     *
+     * @param call of AsyncCall
+     *
+     * @return Type of Unit
+     * @since 0.29.3
+     */
     public func enqueue( call: AsyncCall): Unit{
         //TODO
         if(!call.get().forWebSocket) {
@@ -31,6 +73,14 @@ public class Dispatcher{
         promoteAndExecute()
     }
 
+    /*
+     * The Function is findExistingCallWithHost
+     *
+     * @param host of String
+     *
+     * @return Type of Option<AsyncCall>
+     * @since 0.29.3
+     */
     private func findExistingCallWithHost(host: String): Option<AsyncCall> {
         for (existingCall in runningAsyncCalls) {
           if (existingCall.host().equals(host)) {
@@ -45,6 +95,12 @@ public class Dispatcher{
         return None
     }
 
+    /*
+     * The Function is promoteAndExecute
+     *
+     * @return Type of Bool
+     * @since 0.29.3
+     */
     func promoteAndExecute(): Bool {
 
         let executableCalls: ArrayList<AsyncCall> = ArrayList<AsyncCall>()
