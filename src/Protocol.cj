@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) Cangjie Library Team 2022-2022. All rights resvered.
+ */
+
+/**
+ * @file
+ * The file declars the Protocol class.
+ */
 
 package okhttp
 
@@ -8,6 +16,14 @@ public enum Protocol {
     */
    | HTTP_1_0(String) | HTTP_1_1(String) | SPDY_3(String) |  HTTP_2(String) | H2_PRIOR_KNOWLEDGE(String) | QUIC(String)
 
+    /**
+     * The Function is get
+     *
+     * @param protocol of String
+     *
+     * @return Type of Protocol
+     * @since 0.29.3
+     */
     public static func get(protocol: String): Protocol {
 
         return match (protocol) {
@@ -22,6 +38,12 @@ public enum Protocol {
         }
     }
 
+    /**
+     * The Function is toString
+     *
+     * @return Type of String
+     * @since 0.29.3
+     */
     public func toString(): String {
         match (this) {
             case HTTP_1_0("http/1.0") => "http/1.0"
