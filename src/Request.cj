@@ -7,8 +7,7 @@
  * The file declars the Request class.
  */
 package okhttp
-from net import http.*
-from encoding import url.*
+
 
 /**
  * The class is Request
@@ -22,6 +21,8 @@ public class Request {
     var header: Header
     /* var member method type is String */
     var method: String
+    /* var member body type is Option<RequestBody> */
+    var body: Option<RequestBody>
 
     /**
      * The Function is init constructor
@@ -33,6 +34,7 @@ public class Request {
         this.url = builder.urlBuild
         this.header = builder.headerBuild
         this.method = builder.methodBuild
+        this.body = builder.bodyBuild
     }
     /**
      * The Function is getUrl
@@ -54,6 +56,16 @@ public class Request {
         return method
     }
 
+    /**
+     * The Function is getBody
+     *
+     * @return Type of Option<RequestBody>
+     * @since 0.29.3
+     */
+    public func getBody(): Option<RequestBody> {
+        return body
+    }
+
 
     /**
      * The Function is builder
@@ -63,5 +75,68 @@ public class Request {
      */
     public static func builder(): RequestBuilder{
         return RequestBuilder()
+    }
+
+    /**
+     * The Function is newBuilder
+     *
+     * @return Type of RequestBuilder
+     * @since 0.29.3
+     */
+    public func newBuilder(): RequestBuilder {
+        return  RequestBuilder(this)
+    }
+
+    /**
+     * The Function is getHeaders
+     *
+     * @return Type of Header
+     * @since 0.29.3
+     */
+    public func getHeaders(): Header {
+        return header
+    }
+
+    /**
+     * The Function is getHeader
+     *
+     * @param name of String
+     *
+     * @return Type of String
+     * @since 0.29.3
+     */
+    public func getHeader(name: String): String {
+        return getHeader(name, "")
+    }
+
+     /**
+      * The Function is getHeader
+      *
+      * @param name of String
+      * @param defaultValue of String
+      *
+      * @return Type of String
+      * @since 0.29.3
+      */
+     public func getHeader(name: String, defaultValue: String): String {
+         return header.get(name) ?? defaultValue
+     }
+
+     /**
+      * The Function is toHttpRequest
+      *
+      * @return Type of http.Request
+      * @since 0.29.3
+      */
+     public func toHttpRequest(): http.Request {
+         let b: Option<ReadCloseStream> = match (body) {
+             case Some(v) =>  Option<ReadCloseStream>.Some(v.get())
+             case _ =>  Option<ReadCloseStream>.None
+         }
+         let method = Util.getRequestMethod(method)
+         let uri = url.requestURI()
+         let r = http.Request(method, uri, stream: b)
+         r.header = header.clone()
+         return r
     }
 }

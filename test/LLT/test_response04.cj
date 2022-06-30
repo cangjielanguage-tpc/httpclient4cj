@@ -15,7 +15,7 @@ main (){
     response.addHeader("Connection", "close")
     response.removeHeader("Connection")
     let ss: StringStream = StringStream("abcdefG")
-    let body: ResponseBody = ResponseBody(BufferStream(ss))
+    let body: ResponseBody = ResponseBody("text/html", 31946, ss)
     response.body(body)
     return 0
 }

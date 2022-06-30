@@ -10,9 +10,8 @@ main (){
     interceptors.append(conn)
     let originalRequest = Request.builder().build()
     let call = RealCall.newRealCall(client, originalRequest, true)
-    var chain = Chain(interceptors, 0, originalRequest, call)
+    var chain = Chain(interceptors, Transmitter(client, call),  0, originalRequest, call, Option<Exchange>.None)
     chain.getRequest()
-    chain.proceed(originalRequest)
     chain.getCall()
     let unit = TimeUnit()
     return 0

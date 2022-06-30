@@ -4,10 +4,12 @@
 from okhttp import okhttp.*
 
 main (){
+    let client = OkHttpClient.builder().build()
+    let originalRequest = Request.builder().build()
     let responseCallback = Callbacks()
-    let realCall = RealCall()
+    let realCall = client.newCall(originalRequest)
     let responseCallback1 = Callbacks()
-    let realCall1 = RealCall()
+    let realCall1 = client.newCall(originalRequest)
     responseCallback1.onFailure(realCall1, Exception())
     return 0
 }
