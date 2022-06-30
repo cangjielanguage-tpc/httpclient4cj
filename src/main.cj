@@ -7,6 +7,19 @@ from std import socket.*
 var port: UInt16 = 12340
 
 main() {
+    //main2()
+    var requestStream: StringStream = StringStream("")
+    let client: OkHttpClient= OkHttpClient.builder().build()
+    let request: Request = Request.builder().url("http://36.152.44.95/index.html")
+    .header("User-Agent", "OkHttp-Example")
+    .build()
+    let response: Response = client.newCall(request).execute()
+    println(response.getBody().getOrThrow().getSource().toString())
+    ()
+}
+
+
+func main2(): Unit {
 spawn {
 serve()
 }
@@ -14,10 +27,12 @@ sleep(1000*1000*1000)
 let ss = StringStream("foo=bar&foo=bar2&bar=baz")
 var sso: Option<ReadCloseStream> = Some(ss)
 var ssv = StringStream("")
-var req = http.Request(RequestMethod.GET, "http://127.0.0.1:${port}/1234", stream: sso)
+var req = http.Request(RequestMethod.GET, "http://36.152.44.95/index.html", stream: sso)
+//req.header.add("Accept-Encoding","gzip")
+req.header.add("Connection-Encoding","Keep-Alive")
 var b =  Transport.getDefault().roundTrip(req)
 execute(b, req)
-execute(b, req)
+//execute(b, req)
 ()
 }
 
@@ -28,16 +43,13 @@ a.write(w)
 
 var str = String(w.getChars())
 println(str)
-println(a.request.host)
-
 }
 
 
 func serve(){
-let hd = Route()
+let hd = http.Route()
 hd.handle("/1234", { rws: ResponseWriteStream, req: http.Request =>
 let resp = "Hello from /red".toUtf8Array()
-println("12340")
 rws.write(resp)
 return
 })

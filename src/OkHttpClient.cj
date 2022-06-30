@@ -27,7 +27,7 @@ interface CallFactory {
 
 /*
  * http://user:pass@www.example.com:80/dir/index.html?uid=1#ch1
- * 
+ *
  * client: OkHttpClient= OkHttpClient.builder()
  *     .addInterceptor(HttpLoggingInterceptor())
  *     .build()
@@ -49,8 +49,16 @@ public class OkHttpClient {
      var dispatcher: Dispatcher
      /* var member interceptors type is ArrayList<Interceptor> */
      var interceptors: ArrayList<Interceptor>
+     /* var member networkInterceptors type is ArrayList<Interceptor> */
+     var networkInterceptors: ArrayList<Interceptor>
      /* var member followRedirects type is Bool */
      var followRedirects: Bool
+     /* var member retryOnConnectionFailure type is Bool */
+     var retryOnConnectionFailure: Bool
+     /* var member connectionPool type is Option<ConnectionPool> */
+     var connectionPool: Option<ConnectionPool> = Option<ConnectionPool>.None
+     /* var member cookieJar type is CookieJar */
+     var cookieJar: CookieJar
 
 
      /**
@@ -62,7 +70,11 @@ public class OkHttpClient {
      public init(builder: OkHttpClientBuilder) {
           this.dispatcher = builder.dispatcherBuild
           this.interceptors = builder.interceptorsBuild
+          this.networkInterceptors = builder.networkInterceptorsBuild
           this.followRedirects = builder.followRedirectsBuild
+          this.retryOnConnectionFailure = builder.retryOnConnectionFailureBuild
+          this.connectionPool = builder.connectionPoolBuild
+          this.cookieJar = builder.cookieJarBuild
      }
      /**
       * The Function is builder
@@ -93,6 +105,65 @@ public class OkHttpClient {
       */
      public func getFollowRedirects():Bool {
         return followRedirects
+     }
+
+     /**
+      * The Function is getRetryOnConnectionFailure
+      *
+      * @since 0.29.3
+      */
+     public func getRetryOnConnectionFailure() {
+        return retryOnConnectionFailure
+     }
+
+     /**
+      * The Function is getConnectionPool
+      *
+      * @return Type of Option<ConnectionPool>
+      * @since 0.29.3
+      */
+     public func getConnectionPool():  Option<ConnectionPool>{
+        return connectionPool
+     }
+
+     /**
+      * The Function is getDispatcher
+      *
+      * @return Type of Dispatcher
+      * @since 0.29.3
+      */
+     public func getDispatcher(): Dispatcher {
+        return dispatcher
+     }
+
+     /**
+      * The Function is getInterceptors
+      *
+      * @return Type of ArrayList<Interceptor>
+      * @since 0.29.3
+      */
+     public func getInterceptors(): ArrayList<Interceptor> {
+         return interceptors
+     }
+
+     /**
+      * The Function is getNetworkInterceptors
+      *
+      * @return Type of ArrayList<Interceptor>
+      * @since 0.29.3
+      */
+     public func getNetworkInterceptors(): ArrayList<Interceptor> {
+         return networkInterceptors
+     }
+
+     /**
+      * The Function is getCookieJar
+      *
+      * @return Type of CookieJar
+      * @since 0.29.3
+      */
+     public func getCookieJar(): CookieJar{
+        return cookieJar
      }
 
 }

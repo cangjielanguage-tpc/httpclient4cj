@@ -15,6 +15,8 @@ package okhttp
  * @since 0.29.3
  */
 public class Dispatcher{
+    /** var member mutex type is Monitor */
+    public  var mutex: Monitor = Monitor()
     /* var member maxRequests type is Int64 */
     private var maxRequests: Int64 = 64
     /* var member maxRequestsPerHost type is Int64 */
@@ -52,6 +54,42 @@ public class Dispatcher{
      */
     public func executed( call: RealCall): Unit{
         runningSyncCalls.add(call);
+    }
+
+    /*
+     * The Function is finished
+     *
+     * @param calls of ConcurrentQueue<RealCall>
+     * @param call of RealCall
+     *
+     * @return Type of Unit
+     * @since 0.29.3
+     */
+    private func finished(calls: ConcurrentQueue<RealCall>, call: RealCall): Unit {
+        synchronized (mutex) {
+            for (index in 0..calls.size()) {
+                if(refEq(call, calls.get(index))) {
+                    calls.remove(index)
+                }
+
+            }
+        }
+       var isRunning: Bool = promoteAndExecute()
+       if(!isRunning) {
+        // TODO
+       }
+    }
+
+    /*
+     * The Function is finished
+     *
+     * @param call of RealCall
+     *
+     * @return Type of Unit
+     * @since 0.29.3
+     */
+    func finished(call: RealCall): Unit {
+        finished(runningSyncCalls, call)
     }
 
     /**
@@ -106,7 +144,7 @@ public class Dispatcher{
         let executableCalls: ArrayList<AsyncCall> = ArrayList<AsyncCall>()
         var isRunning: Bool
         //TODO
-         for (index in (0..executableCalls.size())) {
+         for (index in (0..readyAsyncCalls.size())) {
             let asyncCall: AsyncCall = executableCalls[index]
             if (runningAsyncCalls.toArrayList().size() >= maxRequests) {
                 break; // Max capacity.
@@ -117,7 +155,7 @@ public class Dispatcher{
             }
             readyAsyncCalls.toArrayList().remove(index)
             asyncCall.callsPerHost.fetchAdd(1)
-            executableCalls.add(asyncCall)
+            executableCalls.append(asyncCall)
             runningAsyncCalls.add(asyncCall)
          }
 
@@ -127,5 +165,4 @@ public class Dispatcher{
          }
          return isRunning
       }
-
 }

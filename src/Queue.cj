@@ -1,10 +1,10 @@
 /*
- * Copyright (c) Cangjie Library Team 2022-2022. All rights resvered.
+ * Copyright (c) Cangjie Library Team 2022-2022. All rights reserved.
+ * Description:
  */
 
 /**
- * @file
- * The file declars the ConcurrentQueue<T> class.
+ * @file The file declars the ConcurrentQueue class.
  */
 
 package okhttp
@@ -14,25 +14,22 @@ from std import collection.ArrayList
 
 
 /**
- * The class is ConcurrentQueue<T> inherited from Iterable<T>
- * @author guo_tingtingtekla,luoyukai4
- * @since 0.29.3
+ * The class is ConcurrentQueue<T>
+ * @since
  */
 public class ConcurrentQueue<T> <:  Iterable<T>{
-    /* let member maxQueueMemory type is Int64 */
     private let maxQueueMemory: Int64
 
-    /* var member list type is ArrayList<T> */
     private var list: ArrayList<T> = ArrayList<T>(32)
 
-    /* let member m type is ReentrantMutex */
     private let m: ReentrantMutex = ReentrantMutex()
 
     /**
      * The Function is init constructor
      *
-     * @param size of Int64
-     * @since 0.29.3
+     * @param The param is size of Int64
+     *
+     * @since
      */
     public init(size: Int64) {
         this.maxQueueMemory = size
@@ -41,18 +38,13 @@ public class ConcurrentQueue<T> <:  Iterable<T>{
     /**
      * The Function is init constructor
      *
-     * @since 0.29.3
+     *
+     * @since
      */
     public init() {
         this.maxQueueMemory = 1024
     }
 
-   /**
-    * The Function is iterator
-    *
-    * @return Type of Iterator<T>
-    * @since 0.29.3
-    */
    public func iterator(): Iterator<T> {
         return list.iterator()
     }
@@ -60,23 +52,36 @@ public class ConcurrentQueue<T> <:  Iterable<T>{
     /**
      * The Function is add
      *
-     * @param item of T
-     * @since 0.29.3
+     * @param The param is item of T
+     *
+     * @since
      */
     public func add(item: T) {
         m.lock()
         try {
-            this.list.add(item)
+            this.list.append(item)
         } finally {
             m.unlock()
         }
     }
 
+   public func get(index: Int64): T {
+        return list[index]
+   }
+   public func remove(index: Int64 ) {
+        list.remove(index)
+   }
+
+   public func size(): Int64  {
+        list.size()
+   }
+
     /**
-     * The Function is poll
+     * The Function is pull
      *
-     * @return Type of Option<T>
-     * @since 0.29.3
+     *
+     * @return The return type of Option<T>
+     * @since
      */
     public func poll(): Option<T> {
         m.lock()
@@ -93,11 +98,20 @@ public class ConcurrentQueue<T> <:  Iterable<T>{
         }
     }
 
+    public func peek(): Option<T> {
+        m.lock()
+        try {
+            return this.list.get(0)
+        } finally {
+            m.unlock()
+        }
+    }
 
     /**
      * The Function is recycle
      *
-     * @since 0.29.3
+     *
+     * @since
      */
     public func recycle() {
         synchronized(m) {
@@ -105,12 +119,6 @@ public class ConcurrentQueue<T> <:  Iterable<T>{
         }
     }
 
-    /**
-     * The Function is toArrayList
-     *
-     * @return Type of ArrayList<T>
-     * @since 0.29.3
-     */
     public func toArrayList(): ArrayList<T> {
         return list
     }

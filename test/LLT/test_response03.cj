@@ -5,7 +5,7 @@ from okhttp import okhttp.*
 from std import io.*
 main (){
     let ss: StringStream = StringStream("abcdefG")
-    let body: ResponseBody = ResponseBody(BufferStream(ss))
+    let body: ResponseBody = ResponseBody("text/html", 31946, ss)
     body.getSource()
     return 0
 }

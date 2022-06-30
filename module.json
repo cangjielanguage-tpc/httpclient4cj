@@ -1,9 +1,9 @@
 {
-  "cjc_version": "0.29.3",
+  "cjc_version": "0.30.4",
   "organization": "core",
   "name": "okhttp",
   "description": "nothing here",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "requires": {},
   "package_requires": {},
   "foreign_requires": {},

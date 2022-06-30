@@ -80,6 +80,7 @@ public class Transport {
         return defaultTransport
     }
 
+
     /**
      * The Function is roundTrip
      *
@@ -296,7 +297,7 @@ public class Transport {
         var bias = 72
         for (i in 0..s.size()) {
             let c = s[i]
-            if (ord(c) < 0x80) {
+            if (UInt32(c) < 0x80) {
                 output.appends(c)
                 b++
             } else {
@@ -310,7 +311,7 @@ public class Transport {
         while (remaining != 0) {
             var m = Int64(0x7fffffff)
             for (i in 0..s.size()) {
-                var num = Int64(ord(s[i]))
+                var num = Int64(UInt32(s[i]))
                 if (m > num && num >= n) {
                     m = num
                 }
@@ -321,7 +322,7 @@ public class Transport {
             }
             n = m
             for (i in 0..s.size()) {
-                var v = Int64(ord(s[i]))
+                var v = Int64(UInt32(s[i]))
                 if (v < n) {
                     delta++
                     if (delta < 0) {
@@ -362,7 +363,7 @@ public class Transport {
      *
      * @param d of Int64
      * @param n of Int64
-     * @param flag of Bool)
+     * @param flag of Bool
      *
      * @return Type of Int64
      * @since 0.29.3
@@ -386,16 +387,17 @@ public class Transport {
     /*
      * The Function is encodeDigit
      *
-     * @param digit of Int64)
+     * @param digit of Int64
      *
      * @return Type of Char
      * @since 0.29.3
      */
     private func encodeDigit (digit: Int64) : Char {
         if (0< digit && digit < 26) {
-            return chr(UInt32(digit) + UInt32(ord('a')))
+            return Char(UInt32(digit) + UInt32(UInt32('a')))
         } else if (26 < digit && digit < 36) {
-            return chr(UInt32(digit + Int64(ord('0'))- 26))
+            return Char
+            (UInt32(digit + Int64(UInt32('0'))- 26))
         } else {
             throw RuntimeException("encodeDigit error")
         }
@@ -411,7 +413,7 @@ public class Transport {
      */
     private func isASCII(s: String): Bool {
         for (temp in s) {
-            if (Int64(ord(temp)) >= Int64(0x80)) {
+            if (Int64(UInt32(temp)) >= Int64(0x80)) {
                 return false
             }
         }
@@ -428,15 +430,6 @@ public class Transport {
         this.clientOverTimeDur = durTime
     }
 }
-
-/* let member CRLF_CRLF type is Array<Byte> */
-let CRLF_CRLF: Array<Byte> = b"\r\n\r\n"
-/* let member CRLF type is Array<Byte> */
-let CRLF: Array<Byte> = b"\r\n"
-/* let member SP */
-let SP = b" "
-/* let member TRIM_BYTE type is Array<Byte> */
-let TRIM_BYTE: Array<Byte> = SP
 
 /**
  * The class is PersistConn
@@ -478,6 +471,16 @@ public class PersistConn {
             case None => throw HttpException( "socket connect exception" )
             case Some(v) => v
         }
+    }
+
+    /**
+     * The Function is close
+     *
+     * @return Type of Unit
+     * @since 0.29.3
+     */
+    public func close(): Unit {
+        client.close()
     }
 
     /**
@@ -525,10 +528,9 @@ public class PersistConn {
         request.write(requestStream)
         let reqMethod = request.method.toString()
         let writeBuf = requestStream.toString().toUtf8Array()
-
         match (this.client.write(writeBuf)) {
-            case Err(e) => this.client.close()
-            case Ok(v) => ()
+            case None => this.client.close()
+            case Some(v) => ()
         }
         var readBuf: Array<Byte> = Array<Byte>(readLength, item: 0)
         var contentLength: Int64 = -1
@@ -587,7 +589,7 @@ public class PersistConn {
                 }
             }
         } finally {
-            this.client.close()
+            //this.client.close()
         }
     }
 
@@ -605,22 +607,17 @@ public class PersistConn {
             case Some(time) =>
                 let readTimeLen = this.client.read(readBuf, time)
                 match (readTimeLen) {
-                    case Ok(v) =>
-                        match (v) {
-                            case Some(l) =>
-                                lenNum = l
-                            case None =>
-                                throw HttpException("Request Timeout.")
-                        }
-                    case Err(e) =>
-                        throw e
+                    case Some(l) =>
+                        lenNum = l
+                    case None =>
+                        throw HttpException("Request Timeout.")
                 }
             case None =>
                 let readLen = this.client.read(readBuf)
                 match (readLen) {
-                    case Ok(l) =>
+                    case Some(l) =>
                         lenNum = l
-                    case Err(e) =>
+                    case None =>
                         lenNum = -1
                 }
         }
@@ -691,7 +688,7 @@ public class PersistConn {
     /**
      * The Function is parseBody
      *
-     * @param request of http.Request)
+     * @param request of http.Request
      *
      * @return Type of StringStream
      * @since 0.29.3
@@ -722,6 +719,9 @@ public class PersistConn {
                 if (chunkLen == 0) {
                     break
                 }
+                if(crlfIndex + 2 + chunkLen > this.allBuf.size()) {
+                    break
+                }
                 let bufferSlice = this.allBuf.slice(crlfIndex+2, chunkLen)
                 bufferSlice.copyTo(itemBody, 0, itemIndex, chunkLen)
                 itemIndex += chunkLen
@@ -735,7 +735,7 @@ public class PersistConn {
 /**
  * The Function is toArray
  *
- * @param a of Array<UInt8>)
+ * @param a of Array<UInt8>
  *
  * @return Type of Array<Char>
  * @since 0.29.3
@@ -743,7 +743,7 @@ public class PersistConn {
 public func toArray(a: Array<UInt8>) : Array<Char> {
     var buf2 = Array<Char>(a.size(), item: '\0')
     for (i in 0..buf2.size()) {
-        buf2[i] = chr(UInt32(a[i]))
+        buf2[i] = Char(UInt32(a[i]))
     }
     return buf2
 }
@@ -751,7 +751,7 @@ public func toArray(a: Array<UInt8>) : Array<Char> {
 /**
  * The Function is toArray
  *
- * @param a of Array<Char>)
+ * @param a of Array<Char>
  *
  * @return Type of Array<UInt8>
  * @since 0.29.3
@@ -759,7 +759,7 @@ public func toArray(a: Array<UInt8>) : Array<Char> {
 public func toArray(a: Array<Char>) : Array<UInt8> {
     var buf2 = Array<UInt8>(a.size(), item: 0)
     for (i in 0..buf2.size()) {
-        buf2[i] = UInt8(ord(a[i]))
+        buf2[i] = UInt8(UInt32(a[i]))
     }
     return buf2
 }
@@ -767,7 +767,7 @@ public func toArray(a: Array<Char>) : Array<UInt8> {
 /**
  * The Function is toArray
  *
- * @param a of ArrayList<String>)
+ * @param a of ArrayList<String>
  *
  * @return Type of Array<String>
  * @since 0.29.3

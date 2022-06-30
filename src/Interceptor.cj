@@ -35,6 +35,8 @@ public interface Interceptor {
 public class Chain {
     /* var member interceptors type is ArrayList<Interceptor> */
     private var interceptors: ArrayList<Interceptor>
+    /* var member transmitter type is Transmitter */
+    private var transmitter: Transmitter
     /* var member calls type is Int64 */
     private var calls: Int64 = 0
     /* var member index type is Int64 */
@@ -43,24 +45,38 @@ public class Chain {
     private var request: Request
     /* var member call type is Call */
     private var call: Call
+    /* var member exchange type is Option<Exchange> */
+    private var exchange: Option<Exchange> = None
 
     /**
      * The Function is init constructor
      *
      * @param interceptors of ArrayList<Interceptor>
+     * @param transmitter of Transmitter
      * @param index of Int64
      * @param request of Request
      * @param call of Call
+     * @param exchange of Option<Exchange>
      * @since 0.29.3
      */
-    public init(interceptors: ArrayList<Interceptor>, index:Int64, request: Request,  call: Call ){
+    public init(interceptors: ArrayList<Interceptor>, transmitter: Transmitter , index:Int64, request: Request,  call: Call, exchange: Option<Exchange>){
+        this.transmitter = transmitter
         this.index = index
         this.request = request
         this.call = call
         this.interceptors = interceptors
+        this.exchange = exchange
     }
 
-
+    /**
+     * The Function is getTransmitter
+     *
+     * @return Type of Transmitter
+     * @since 0.29.3
+     */
+    public func getTransmitter(): Transmitter{
+        return transmitter
+    }
 
     /**
      * The Function is getRequest
@@ -73,6 +89,37 @@ public class Chain {
     }
 
     /**
+     * The Function is getExchange
+     *
+     * @return Type of Exchange
+     * @since 0.29.3
+     */
+    public func getExchange(): Exchange {
+        return exchange.getOrThrow()
+    }
+
+    /**
+     * The Function is proceed
+     *
+     * @param request of Request
+     * @param transmitter of Transmitter
+     * @param exchange of Option<Exchange>
+     *
+     * @return Type of Response
+     * @since 0.29.3
+     */
+    public func proceed(request: Request,  transmitter: Transmitter, exchange: Option<Exchange>): Response {
+        if (index >= interceptors.size()){
+            throw Exception("interceptors error")
+        }
+        calls++
+        var next: Chain =  Chain(interceptors,transmitter, index + 1, request, call, exchange)
+        let interceptor: Interceptor = interceptors.get(index).getOrThrow();
+        let response: Response  = interceptor.intercept(next)
+        return response
+    }
+
+    /**
      * The Function is proceed
      *
      * @param request of Request
@@ -80,17 +127,8 @@ public class Chain {
      * @return Type of Response
      * @since 0.29.3
      */
-    public func proceed(request: Request): Response {
-        if (index >= interceptors.size()){
-            throw Exception("interceptors error")
-        }
-
-        calls++
-        var next: Chain =  Chain(interceptors, index + 1, request, call)
-        let interceptor: Interceptor = interceptors.get(index).getOrThrow();
-        let response: Response  = interceptor.intercept(next);
-
-        return response
+    public func proceed(request: Request): Response{
+        return proceed(request, transmitter, exchange);
     }
 
     /**

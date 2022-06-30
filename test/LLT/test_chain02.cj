@@ -10,7 +10,7 @@ main (){
     interceptors.append(conn)
     let originalRequest = Request.builder().build()
     let call = RealCall.newRealCall(client, originalRequest, true)
-    var chain = Chain(interceptors, 1, originalRequest, call)
+    var chain = Chain(interceptors, Transmitter(client, call),  0, originalRequest, call, Option<Exchange>.None)
     try {
         let str = chain.proceed(originalRequest)
     } catch(e: Exception) {

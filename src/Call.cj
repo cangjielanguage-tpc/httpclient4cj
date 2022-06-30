@@ -4,7 +4,7 @@
 
 /**
  * @file
- * The file declars the RealCall class.
+ * The file declars the Call interface.
  */
 package okhttp
 
@@ -17,12 +17,12 @@ from std import sync.*
  */
 public interface Call {
     /*
-     * The Function is request
+     * The Function is getRequest
      *
      * @return Type of Request
      * @since 0.29.3
      */
-    func request(): Request
+    func getRequest(): Request
     /*
      * The Function is execute
      *
@@ -39,7 +39,6 @@ public interface Call {
      * @since 0.29.3
      */
     func enqueue(responseCallback: Callback):Unit
-
     /*
      * The Function is cancel
      *
@@ -86,17 +85,49 @@ public interface Call {
  */
 public class RealCall <:  Call {
     /** var member forWebSocket type is Bool */
-    public var forWebSocket: Bool = false
+    public var forWebSocket: Bool
+    /** var member client type is OkHttpClient */
+    public var client: OkHttpClient
+    /** var member originalRequest type is Request */
+    public var originalRequest: Request
+    /** var member transmitter type is Option<Transmitter> */
+    public var transmitter: Option<Transmitter> = Option<Transmitter>.None
+
+    /*
+     * The Function is init constructor
+     *
+     * @param client of OkHttpClient
+     * @param originalRequest of Request
+     * @param forWebSocket of Bool
+     * @since 0.29.3
+     */
+    private init( client: OkHttpClient,  originalRequest: Request,  forWebSocket: Bool) {
+        this.client = client
+        this.originalRequest = originalRequest
+        this.forWebSocket = forWebSocket
+    }
 
     /**
-     * The Function is request
+     * The Function is getRequest
      *
      * @return Type of Request
      * @since 0.29.3
      */
-    public func request(): Request {
-        return Request.builder().build()
+    public func getRequest(): Request {
+        return originalRequest
     }
+
+    /**
+     * The Function is getTransmitter
+     *
+     * @return Type of Transmitter
+     * @since 0.29.3
+     */
+    public func getTransmitter(): Transmitter{
+        return transmitter.getOrThrow()
+    }
+
+
     /**
      * The Function is execute
      *
@@ -104,7 +135,8 @@ public class RealCall <:  Call {
      * @since 0.29.3
      */
     public func execute(): Response {
-        return Response.builder().build()
+       client.getDispatcher().executed(this)
+       return getResponseWithInterceptorChain()
     }
     /**
      * The Function is enqueue
@@ -172,7 +204,29 @@ public class RealCall <:  Call {
      * @since 0.29.3
      */
     public func getResponseWithInterceptorChain(): Response {
-       return Response.builder().build()
+       let interceptors: ArrayList<Interceptor> = ArrayList<Interceptor>()
+       interceptors.appendAll(client.getInterceptors())
+       interceptors.append(RetryAndFollowUpInterceptor(client))
+       interceptors.append(BridgeInterceptor(client.getCookieJar()))
+       interceptors.append(ConnectInterceptor(client))
+       if (!forWebSocket) {
+           interceptors.appendAll(client.getNetworkInterceptors())
+       }
+       interceptors.append(CallServerInterceptor(forWebSocket))
+       let chain: Chain = Chain(interceptors, getTransmitter(), 0, originalRequest, this, Option<Exchange>.None)
+       let response: Response
+       try {
+           response = chain.proceed(originalRequest)
+           if (getTransmitter().isCanceled()) {
+                match (response.getBody()) {
+                    case Some(body) => body.close()
+                    case None => ()
+                }
+           }
+           return response
+       } catch(e: Exception) {
+            throw e
+       }
     }
 
     /**
@@ -181,10 +235,14 @@ public class RealCall <:  Call {
      * @param client of OkHttpClient
      * @param originalRequest of Request
      * @param forWebSocket of Bool
+     *
+     * @return Type of RealCall
      * @since 0.29.3
      */
-    public static func newRealCall( client: OkHttpClient,  originalRequest: Request,  forWebSocket: Bool) {
-       return RealCall()
+    public static func newRealCall( client: OkHttpClient,  originalRequest: Request,  forWebSocket: Bool): RealCall {
+         let call: RealCall = RealCall(client, originalRequest, forWebSocket)
+         call.transmitter = Transmitter(client, call)
+         return call
     }
 
 }
@@ -233,7 +291,7 @@ public class AsyncCall {
       * @since 0.29.3
       */
      func get(): RealCall {
-       return RealCall()
+       return realCall
      }
 
      /*

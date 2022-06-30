@@ -24,7 +24,7 @@ public class ConnectInterceptor<: Interceptor {
      * @since 0.29.3
      */
     public init (client: OkHttpClient) {
-        this.client = client;
+        this.client = client
     }
 
     /**
@@ -36,11 +36,10 @@ public class ConnectInterceptor<: Interceptor {
      * @since 0.29.3
      */
     public func intercept(chain: Chain): Response {
-
-       return Response.builder().build()
+       let transmitter: Transmitter = chain.getTransmitter()
+       let request: Request = chain.getRequest()
+       let doExtensiveHealthChecks: Bool = !request.getMethod().equals("GET")
+       return chain.proceed(request, chain.getTransmitter(),transmitter.newExchange(chain, doExtensiveHealthChecks))
 
     }
-
-
-
 }
