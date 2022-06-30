@@ -5,17 +5,16 @@
 <p align="center">
 <img alt="" src="https://img.shields.io/badge/release-v0.0.1-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjc-v0.29.3-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjc-v0.30.4-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-91%25-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
-
 
 ## <img alt="" src="./doc/assets/readme-icon-introduction.png" style="display: inline-block;" width=3%/>介绍
 
 OkHttp 是一个高效的 HTTP 客户端, 代码参考: https://github.com/square/okhttp/tree/okhttp_3.14.x
 
-### 特性
+### 特性 
 
 - 🚀 支持HTTP/2，允许所有同一个主机地址的请求共享同一个socket连接
 
@@ -36,12 +35,6 @@ OkHttp 是一个高效的 HTTP 客户端, 代码参考: https://github.com/squar
 <p align="center">
 <img src="./doc/assets/framework.PNG" width="60%" >
 </p>
-
-- 功能1介绍
-
-- 功能2介绍
-
-- 功能3介绍
 
 ### 源码目录
 
@@ -112,21 +105,7 @@ cpm build
 
 ### 示例
 
-示例描述
-
-```cangjie
-var client: OkHttpClient = OkHttpClient().builder()
-                            .addInterceptor()
-                            .retryOnConnectionFailure()
-                            .connectTimeout()
-                            .readTimeout()
-                            .build()
-
-
-```
-
-
-
+暂无
 
 ## <img alt="" src="./doc/assets/readme-icon-contribute.png" style="display: inline-block;" width=3%/>参与贡献
 
