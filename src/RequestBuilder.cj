@@ -131,8 +131,9 @@ public class RequestBuilder <: Builder<Request> {
      * @return Type of Unit
      * @since 0.29.3
      */
-    public func removeHeader(name: String): Unit {
+    public func removeHeader(name: String): RequestBuilder {
         headerBuild.remove(name)
+        return this
     }
 
     /**
@@ -145,4 +146,21 @@ public class RequestBuilder <: Builder<Request> {
         this.headerBuild = header
     }
 
+    /**
+     * Sets this request's {@code Cache-Control} header, replacing any cache control headers already
+     * present. If {@code cacheControl} doesn't define any directives, this clears this request's
+     * cache-control headers.
+     *
+     * @param cacheControl of CacheControl
+     * 
+     * @return RequestBuilder of RequestBuilder
+     * @since 0.29.3
+     */
+    public func cacheControl(cacheControl: CacheControl): RequestBuilder {
+        let value: String = cacheControl.toString()
+        if (value.isEmpty()) {
+            return removeHeader("Cache-Control")
+        }
+        return header("Cache-Control", value) 
+    }
 }

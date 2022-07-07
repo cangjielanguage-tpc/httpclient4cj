@@ -40,7 +40,7 @@ public class BridgeInterceptor<: Interceptor {
         let request: Request = chain.getRequest()
         let requestBuilder: RequestBuilder  = request.newBuilder()
         match(request.getBody()) {
-            case Some(b) =>  {
+            case Some(b) =>  
                 requestBuilder.header("Content-Type", b.contentType())
                 if (b.contentLength() != -1) {
                     requestBuilder.header("Content-Length", "${b.contentLength()}")
@@ -49,8 +49,9 @@ public class BridgeInterceptor<: Interceptor {
                     requestBuilder.header("Transfer-Encoding", "chunked")
                     requestBuilder.removeHeader("Content-Length")
                 }
-            }
-            case _ => {}
+                ()
+            
+            case _ => ()
         }
         if (request.getHeader("Host", "") == "") {
             requestBuilder.header("Host", request.getUrl().hostname())
@@ -67,14 +68,14 @@ public class BridgeInterceptor<: Interceptor {
         }
         let cookies = cookieJar.cookies(request.getUrl())
         if (cookies.size() != 0) {
-            requestBuilder.header("Cookie", cookieHeader(cookies))
+           requestBuilder.header("Cookie", cookieHeader(cookies))
         }
         if (request.getHeader("User-Agent", "") == "") {
             requestBuilder.header("User-Agent", "okhttp4cj");
         }
         var response: Response =  chain.proceed(requestBuilder.build())
         let responseHeader: Header = response.getHeaders()
-        receiveHeaders(cookieJar, request.getUrl(), responseHeader)
+        // receiveHeaders(cookieJar, request.getUrl(), responseHeader)
         let responseBuilder: ResponseBuilder = response.newBuilder().request(request)
         if (transparentGzip && "gzip".equals(response.getHeader("Content-Encoding"))&& hasBody(response)) {
             let strippedHeader = response.getHeaders().clone()

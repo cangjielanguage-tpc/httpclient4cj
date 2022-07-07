@@ -30,6 +30,8 @@ public class Response {
       /* var member prevResponse type is Option<Response> */
       var prevResponse: Option<Response>
 
+      private var cacheControl: Option<CacheControl> = Option<CacheControl>.None
+
 
 
       /**
@@ -206,6 +208,20 @@ public class Response {
           return ResponseBuilder(this)
       }
 
+      /**
+       * Returns the cache control directives for this response. This is never null, even if this
+       * response contains no {@code Cache-Control} header.
+       *
+       * @since 0.30.4
+       */
+      public func getCacheControl(): Option<CacheControl> {
+         match(cacheControl) {
+               case Some(b) =>  return b  
+               case None => 
+                  cacheControl = CacheControl.parse(header)
+                  return cacheControl
+         }     
+      }
 }
 
 

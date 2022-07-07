@@ -68,7 +68,7 @@ public class Route {
      */
     public init (address: Address) {
         this.address = address
-        this.inetSocketAddress = SocketAddress(address.getUrl().host, parseUInt16(address.getUrl().port()) ?? 0)
+        this.inetSocketAddress = SocketAddress(address.getUrl().hostname(), parseUInt16(address.getUrl().port()) ?? 0)
     }
 
     /**
