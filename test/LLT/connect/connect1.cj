@@ -3,6 +3,7 @@
 
 from std import io.*
 from okhttp import okhttp.*
+from std import time.*
 
 main() {
     var requestStream: StringStream = StringStream("")

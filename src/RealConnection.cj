@@ -93,8 +93,8 @@ public class Connection {
      *
      * @since 0.29.3
      */
-    public func connect() {
-        connectSocket()
+    public func connect(connectTimeout: Option<Duration>) {
+        connectSocket(connectTimeout)
     }
 
     /*
@@ -102,7 +102,7 @@ public class Connection {
      *
      * @since 0.29.3
      */
-    private func connectSocket() {
+    private func connectSocket(connectTimeout: Option<Duration>) {
         var port:UInt16 = 80
         var url = route.getAddress().getUrl()
         match(parseUInt16(url.port())){
@@ -115,7 +115,10 @@ public class Connection {
                 }
         }
         let s = Socket(TCP, url.hostname(), port)
-        s.connect()
+        match (connectTimeout) {
+            case Some(time) => s.connect(time)
+            case None => s.connect()
+        }
         socket = Some(s)
     }
 
@@ -129,7 +132,7 @@ public class Connection {
      * @since 0.29.3
      */
     public func newCodec(client: OkHttpClient, chain: Chain): ExchangeCodec {
-        ExchangeCodec(client, this)
+        ExchangeCodec(client, this,  client.getReadTimeout(), client.getWriteTimeout())
     }
 }
 

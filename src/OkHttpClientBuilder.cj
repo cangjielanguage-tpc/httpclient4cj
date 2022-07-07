@@ -28,6 +28,9 @@ public class OkHttpClientBuilder <: Builder<OkHttpClient> {
     var connectionPoolBuild: Option<ConnectionPool> = Option<ConnectionPool>.None
     /* var member cookieJarBuild type is CookieJar */
     var cookieJarBuild: CookieJar = CookieJar()
+    var connectTimeoutBuild: Option<Duration> = Option<Duration>.None
+    var readTimeoutBuild: Option<Duration> = Option<Duration>.None
+    var writeTimeoutBuild: Option<Duration> = Option<Duration>.None
 
     /**
      * The Function is build
@@ -129,5 +132,21 @@ public class OkHttpClientBuilder <: Builder<OkHttpClient> {
         this.cookieJarBuild = cookieJar
         return this
     }
+
+    public func connectTimeout(connectTimeout: Duration): OkHttpClientBuilder{
+        this.connectTimeoutBuild  = Option<Duration>.Some(connectTimeout)
+        return this
+    }
+
+    public func readTimeout(readTimeout: Duration): OkHttpClientBuilder{
+        this.readTimeoutBuild  = Option<Duration>.Some(readTimeout)
+        return this
+    }
+
+    public func writeTimeout(writeTimeout: Duration): OkHttpClientBuilder{
+        this.writeTimeoutBuild = Option<Duration>.Some(writeTimeout)
+        return this
+    }
+
 }
 

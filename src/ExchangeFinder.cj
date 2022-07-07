@@ -28,6 +28,7 @@ public class ExchangeFinder {
     /* var member connectingConnection type is Option<Connection> */
     private var connectingConnection:Option<Connection> = None
 
+
     /**
      * The Function is init constructor
      *
@@ -56,7 +57,10 @@ public class ExchangeFinder {
      * @since 0.29.3
      */
     public func find(client: OkHttpClient, chain: Chain, doExtensiveHealthChecks: Bool): ExchangeCodec {
-        let conn: Connection = findHealthyConnection()
+        let connectTimeout: Option<Duration> = client.getConnectTimeout()
+        let readTimeout: Option<Duration> = client.getReadTimeout()
+        let writeTimeout: Option<Duration> =  client.getWriteTimeout()
+        let conn: Connection = findHealthyConnection(connectTimeout)
         return conn.newCodec(client, chain)
     }
 
@@ -66,8 +70,8 @@ public class ExchangeFinder {
      * @return Type of Connection
      * @since 0.29.3
      */
-    private func findHealthyConnection(): Connection {
-        let candidate: Connection  =  findConnection()
+    private func findHealthyConnection(connectTimeout:Option<Duration>): Connection {
+        let candidate: Connection  =  findConnection(connectTimeout)
         return candidate
 
     }
@@ -79,7 +83,7 @@ public class ExchangeFinder {
      * @return Type of Connection
      * @since 0.29.3
      */
-    private func findConnection(): Connection {
+    private func findConnection(connectTimeout:Option<Duration>): Connection {
         // TODO Connection reuse
         var toClose: Option<Socket>
         var result: Option<Connection> = Option<Connection>.None
@@ -105,7 +109,7 @@ public class ExchangeFinder {
             case Some(r) => return  r
             case None =>
                 let conn = Connection(connectionPool, routeSelector.next())
-                conn.connect()
+                conn.connect(connectTimeout)
                 connectingConnection = Option<Connection>.Some(conn)
                 return conn
         }
@@ -215,8 +219,6 @@ public class ExchangeCodec {
     private var realConnection: Connection
     /* var member client type is OkHttpClient */
     private var client: OkHttpClient
-    /* var member clientoTimeDuration type is Option<Duration> */
-    private var clientoTimeDuration: Option<Duration> = None
     /* var member allBuf type is ByteArrayStream */
     private var allBuf: ByteArrayStream = ByteArrayStream()
     /* var member parsedIndex type is Int64 */
@@ -229,6 +231,8 @@ public class ExchangeCodec {
     private var respHead: Header = Header()
     /* var member res type is ResponseBuilder */
     private var res:ResponseBuilder = ResponseBuilder()
+    private var readTimeout: Option<Duration>
+    private var writeTimeout: Option<Duration>
 
     /**
      * The Function is init constructor
@@ -237,9 +241,11 @@ public class ExchangeCodec {
      * @param realConnection of Connection
      * @since 0.29.3
      */
-    public init (client: OkHttpClient, realConnection: Connection) {
+    public init (client: OkHttpClient, realConnection: Connection, readTimeout:Option<Duration>, writeTimeout: Option<Duration>) {
         this.client = client
         this.realConnection = realConnection
+        this.readTimeout = readTimeout
+        this.writeTimeout = writeTimeout
     }
 
     /**
@@ -257,11 +263,16 @@ public class ExchangeCodec {
         let reqMethod = request.method.toString()
         let writeBuf = requestStream.toString().toUtf8Array()
         let socket = this.realConnection.getSocket().getOrThrow()
-        match (socket.write(writeBuf)) {
+        let read:Option<Int64> = match (writeTimeout) {
+            case Some(time) => socket.write(writeBuf, time)
+            case None => socket.write(writeBuf)
+
+        }
+        match (read) {
             case None =>
-            socket.close()
+                socket.close()
             case Some(v) =>
-            ()
+                ()
         }
         state = STATE_OPEN_REQUEST_BODY
     }
@@ -405,25 +416,27 @@ public class ExchangeCodec {
       * @return Type of Int64
       * @since 0.29.3
       */
-     private func ReadBytesToBuffer( readBuf: Array<Byte>): Int64 {
-            var lenNum: Int64 = -1
-            match(this.clientoTimeDuration){
-                case Some(time) =>
-                    let readTimeLen = this.realConnection.getSocket().getOrThrow().read(readBuf, time)
-                    match (readTimeLen) {
-                        case Some(v) => lenNum = v
-                        case None => throw HttpException("Request Timeout.")
-                    }
-                case None =>
-                    let readLen = this.realConnection.getSocket().getOrThrow().read(readBuf)
-                    match (readLen) {
-                        case Some(l) =>
-                            lenNum = l
-                        case None =>
-                            lenNum = -1
-                    }
-            }
-            return lenNum
+     private func ReadBytesToBuffer(readBuf: Array<Byte>): Int64 {
+        var lenNum: Int64 = -1
+        match(readTimeout){
+               case Some(time) =>
+                   let readTimeLen = this.realConnection.getSocket().getOrThrow().read(readBuf, time)
+                   match (readTimeLen) {
+                       case Some(l) =>
+                           lenNum = l
+                       case None =>
+                           throw HttpException("Request Timeout.")
+                   }
+               case None =>
+                   let readLen = this.realConnection.getSocket().getOrThrow().read(readBuf)
+                   match (readLen) {
+                       case Some(l) =>
+                           lenNum = l
+                       case None =>
+                           lenNum = -1
+                   }
+       }
+       return lenNum
     }
 
     /*
