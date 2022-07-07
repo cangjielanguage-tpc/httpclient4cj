@@ -83,7 +83,7 @@ public interface Call {
  * @author guo_tingtingtekla,luoyukai4
  * @since 0.29.3
  */
-public class RealCall <:  Call {
+public class RealCall<: Call {
     /** var member forWebSocket type is Bool */
     public var forWebSocket: Bool
     /** var member client type is OkHttpClient */
@@ -101,7 +101,7 @@ public class RealCall <:  Call {
      * @param forWebSocket of Bool
      * @since 0.29.3
      */
-    private init( client: OkHttpClient,  originalRequest: Request,  forWebSocket: Bool) {
+    private init(client: OkHttpClient, originalRequest: Request, forWebSocket: Bool) {
         this.client = client
         this.originalRequest = originalRequest
         this.forWebSocket = forWebSocket
@@ -213,7 +213,8 @@ public class RealCall <:  Call {
            interceptors.appendAll(client.getNetworkInterceptors())
        }
        interceptors.append(CallServerInterceptor(forWebSocket))
-       let chain: Chain = Chain(interceptors, getTransmitter(), 0, originalRequest, this, Option<Exchange>.None)
+       let chain: Chain = Chain(interceptors, getTransmitter(), 0, originalRequest, this, Option<Exchange>.None,
+       client.getConnectTimeout(), client.getReadTimeout(), client.getWriteTimeout())
        let response: Response
        try {
            response = chain.proceed(originalRequest)

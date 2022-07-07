@@ -47,6 +47,9 @@ public class Chain {
     private var call: Call
     /* var member exchange type is Option<Exchange> */
     private var exchange: Option<Exchange> = None
+    private var connectTimeout: Option<Duration>
+    private var readTimeout: Option<Duration>
+    private var writeTimeout: Option<Duration>
 
     /**
      * The Function is init constructor
@@ -59,13 +62,18 @@ public class Chain {
      * @param exchange of Option<Exchange>
      * @since 0.29.3
      */
-    public init(interceptors: ArrayList<Interceptor>, transmitter: Transmitter , index:Int64, request: Request,  call: Call, exchange: Option<Exchange>){
+    public init(interceptors: ArrayList<Interceptor>, transmitter: Transmitter , index:Int64, request: Request,
+        call: Call, exchange: Option<Exchange>, connectTimeout:Option<Duration>, readTimeout:Option<Duration>,
+            writeTimeout: Option<Duration>){
         this.transmitter = transmitter
         this.index = index
         this.request = request
         this.call = call
         this.interceptors = interceptors
         this.exchange = exchange
+        this.connectTimeout = connectTimeout
+        this.readTimeout = readTimeout
+        this.writeTimeout = writeTimeout
     }
 
     /**
@@ -113,7 +121,8 @@ public class Chain {
             throw Exception("interceptors error")
         }
         calls++
-        var next: Chain =  Chain(interceptors,transmitter, index + 1, request, call, exchange)
+        var next: Chain =  Chain(interceptors,transmitter, index + 1, request, call, exchange, connectTimeout,
+         readTimeout, writeTimeout )
         let interceptor: Interceptor = interceptors.get(index).getOrThrow();
         let response: Response  = interceptor.intercept(next)
         return response

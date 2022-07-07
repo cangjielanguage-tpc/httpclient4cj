@@ -59,6 +59,9 @@ public class OkHttpClient {
      var connectionPool: Option<ConnectionPool> = Option<ConnectionPool>.None
      /* var member cookieJar type is CookieJar */
      var cookieJar: CookieJar
+     private var connectTimeout: Option<Duration>
+     private var readTimeout: Option<Duration>
+     private var writeTimeout: Option<Duration>
 
 
      /**
@@ -75,6 +78,9 @@ public class OkHttpClient {
           this.retryOnConnectionFailure = builder.retryOnConnectionFailureBuild
           this.connectionPool = builder.connectionPoolBuild
           this.cookieJar = builder.cookieJarBuild
+          this.connectTimeout = builder.connectTimeoutBuild
+          this.readTimeout = builder.readTimeoutBuild
+          this.writeTimeout = builder.writeTimeoutBuild
      }
      /**
       * The Function is builder
@@ -164,6 +170,18 @@ public class OkHttpClient {
       */
      public func getCookieJar(): CookieJar{
         return cookieJar
+     }
+
+     public func getConnectTimeout(): Option<Duration>{
+        return connectTimeout
+     }
+
+     public func getReadTimeout(): Option<Duration>{
+        return readTimeout
+     }
+
+     public func getWriteTimeout(): Option<Duration>{
+         return writeTimeout
      }
 
 }

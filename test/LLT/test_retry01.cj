@@ -11,7 +11,8 @@ main (){
     interceptors.append(conn)
     let originalRequest = Request.builder().build()
     let call = RealCall.newRealCall(client, originalRequest, true)
-    var chain = Chain(interceptors, Transmitter(client, call),  0, originalRequest, call, Option<Exchange>.None)
+    var chain = Chain(interceptors, Transmitter(client, call),  0, originalRequest, call, Option<Exchange>.None,
+     client.getConnectTimeout(), client.getReadTimeout(), client.getWriteTimeout())
     return 0
 }
 
