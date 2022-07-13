@@ -28,6 +28,12 @@ public class Dispatcher{
     /* var member runningSyncCalls type is ConcurrentQueue<RealCall> */
     private var runningSyncCalls: ConcurrentQueue<RealCall>  =  ConcurrentQueue<RealCall>()
 
+    private var idleCallback: Option<()-> Unit>  = Option.None
+
+    public func setIdleCallback(idleCallback: Option<()-> Unit>) {
+        this.idleCallback = idleCallback
+    }
+
     /**
      * The Function is setMaxRequests
      *
@@ -40,10 +46,34 @@ public class Dispatcher{
         if (maxRequests < 1) {
           throw IllegalArgumentException("max < 1:${ maxRequests}")
         }
-        //TODO
-
-        promoteAndExecute();
+        synchronized (mutex) {
+            this.maxRequests = maxRequests
+        }
+        promoteAndExecute()
     }
+
+    public func getMaxRequests(): Int64 {
+        synchronized (mutex) {
+            return maxRequests
+        }
+    }
+
+    public func setMaxRequestsPerHost(maxRequestsPerHost: Int64): Unit {
+        if (maxRequestsPerHost < 1) {
+          throw  IllegalArgumentException("max < 1: ${ maxRequestsPerHost}")
+        }
+        synchronized (mutex) {
+          this.maxRequestsPerHost = maxRequestsPerHost;
+        }
+        promoteAndExecute()
+    }
+
+    public func getMaxRequestsPerHost(): Int64 {
+        synchronized (mutex) {
+            return maxRequestsPerHost
+        }
+    }
+
     /**
      * The Function is executed
      *
@@ -52,8 +82,10 @@ public class Dispatcher{
      * @return Type of Unit
      * @since 0.29.3
      */
-    public func executed( call: RealCall): Unit{
-        runningSyncCalls.add(call);
+    func executed( call: RealCall): Unit{
+        synchronized (mutex) {
+            runningSyncCalls.add(call)
+        }
     }
 
     /*
@@ -66,17 +98,48 @@ public class Dispatcher{
      * @since 0.29.3
      */
     private func finished(calls: ConcurrentQueue<RealCall>, call: RealCall): Unit {
+        var idleCallback: Option<()-> Unit>
         synchronized (mutex) {
             for (index in 0..calls.size()) {
                 if(refEq(call, calls.get(index))) {
                     calls.remove(index)
                 }
-
             }
+            idleCallback  = this.idleCallback
         }
        var isRunning: Bool = promoteAndExecute()
        if(!isRunning) {
-        // TODO
+            match (idleCallback) {
+               case Some(cb) =>
+                spawn {
+                    cb
+                }
+                ()
+                case None => ()
+           }
+       }
+    }
+
+    private func finished(calls: ConcurrentQueue<AsyncCall>, call: AsyncCall): Unit {
+        var idleCallback: Option<()-> Unit>;
+        synchronized (mutex) {
+            for (index in 0..calls.size()) {
+                if(refEq(call, calls.get(index))) {
+                    calls.remove(index)
+                }
+            }
+            idleCallback  = this.idleCallback
+        }
+       var isRunning: Bool = promoteAndExecute()
+       if(!isRunning) {
+            match (idleCallback) {
+               case Some(cb) =>
+                spawn {
+                    cb
+                }
+                ()
+                case None => ()
+           }
        }
     }
 
@@ -92,6 +155,11 @@ public class Dispatcher{
         finished(runningSyncCalls, call)
     }
 
+    func finished(call: AsyncCall) {
+        call.getCallsPerHost().fetchSub(1);
+        finished(runningAsyncCalls, call);
+    }
+
     /**
      * The Function is enqueue
      *
@@ -100,12 +168,14 @@ public class Dispatcher{
      * @return Type of Unit
      * @since 0.29.3
      */
-    public func enqueue( call: AsyncCall): Unit{
-        //TODO
-        if(!call.get().forWebSocket) {
-            match (findExistingCallWithHost(call.host())) {
-                case Some(existingCall) => call.reuseCallsPerHostFrom(existingCall);
-                case None => ()
+    func enqueue( call: AsyncCall): Unit{
+        synchronized (mutex) {
+            readyAsyncCalls.add(call)
+            if(!call.get().forWebSocket) {
+                match (findExistingCallWithHost(call.host())) {
+                    case Some(existingCall) => call.reuseCallsPerHostFrom(existingCall);
+                    case None => ()
+                }
             }
         }
         promoteAndExecute()
@@ -127,10 +197,29 @@ public class Dispatcher{
         }
         for (existingCall in readyAsyncCalls) {
           if (existingCall.host().equals(host)) {
-              return existingCall
+              return (existingCall)
           }
         }
         return None
+    }
+
+    public func cancelAll() {
+        synchronized (mutex) {
+            for (index in (0..readyAsyncCalls.size())) {
+                let asyncCall: AsyncCall = readyAsyncCalls.get(index)
+                asyncCall.get().cancel()
+            }
+
+            for (index in (0..runningAsyncCalls.size())) {
+                let asyncCall: AsyncCall = runningAsyncCalls.get(index)
+                asyncCall.get().cancel()
+            }
+
+            for (index in (0..runningSyncCalls.size())) {
+                let call: RealCall = runningSyncCalls.get(index)
+                call.cancel()
+            }
+        }
     }
 
     /*
@@ -140,29 +229,39 @@ public class Dispatcher{
      * @since 0.29.3
      */
     func promoteAndExecute(): Bool {
-
         let executableCalls: ArrayList<AsyncCall> = ArrayList<AsyncCall>()
         var isRunning: Bool
-        //TODO
-         for (index in (0..readyAsyncCalls.size())) {
-            let asyncCall: AsyncCall = executableCalls[index]
-            if (runningAsyncCalls.toArrayList().size() >= maxRequests) {
-                break; // Max capacity.
-            }
+        synchronized(mutex) {
+             for (index in (0..readyAsyncCalls.size())) {
+                let asyncCall: AsyncCall = readyAsyncCalls.get(index)
+                if (runningAsyncCalls.toArrayList().size() >= maxRequests) {
+                    break; // Max capacity.
+                }
 
-            if (asyncCall.callsPerHost.load() >= maxRequestsPerHost) {
-                continue; // Host max capacity.
-            }
-            readyAsyncCalls.toArrayList().remove(index)
-            asyncCall.callsPerHost.fetchAdd(1)
-            executableCalls.append(asyncCall)
-            runningAsyncCalls.add(asyncCall)
-         }
-
-         isRunning = runningAsyncCalls.toArrayList().size() + runningSyncCalls.toArrayList().size() > 0
-         for (asyncCall in executableCalls) {
+                if (asyncCall.callsPerHost.load() >= maxRequestsPerHost) {
+                    continue; // Host max capacity.
+                }
+                readyAsyncCalls.toArrayList().remove(index)
+                asyncCall.callsPerHost.fetchAdd(1)
+                executableCalls.append(asyncCall)
+                runningAsyncCalls.add(asyncCall)
+             }
+             isRunning = runningAsyncCalls.toArrayList().size() + runningSyncCalls.toArrayList().size() > 0
+        }
+        for (asyncCall in executableCalls) {
             asyncCall.executeOn();
-         }
-         return isRunning
+        }
+        return isRunning
       }
+    public func queuedCallsCount() {
+        synchronized(mutex) {
+            return readyAsyncCalls.size()
+        }
+    }
+
+    public func runningCallsCount(): Int64 {
+        synchronized(mutex) {
+            return runningAsyncCalls.size() + runningSyncCalls.size();
+        }
+    }
 }

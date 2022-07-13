@@ -87,11 +87,12 @@ public class RealCall<: Call {
     /** var member forWebSocket type is Bool */
     public var forWebSocket: Bool
     /** var member client type is OkHttpClient */
-    public var client: OkHttpClient
+    var client: OkHttpClient
     /** var member originalRequest type is Request */
     public var originalRequest: Request
     /** var member transmitter type is Option<Transmitter> */
     public var transmitter: Option<Transmitter> = Option<Transmitter>.None
+    private var  executed: Bool = false
 
     /*
      * The Function is init constructor
@@ -135,8 +136,12 @@ public class RealCall<: Call {
      * @since 0.29.3
      */
     public func execute(): Response {
-       client.getDispatcher().executed(this)
-       return getResponseWithInterceptorChain()
+       try {
+           client.getDispatcher().executed(this)
+           return getResponseWithInterceptorChain()
+       }finally {
+           client.getDispatcher().finished(this)
+       }
     }
     /**
      * The Function is enqueue
@@ -147,7 +152,11 @@ public class RealCall<: Call {
      * @since 0.29.3
      */
     public func enqueue(responseCallback: Callback):Unit {
-
+        if (executed) {
+            throw Exception("Already Executed")
+        }
+        executed = true;
+        client.getDispatcher().enqueue(AsyncCall(responseCallback, this))
     }
 
     /**
@@ -157,7 +166,7 @@ public class RealCall<: Call {
      * @since 0.29.3
      */
     public func cancel(): Unit {
-
+        getTransmitter().cancel()
     }
 
     /**
@@ -194,7 +203,7 @@ public class RealCall<: Call {
      * @since 0.29.3
      */
     public func clone(): Call {
-        return this
+        return RealCall.newRealCall(client, originalRequest, forWebSocket)
     }
 
     /**
@@ -245,7 +254,6 @@ public class RealCall<: Call {
          call.transmitter = Transmitter(client, call)
          return call
     }
-
 }
 
 /**
@@ -271,6 +279,10 @@ public class AsyncCall {
      init(responseCallback: Callback, realCall: RealCall) {
         this.responseCallback = responseCallback
         this.realCall = realCall
+     }
+
+     func getCallsPerHost(): AtomicInt64 {
+        return callsPerHost
      }
 
      /*
@@ -302,7 +314,11 @@ public class AsyncCall {
       * @since 0.29.3
       */
      func host(): String {
-        return ""
+        return realCall.getRequest().getUrl().hostname()
+     }
+
+     public func cancel() {
+        realCall.cancel()
      }
 
      /*
@@ -310,26 +326,30 @@ public class AsyncCall {
       *
       * @since 0.29.3
       */
-     func executeOn() {
+     public func executeOn(): Unit {
         spawn {
             execute()
         }
      }
-
 
      /*
       * The Function is execute
       *
       * @since 0.29.3
       */
-     func execute() {
+     public func execute(): Unit {
+        var signalledCallback: Bool = false
         try {
-         let response: Response = realCall.getResponseWithInterceptorChain()
+            let response: Response = realCall.getResponseWithInterceptorChain()
+            signalledCallback = true
             responseCallback.onResponse(realCall, response)
-         } catch(e : Exception) {
-            responseCallback.onFailure(realCall, e)
-            throw e
-         }
+        } catch(e : Exception) {
+            if (!signalledCallback) {
+                responseCallback.onFailure(realCall, e);
+            }
+        } finally {
+           realCall.client.getDispatcher().finished(this)
+        }
      }
 }
 

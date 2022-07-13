@@ -68,6 +68,7 @@ public class ConcurrentQueue<T> <:  Iterable<T>{
    public func get(index: Int64): T {
         return list[index]
    }
+
    public func remove(index: Int64 ) {
         list.remove(index)
    }
