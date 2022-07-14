@@ -8,6 +8,9 @@
  */
 package okhttp
 
+from std import convert.*
+from std import math.*
+
 /**
  * The class is Util
  * @author guo_tingtingtekla,luoyukai4
@@ -74,5 +77,44 @@ public class Util {
             case _ => throw Exception("no such method")
         }
 
+    }
+
+    public static func skipUntil(input: String, pos: Int32, characters: String): Int32 {
+        var posi: Int64 = Int64(pos)
+        while(posi < input.size()) {
+            posi++
+            let res: Int64 = characters.indexOf(input.charAt(Int64(posi))) ?? -1
+            if (res != -1) {
+                break
+            }
+        }
+        return Int32(posi)
+    }
+
+    public static func skipWhitespace(input: String, pos: Int32): Int32 {
+        var posi: Int32 = pos
+        while(posi < Int32(input.size())) {
+            posi++
+            let c: Char = input.charAt(Int64(posi))
+            if (UInt32(c) != UInt32(' ') && UInt32(c) != UInt32('\t')) {
+                break
+            }
+        }
+        return posi-1
+    }
+
+    public static func parseSeconds(value: String, defaultValue: Int32): Int32 {
+        try {
+            let seconds: Int32 = parseInt32(value).getOrThrow()
+            if (seconds > MaxInt32) {
+                return MaxInt32
+            } else if (seconds < 0) {
+                return 0
+            } else {
+                return seconds
+            }
+        } catch (e: Exception) {
+            return defaultValue
+        }
     }
 }

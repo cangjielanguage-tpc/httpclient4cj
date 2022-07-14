@@ -24,6 +24,8 @@ public class Request {
     /* var member body type is Option<RequestBody> */
     var body: Option<RequestBody>
 
+    private var cacheControl: Option<CacheControl> = Option<CacheControl>.None
+
     /**
      * The Function is init constructor
      *
@@ -138,5 +140,21 @@ public class Request {
          let r = http.Request(method, uri, stream: b)
          r.header = header.clone()
          return r
+    }
+
+
+    /**
+     * Returns the cache control directives for this response. This is never null, even if this
+     * response contains no {@code Cache-Control} header.
+     *
+     * @since 0.30.4
+     */
+    public func getCacheControl(): Option<CacheControl> {
+        match(cacheControl) {
+            case Some(b) =>  return b  
+            case None => 
+                cacheControl = CacheControl.parse(header)
+                return cacheControl
+        }     
     }
 }
