@@ -135,7 +135,7 @@ public class Dispatcher{
             match (idleCallback) {
                case Some(cb) =>
                 spawn {
-                    cb
+                    cb()
                 }
                 ()
                 case None => ()
