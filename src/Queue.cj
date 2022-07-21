@@ -73,6 +73,10 @@ public class ConcurrentQueue<T> <:  Iterable<T>{
         list.remove(index)
    }
 
+   public func removeIf(predicate: (T) -> Bool) {
+        list.removeIf(predicate)
+   }
+
    public func size(): Int64  {
         list.size()
    }

@@ -8,6 +8,8 @@
  */
 package okhttp
 
+from http2 import proto.*
+
 /**
  * The class is Connection
  * @author guo_tingtingtekla,luoyukai4
@@ -22,6 +24,13 @@ public class Connection {
     var socket: Option<Socket> = Option<Socket>.None
     /* var member route type is Route */
     var route: Route
+    public var noNewExchanges: Bool = false
+
+    private var allocationLimit: Int64 = 1
+
+    private var protocol: Protocol = HTTP_1_1
+
+    private var h2conn: Option<H2ClientConn> = None
 
     /**
      * The Function is init constructor
@@ -36,6 +45,16 @@ public class Connection {
     }
 
     /**
+     * The Function is getProtocol
+     *
+     * @return Type of Protocol
+     * @since 0.30.4
+     */
+    public func getProtocol(): Protocol {
+        return protocol
+    }
+
+    /**
      * The Function is getTransmitters
      *
      * @return Type of ArrayList<Transmitter>
@@ -43,6 +62,18 @@ public class Connection {
      */
     public func getTransmitters(): ArrayList<Transmitter> {
         return transmitters
+    }
+
+    /**
+     * The Function is noExchanges
+     *
+     * @return Type of Unit
+     * @since 0.30.4
+     */
+    public func noExchanges(): Unit {
+        synchronized(connectionPool.mutex) {
+            noNewExchanges = true
+        }
     }
 
     /**
@@ -73,8 +104,15 @@ public class Connection {
      * @since 0.29.3
      */
     public func isEligible(address: Address): Bool {
-        // TODO
-        return address.getUrl().host == route.getAddress().getUrl().host
+        if (transmitters.size() >= allocationLimit || noNewExchanges) {
+            return false
+        }
+
+        if (address.getUrl().host == route.getAddress().getUrl().host) {
+            return true
+        }
+
+        return false
     }
 
     /**
@@ -95,6 +133,7 @@ public class Connection {
      */
     public func connect(connectTimeout: Option<Duration>) {
         connectSocket(connectTimeout)
+        establishProtocol()
     }
 
     /*
@@ -115,12 +154,33 @@ public class Connection {
                 }
         }
         let s = Socket(TCP, url.hostname(), port)
+
         match (connectTimeout) {
             case Some(time) => s.connect(time)
             case None => s.connect()
         }
         socket = Some(s)
     }
+
+    private func establishProtocol() {
+        //TODO TLS
+        if (route.getAddress().getProtocols().contains(Protocol.H2_PRIOR_KNOWLEDGE.toString())) {
+            this.protocol = H2_PRIOR_KNOWLEDGE
+            startHttp2()
+        }
+        if (route.getAddress().getProtocols().contains(Protocol.HTTP_2.toString())) {
+            this.protocol = HTTP_2
+            startHttp2()
+        }
+    }
+
+    private func startHttp2() {
+        match (socket) {
+            case Some(s) => h2conn = H2ClientConn.createClientConn(H2Transport(), s)
+            case None => ()
+        }
+    }
+
 
     /**
      * The Function is newCodec
@@ -132,7 +192,20 @@ public class Connection {
      * @since 0.29.3
      */
     public func newCodec(client: OkHttpClient, chain: Chain): ExchangeCodec {
-        ExchangeCodec(client, this,  client.getReadTimeout(), client.getWriteTimeout())
+        match (h2conn) {
+            case None => Http1ExchangeCodec(client, this,  client.getReadTimeout(), client.getWriteTimeout())
+            case Some(conn) => Http2ExchangeCodec(this, conn)
+        }
+    }
+
+    /**
+     * The Function is cancel
+     *
+     * @return Type of Unit
+     * @since 0.30.4
+     */
+    public func cancel(): Unit {
+        Util.closeQuietly(socket)
     }
 }
 
@@ -172,15 +245,19 @@ public class ConnectionPool {
     func connectionBecameIdle(connection: Connection): Bool {
         let conn =  connection
         if (maxIdleConnections == 0) {
-             var index = -1
-             for (i in connections) {
-                index++
-                if ( refEq(i,conn) ) {
-                    connections.remove(index)
-                    break
-                }
+            var index = -1
+            var removeIndex = -1
+            for (i in connections) {
+               index++
+               if (refEq(i,conn) ) {
+                   removeIndex = index
+                   break
+               }
             }
-            return true
+            if(removeIndex != -1) {
+                connections.remove(removeIndex)
+                return true
+            }
         }
         return false
     }
@@ -207,5 +284,58 @@ public class ConnectionPool {
              return true
         }
         return false
+    }
+
+    /**
+     * The Function is connectionCount
+     *
+     * @return Type of Int64
+     * @since 0.30.4
+     */
+    public func connectionCount(): Int64 {
+        synchronized(mutex) {
+            return connections.size()
+        }
+    }
+
+    /**
+     * The Function is idleConnectionCount
+     *
+     * @return Type of Int64
+     * @since 0.30.4
+     */
+    public func idleConnectionCount(): Int64 {
+        var total = 0
+        for (connection in connections) {
+            if(connection.getTransmitters().size() == 0) {
+                total++
+            }
+        }
+        return total
+    }
+
+    /**
+     * The Function is evictAll
+     *
+     * @return Type of Unit
+     * @since 0.30.4
+     */
+    public func evictAll(): Unit {
+        let evictedConnections: ArrayList<Connection> = ArrayList<Connection>()
+        synchronized(mutex) {
+            connections.removeIf(
+                { connection: Connection =>
+                    if (connection.getTransmitters().size() == 0) {
+                         connection.noNewExchanges = true
+                         evictedConnections.append(connection)
+                         return true
+                    }
+                    return false
+                }
+            )
+        }
+        for(connection in evictedConnections) {
+            Util.closeQuietly(connection.getSocket())
+        }
     }
 }

@@ -29,7 +29,7 @@ public class Transmitter {
     /* var member request type is Option<Request> */
     private var request: Option<Request> = Option<Request>.None
     /* var member address type is Address */
-    private var address: Address = Address(URL.parse(""))
+    private var address: Address = Address(URL.parse(""), ArrayList<String>(), Option<TlsConfig>.None)
     /* var member exchangeFinder type is Option<ExchangeFinder> */
     private var exchangeFinder: Option<ExchangeFinder> = None
     /* var member exchange type is Option<Exchange> */
@@ -130,8 +130,15 @@ public class Transmitter {
 
         }
         this.request = request
-        address = Address(request.getUrl())
+        address = createAddress(request.getUrl())
         this.exchangeFinder = Option<ExchangeFinder>.Some(ExchangeFinder(this, connectionPool, address, call))
+    }
+
+    private func createAddress(url: URL): Address {
+        if (url.scheme == "https") {
+            //TODO certificatePinner
+        }
+        return Address(url, client.getProtocols(), client.getTlsConfig())
     }
 
     /**

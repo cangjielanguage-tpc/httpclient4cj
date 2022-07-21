@@ -1,11 +1,20 @@
 {
   "cjc_version": "0.30.4",
-  "organization": "core",
+  "organization": "cangjie",
   "name": "okhttp",
   "description": "nothing here",
-  "version": "0.0.1",
-  "requires": {},
-  "package_requires": {},
+  "version": "0.0.2",
+  "requires": {
+  },
+  "package_requires": {
+    "http2/http2_buffer": "./ci_lib/http2/buffer.cjo",
+    "http2/http2_common": "./ci_lib/http2/common.cjo",
+    "http2/http2_exceptions": "./ci_lib/http2/exceptions.cjo",
+    "http2/http2_frame": "./ci_lib/http2/frame.cjo",
+    "http2/http2_hpack": "./ci_lib/http2/hpack.cjo",
+    "http2/http2_http": "./ci_lib/http2/http.cjo",
+    "http2/http2_proto": "./ci_lib/http2/proto.cjo"
+  },
   "foreign_requires": {},
   "output_type": "dynamic",
   "command_option": ""

@@ -16,14 +16,19 @@ package okhttp
 public class Address {
     /** var member url type is URL */
     public var url: URL
+    private var tlsConfig: Option<TlsConfig>
+
+    private var protocols: ArrayList<String>
     /**
      * The Function is init constructor
      *
      * @param url of URL
      * @since 0.29.3
      */
-    public init (url: URL) {
+    public init (url: URL, protocols: ArrayList<String>, tlsConfig: Option<TlsConfig>) {
         this.url = url
+        this.protocols = protocols
+        this.tlsConfig = tlsConfig
     }
 
     /**
@@ -34,6 +39,26 @@ public class Address {
      */
     public func getUrl(): URL {
         return url
+    }
+
+    /**
+     * The Function is getProtocols
+     *
+     * @return Type of ArrayList<String>
+     * @since 0.30.4.
+     */
+    public func getProtocols(): ArrayList<String>{
+        return protocols
+    }
+
+    /**
+     * The Function is getTlsConfig
+     *
+     * @return Type of Option<TlsConfig>
+     * @since 0.30.4.
+     */
+    public func getTlsConfig(): Option<TlsConfig>  {
+        return tlsConfig
     }
 }
 
@@ -68,7 +93,8 @@ public class Route {
      */
     public init (address: Address) {
         this.address = address
-        this.inetSocketAddress = SocketAddress(address.getUrl().hostname(), parseUInt16(address.getUrl().port()) ?? 0)
+        var host = address.getUrl().hostname()
+        this.inetSocketAddress = SocketAddress(host, parseUInt16(address.getUrl().port()) ?? 0)
     }
 
     /**
@@ -115,5 +141,4 @@ public class RouteSelector {
     public func next():  Route{
         return Route(address)
     }
-
 }

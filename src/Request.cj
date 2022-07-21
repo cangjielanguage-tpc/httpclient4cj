@@ -8,6 +8,7 @@
  */
 package okhttp
 
+from net import http.* as h1.*
 
 /**
  * The class is Request
@@ -127,17 +128,16 @@ public class Request {
      /**
       * The Function is toHttpRequest
       *
-      * @return Type of http.Request
+      * @return Type of h1.Request
       * @since 0.29.3
       */
-     public func toHttpRequest(): http.Request {
+     public func toHttpRequest() {
          let b: Option<ReadCloseStream> = match (body) {
              case Some(v) =>  Option<ReadCloseStream>.Some(v.get())
              case _ =>  Option<ReadCloseStream>.None
          }
          let method = Util.getRequestMethod(method)
-         let uri = url.requestURI()
-         let r = http.Request(method, uri, stream: b)
+         let r = h1.Request(method, url.toString(), stream: b)
          r.header = header.clone()
          return r
     }

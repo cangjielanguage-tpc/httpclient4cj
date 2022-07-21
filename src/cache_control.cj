@@ -9,8 +9,9 @@
 
 package okhttp
 from std import math.*
-from net import http.*
 from std import collection.*
+from std import convert.*
+from std import unicode.*
 
 /**
  * The class is CacheControl

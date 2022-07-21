@@ -17,7 +17,7 @@ public class RequestBody {
     /* var member content type is String */
     private var content: String
     /* var member MediaType type is String */
-    private var MediaType: String
+    private var mediaType: String
 
     /*
      * The Function is init constructor
@@ -26,9 +26,9 @@ public class RequestBody {
      * @param content of String
      * @since 0.29.3
      */
-    public init(MediaType: String, content: String) {
+   public init(mediaType: String, content: String) {
         this.content = content
-        this.MediaType = MediaType
+        this.mediaType = mediaType
     }
 
     /**
@@ -38,7 +38,7 @@ public class RequestBody {
      * @since 0.29.3
      */
     public func contentType(): String {
-        return MediaType
+        return mediaType
 
     }
 

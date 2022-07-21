@@ -63,6 +63,8 @@ public class OkHttpClient {
      private var readTimeout: Option<Duration>
      private var writeTimeout: Option<Duration>
 
+     private var protocols: ArrayList<String>
+     private var tlsConfig: Option<TlsConfig>
 
      /**
       * The Function is init constructor
@@ -81,6 +83,8 @@ public class OkHttpClient {
           this.connectTimeout = builder.connectTimeoutBuild
           this.readTimeout = builder.readTimeoutBuild
           this.writeTimeout = builder.writeTimeoutBuild
+          this.tlsConfig = builder.tlsConfigBuild
+          this.protocols = builder.protocolsBuild
      }
      /**
       * The Function is builder
@@ -184,5 +188,12 @@ public class OkHttpClient {
          return writeTimeout
      }
 
+     public func getProtocols(): ArrayList<String> {
+        return protocols
+     }
+
+     public func getTlsConfig(): Option<TlsConfig> {
+        return tlsConfig
+     }
 }
 

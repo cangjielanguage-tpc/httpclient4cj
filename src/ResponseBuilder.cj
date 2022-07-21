@@ -7,7 +7,6 @@
  * The file declars the ResponseBuilder class.
  */
 package okhttp
-from net import http.*
 
 /**
  * The class is ResponseBuilder inherited from Builder<Response>
@@ -18,7 +17,7 @@ public class ResponseBuilder <: Builder<Response> {
     /* var member requestBuild type is Request */
     var requestBuild: Request = Request.builder().build()
     /* var member protocolBuild type is Protocol */
-    var protocolBuild: Protocol = HTTP_1_0("http/1.0")
+    var protocolBuild: Protocol = HTTP_1_1
     /* var member codeBuild type is Int64 */
     var codeBuild: Int64 = -1
     /* var member messageBuild type is String */
@@ -160,7 +159,7 @@ public class ResponseBuilder <: Builder<Response> {
      * @return Type of ResponseBuilder
      * @since 0.29.3
      */
-    public func body(body: ResponseBody): ResponseBuilder {
+    public func body(body: Option<ResponseBody>): ResponseBuilder {
       this.bodyBuild = body
       return this
     }
@@ -171,8 +170,9 @@ public class ResponseBuilder <: Builder<Response> {
      * @param header of Header
      * @since 0.29.3
      */
-    public func header(header: Header) {
+    public func header(header: Header): ResponseBuilder{
         this.headerBuild = header
+        return this
     }
 
 
