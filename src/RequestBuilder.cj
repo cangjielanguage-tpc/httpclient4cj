@@ -142,8 +142,9 @@ public class RequestBuilder <: Builder<Request> {
      * @param header of Header
      * @since 0.29.3
      */
-    public func header(header: Header) {
+    public func header(header: Header): RequestBuilder {
         this.headerBuild = header
+        return this
     }
 
     /**
