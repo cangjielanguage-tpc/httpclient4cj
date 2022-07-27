@@ -26,7 +26,7 @@ public class RequestBody {
      * @param content of String
      * @since 0.29.3
      */
-    init(MediaType: String, content: String) {
+    public init(MediaType: String, content: String) {
         this.content = content
         this.MediaType = MediaType
     }
