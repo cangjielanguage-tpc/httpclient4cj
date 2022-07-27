@@ -7,7 +7,7 @@
  * The file declars the RequestBuilder class.
  */
 package okhttp
-from net import http.*
+
 from encoding import url.*
 
 /**

@@ -7,7 +7,6 @@
  * The file declars the Response class.
  */
 package okhttp
-from net import http.*
 
 /**
  * The class is Response

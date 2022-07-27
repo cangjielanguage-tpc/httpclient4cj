@@ -8,6 +8,8 @@
  */
 package okhttp
 
+from net import tls.*
+
 /**
  * The class is OkHttpClientBuilder inherited from Builder<OkHttpClient>
  * @author guo_tingtingtekla,luoyukai4
@@ -31,6 +33,8 @@ public class OkHttpClientBuilder <: Builder<OkHttpClient> {
     var connectTimeoutBuild: Option<Duration> = Option<Duration>.None
     var readTimeoutBuild: Option<Duration> = Option<Duration>.None
     var writeTimeoutBuild: Option<Duration> = Option<Duration>.None
+    var tlsConfigBuild: Option<TlsConfig> = None
+    var protocolsBuild: ArrayList<String> = ArrayList<String>([Protocol.get("HTTP/1.1").toString()])
 
     /**
      * The Function is build
@@ -133,18 +137,75 @@ public class OkHttpClientBuilder <: Builder<OkHttpClient> {
         return this
     }
 
+    /**
+     * The Function is connectTimeout
+     *
+     * @param connectTimeout of Duration
+     *
+     * @return Type of OkHttpClientBuilder
+     * @since 0.30.4
+     */
     public func connectTimeout(connectTimeout: Duration): OkHttpClientBuilder{
         this.connectTimeoutBuild  = Option<Duration>.Some(connectTimeout)
         return this
     }
 
+    /**
+     * The Function is readTimeout
+     *
+     * @param readTimeout of Duration
+     *
+     * @return Type of OkHttpClientBuilder
+     * @since 0.30.4
+     */
     public func readTimeout(readTimeout: Duration): OkHttpClientBuilder{
         this.readTimeoutBuild  = Option<Duration>.Some(readTimeout)
         return this
     }
 
+    /**
+     * The Function is writeTimeout
+     *
+     * @param writeTimeout of Duration
+     *
+     * @return Type of OkHttpClientBuilder
+     * @since 0.30.4
+     */
     public func writeTimeout(writeTimeout: Duration): OkHttpClientBuilder{
         this.writeTimeoutBuild = Option<Duration>.Some(writeTimeout)
+        return this
+    }
+
+    /**
+     * The Function is tlsConfig
+     *
+     * @param path of String
+     *
+     * @return Type of OkHttpClientBuilder
+     * @since 0.30.4
+     */
+    public func tlsConfig(path: String): OkHttpClientBuilder {
+        this.tlsConfigBuild = TlsConfig.clientConfig(path)
+        return this
+    }
+
+    public func protocols(protocols: ArrayList<String>): OkHttpClientBuilder {
+        if (!protocols.contains(Protocol.get("H2_PRIOR_KNOWLEDGE").toString())
+                  && !protocols.contains(Protocol.get("HTTP/1.1").toString())) {
+                throw  IllegalArgumentException(
+                    "protocols must contain h2_prior_knowledge or http/1.1")
+        }
+        if (protocols.contains(Protocol.get("H2_PRIOR_KNOWLEDGE").toString()) && protocols.size() > 1) {
+            throw  IllegalArgumentException(
+                "protocols containing h2_prior_knowledge cannot use other protocols");
+        }
+        if (protocols.contains(Protocol.get("HTTP/1.0").toString())) {
+            throw IllegalArgumentException("protocols must not contain http/1.0")
+        }
+        if (protocols.size() == 0) {
+            throw IllegalArgumentException("protocols must not contain empty")
+        }
+        this.protocolsBuild = protocols
         return this
     }
 

@@ -8,7 +8,6 @@
  */
 package okhttp
 from std import io.*
-from net import http.*
 
 /**
  * The class is ResponseBody
@@ -64,6 +63,20 @@ public class ResponseBody {
         if (!source.isClosed()) {
             source.close()
         }
+    }
+
+    public func getContentLength(): Int64 {
+        return contentLength
+    }
+
+  /**
+     * The Function is contentType
+     *
+     * @return Type of String
+     * @since 0.29.3
+     */
+    public func getContentType(): String {
+        return contentType
 
     }
 }

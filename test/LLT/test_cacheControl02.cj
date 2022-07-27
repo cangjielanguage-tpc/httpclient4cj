@@ -20,7 +20,7 @@ main() {
                                 .build()
     let client: OkHttpClient= OkHttpClient.builder().build()
     let request: okhttp.Request = okhttp.Request.builder()
-                                    .url("http://10.100.90.113:${port}/index")
+                                    .url("http://127.0.0.1:50066/cangjie_test-1.0-SNAPSHOT/hello")
                                     .method("GET")
                                     .cacheControl(cache)
                                     .build()
@@ -41,5 +41,5 @@ func serve(){
     let server = http.Server(hd)
     let socket = socket.SocketServer(SocketNet.TCP, "0.0.0.0", port)
     port = socket.port
-    server.serve(socket) 
+    server.serve(socket)
 }

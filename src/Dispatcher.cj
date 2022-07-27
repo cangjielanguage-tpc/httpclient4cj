@@ -30,6 +30,12 @@ public class Dispatcher{
 
     private var idleCallback: Option<()-> Unit>  = Option.None
 
+    /**
+     * The Function is setIdleCallback
+     *
+     * @param idleCallback of Option<()->Unit>
+     * @since 0.30.4
+     */
     public func setIdleCallback(idleCallback: Option<()-> Unit>) {
         this.idleCallback = idleCallback
     }
@@ -52,12 +58,26 @@ public class Dispatcher{
         promoteAndExecute()
     }
 
+    /**
+     * The Function is getMaxRequests
+     *
+     * @return Type of Int64
+     * @since 0.30.4
+     */
     public func getMaxRequests(): Int64 {
         synchronized (mutex) {
             return maxRequests
         }
     }
 
+    /**
+     * The Function is setMaxRequestsPerHost
+     *
+     * @param maxRequestsPerHost of Int64
+     *
+     * @return Type of Unit
+     * @since 0.30.4
+     */
     public func setMaxRequestsPerHost(maxRequestsPerHost: Int64): Unit {
         if (maxRequestsPerHost < 1) {
           throw  IllegalArgumentException("max < 1: ${ maxRequestsPerHost}")
@@ -68,6 +88,12 @@ public class Dispatcher{
         promoteAndExecute()
     }
 
+    /**
+     * The Function is getMaxRequestsPerHost
+     *
+     * @return Type of Int64
+     * @since 0.30.4
+     */
     public func getMaxRequestsPerHost(): Int64 {
         synchronized (mutex) {
             return maxRequestsPerHost
@@ -203,6 +229,11 @@ public class Dispatcher{
         return None
     }
 
+    /**
+     * The Function is cancelAll
+     *
+     * @since 0.30.4
+     */
     public func cancelAll() {
         synchronized (mutex) {
             for (index in (0..readyAsyncCalls.size())) {
@@ -253,12 +284,23 @@ public class Dispatcher{
         }
         return isRunning
       }
+    /**
+     * The Function is queuedCallsCount
+     *
+     * @since 0.30.4
+     */
     public func queuedCallsCount() {
         synchronized(mutex) {
             return readyAsyncCalls.size()
         }
     }
 
+    /**
+     * The Function is runningCallsCount
+     *
+     * @return Type of Int64
+     * @since 0.30.4
+     */
     public func runningCallsCount(): Int64 {
         synchronized(mutex) {
             return runningAsyncCalls.size() + runningSyncCalls.size();

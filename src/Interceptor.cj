@@ -224,6 +224,19 @@ public class Chain {
     func withWriteTimeout(timeout: Int64,  unit: TimeUnit): Chain {
         return this
     }
+
+    /**
+     * The Function is getConnection
+     *
+     * @return Type of Option<Connection>
+     * @since 0.30.4
+     */
+    public func getConnection(): Option<Connection> {
+        match (exchange) {
+            case Some(ex) => return ex.getConnection()
+            case None => return None
+        }
+    }
 }
 
 /**
