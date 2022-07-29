@@ -284,12 +284,12 @@ pre
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2022-07-27 18:16:05</td>
+            <td class="headerValue">2022-07-29 20:31:06</td>
             <td></td>
             <td class="headerName">Lines:</td>
-            <td class="headerTableEntry">33</td>
+            <td class="headerTableEntry">49</td>
             <td class="headerTableEntry">53</td>
-            <td class="headerTableEntry" style="background-color:LightPink">62.0 %</td>
+            <td class="headerTableEntry" style="background-color:LightGreen">92.0 %</td>
           </tr>
           <tr>
             <td class="headerName">Legend:</td>
@@ -767,44 +767,44 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>75</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    public func releaseConnectionNoEvents(): Option&lt;Socket&gt; {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func releaseConnectionNoEvents(): Option&lt;Socket&gt; {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>76</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        let conn = connection.getOrThrow()</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        let conn = connection.getOrThrow()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>77</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        let arr = conn.getTransmitters()</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        let arr = conn.getTransmitters()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>78</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        for (index in 0..arr.size()) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        for (index in 0..arr.size()) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>79</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            if (refEq(arr[index],this)) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            if (refEq(arr[index],this)) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>80</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                arr.remove(index)</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                arr.remove(index)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>81</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                break</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                break</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>82</pre></td>
@@ -821,26 +821,26 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>84</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        let released = conn</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        let released = conn</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>85</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        this.connection = Option&lt;Connection&gt;.None</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        this.connection = Option&lt;Connection&gt;.None</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>86</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        if (arr.isEmpty()) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (arr.isEmpty()) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>87</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>           if (connectionPool.connectionBecameIdle(released)) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>           if (connectionPool.connectionBecameIdle(released)) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>88</pre></td>
@@ -869,8 +869,8 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>92</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        return Option&lt;Socket&gt;.None</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return Option&lt;Socket&gt;.None</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>93</pre></td>
@@ -935,26 +935,26 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>103</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    public func acquireConnectionNoEvents(connection: Connection): Unit {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func acquireConnectionNoEvents(connection: Connection): Unit {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>104</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        synchronized (connectionPool.mutex) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        synchronized (connectionPool.mutex) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>105</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            this.connection =  Option&lt;Connection&gt;.Some(connection)</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            this.connection =  Option&lt;Connection&gt;.Some(connection)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>106</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            connection.transmitters.append(this)</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            connection.transmitters.append(this)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>107</pre></td>

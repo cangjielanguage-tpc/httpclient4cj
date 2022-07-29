@@ -107,10 +107,13 @@ public class ExchangeFinder {
         }
         Util.closeQuietly(toClose)
         let ret: Connection = match (result) {
-            case Some(r) => return  r
+            case Some(r) =>
+                transmitter.acquireConnectionNoEvents(r)
+                return  r
             case None =>
                 let conn = Connection(connectionPool, routeSelector.next())
                 conn.connect(connectTimeout)
+                transmitter.acquireConnectionNoEvents(conn)
                 connectingConnection = Option<Connection>.Some(conn)
                 return conn
         }
@@ -184,5 +187,9 @@ public class Exchange {
 
     public func getConnection(): Connection {
         return codec.getConnection()
+    }
+
+    public func cancel() {
+        codec.cancel()
     }
 }

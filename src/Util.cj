@@ -130,42 +130,42 @@ public enum SocketClient {
         }
     }
 
-    func connect(timeout: Duration): Unit {
+    public func connect(timeout: Duration): Unit {
         match(this) {
             case SocketC(conn) => conn.connect(timeout)
             case TlsC(conn) => ()
         }
     }
 
-    func read(buffer: Array<Byte>): Option<Int64> {
+    public func read(buffer: Array<Byte>): Option<Int64> {
         return match(this) {
             case SocketC(conn) => conn.read(buffer)
             case TlsC(conn) => conn.read(buffer)
         }
     }
 
-    func read(buffer: Array<Byte>, timeout: Duration): Option<Int64> {
+    public func read(buffer: Array<Byte>, timeout: Duration): Option<Int64> {
         return match(this) {
             case SocketC(conn) => conn.read(buffer, timeout)
             case TlsC(conn) => conn.read(buffer)
         }
     }
 
-    func write(buffer: Array<Byte>): Option<Int64> {
+    public func write(buffer: Array<Byte>): Option<Int64> {
         return match(this) {
             case SocketC(conn) => conn.write(buffer)
             case TlsC(conn) => conn.write(buffer)
         }
     }
 
-    func write(buffer: Array<Byte>, timeout: Duration): Option<Int64> {
+    public func write(buffer: Array<Byte>, timeout: Duration): Option<Int64> {
         return match(this) {
             case SocketC(conn) => conn.write(buffer, timeout)
             case TlsC(conn) => conn.write(buffer)
         }
     }
 
-    func close(): Unit {
+    public func close(): Unit {
         return match(this) {
             case SocketC(conn) =>
                 conn.close()

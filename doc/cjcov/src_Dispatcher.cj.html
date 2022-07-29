@@ -284,12 +284,12 @@ pre
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2022-07-27 18:16:04</td>
+            <td class="headerValue">2022-07-29 20:31:06</td>
             <td></td>
             <td class="headerName">Lines:</td>
-            <td class="headerTableEntry">67</td>
+            <td class="headerTableEntry">93</td>
             <td class="headerTableEntry">112</td>
-            <td class="headerTableEntry" style="background-color:LightPink">60.0 %</td>
+            <td class="headerTableEntry" style="background-color:Yellow">83.0 %</td>
           </tr>
           <tr>
             <td class="headerName">Legend:</td>
@@ -551,14 +551,14 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>39</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    public func setIdleCallback(idleCallback: Option&lt;()-&gt; Unit&gt;) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func setIdleCallback(idleCallback: Option&lt;()-&gt; Unit&gt;) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>40</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        this.idleCallback = idleCallback</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        this.idleCallback = idleCallback</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>41</pre></td>
@@ -623,14 +623,14 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>51</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    public func setMaxRequests(maxRequests: Int64): Unit {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func setMaxRequests(maxRequests: Int64): Unit {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>52</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        if (maxRequests &lt; 1) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (maxRequests &lt; 1) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>53</pre></td>
@@ -647,14 +647,14 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>55</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        synchronized (mutex) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        synchronized (mutex) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>56</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            this.maxRequests = maxRequests</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            this.maxRequests = maxRequests</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>57</pre></td>
@@ -665,8 +665,8 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>58</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        promoteAndExecute()</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        promoteAndExecute()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>59</pre></td>
@@ -719,20 +719,20 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>67</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    public func getMaxRequests(): Int64 {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func getMaxRequests(): Int64 {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>68</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        synchronized (mutex) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        synchronized (mutex) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>69</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            return maxRequests</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            return maxRequests</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>70</pre></td>
@@ -803,14 +803,14 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>81</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    public func setMaxRequestsPerHost(maxRequestsPerHost: Int64): Unit {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func setMaxRequestsPerHost(maxRequestsPerHost: Int64): Unit {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>82</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        if (maxRequestsPerHost &lt; 1) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (maxRequestsPerHost &lt; 1) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>83</pre></td>
@@ -827,14 +827,14 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>85</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        synchronized (mutex) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        synchronized (mutex) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>86</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>          this.maxRequestsPerHost = maxRequestsPerHost;</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>          this.maxRequestsPerHost = maxRequestsPerHost;</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>87</pre></td>
@@ -845,8 +845,8 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>88</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        promoteAndExecute()</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        promoteAndExecute()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>89</pre></td>
@@ -899,20 +899,20 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>97</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    public func getMaxRequestsPerHost(): Int64 {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func getMaxRequestsPerHost(): Int64 {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>98</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        synchronized (mutex) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        synchronized (mutex) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>99</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            return maxRequestsPerHost</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            return maxRequestsPerHost</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>100</pre></td>
@@ -1739,20 +1739,20 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>237</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    public func cancelAll() {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func cancelAll() {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>238</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        synchronized (mutex) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        synchronized (mutex) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>239</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            for (index in (0..readyAsyncCalls.size())) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            for (index in (0..readyAsyncCalls.size())) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>240</pre></td>
@@ -1781,8 +1781,8 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>244</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            for (index in (0..runningAsyncCalls.size())) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            for (index in (0..runningAsyncCalls.size())) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>245</pre></td>
@@ -1811,8 +1811,8 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>249</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            for (index in (0..runningSyncCalls.size())) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            for (index in (0..runningSyncCalls.size())) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>250</pre></td>
@@ -2069,20 +2069,20 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>292</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    public func queuedCallsCount() {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func queuedCallsCount() {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>293</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        synchronized(mutex) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        synchronized(mutex) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>294</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            return readyAsyncCalls.size()</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            return readyAsyncCalls.size()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>295</pre></td>

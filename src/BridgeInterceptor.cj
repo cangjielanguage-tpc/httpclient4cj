@@ -86,7 +86,6 @@ public class BridgeInterceptor<: Interceptor {
             // TODO
             responseBuilder.body(ResponseBody())
         }
-
         return responseBuilder.build()
     }
 

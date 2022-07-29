@@ -284,12 +284,12 @@ pre
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2022-07-27 18:16:04</td>
+            <td class="headerValue">2022-07-29 20:31:06</td>
             <td></td>
             <td class="headerName">Lines:</td>
-            <td class="headerTableEntry">131</td>
+            <td class="headerTableEntry">158</td>
             <td class="headerTableEntry">202</td>
-            <td class="headerTableEntry" style="background-color:LightPink">65.0 %</td>
+            <td class="headerTableEntry" style="background-color:Yellow">78.0 %</td>
           </tr>
           <tr>
             <td class="headerName">Legend:</td>
@@ -479,14 +479,14 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>27</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    public init(message: String) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public init(message: String) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>28</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        super(message)</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        super(message)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>29</pre></td>
@@ -1451,8 +1451,8 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>189</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            case None =&gt; ()</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            case None =&gt; ()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>190</pre></td>
@@ -1463,26 +1463,26 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>191</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        match (this.respHead.get("Content-Length")) {</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>        match (this.respHead.get("Content-Length")) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>192</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            case Some(s) =&gt;</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            case Some(s) =&gt;</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>193</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            match (parseInt64(s)) {</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            match (parseInt64(s)) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>194</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                case Some(n) =&gt; return n</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                case Some(n) =&gt; return n</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>195</pre></td>
@@ -1589,8 +1589,8 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>212</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            if ( allBuf.size() - parsedIndex &lt; contentLength) {</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            if ( allBuf.size() - parsedIndex &lt; contentLength) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>213</pre></td>
@@ -1835,8 +1835,8 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>253</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            if ( this.parsedIndex == this.allBuf.size()) {</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            if ( this.parsedIndex == this.allBuf.size()) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>254</pre></td>
@@ -1853,8 +1853,8 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>256</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            return StringStream(String.fromUtf8(this.allBuf.slice(this.parsedIndex, this.allBuf.size() - this.parsedIndex)))</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            return StringStream(String.fromUtf8(this.allBuf.slice(this.parsedIndex, this.allBuf.size() - this.parsedIndex)))</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>257</pre></td>
@@ -1967,8 +1967,8 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>275</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                    break</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                    break</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>276</pre></td>
@@ -2663,14 +2663,14 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>391</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    public func getConnection(): Connection {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func getConnection(): Connection {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>392</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        return this.realConnection</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return this.realConnection</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>393</pre></td>
@@ -2723,14 +2723,14 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>401</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    public func cancel(): Unit {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func cancel(): Unit {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>402</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        this.realConnection.cancel()</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        this.realConnection.cancel()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>403</pre></td>
@@ -2801,14 +2801,14 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>414</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    private var respHead: Header = Header()</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    private var respHead: Header = Header()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>415</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    private var response: ?H2Response = None</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    private var response: ?H2Response = None</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>416</pre></td>
@@ -2861,20 +2861,20 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>424</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    init(connection: Connection, realConnection: H2ClientConn) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    init(connection: Connection, realConnection: H2ClientConn) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>425</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        this.connection = connection</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        this.connection = connection</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>426</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        this.realConnection = realConnection</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        this.realConnection = realConnection</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>427</pre></td>
@@ -2933,20 +2933,20 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>436</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    public func reportedContentLength(): Int64{</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func reportedContentLength(): Int64{</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>437</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        match (this.respHead.get("Content-Length")) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        match (this.respHead.get("Content-Length")) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>438</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            case Some(s) =&gt;</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            case Some(s) =&gt;</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>439</pre></td>
@@ -2981,8 +2981,8 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>444</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            case None =&gt; return response.getOrThrow().contentLength</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            case None =&gt; return response.getOrThrow().contentLength</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>445</pre></td>
@@ -3053,32 +3053,32 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>456</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    public func write(request: Request): Unit {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func write(request: Request): Unit {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>457</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        let req4cj = request.toHttpRequest()</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        let req4cj = request.toHttpRequest()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>458</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        let res: H2Response = realConnection.doRequest(H2Request(req4cj))</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        let res: H2Response = realConnection.doRequest(H2Request(req4cj))</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>459</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        respHead = res.header</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        respHead = res.header</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>460</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        response = res</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        response = res</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>461</pre></td>
@@ -3137,32 +3137,32 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>470</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    public func readResponseHeaders(): ResponseBuilder {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func readResponseHeaders(): ResponseBuilder {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>471</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        match(response) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        match(response) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>472</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            case Some(h2resp) =&gt;</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            case Some(h2resp) =&gt;</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>473</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                return Response.builder().protocol(Protocol.get(h2resp.proto)).code(h2resp.statusCode)</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                return Response.builder().protocol(Protocol.get(h2resp.proto)).code(h2resp.statusCode)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>474</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                    .header(h2resp.header.clone())</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                    .header(h2resp.header.clone())</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>475</pre></td>
@@ -3233,32 +3233,32 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>486</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    public func openResponseBody(): Option&lt;ResponseBody&gt; {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func openResponseBody(): Option&lt;ResponseBody&gt; {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>487</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        match(response) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        match(response) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>488</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            case Some(h2resp) =&gt;</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            case Some(h2resp) =&gt;</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>489</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                let contentLength =  reportedContentLength()</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                let contentLength =  reportedContentLength()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>490</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                if ( contentLength == 0){</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                if ( contentLength == 0){</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>491</pre></td>
@@ -3275,14 +3275,14 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>493</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                return ResponseBody(h2resp.header.get("Content-Type") ?? "", contentLength,</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                return ResponseBody(h2resp.header.get("Content-Type") ?? "", contentLength,</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>494</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                    (h2resp.body as StringStream).getOrThrow())</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                    (h2resp.body as StringStream).getOrThrow())</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>495</pre></td>
@@ -3347,14 +3347,14 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>505</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    public func getConnection(): Connection {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func getConnection(): Connection {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>506</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        return this.connection</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return this.connection</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>507</pre></td>

@@ -162,7 +162,7 @@ public class Chain {
      * @return Type of Int64
      * @since 0.29.3
      */
-    func connectTimeoutMillis(): Int64 {
+    public func connectTimeoutMillis(): Int64 {
         return 1
     }
 
@@ -175,7 +175,7 @@ public class Chain {
      * @return Type of Chain
      * @since 0.29.3
      */
-    func withConnectTimeout(timeout: Int64,  unit: TimeUnit): Chain {
+    public func withConnectTimeout(timeout: Int64,  unit: TimeUnit): Chain {
         return this
     }
 
@@ -185,7 +185,7 @@ public class Chain {
      * @return Type of Int64
      * @since 0.29.3
      */
-    func readTimeoutMillis(): Int64 {
+    public func readTimeoutMillis(): Int64 {
         return 1
     }
 
@@ -198,7 +198,7 @@ public class Chain {
      * @return Type of Chain
      * @since 0.29.3
      */
-    func withReadTimeout(timeout: Int64,  unit: TimeUnit): Chain {
+    public func withReadTimeout(timeout: Int64,  unit: TimeUnit): Chain {
         return this
     }
 
@@ -208,7 +208,7 @@ public class Chain {
      * @return Type of Int64
      * @since 0.29.3
      */
-    func writeTimeoutMillis(): Int64 {
+    public func writeTimeoutMillis(): Int64 {
         return 1
     }
 
@@ -221,7 +221,7 @@ public class Chain {
      * @return Type of Chain
      * @since 0.29.3
      */
-    func withWriteTimeout(timeout: Int64,  unit: TimeUnit): Chain {
+    public func withWriteTimeout(timeout: Int64,  unit: TimeUnit): Chain {
         return this
     }
 
