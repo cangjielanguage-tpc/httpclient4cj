@@ -144,6 +144,7 @@ public class Connection {
     private func connectSocket(connectTimeout: Option<Duration>) {
         var port:UInt16 = 80
         var url = route.getAddress().getUrl()
+        var host = url.hostname()
         match(parseUInt16(url.port())){
             case Some(v) => port = v
             case None =>
@@ -153,8 +154,11 @@ public class Connection {
                     port = 80
                 }
         }
-        let s = Socket(TCP, url.hostname(), port)
 
+        if(host.contains(":")) {
+            host =host.substring(0,host.indexOf(':').getOrThrow())
+        }
+        let s = Socket(TCP, host, port)
         match (connectTimeout) {
             case Some(time) => s.connect(time)
             case None => s.connect()

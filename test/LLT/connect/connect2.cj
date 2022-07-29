@@ -3,8 +3,22 @@
 
 from net import http.*
 from std import socket.*
+from okhttp import okhttp.*
+from std import io.*
 
 main() {
     let socket = Socket(TCP,"www.baidu.com", 80)
-    socket.connect()
+    let socketC = SocketC(socket)
+    let request: okhttp.Request = okhttp.Request.builder().url("http://36.152.44.95/index.html")
+    .header("User-Agent", "OkHttp-Example")
+    .build()
+    let req4cj =  request.toHttpRequest()
+    var requestStream: StringStream = StringStream("")
+    req4cj.write(requestStream)
+    let writeBuf = requestStream.toString().toUtf8Array()
+    socketC.connect()
+    socketC.write(writeBuf)
+    var readBuf: Array<Byte> = Array<Byte>(1024, item: 0)
+    socketC.read(readBuf)
+    socketC.close()
 }

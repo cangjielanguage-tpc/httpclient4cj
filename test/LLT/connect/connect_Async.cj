@@ -22,6 +22,8 @@ public class MyCallbacks <: Callback {
         println(e.getMessage())
     }
     public func onResponse(call: Call,  response: Response): Unit{
+        response.getCacheControl()
+        response.close()
         println("success")
     }
 }

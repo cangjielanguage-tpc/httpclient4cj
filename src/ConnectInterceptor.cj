@@ -40,6 +40,5 @@ public class ConnectInterceptor<: Interceptor {
        let request: Request = chain.getRequest()
        let doExtensiveHealthChecks: Bool = !request.getMethod().equals("GET")
        return chain.proceed(request, chain.getTransmitter(),transmitter.newExchange(chain, doExtensiveHealthChecks))
-
     }
 }

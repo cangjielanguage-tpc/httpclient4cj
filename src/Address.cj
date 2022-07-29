@@ -70,8 +70,6 @@ public class Address {
 public class Route {
     /** var member address type is Address */
     public var address: Address
-    /** var member inetSocketAddress type is SocketAddress */
-    public var inetSocketAddress: SocketAddress
 
     /**
      * The Function is init constructor
@@ -80,9 +78,8 @@ public class Route {
      * @param inetSocketAddress of SocketAddress
      * @since 0.29.3
      */
-    public init (address: Address, inetSocketAddress: SocketAddress) {
+    public init (address: Address) {
         this.address = address
-        this.inetSocketAddress = inetSocketAddress
     }
 
     /**
@@ -91,15 +88,9 @@ public class Route {
      * @param address of Address
      * @since 0.29.3
      */
-    public init (address: Address) {
-        this.address = address
-        var host = address.getUrl().hostname()
-        this.inetSocketAddress = SocketAddress(host, parseUInt16(address.getUrl().port()) ?? 0)
-    }
 
     /**
      * The Function is getAddress
-     *
      * @return Type of Address
      * @since 0.29.3
      */

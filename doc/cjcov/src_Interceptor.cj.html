@@ -284,12 +284,12 @@ pre
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2022-07-27 18:16:04</td>
+            <td class="headerValue">2022-07-29 20:31:06</td>
             <td></td>
             <td class="headerName">Lines:</td>
-            <td class="headerTableEntry">31</td>
+            <td class="headerTableEntry">34</td>
             <td class="headerTableEntry">48</td>
-            <td class="headerTableEntry" style="background-color:LightPink">65.0 %</td>
+            <td class="headerTableEntry" style="background-color:LightPink">71.0 %</td>
           </tr>
           <tr>
             <td class="headerName">Legend:</td>
@@ -1308,7 +1308,7 @@ pre
 <td align="right" class="lineno"><pre>165</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    func connectTimeoutMillis(): Int64 {</pre></td>
+<td align="left" class="src uncoveredLine"><pre>    public func connectTimeoutMillis(): Int64 {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>166</pre></td>
@@ -1386,7 +1386,7 @@ pre
 <td align="right" class="lineno"><pre>178</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    func withConnectTimeout(timeout: Int64,  unit: TimeUnit): Chain {</pre></td>
+<td align="left" class="src uncoveredLine"><pre>    public func withConnectTimeout(timeout: Int64,  unit: TimeUnit): Chain {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>179</pre></td>
@@ -1446,7 +1446,7 @@ pre
 <td align="right" class="lineno"><pre>188</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    func readTimeoutMillis(): Int64 {</pre></td>
+<td align="left" class="src uncoveredLine"><pre>    public func readTimeoutMillis(): Int64 {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>189</pre></td>
@@ -1524,7 +1524,7 @@ pre
 <td align="right" class="lineno"><pre>201</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    func withReadTimeout(timeout: Int64,  unit: TimeUnit): Chain {</pre></td>
+<td align="left" class="src uncoveredLine"><pre>    public func withReadTimeout(timeout: Int64,  unit: TimeUnit): Chain {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>202</pre></td>
@@ -1584,7 +1584,7 @@ pre
 <td align="right" class="lineno"><pre>211</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    func writeTimeoutMillis(): Int64 {</pre></td>
+<td align="left" class="src uncoveredLine"><pre>    public func writeTimeoutMillis(): Int64 {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>212</pre></td>
@@ -1662,7 +1662,7 @@ pre
 <td align="right" class="lineno"><pre>224</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    func withWriteTimeout(timeout: Int64,  unit: TimeUnit): Chain {</pre></td>
+<td align="left" class="src uncoveredLine"><pre>    public func withWriteTimeout(timeout: Int64,  unit: TimeUnit): Chain {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>225</pre></td>
@@ -1721,20 +1721,20 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>234</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    public func getConnection(): Option&lt;Connection&gt; {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func getConnection(): Option&lt;Connection&gt; {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>235</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        match (exchange) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        match (exchange) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>236</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            case Some(ex) =&gt; return ex.getConnection()</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            case Some(ex) =&gt; return ex.getConnection()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>237</pre></td>
