@@ -3,10 +3,10 @@
 </p>
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v0.0.1-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v0.0.2-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjc-v0.30.4-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjcov-91%25-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjcov-75%25-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
 
@@ -16,7 +16,7 @@ OkHttp 是一个高效的 HTTP 客户端, 代码参考: https://github.com/squar
 
 ### 特性 
 
-- 🚀 支持HTTP/2，允许所有同一个主机地址的请求共享同一个socket连接
+- 🚀 支持HTTP/2，允许所有同一个主机地址的请求共享同一个 socket 连接
 
 - 🌍 连接池减少请求延时
 
@@ -49,17 +49,26 @@ OkHttp 是一个高效的 HTTP 客户端, 代码参考: https://github.com/squar
 │   ├── proposal.md
 │   └── xxx_lib.md 
 ├── src
+│   ├── Address.cj
+│   ├── BridgeInterceptor.cj
 │   ├── Builder.cj
+│   ├── cache_control_builder.cj
+│   ├── cache_control.cj
 │   ├── Call.cj
 │   ├── CallBack.cj
+│   ├── CallServerInterceptor.cj
 │   ├── ConnectInterceptor.cj
 │   ├── Dispatcher.cj
+│   ├── exchangeCodec.cj
+│   ├── ExchangeFinder.cj
 │   ├── Interceptor.cj
 │   ├── OkHttpClient.cj
 │   ├── OkHttpClientBuilder.cj
 │   ├── Protocol.cj
 │   ├── Queue.cj
+│   ├── RealConnection.cj
 │   ├── Request.cj
+│   ├── RequestBody.cj
 │   ├── RequestBuilder.cj
 │   └── Response.cj
 │   └── ResponseBody.cj
@@ -67,32 +76,22 @@ OkHttp 是一个高效的 HTTP 客户端, 代码参考: https://github.com/squar
 │   └── RetryAndFollowUpInterceptor.cj
 │   └── StatusLine.cj
 │   └── Util.cj
-│   └── transport.cj
+│   └── Transmitter.cj
 └── test   
     ├── HLT
     ├── LLT
     └── UT
 ```
 
-- `doc`是库的设计文档、提案、库的使用文档
+- `doc`是库的设计文档、提案、库的使用文档、LLT 覆盖报告
 - `src`是库源码目录
-- `test`是存放测试用例，包括HLT用例、LLT 用例和UT用例
+- `test`是存放测试用例，包括 HLT 用例、LLT 用例和 UT 用例
 
 ### 接口说明
 
 主要是核心类和成员函数说明,详情见 [API](./doc/api.md)
 
-#### class OkHttpClient
-
-##### func builder
-
-成员函数功能描述
-
-```cangjie
-public static func builder(): OkHttpClientBuilder
-```
-
-## <img alt="" src="./doc/assets/readme-icon-compile.png" style="display: inline-block;" width=3%/>编译执行
+## <img alt="" src="./doc/assets/readme-icon-compile.png" style="display: inline-block;" width=3%/> 编译执行
 
 ### 编译
 
@@ -105,9 +104,51 @@ cpm build
 
 ### 示例
 
-暂无
+```
+from okhttp import okhttp.*
+from net import http.*
+from std import io.*
+from std import time.*
+from std import socket.*
 
-## <img alt="" src="./doc/assets/readme-icon-contribute.png" style="display: inline-block;" width=3%/>参与贡献
+var port: UInt16 = 8888
+main() {
+    spawn {
+        serve()
+    }
+    sleep(1000*1000*1000)
+
+    let cache: CacheControl = CacheControl.builder()
+                                .maxAge(Duration.second(1000))
+                                .build()
+    let client: OkHttpClient= OkHttpClient.builder().build()
+    let request: okhttp.Request = okhttp.Request.builder()
+                                    .url("http://127.0.0.1:50066/cangjie_test-1.0-SNAPSHOT/hello")
+                                    .method("GET")
+                                    .cacheControl(cache)
+                                    .build()
+    let call = client.newCall(request)
+    let response: okhttp.Response = call.execute()
+
+    println(response.getBody().getOrThrow().getSource().toString())
+    return 0
+}
+
+func serve(){
+    let hd = http.Route()
+    hd.handle("/index", { rws: http.ResponseWriteStream, req: http.Request =>
+        let resp = "Hello from /red".toUtf8Array()
+        rws.write(resp)
+        return
+    })
+    let server = http.Server(hd)
+    let socket = socket.SocketServer(SocketNet.TCP, "0.0.0.0", port)
+    port = socket.port
+    server.serve(socket)
+}
+```
+
+## <img alt="" src="./doc/assets/readme-icon-contribute.png" style="display: inline-block;" width=3%/> 参与贡献
 
 主要写参与贡献的人以及个人主页链接
 
