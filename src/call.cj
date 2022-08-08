@@ -236,6 +236,8 @@ public class RealCall<: Call {
            return response
        } catch(e: Exception) {
             throw e
+       } finally {
+           getTransmitter().noMoreExchanges()
        }
     }
 

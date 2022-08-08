@@ -47,7 +47,7 @@ main() {
 
     let call = client.newCall(request)
     let response: okhttp.Response = call.execute()
-    let responseB = response.getBody().getOrThrow().getSource().toString()
+    let responseB = String(toArray(response.getBody().getOrThrow().getSource().readToEnd()))
     let responseCache = response.getCacheControl().getOrThrow().toString()
 
     if(resBodyCt != "Media-Type" ||

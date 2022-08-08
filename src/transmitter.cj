@@ -9,6 +9,7 @@
 package okhttp
 
 from std import sync.*
+from std import math.*
 
 /**
  * The class is Transmitter
@@ -29,11 +30,15 @@ public class Transmitter {
     /* var member request type is Option<Request> */
     private var request: Option<Request> = Option<Request>.None
     /* var member address type is Address */
-    private var address: Address = Address(URL.parse(""), ArrayList<String>(), Option<TlsConfig>.None)
+    private var address: Address = Address(URL.parse(""), ArrayList<String>(), Option<TlsClientConfig> .None)
     /* var member exchangeFinder type is Option<ExchangeFinder> */
     private var exchangeFinder: Option<ExchangeFinder> = None
     /* var member exchange type is Option<Exchange> */
     private var exchange: Option<Exchange> = None
+
+    private var noExchanges: Bool = false
+    private var exchangeRequestDone: Bool = false
+    private var exchangeResponseDone: Bool = false
 
     /**
      * The Function is init constructor
@@ -44,7 +49,7 @@ public class Transmitter {
      */
     public init (client: OkHttpClient, call: Call) {
         this.client = client
-        this.connectionPool = client.getConnectionPool() ?? ConnectionPool(0)
+        this.connectionPool = client.getConnectionPool() ?? ConnectionPool()
         this.call = call
     }
 
@@ -84,6 +89,7 @@ public class Transmitter {
         let released = conn
         this.connection = Option<Connection>.None
         if (arr.isEmpty()) {
+           released.idleAtNanos = Time.now()
            if (connectionPool.connectionBecameIdle(released)) {
                return released.getSocket()
            }
@@ -116,18 +122,19 @@ public class Transmitter {
      * @since 0.29.3
      */
     public func prepareToConnect(request: Request): Unit {
-        var isRequest: Bool = false
         match (this.request) {
             case Some(r) =>
                 if (Util.sameConnection(r.getUrl(), request.getUrl())) {
                     return ()
                 }
-                isRequest = true
+                if (hasExchange()) {
+                    throw Exception()
+                }
+                if (hasExchangeFinder()) {
+                    maybeReleaseConnection(true)
+                    exchangeFinder = None
+                }
             case None => ()
-        }
-        if (isRequest) {
-            // TODO
-
         }
         this.request = request
         address = createAddress(request.getUrl())
@@ -158,6 +165,88 @@ public class Transmitter {
             this.exchange = Some(result)
         }
         return result
+    }
+
+    public func noMoreExchanges() {
+        synchronized (connectionPool.mutex) {
+              noExchanges = true
+        }
+        maybeReleaseConnection(false)
+    }
+
+    private func maybeReleaseConnection(force: Bool) {
+        var releasedConnection: Option<Connection>;
+        var socket: Option<Socket>
+        synchronized (connectionPool.mutex) {
+            if(force && hasExchange()) {
+                throw HttpException("cannot release connection while it is in use")
+            }
+            releasedConnection = this.connection
+            if (hasConnection() && !hasExchange() && (force || noExchanges)) {
+                socket = releaseConnectionNoEvents()
+            } else {
+                socket = None
+            }
+            if(hasConnection()) {
+                releasedConnection = None
+            }
+            Util.closeQuietly(socket)
+        }
+    }
+    public func hasExchangeFinder() {
+        return match (this.exchangeFinder) {
+           case Some(conn) => true
+           case None => false
+       }
+    }
+
+    public func hasConnection() {
+        synchronized (connectionPool.mutex){
+            return match (this.connection) {
+               case Some(conn) => true
+               case None => false
+           }
+       }
+    }
+
+    public func hasExchange() {
+        synchronized (connectionPool.mutex) {
+            return match (exchange) {
+               case Some(e) => return true
+               case None => return false
+           }
+        }
+    }
+
+    func exchangeMessageDone(exchange: Exchange, requestDone: Bool, responseDone: Bool){
+        var exchangeDone = false
+        synchronized (connectionPool.mutex) {
+            if (refEq(this.exchange.getOrThrow(), exchange)) {
+                // from detached violently
+                return
+            }
+            var changed = false
+            if (requestDone) {
+                if(!exchangeRequestDone) {
+                    changed = true
+                }
+                this.exchangeRequestDone =true
+            }
+            if (responseDone) {
+                if(!exchangeResponseDone) {
+                    changed = true
+                }
+                this.exchangeResponseDone = true
+            }
+            if (exchangeRequestDone && exchangeResponseDone && changed) {
+                exchangeDone = true
+                this.exchange.getOrThrow().getConnection().successCount++
+                this.exchange = None
+            }
+        }
+        if (exchangeDone) {
+            maybeReleaseConnection(false)
+        }
     }
 }
 

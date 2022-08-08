@@ -64,7 +64,7 @@ public class OkHttpClient {
      private var writeTimeout: Option<Duration>
 
      private var protocols: ArrayList<String>
-     private var tlsConfig: Option<TlsConfig>
+     private var tlsConfig: Option<TlsClientConfig>
 
      /**
       * The Function is init constructor
@@ -132,7 +132,7 @@ public class OkHttpClient {
       * @return Type of Option<ConnectionPool>
       * @since 0.29.3
       */
-     public func getConnectionPool():  Option<ConnectionPool>{
+     public func getConnectionPool(): Option<ConnectionPool>{
         return connectionPool
      }
 
@@ -192,7 +192,7 @@ public class OkHttpClient {
         return protocols
      }
 
-     public func getTlsConfig(): Option<TlsConfig> {
+     public func getTlsConfig(): Option<TlsClientConfig>  {
         return tlsConfig
      }
 }

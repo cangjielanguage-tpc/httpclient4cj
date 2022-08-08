@@ -32,7 +32,7 @@ public class CacheControl {
      */
     public static let FORCE_CACHE: CacheControl = CacheControlBuilder()
         .onlyIfCached()
-        .maxStale(Duration.second(Int64(MaxInt32)))
+        .maxStale(Duration.second(Int64(Int32.Max)))
         .build()
        
     private var noCacheInit: Bool = true
@@ -247,9 +247,9 @@ public class CacheControl {
         var canUseHeaderValue: Bool = true
         var headerValue: String = ""
 
-        var ss: StringStream = StringStream("")
-        header.write(ss)
-        let nameAndValue: Array<String> = ss.toString().split("\r\n")
+        var ss: ByteArrayStream = ByteArrayStream()
+        header.writeTo(ss)
+        let nameAndValue: Array<String> = String(toArray(ss.readToEnd())).split("\r\n")
         var head: ArrayList<String> = ArrayList<String>()
         let headers: ArrayList<String> = ArrayList<String>()
         head.appendAll(nameAndValue)
@@ -324,7 +324,7 @@ public class CacheControl {
                 } else if ("must-revalidate".toLower().equals(directive)) {
                     mustRevalidate = true
                 } else if ("max-stale".toLower().equals(directive)) {
-                    maxStaleSeconds = Util.parseSeconds(parameter, MaxInt32)
+                    maxStaleSeconds = Util.parseSeconds(parameter, Int32.Max)
                 } else if ("min-fresh".toLower().equals(directive)) {
                     minFreshSeconds = Util.parseSeconds(parameter, -1)
                 } else if ("only-if-cached".toLower().equals(directive)) {

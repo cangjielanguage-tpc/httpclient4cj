@@ -8,6 +8,7 @@
  */
 package okhttp
 
+
 /**
  * The class is ConnectInterceptor inherited from Interceptor
  * @author guo_tingtingtekla,luoyukai4
@@ -38,7 +39,7 @@ public class ConnectInterceptor<: Interceptor {
     public func intercept(chain: Chain): Response {
        let transmitter: Transmitter = chain.getTransmitter()
        let request: Request = chain.getRequest()
-       let doExtensiveHealthChecks: Bool = !request.getMethod().equals("GET")
+       let doExtensiveHealthChecks: Bool = !request.getMethod().equals(METHOD_GET)
        return chain.proceed(request, chain.getTransmitter(),transmitter.newExchange(chain, doExtensiveHealthChecks))
     }
 }
