@@ -28,7 +28,8 @@ class MyInterceptor<: Interceptor {
         conn.getRoute()
 
         let add = Address(URL.parse("http://36.152.44.95/index.html"),
-                            ArrayList<String>([Protocol.get("H2_PRIOR_KNOWLEDGE").toString()]),  Option<TlsConfig>.None
+                            ArrayList<String>([Protocol.get("H2_PRIOR_KNOWLEDGE").toString()]),
+                            Option<TlsClientConfig>.None
                         )
         add.getTlsConfig()
         let isEligible = conn.isEligible(add)

@@ -16,7 +16,7 @@ package okhttp
 public class Address {
     /** var member url type is URL */
     public var url: URL
-    private var tlsConfig: Option<TlsConfig>
+    private var tlsConfig: Option<TlsClientConfig>
 
     private var protocols: ArrayList<String>
     /**
@@ -25,7 +25,7 @@ public class Address {
      * @param url of URL
      * @since 0.29.3
      */
-    public init (url: URL, protocols: ArrayList<String>, tlsConfig: Option<TlsConfig>) {
+    public init (url: URL, protocols: ArrayList<String>, tlsConfig: Option<TlsClientConfig> ) {
         this.url = url
         this.protocols = protocols
         this.tlsConfig = tlsConfig
@@ -54,10 +54,10 @@ public class Address {
     /**
      * The Function is getTlsConfig
      *
-     * @return Type of Option<TlsConfig>
+     * @return Type of Option<TlsClientConfig> >
      * @since 0.30.4.
      */
-    public func getTlsConfig(): Option<TlsConfig>  {
+    public func getTlsConfig(): Option<TlsClientConfig>   {
         return tlsConfig
     }
 }

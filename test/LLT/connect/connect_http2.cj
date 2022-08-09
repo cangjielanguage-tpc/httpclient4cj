@@ -14,15 +14,13 @@ main() {
     socket.connect()
     let conn  = H2ClientConn.createClientConn(H2Transport(), socket)
     let r = H2Request(GET, "http://127.0.0.1:50066/cangjie_test-1.0-SNAPSHOT/hello");
-    var ssv = StringStream("")
-            r.req.write(ssv)
-    println(ssv.toString())
-
+    var ssv = ByteArrayStream()
+    r.req.copyTo(ssv)
+    println(String(okhttp.toArray(ssv.readToEnd())))
     let r2 = h1.Request(GET, "http://127.0.0.1:50066/cangjie_test-1.0-SNAPSHOT/hello");
-    var ssv2 = StringStream("")
-                r2.write(ssv2)
-        println(ssv2.toString())
-
+    var ssv2 = ByteArrayStream()
+    r2.copyTo(ssv2)
+    println(String(okhttp.toArray(ssv2.readToEnd())))
     let resp = conn.doRequest(r)
     println(resp.status)
     showResp(resp,"TEST")
@@ -39,8 +37,8 @@ println("protoMinor: ${resp.protoMinor}")
 println("transferEncoding: ${resp.transferEncoding}")
 println("contentLength: ${resp.contentLength}")
 println("----------------respbody------------------------")
-var ss = resp.body as StringStream
-var s: String = String(ss.getOrThrow().getChars())
+var ss = resp.body as ByteArrayStream
+var s: String = String(okhttp.toArray(ss.getOrThrow().readToEnd()))
 println("body ==> ${s}")
 var buf = Array<UInt8>(100, {i => 0})
 println("----------------respbody------------------------")

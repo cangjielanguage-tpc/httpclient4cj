@@ -59,8 +59,10 @@ public class RequestBody {
      * @return Type of ReadCloseStream
      * @since 0.29.3
      */
-    public func get(): ReadCloseStream {
-        return StringStream(content)
+    public func get(): InputStream {
+        let stream = ByteArrayStream()
+        stream.write(content.toUtf8Array())
+        return stream
     }
 
 }

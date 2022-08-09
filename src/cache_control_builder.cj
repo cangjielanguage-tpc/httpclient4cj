@@ -65,7 +65,7 @@ public class CacheControlBuilder <: Builder<CacheControl> {
      */
     public func maxAge(timeUnit: Duration): CacheControlBuilder {
         let maxAgeSecondsLong: Int64 = timeUnit.seconds()
-        this.maxAgeSeconds = if ( maxAgeSecondsLong >  Int64(MaxInt32) ) { MaxInt32 } else { Int32(maxAgeSecondsLong) }
+        this.maxAgeSeconds = if ( maxAgeSecondsLong >  Int64(Int32.Max) ) { Int32.Max } else { Int32(maxAgeSecondsLong) }
         return this
     }
 
@@ -80,7 +80,7 @@ public class CacheControlBuilder <: Builder<CacheControl> {
      */
     public func maxStale(timeUnit: Duration): CacheControlBuilder {
         let maxStaleSecondsLong: Int64 = timeUnit.seconds()
-        this.maxStaleSeconds = if ( maxStaleSecondsLong >  Int64(MaxInt32) ) { MaxInt32 } else { Int32(maxStaleSecondsLong) }
+        this.maxStaleSeconds = if ( maxStaleSecondsLong >  Int64(Int32.Max) ) {Int32.Max } else { Int32(maxStaleSecondsLong) }
         return this
     }
 
@@ -96,7 +96,7 @@ public class CacheControlBuilder <: Builder<CacheControl> {
      */
     public func minFresh(timeUnit: Duration): CacheControlBuilder {
         let minFreshSecondsLong: Int64 = timeUnit.seconds()
-        this.maxStaleSeconds = if ( minFreshSecondsLong >  Int64(MaxInt32) ) { MaxInt32 } else { Int32(minFreshSecondsLong) }
+        this.maxStaleSeconds = if ( minFreshSecondsLong >  Int64(Int32.Max) ) {Int32.Max } else { Int32(minFreshSecondsLong) }
         return this
     }
 

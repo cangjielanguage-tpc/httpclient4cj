@@ -33,7 +33,7 @@ public class HttpException <: RuntimeException {
      * @return Type of String
      * @since 0.29.3
      */
-    protected open override func getClassName(): String {
+    protected override func getClassName(): String {
         return "HttpException"
     }
 }
@@ -133,21 +133,14 @@ public class Http1ExchangeCodec<: ExchangeCodec{
      */
     public func write(request: Request): Unit {
         let req4cj =  request.toHttpRequest()
-        var requestStream: StringStream = StringStream("")
-        req4cj.write(requestStream)
-        let reqMethod = request.method.toString()
-        let writeBuf = requestStream.toString().toUtf8Array()
-        let socket = this.realConnection.getSocket().getOrThrow()
-        let read:Option<Int64> = match (writeTimeout) {
-            case Some(time) => socket.write(writeBuf, time)
-            case None => socket.write(writeBuf)
+        var writeBuf: ByteArrayStream = ByteArrayStream()
 
-        }
-        match (read) {
-            case None =>
-                socket.close()
-            case Some(v) =>
-                ()
+        req4cj.copyTo(writeBuf)
+        let socket = this.realConnection.getSocket().getOrThrow()
+        match (writeTimeout) {
+            case Some(time) => socket.write(writeBuf.readToEnd(), time)
+            case None => socket.write(writeBuf.readToEnd())
+
         }
         state = STATE_OPEN_REQUEST_BODY
     }
@@ -163,11 +156,11 @@ public class Http1ExchangeCodec<: ExchangeCodec{
             throw Exception("state: ${state}")
         }
         var readBuf: Array<Byte> = Array<Byte>(readLength, item: 0)
-        var lenNum: Int64 = this.ReadBytesToBuffer(readBuf)
+        var lenNum: Int64 = this.readBytesToBuffer(readBuf)
         if (lenNum <= 0) {
             throw Exception()
         }
-        this.allBuf.write(readBuf, 0, lenNum)
+        this.allBuf.write(readBuf.slice(0, lenNum))
         return this.parseHead()
     }
 
@@ -212,8 +205,8 @@ public class Http1ExchangeCodec<: ExchangeCodec{
             if ( allBuf.size() - parsedIndex < contentLength) {
                 readLimit = contentLength + parsedIndex - allBuf.size() + 1
                 var readBuf: Array<Byte> = Array<Byte>(readLimit, item: 0)
-                let lenNum: Int64 =this.ReadBytesToBuffer(readBuf)
-                this.allBuf.write(readBuf, 0, lenNum)
+                let lenNum: Int64 =this.readBytesToBuffer(readBuf)
+                this.allBuf.write(readBuf.slice( 0, lenNum))
             }
         } else if (contentLength < 0) {
             readLimit = 4096
@@ -221,9 +214,9 @@ public class Http1ExchangeCodec<: ExchangeCodec{
             var readBuf: Array<Byte> = Array<Byte>(readLimit, item: 0)
             var read: Int64 = 0
             while (true) {
-                var read: Int64 = this.ReadBytesToBuffer(readBuf)
-                this.allBuf.write(readBuf, 0, read)
-                let crlfCrlfIndex = this.allBuf.indexOf(CRLF_CRLF, start: bodyItemIndex)
+                var read: Int64 = this.readBytesToBuffer(readBuf)
+                this.allBuf.write(readBuf.slice(0, read))
+                let crlfCrlfIndex = indexOf(this.allBuf.bytes(), CRLF_CRLF, start: bodyItemIndex)
                 if (bodyItemIndex == this.parsedIndex) {
                     bodyItemIndex -= CRLF_CRLF.size()
                 }
@@ -247,23 +240,26 @@ public class Http1ExchangeCodec<: ExchangeCodec{
      * @return Type of StringStream
      * @since 0.29.3
      */
-    private func parseBody() : StringStream {
-
+    private func parseBody() : ByteArrayStream {
+        let byteBuf = this.allBuf.bytes()
         if(reportedContentLength() != -1) {
-            if ( this.parsedIndex == this.allBuf.size()) {
-                return StringStream("")
+            if ( this.parsedIndex == byteBuf.size()) {
+                return ByteArrayStream(0)
             }
-            return StringStream(String.fromUtf8(this.allBuf.slice(this.parsedIndex, this.allBuf.size() - this.parsedIndex)))
+            let contentLength = reportedContentLength()
+            var body = ByteArrayStream(contentLength)
+            body.write(byteBuf.slice(this.parsedIndex, byteBuf.size() - this.parsedIndex))
+            return body
         } else {
-            var itemBody = Array<Byte>(this.allBuf.size() - this.parsedIndex, item: 0)
+            var itemBody = Array<Byte>(byteBuf.size() - this.parsedIndex, item: 0)
             var itemIndex = 0
             var chunkStart = this.parsedIndex
             do {
-                var crlfIndex = match (this.allBuf.indexOf(CRLF, start: chunkStart)) {
+                var crlfIndex = match (indexOf(byteBuf, CRLF, start: chunkStart)) {
                     case Some(x) => x
                     case None => throw Exception("chunked data is invalid:")
                 }
-                var chunkLenStr = String.fromUtf8(this.allBuf.slice(chunkStart, crlfIndex - chunkStart), isAscii: true)
+                var chunkLenStr = String.fromUtf8(byteBuf.slice(chunkStart, crlfIndex - chunkStart), isAscii: true)
                 var chunkLen = match(parseUInt64("0x"+chunkLenStr)) {
                     case Some (x) => Int64(x)
                     case None => throw Exception("header data is invalid:")
@@ -271,47 +267,35 @@ public class Http1ExchangeCodec<: ExchangeCodec{
                 if (chunkLen == 0) {
                     break
                 }
-                if(crlfIndex + 2 + chunkLen > this.allBuf.size()) {
+                if(crlfIndex + 2 + chunkLen > byteBuf.size()) {
                     break
                 }
-                let bufferSlice = this.allBuf.slice(crlfIndex+2, chunkLen)
+                let bufferSlice = byteBuf.slice(crlfIndex+2, chunkLen)
                 bufferSlice.copyTo(itemBody, 0, itemIndex, chunkLen)
                 itemIndex += chunkLen
                 chunkStart = crlfIndex + 2 + chunkLen + 2
             } while (true)
-            return StringStream(String.fromUtf8(itemBody, start: 0, length: itemIndex))
+            var body = ByteArrayStream(itemBody.size())
+            body.write(itemBody)
+            return body
         }
     }
 
      /*
-      * The Function is ReadBytesToBuffer
+      * The Function is readBytesToBuffer
       *
       * @param readBuf of Array<Byte>
       *
       * @return Type of Int64
       * @since 0.29.3
       */
-     private func ReadBytesToBuffer(readBuf: Array<Byte>): Int64 {
-        var lenNum: Int64 = -1
-        match(readTimeout){
+     private func readBytesToBuffer(readBuf: Array<Byte>): Int64 {
+        return match(readTimeout){
                case Some(time) =>
-                   let readTimeLen = this.realConnection.getSocket().getOrThrow().read(readBuf, time)
-                   match (readTimeLen) {
-                       case Some(l) =>
-                           lenNum = l
-                       case None =>
-                           throw HttpException("Request Timeout.")
-                   }
+                   return  this.realConnection.getSocket().getOrThrow().read(readBuf, time)
                case None =>
-                   let readLen = this.realConnection.getSocket().getOrThrow().read(readBuf)
-                   match (readLen) {
-                       case Some(l) =>
-                           lenNum = l
-                       case None =>
-                           lenNum = -1
-                   }
+                   return  this.realConnection.getSocket().getOrThrow().read(readBuf)
        }
-       return lenNum
     }
 
     /*
@@ -324,30 +308,30 @@ public class Http1ExchangeCodec<: ExchangeCodec{
         let responseBuilder: ResponseBuilder  = ResponseBuilder()
         var statusCode: Int64 = 200
         if (this.parsedIndex == 0) {
-            var crlfIndex = match(this.allBuf.indexOf(CRLF, start: 0)) {
+            var crlfIndex = match(indexOf(this.allBuf.bytes(), CRLF, start: 0)) {
                 case Some(i) =>
                     this.parsedIndex = i+2
                     i
                 case None =>
                     throw Exception("no head")
             }
-            var protoEndIndex = match (this.allBuf.indexOf(SP, start: 0)) {
+            var protoEndIndex = match (indexOf(this.allBuf.bytes(), SP, start: 0)) {
                 case Some(i) => i
                 case None => throw HttpException("header data is invalid: ")
             }
-            var statusCodeEndIndex = match (this.allBuf.indexOf(SP, start: protoEndIndex + 1)) {
+            var statusCodeEndIndex = match (indexOf(this.allBuf.bytes(), SP, start: protoEndIndex + 1)) {
                 case Some(i) => i
                 case None => throw HttpException("header data is invalid: ")
             }
-            let proto = String.fromUtf8(this.allBuf.slice(0, protoEndIndex), isAscii: true)
-            let status = String.fromUtf8(this.allBuf.slice(protoEndIndex+1, crlfIndex - protoEndIndex - 1), isAscii: true)
+            let proto = String.fromUtf8(this.allBuf.bytes().slice(0, protoEndIndex), isAscii: true)
+            let status = String.fromUtf8(this.allBuf.bytes().slice(protoEndIndex+1, crlfIndex - protoEndIndex - 1), isAscii: true)
             if (statusCodeEndIndex > crlfIndex) {
                 statusCode = match (parseInt64(status)) {
                     case Some(x) => x
                     case None => throw Exception("statusCode is invalid: ${status}")
                 }
             } else {
-                var itemStr = String.fromUtf8(this.allBuf.slice(protoEndIndex + 1, statusCodeEndIndex - protoEndIndex - 1), isAscii: true)
+                var itemStr = String.fromUtf8(this.allBuf.bytes().slice(protoEndIndex + 1, statusCodeEndIndex - protoEndIndex - 1), isAscii: true)
                 statusCode = match (parseInt64(itemStr)) {
                     case Some (x) => x
                     case None => throw Exception("statusCode is invalid: ${itemStr}")
@@ -358,20 +342,19 @@ public class Http1ExchangeCodec<: ExchangeCodec{
 
         }
         while (true) {
-            match (this.allBuf.indexOf(CRLF, start: this.parsedIndex)) {
+            match (indexOf(this.allBuf.bytes(),CRLF, start: this.parsedIndex)) {
                 case Some(i) =>
                     if (i == this.parsedIndex) {
                         state = STATE_OPEN_RESPONSE_BODY
                         this.parsedIndex = i + 2
                         break
                     }
-                    var colonIndex = this.allBuf.indexOf(b":", start: this.parsedIndex) ?? -1
+                    var colonIndex = indexOf(this.allBuf.bytes(), b":", start: this.parsedIndex) ?? -1
                     if (colonIndex == -1 || colonIndex > i) {
                         throw Exception("header data is invalid:")
                     }
-                    var key = String.fromUtf8(this.allBuf.slice(this.parsedIndex, colonIndex - this.parsedIndex), isAscii: true)
-                    var (valStart, valLength) = this.allBuf.trim(colonIndex + 1, i - colonIndex - 1, TRIM_BYTE)
-                    var val = String.fromUtf8(this.allBuf.slice(valStart, valLength), isAscii: true)
+                    var key = String.fromUtf8(this.allBuf.bytes().slice(this.parsedIndex, colonIndex - this.parsedIndex), isAscii: true)
+                    var val = String.fromUtf8(this.allBuf.bytes().slice(colonIndex + 1, i - colonIndex - 1), isAscii: true)
                     this.respHead.set(key, val)
                     responseBuilder.addHeader(key,val)
                     this.parsedIndex = i+2
@@ -491,7 +474,7 @@ public class Http2ExchangeCodec <: ExchangeCodec{
                     return None
                 }
                 return ResponseBody(h2resp.header.get("Content-Type") ?? "", contentLength,
-                    (h2resp.body as StringStream).getOrThrow())
+                    (h2resp.body as ByteArrayStream).getOrThrow())
             case None => throw Exception("invoke write first")
         }
     }

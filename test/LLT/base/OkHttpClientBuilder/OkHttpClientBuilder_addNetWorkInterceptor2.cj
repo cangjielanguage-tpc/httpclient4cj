@@ -28,7 +28,7 @@ class MyInterceptor<: Interceptor {
         .body(exchange.openResponseBody())
         .request(request)
         let tr = chain.getTransmitter()
-        let poor = ConnectionPool(5)
+        let poor = ConnectionPool()
         poor.connectionCount()
         poor.idleConnectionCount()
         poor.evictAll()

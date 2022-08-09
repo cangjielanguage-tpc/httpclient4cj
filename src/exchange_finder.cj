@@ -113,6 +113,7 @@ public class ExchangeFinder {
             case None =>
                 let conn = Connection(connectionPool, routeSelector.next())
                 conn.connect(connectTimeout)
+                connectionPool.put(conn)
                 transmitter.acquireConnectionNoEvents(conn)
                 connectingConnection = Option<Connection>.Some(conn)
                 return conn
@@ -191,5 +192,10 @@ public class Exchange {
 
     public func cancel() {
         codec.cancel()
+    }
+
+    public func detachWithViolence() {
+        cancel()
+        transmitter.exchangeMessageDone(this, true, true)
     }
 }

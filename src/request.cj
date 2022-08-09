@@ -132,14 +132,13 @@ public class Request {
       * @since 0.29.3
       */
      public func toHttpRequest() {
-         let b: Option<ReadCloseStream> = match (body) {
-             case Some(v) =>  Option<ReadCloseStream>.Some(v.get())
-             case _ =>  Option<ReadCloseStream>.None
-         }
          let method = Util.getRequestMethod(method)
-         let r = h1.Request(method, url.toString(), stream: b)
-         r.header = header.clone()
-         return r
+         let req = match (body) {
+             case Some(v) =>  h1.Request(method, url.toString(), v.get())
+             case _ =>  h1.Request(method, url.toString())
+         }
+         req.header = header.clone()
+         return req
     }
 
 

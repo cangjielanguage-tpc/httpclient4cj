@@ -11,6 +11,9 @@ package okhttp
 from std import convert.*
 from std import math.*
 
+
+let METHOD_GET = "GET"
+
 /**
  * The class is Util
  * @author guo_tingtingtekla,luoyukai4
@@ -106,8 +109,8 @@ public class Util {
     public static func parseSeconds(value: String, defaultValue: Int32): Int32 {
         try {
             let seconds: Int32 = parseInt32(value).getOrThrow()
-            if (seconds > MaxInt32) {
-                return MaxInt32
+            if (seconds > Int32.Max) {
+                return Int32.Max
             } else if (seconds < 0) {
                 return 0
             } else {
@@ -137,29 +140,29 @@ public enum SocketClient {
         }
     }
 
-    public func read(buffer: Array<Byte>): Option<Int64> {
+    public func read(buffer: Array<Byte>): Int64 {
         return match(this) {
             case SocketC(conn) => conn.read(buffer)
             case TlsC(conn) => conn.read(buffer)
         }
     }
 
-    public func read(buffer: Array<Byte>, timeout: Duration): Option<Int64> {
+    public func read(buffer: Array<Byte>, timeout: Duration): Int64 {
         return match(this) {
             case SocketC(conn) => conn.read(buffer, timeout)
             case TlsC(conn) => conn.read(buffer)
         }
     }
 
-    public func write(buffer: Array<Byte>): Option<Int64> {
-        return match(this) {
+    public func write(buffer: Array<Byte>): Unit {
+        match(this) {
             case SocketC(conn) => conn.write(buffer)
             case TlsC(conn) => conn.write(buffer)
         }
     }
 
-    public func write(buffer: Array<Byte>, timeout: Duration): Option<Int64> {
-        return match(this) {
+    public func write(buffer: Array<Byte>, timeout: Duration): Unit {
+        match(this) {
             case SocketC(conn) => conn.write(buffer, timeout)
             case TlsC(conn) => conn.write(buffer)
         }
@@ -174,3 +177,37 @@ public enum SocketClient {
         }
     }
 }
+
+
+/**
+ * The Function is toArray
+ *
+ * @param a of Array<Char>
+ *
+ * @return Type of Array<UInt8>
+ * @since 0.29.3
+ */
+func toArray(a: Array<Char>) : Array<UInt8> {
+    var buf2 = Array<UInt8>(a.size(), item: 0)
+    for (i in 0..buf2.size()) {
+        buf2[i] = UInt8(UInt32(a[i]))
+    }
+    return buf2
+}
+
+/**
+ * The Function is toArray
+ *
+ * @param a of ArrayList<String>
+ *
+ * @return Type of Array<String>
+ * @since 0.29.3
+ */
+public func toArray(a: Array<UInt8>) : Array<Char> {
+    var buf2 = Array<Char>(a.size(), item: '0')
+    for (i in 0..buf2.size()) {
+        buf2[i] = Char(UInt32(a[i]))
+    }
+    return buf2
+}
+

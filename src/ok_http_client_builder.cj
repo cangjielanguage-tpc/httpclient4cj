@@ -33,7 +33,7 @@ public class OkHttpClientBuilder <: Builder<OkHttpClient> {
     var connectTimeoutBuild: Option<Duration> = Option<Duration>.None
     var readTimeoutBuild: Option<Duration> = Option<Duration>.None
     var writeTimeoutBuild: Option<Duration> = Option<Duration>.None
-    var tlsConfigBuild: Option<TlsConfig> = None
+    var tlsConfigBuild: Option<TlsClientConfig> = None
     var protocolsBuild: ArrayList<String> = ArrayList<String>([Protocol.get("HTTP/1.1").toString()])
 
     /**
@@ -185,7 +185,7 @@ public class OkHttpClientBuilder <: Builder<OkHttpClient> {
      * @since 0.30.4
      */
     public func tlsConfig(path: String): OkHttpClientBuilder {
-        this.tlsConfigBuild = TlsConfig.clientConfig(path)
+        this.tlsConfigBuild = TlsClientConfig(path)
         return this
     }
 

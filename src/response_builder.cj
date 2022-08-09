@@ -13,7 +13,7 @@ package okhttp
  * @author guo_tingtingtekla,luoyukai4
  * @since 0.29.3
  */
-public class ResponseBuilder <: Builder<Response> {
+public open class ResponseBuilder <: Builder<Response> {
     /* var member requestBuild type is Request */
     var requestBuild: Request = Request.builder().build()
     /* var member protocolBuild type is Protocol */
@@ -159,7 +159,7 @@ public class ResponseBuilder <: Builder<Response> {
      * @return Type of ResponseBuilder
      * @since 0.29.3
      */
-    public func body(body: Option<ResponseBody>): ResponseBuilder {
+    public open func body(body: Option<ResponseBody>): ResponseBuilder {
       this.bodyBuild = body
       return this
     }

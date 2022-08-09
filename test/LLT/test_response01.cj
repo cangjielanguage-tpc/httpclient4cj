@@ -5,8 +5,9 @@ from okhttp import okhttp.*
 from std import io.*
 main (){
     let response = Response.builder().build()
-    let ss: StringStream = StringStream("abcdefG")
-    let body: ResponseBody = ResponseBody("text/html", 31946, ss)
+    let b = ByteArrayStream()
+    b.write("abcdefG".toUtf8Array())
+    let body: ResponseBody = ResponseBody("text/html", 31946, b)
     response.getRequest()
     response.getProtocol()
     response.getCode()

@@ -16,7 +16,7 @@ from std import io.*
  */
 public class ResponseBody {
     /* var member source type is StringStream */
-    var source: StringStream = StringStream("")
+    var source: ByteArrayStream = ByteArrayStream()
     /* var member contentType type is String */
     var contentType:String = ""
     /* var member contentLength type is Int64 */
@@ -30,7 +30,7 @@ public class ResponseBody {
      * @param source of StringStream
      * @since 0.29.3
      */
-    public init(contentType: String, contentLength: Int64, source: StringStream)     {
+    public init(contentType: String, contentLength: Int64, source: ByteArrayStream) {
         this.source = source
         this.contentType = contentType
         this.contentLength = contentLength
@@ -49,7 +49,7 @@ public class ResponseBody {
      * @return Type of StringStream
      * @since 0.29.3
      */
-    public func getSource(): StringStream {
+    public func getSource(): ByteArrayStream {
         return source
     }
 
@@ -60,9 +60,7 @@ public class ResponseBody {
      * @since 0.29.3
      */
     public func close(): Unit {
-        if (!source.isClosed()) {
-            source.close()
-        }
+
     }
 
     public func getContentLength(): Int64 {
@@ -77,7 +75,6 @@ public class ResponseBody {
      */
     public func getContentType(): String {
         return contentType
-
     }
 }
 
