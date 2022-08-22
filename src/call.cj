@@ -139,7 +139,7 @@ public class RealCall<: Call {
        try {
            client.getDispatcher().executed(this)
            return getResponseWithInterceptorChain()
-       }finally {
+       } finally {
            client.getDispatcher().finished(this)
        }
     }

@@ -40,9 +40,25 @@ public class CallServerInterceptor<: Interceptor {
         let exchange: Exchange = chain.getExchange()
         //TODO
         exchange.write(request)
-        let respB = exchange.readResponseHeaders()
+        let response = exchange.readResponseHeaders()
         .body(exchange.openResponseBody())
-        .request(request)
-        return respB.build()
+        .request(request).build()
+        let code = response.getCode()
+        if ("close".equals(response.getRequest().getHeader("Connection","")) ||
+            "close".equals(response.getHeader("Connection",""))) {
+            exchange.noNewExchangesOnConnection()
+        }
+
+        if (code ==204 || code == 205) {
+            match (response.getBody()) {
+                case Some(body) =>
+                   if (body.getContentLength() > 0) {
+                      throw ProtocolException("HTTP ${code} had non-zero Content-Length: ${body.getContentLength()}")
+                   }
+                case None => ()
+           }
+
+        }
+        return response
     }
 }

@@ -34,7 +34,7 @@ public enum Protocol {
             case "h2_prior_knowledge" | "H2_PRIOR_KNOWLEDGE"=> H2_PRIOR_KNOWLEDGE
             case "quic" | "QUIC"=> QUIC
             case _  =>
-                throw Exception("no find protocol")
+                throw ProtocolException("no find protocol")
 
         }
     }

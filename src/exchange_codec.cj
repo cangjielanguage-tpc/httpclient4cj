@@ -12,31 +12,7 @@ package okhttp
 from http2 import http.*
 from net import http.* as h2.*
 from std import io.*
-/*
- * The class is HttpException inherited from RuntimeException
- * @author guo_tingtingtekla,luoyukai4
- * @since 0.29.3
- */
-public class HttpException <: RuntimeException {
-    /**
-     * The Function is init constructor
-     *
-     * @param message of String
-     * @since 0.29.3
-     */
-    public init(message: String) {
-        super(message)
-    }
-    /*
-     * The Function is getClassName
-     *
-     * @return Type of String
-     * @since 0.29.3
-     */
-    protected override func getClassName(): String {
-        return "HttpException"
-    }
-}
+
 
 /**
  * The interface is ExchangeCodec
@@ -313,28 +289,43 @@ public class Http1ExchangeCodec<: ExchangeCodec{
                     this.parsedIndex = i+2
                     i
                 case None =>
-                    throw Exception("no head")
+                    throw ProtocolException("no head")
             }
             var protoEndIndex = match (indexOf(this.allBuf.bytes(), SP, start: 0)) {
                 case Some(i) => i
-                case None => throw HttpException("header data is invalid: ")
+                case None => throw ProtocolException("header data is invalid: ")
             }
             var statusCodeEndIndex = match (indexOf(this.allBuf.bytes(), SP, start: protoEndIndex + 1)) {
                 case Some(i) => i
-                case None => throw HttpException("header data is invalid: ")
+                case None => throw ProtocolException("header data is invalid: ")
             }
-            let proto = String.fromUtf8(this.allBuf.bytes().slice(0, protoEndIndex), isAscii: true)
-            let status = String.fromUtf8(this.allBuf.bytes().slice(protoEndIndex+1, crlfIndex - protoEndIndex - 1), isAscii: true)
+            var proto = String.fromUtf8(this.allBuf.bytes().slice(0, protoEndIndex), isAscii: true)
+            if (!proto.startsWith("HTTP/1.")) {
+                if((proto == "ICY ")) {
+                   proto = "http/1.0"
+                } else {
+                    throw ProtocolException("Unexpected proto: " + "${proto}")
+                }
+            }
+            var messageIndex = match (indexOf(this.allBuf.bytes(), SP, start: protoEndIndex+1)) {
+                case Some(i) => i
+                case None => throw ProtocolException("header data is invalid: ")
+            }
+            let status = String.fromUtf8(this.allBuf.bytes().slice(protoEndIndex+1,
+                            crlfIndex - protoEndIndex - 1), isAscii: true)
+            responseBuilder.message(String.fromUtf8(this.allBuf.bytes().slice(messageIndex+1,
+                            crlfIndex- messageIndex-1), isAscii: true))
             if (statusCodeEndIndex > crlfIndex) {
                 statusCode = match (parseInt64(status)) {
                     case Some(x) => x
-                    case None => throw Exception("statusCode is invalid: ${status}")
+                    case None => throw ProtocolException("statusCode is invalid: ${status}")
                 }
             } else {
-                var itemStr = String.fromUtf8(this.allBuf.bytes().slice(protoEndIndex + 1, statusCodeEndIndex - protoEndIndex - 1), isAscii: true)
+                var itemStr = String.fromUtf8(this.allBuf.bytes().slice(protoEndIndex + 1,
+                    statusCodeEndIndex - protoEndIndex - 1), isAscii: true)
                 statusCode = match (parseInt64(itemStr)) {
                     case Some (x) => x
-                    case None => throw Exception("statusCode is invalid: ${itemStr}")
+                    case None => throw ProtocolException("statusCode is invalid: ${itemStr}")
                 }
             }
             responseBuilder.protocol(Protocol.get(proto))
@@ -354,7 +345,7 @@ public class Http1ExchangeCodec<: ExchangeCodec{
                         throw Exception("header data is invalid:")
                     }
                     var key = String.fromUtf8(this.allBuf.bytes().slice(this.parsedIndex, colonIndex - this.parsedIndex), isAscii: true)
-                    var val = String.fromUtf8(this.allBuf.bytes().slice(colonIndex + 1, i - colonIndex - 1), isAscii: true)
+                    var val = String.fromUtf8(trim(this.allBuf.bytes().slice(colonIndex + 1, i - colonIndex - 1),SP), isAscii: true)
                     this.respHead.set(key, val)
                     responseBuilder.addHeader(key,val)
                     this.parsedIndex = i+2
