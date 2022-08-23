@@ -3,9 +3,9 @@
 </p>
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v0.0.2-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v0.0.3-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjc-v0.30.4-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjc-v0.31.4-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-82%25-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
@@ -109,50 +109,58 @@ cpm build
 
 ### 示例
 
+注意：以下示例若在本地不成功，可能是 url 地址请求失败，请换成实际可用地址。
+
 ```
 from okhttp import okhttp.*
 from net import http.*
-from std import io.*
-from std import time.*
-from std import socket.*
+from std import collection.*
+from encoding import url.*
+from net import tls.*
 
-var port: UInt16 = 8888
-main() {
-    spawn {
-        serve()
-    }
-    sleep(1000*1000*1000)
+main (){
+    let client = OkHttpClient.builder()
+                        .addNetworkInterceptor(MyInterceptor())
+                        .protocols(ArrayList<String>([Protocol.get("HTTP/2.0").toString(),Protocol.get("HTTP/1.1").toString()]))
+                        .build()
 
-    let cache: CacheControl = CacheControl.builder()
-                                .maxAge(Duration.second(1000))
-                                .build()
-    let client: OkHttpClient= OkHttpClient.builder().build()
-    let request: okhttp.Request = okhttp.Request.builder()
-                                    .url("http://127.0.0.1:50066/cangjie_test-1.0-SNAPSHOT/hello")
-                                    .method("GET")
-                                    .cacheControl(cache)
-                                    .build()
-    let call = client.newCall(request)
-    let response: okhttp.Response = call.execute()
-
-    println(response.getBody().getOrThrow().getSource().toString())
+    let request: okhttp.Request = okhttp.Request
+                        .builder()
+                        .url("http://36.152.44.95/index.html")
+                        .header(Header())
+                        .header("User-Agent", "OkHttp-Example")
+                        .build()
+    let response: okhttp.Response = client.newCall(request).execute()
     return 0
 }
 
-func serve(){
-    let hd = http.Route()
-    hd.handle("/index", { rws: http.ResponseWriteStream, req: http.Request =>
-        let resp = "Hello from /red".toUtf8Array()
-        rws.write(resp)
-        return
-    })
-    let server = http.Server(hd)
-    let socket = socket.SocketServer(SocketNet.TCP, "0.0.0.0", port)
-    port = socket.port
-    server.serve(socket)
+class MyInterceptor<: Interceptor {
+    public func intercept(chain: Chain): okhttp.Response {
+        let conn = chain.getConnection().getOrThrow()
+        conn.getRoute()
+        let add = Address(URL.parse("http://36.152.44.95/index.html"),
+                            ArrayList<String>([Protocol.get("H2_PRIOR_KNOWLEDGE").toString()]),
+                            Option<TlsClientConfig>.None
+                        )
+        add.getTlsConfig()
+        conn.noExchanges()
+        println(conn.isMultiplexed())
+        conn.cancel()
+        let request: okhttp.Request = chain.getRequest()
+        let header: Header = request.getHeaders()
+        let c = request.getCacheControl() ?? CacheControl.parse(header)
+        println(c.toString())
+        return okhttp.Response.builder().build()
+    }
 }
 ```
 
+执行结果
+
+```
+false
+no-cache, no-store, max-age=0, s-maxage=0, private, public, must-revalidate, max-stale=0, min-fresh=0, only-if-cached, no-transform, immutable
+```
 ## <img alt="" src="./doc/assets/readme-icon-contribute.png" style="display: inline-block;" width=3%/> 参与贡献
 
 主要写参与贡献的人以及个人主页链接
