@@ -223,6 +223,21 @@ public class CacheControl {
         return immutableInit
     }
 
+    private static func makeNameValues(header: Header): ArrayList<String>{
+        var ss: ByteArrayStream = ByteArrayStream()
+        header.writeTo(ss)
+        let nameAndValue: Array<String> = String(toArray(ss.readToEnd())).split("\r\n")
+        var head: ArrayList<String> = ArrayList<String>()
+        let headers: ArrayList<String> = ArrayList<String>()
+        head.appendAll(nameAndValue)
+        head.remove(nameAndValue.size() - 1)
+        for(i in head){
+            let c: Array<String> = i.split(":")
+            headers.appendAll(c)
+        }
+        return headers
+    }
+
     /**
      * The Function is parse
      *
@@ -232,34 +247,13 @@ public class CacheControl {
      * @since 0.30.4
      */
     public static func parse(header: Header): CacheControl {
-       var noCache: Bool = true    
-        var noStore: Bool = true        
-        var maxAgeSeconds: Int32 = 0        
-        var sMaxAgeSeconds: Int32 = 0       
-        var isPrivate: Bool = true       
-        var isPublic: Bool = true        
-        var mustRevalidate: Bool = true        
-        var maxStaleSeconds: Int32 = 0       
-        var minFreshSeconds: Int32 = 0        
-        var onlyIfCached: Bool = true        
-        var noTransform: Bool = true       
-        var immutable: Bool = true
-        var canUseHeaderValue: Bool = true
-        var headerValue: String = ""
+        var noCache: Bool = true;var noStore: Bool = true;var maxAgeSeconds: Int32 = 0
+        var sMaxAgeSeconds: Int32 = 0; var isPrivate: Bool = true; var isPublic: Bool = true
+        var mustRevalidate: Bool = true; var maxStaleSeconds: Int32 = 0;
+        var minFreshSeconds: Int32 = 0; var onlyIfCached: Bool = true; var noTransform: Bool = true;
+        var immutable: Bool = true; var canUseHeaderValue: Bool = true; var headerValue: String = ""
 
-        var ss: ByteArrayStream = ByteArrayStream()
-        header.writeTo(ss)
-        let nameAndValue: Array<String> = String(toArray(ss.readToEnd())).split("\r\n")
-        var head: ArrayList<String> = ArrayList<String>()
-        let headers: ArrayList<String> = ArrayList<String>()
-        head.appendAll(nameAndValue)
-        head.remove(nameAndValue.size() - 1)
-        
-        for(i in head){
-            let c: Array<String> = i.split(":")
-            headers.appendAll(c)
-        }
-
+        let headers: ArrayList<String> = makeNameValues(header)
         var index: Int64 = 0
         for(i in 0..headers.size()/2) {
             index++  
@@ -278,21 +272,18 @@ public class CacheControl {
             } else {
                 continue
             }
-
             var pos: Int64 = 0
             while(pos < value.size()) {
                 let tokenStart: Int64 = pos
                 pos = Int64(Util.skipUntil(value, Int32(pos), "=,;"))
                 let directive: String = value.substring(tokenStart, pos - tokenStart).trim()
                 var parameter: String = ""
-
                 if (pos == value.size() || value.charAt(pos) == ',' || value.charAt(pos) == ';') {
                     pos++ // consume ',' or ';' (if necessary)
                     parameter = ""
                 } else {
                     pos++ // consume '='
                     pos = Int64(Util.skipWhitespace(value, Int32(pos)))
-
                     // quoted string
                     if (pos < value.size() && value.charAt(pos) == '\"') {
                         pos++ // consume '"' open quote
@@ -300,7 +291,6 @@ public class CacheControl {
                         pos = Int64(Util.skipUntil(value, Int32(pos), "\""))
                         parameter = value.substring(parameterStart, pos - parameterStart)
                         pos++ // consume '"' close quote (if necessary)
-
                         // unquoted string
                     } else {
                         let parameterStart: Int64 = pos   
@@ -308,39 +298,26 @@ public class CacheControl {
                         parameter = value.substring(parameterStart, pos - parameterStart).trim()
                     }
                 }
-
-                if ("no-cache".toLower().equals(directive)) {
-                    noCache = true
-                } else if ("no-store".toLower().equals(directive)) {
-                    noStore = true
-                } else if ("max-age".toLower().equals(directive)) {
-                    maxAgeSeconds = Util.parseSeconds(parameter, -1)
-                } else if ("s-maxage".toLower().equals(directive)) {
-                    sMaxAgeSeconds = Util.parseSeconds(parameter, -1)
-                } else if ("private".toLower().equals(directive)) {
-                    isPrivate = true
-                } else if ("public".toLower().equals(directive)) {
-                    isPublic = true
-                } else if ("must-revalidate".toLower().equals(directive)) {
-                    mustRevalidate = true
-                } else if ("max-stale".toLower().equals(directive)) {
-                    maxStaleSeconds = Util.parseSeconds(parameter, Int32.Max)
-                } else if ("min-fresh".toLower().equals(directive)) {
-                    minFreshSeconds = Util.parseSeconds(parameter, -1)
-                } else if ("only-if-cached".toLower().equals(directive)) {
-                    onlyIfCached = true
-                } else if ("no-transform".toLower().equals(directive)) {
-                    noTransform = true
-                } else if ("immutable".toLower().equals(directive)) {
-                    immutable = true
+                match (directive.toLower()) {
+                    case "no-cache" => noCache = true
+                    case "no-store" => noStore = true
+                    case "max-age" => maxAgeSeconds = Util.parseSeconds(parameter, -1)
+                    case "s-maxage" => Util.parseSeconds(parameter, -1)
+                    case "private" =>  isPrivate = true
+                    case "public" => isPublic = true
+                    case "must-revalidate" => mustRevalidate = true
+                    case "max-stale" =>  maxStaleSeconds = Util.parseSeconds(parameter, Int32.Max)
+                    case "min-fresh" => minFreshSeconds = Util.parseSeconds(parameter, -1)
+                    case "only-if-cached" =>  onlyIfCached = true
+                    case "no-transform" => noTransform = true
+                    case "immutable" => immutable = true
+                    case _ => ()
                 }
             }
         }
-
         if (!canUseHeaderValue) {
             headerValue = ""
         }
-
         return CacheControl(noCache, noStore, maxAgeSeconds, sMaxAgeSeconds, isPrivate, isPublic,
         mustRevalidate, maxStaleSeconds, minFreshSeconds, onlyIfCached, noTransform, immutable,
         headerValue)

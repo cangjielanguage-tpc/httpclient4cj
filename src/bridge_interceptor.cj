@@ -77,7 +77,7 @@ public class BridgeInterceptor<: Interceptor {
         let responseHeader: Header = response.getHeaders()
         // receiveHeaders(cookieJar, request.getUrl(), responseHeader)
         let responseBuilder: ResponseBuilder = response.newBuilder().request(request)
-        if (transparentGzip && "gzip".equals(response.getHeader("Content-Encoding"))&& hasBody(response)) {
+        if (transparentGzip && "gzip".equals(response.getHeader("Content-Encoding",""))&& hasBody(response)) {
             let strippedHeader = response.getHeaders().clone()
             strippedHeader.remove("Content-Encoding")
             strippedHeader.remove("Content-Length")

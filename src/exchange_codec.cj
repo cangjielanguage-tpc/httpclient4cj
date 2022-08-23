@@ -332,6 +332,11 @@ public class Http1ExchangeCodec<: ExchangeCodec{
             .code(statusCode)
 
         }
+        doLoopHeader(responseBuilder)
+        res = responseBuilder
+        return responseBuilder
+    }
+    private func doLoopHeader(responseBuilder: ResponseBuilder) {
         while (true) {
             match (indexOf(this.allBuf.bytes(),CRLF, start: this.parsedIndex)) {
                 case Some(i) =>
@@ -352,8 +357,6 @@ public class Http1ExchangeCodec<: ExchangeCodec{
                 case None => ()
             }
         }
-        res = responseBuilder
-        return responseBuilder
     }
 
     /**

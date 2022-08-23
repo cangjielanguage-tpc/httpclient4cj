@@ -108,8 +108,8 @@ public class Request {
      * @return Type of String
      * @since 0.29.3
      */
-    public func getHeader(name: String): String {
-        return getHeader(name, "")
+    public func getHeader(name: String): Option<String> {
+        return header.get(name)
     }
 
      /**
