@@ -22,6 +22,7 @@ public class ConnectionPool {
     public  var maxIdleConnections: Int64
     var cleanupRunning: Bool = false
     private let keepAliveDurationNs: Duration
+    let routeDatabase: RouteDatabase = RouteDatabase()
 
     /**
      * The Function is init constructor
@@ -61,7 +62,9 @@ public class ConnectionPool {
             return true
         } else {
             // Awake the cleanup thread
+            mutex.lock()
             mutex.notifyAll()
+            mutex.unlock()
             return false
         }
     }
@@ -76,12 +79,12 @@ public class ConnectionPool {
      * @return Type of Bool
      * @since 0.29.3
      */
-    func transmitterAcquirePooledConnection(address: Address,transmitter: Transmitter, requireMultiplexed!: Bool = false): Bool {
+    func transmitterAcquirePooledConnection(address: Address, transmitter: Transmitter, routeSelector: Option<RouteSelector>, requireMultiplexed!: Bool = false): Bool {
         for (conn in connections) {
              if (requireMultiplexed && !conn.isMultiplexed()) {
                 continue
              }
-             if(!conn.isEligible(address)) {
+             if(!conn.isEligible(address, routeSelector)) {
                 continue
              }
              transmitter.acquireConnectionNoEvents(conn)
@@ -205,5 +208,9 @@ public class ConnectionPool {
             case None => ()
         }
         return 0
+    }
+
+    public func connectFailed(failedRoute: Route): Unit {
+        routeDatabase.failed(failedRoute)
     }
 }

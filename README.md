@@ -14,7 +14,7 @@
 
 OkHttp 是一个高效的 HTTP 客户端, 代码参考: https://github.com/square/okhttp/tree/okhttp_3.14.x
 
-### 特性 
+### 特性
 
 - 🚀 支持HTTP/2，允许所有同一个主机地址的请求共享同一个 socket 连接
 
@@ -48,6 +48,8 @@ OkHttp 是一个高效的 HTTP 客户端, 代码参考: https://github.com/squar
 │   ├── design.md  
 │   ├── proposal.md
 │   └── xxx_lib.md 
+├── lib
+│   └── libdns.so
 ├── src
 │   ├── address.cj
 │   ├── bridge_interceptor.cj
@@ -59,6 +61,7 @@ OkHttp 是一个高效的 HTTP 客户端, 代码参考: https://github.com/squar
 │   ├── call_server_interceptor.cj
 │   ├── connect_interceptor.cj
 │   ├── dispatcher.cj
+│   ├── exception.cj
 │   ├── exchange_codec.cj
 │   ├── exchange_finder.cj
 │   ├── interceptor.cj
@@ -76,6 +79,7 @@ OkHttp 是一个高效的 HTTP 客户端, 代码参考: https://github.com/squar
 │   └── response_builder.cj
 │   └── retry_and_follow_up_interceptor.cj
 │   └── status_line.cj
+│   └── socket_ffi.cj
 │   └── transmitter.cj
 │   └── util.cj
 └── test   
@@ -83,7 +87,7 @@ OkHttp 是一个高效的 HTTP 客户端, 代码参考: https://github.com/squar
     ├── LLT
     └── UT
 ```
-
+- `lib`依赖 c 库的dns解析接口的动态链接文件
 - `doc`是库的设计文档、提案、库的使用文档、LLT 覆盖报告 ( 由于未支持服务端的对接,部分拦截器连接后处理逻辑暂时无法覆盖)
 - `src`是库源码目录
 - `test`是存放测试用例，包括 HLT 用例、LLT 用例和 UT 用例

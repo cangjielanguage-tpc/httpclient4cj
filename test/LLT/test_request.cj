@@ -9,14 +9,14 @@ from std import time.*
 from std import socket.*
 from encoding import url.*
 
-var port: UInt16 = 8079
+var port: UInt16 = 0
 main() {
     spawn {
         serve()
     } 
     sleep(1000*1000*1000)
 
-    let url: URL = URL.parse("http://10.100.90.109:${port}/index")
+    let url: URL = URL.parse("http://127.0.0.1:${port}/index")
 
     let cache: CacheControl = CacheControl.builder()
                                 .maxAge(Duration.second(1000))
@@ -44,20 +44,19 @@ main() {
                                     
     let resHead = request.getHeader("content-type")
     let resCon = request.getCacheControl().getOrThrow().toString()
-
     let call = client.newCall(request)
+
     let response: okhttp.Response = call.execute()
     let responseB = String(toArray(response.getBody().getOrThrow().getSource().readToEnd()))
-    let responseCache = response.getCacheControl().getOrThrow().toString()
 
+    let responseCache = response.getCacheControl().getOrThrow().toString()
     if(resBodyCt != "Media-Type" ||
        resBodyCl != 9 ||
        resHead != "application/json" ||
-       resCon != "no-cache, no-store, max-age=1000, only-if-cached, no-transform, immutable" ||
-       responseCache != "no-cache, no-store, max-age=0, s-maxage=0, private, public, must-revalidate, max-stale=0, min-fresh=0, only-if-cached, no-transform, immutable") {
+       resCon.trim() != "no-cache, no-store, max-age=1000, only-if-cached, no-transform, immutable" ||
+       responseCache.trim() != "no-cache, no-store, max-age=0, s-maxage=0, private, public, must-revalidate, max-stale=0, min-fresh=0, only-if-cached, no-transform, immutable") {
         return -1
     }
-
     response.close()
     return 0
 }

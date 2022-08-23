@@ -3,4 +3,5 @@
 /.idea
 /build
 /bin
+/http2
 module-resolve.json

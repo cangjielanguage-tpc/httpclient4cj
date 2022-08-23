@@ -13,7 +13,7 @@ package okhttp
  * @author guo_tingtingtekla,luoyukai4
  * @since 0.29.3
  */
-public class Address {
+public class Address <: Hashable & Equatable<Address>{
     /** var member url type is URL */
     public var url: URL
     private var tlsConfig: Option<TlsClientConfig>
@@ -60,76 +60,58 @@ public class Address {
     public func getTlsConfig(): Option<TlsClientConfig>   {
         return tlsConfig
     }
-}
 
-/**
- * The class is Route
- * @author guo_tingtingtekla,luoyukai4
- * @since 0.29.3
- */
-public class Route {
-    /** var member address type is Address */
-    public var address: Address
-
-    /**
-     * The Function is init constructor
-     *
-     * @param address of Address
-     * @param inetSocketAddress of SocketAddress
-     * @since 0.29.3
-     */
-    public init (address: Address) {
-        this.address = address
+    public func hashCode(): Int64 {
+        var result: Int64 = 17
+        result = 31 * result + url.toString().hashCode()
+        var listCode =  1
+        for (s in protocols) {
+            listCode = 31 * listCode + s.toString().hashCode()
+        }
+        result = 31 * result + listCode
+        return result
     }
 
-    /**
-     * The Function is init constructor
-     *
-     * @param address of Address
-     * @since 0.29.3
-     */
-
-    /**
-     * The Function is getAddress
-     * @return Type of Address
-     * @since 0.29.3
-     */
-    public func getAddress(): Address {
-        return address
-    }
-}
-
-/**
- * The class is RouteSelector
- * @author guo_tingtingtekla,luoyukai4
- * @since 0.29.3
- */
-public class RouteSelector {
-    /** var member address type is Address */
-    public var address: Address
-    /* var member call type is Call */
-    private var call: Call
-
-    /**
-     * The Function is init constructor
-     *
-     * @param address of Address
-     * @param call of Call
-     * @since 0.29.3
-     */
-    public init( address: Address, call: Call) {
-        this.address = address
-        this.call = call
-
+    public operator func == (rhs: Address): Bool {
+        return url.toString().equals(rhs.getUrl().toString()) && equalsProtocols(rhs) && equalsTlsConfig(rhs)
     }
 
-    /**
-     * The Function is next
-     *
-     * @return Type of Route
-     * @since 0.29.3
-     */
-    public func next():  Route{
-        return Route(address)
+    public operator func != (rhs: Address): Bool {
+        return !(this == rhs)
+    }
+
+    func equalsProtocols(rhs: Address) : Bool {
+        let it1 = protocols.iterator()
+        let it2 = rhs.getProtocols().iterator()
+        var index = 0
+        while(true) {
+            let next1 = match (it1.next()) {
+                case Some(conn) => conn
+                case None => ""
+            }
+            let next2 = match (it2.next()) {
+                case Some(conn) => conn
+                case None => ""
+            }
+            if (!next1.equals(next2)) {
+                return false;
+            }
+            if(next1 == "" || next2 ==  "") {
+                break;
+            }
+        }
+        return true
+    }
+
+    func equalsTlsConfig(rhs: Address) : Bool {
+        let path1 = match(tlsConfig) {
+            case Some(ts) => ts.caFile
+            case None => ""
+        }
+        let path2 = match(rhs.getTlsConfig()) {
+            case Some(ts) => ts.caFile
+            case None => ""
+        }
+        return path1.equals(path2)
     }
 }

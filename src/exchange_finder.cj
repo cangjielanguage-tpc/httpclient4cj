@@ -27,7 +27,8 @@ public class ExchangeFinder {
     private var routeSelector: RouteSelector
     /* var member connectingConnection type is Option<Connection> */
     private var connectingConnection:Option<Connection> = None
-
+    private var hasStreamFailure: Bool = false
+    private var nextRouteToTry: Option<Route> = None
 
 
     /**
@@ -44,7 +45,7 @@ public class ExchangeFinder {
         this.connectionPool = connectionPool
         this.call = call
         this.address = address
-        this.routeSelector = RouteSelector(address, call)
+        this.routeSelector = RouteSelector(address, connectionPool.routeDatabase)
     }
 
     /**
@@ -59,10 +60,9 @@ public class ExchangeFinder {
      */
     public func find(client: OkHttpClient, chain: Chain, doExtensiveHealthChecks: Bool): ExchangeCodec {
         let connectTimeout: Option<Duration> = client.getConnectTimeout()
-        let readTimeout: Option<Duration> = client.getReadTimeout()
-        let writeTimeout: Option<Duration> =  client.getWriteTimeout()
-        let conn: Connection = findHealthyConnection(connectTimeout)
-        return conn.newCodec(client, chain)
+        let connectionRetryEnabled: Bool = client.getRetryOnConnectionFailure()
+        let conn = findHealthyConnection(connectTimeout, connectionRetryEnabled)
+        return conn.getOrThrow().newCodec(client, chain)
     }
 
     /*
@@ -71,10 +71,20 @@ public class ExchangeFinder {
      * @return Type of Connection
      * @since 0.29.3
      */
-    private func findHealthyConnection(connectTimeout:Option<Duration>): Connection {
-        let candidate: Connection  =  findConnection(connectTimeout)
-        return candidate
-
+    private func findHealthyConnection(connectTimeout:Option<Duration>, connectionRetryEnabled: Bool): Option<Connection> {
+        while (true) {
+            let candidate: Connection  =  findConnection(connectTimeout, connectionRetryEnabled)
+            synchronized (connectionPool.mutex) {
+                if (candidate.successCount == 0 && !candidate.isMultiplexed()) {
+                  return candidate
+                }
+            }
+            if(!candidate.isHealthy()) {
+                candidate.noExchanges()
+            }
+            return candidate
+        }
+        return Option<Connection>.None
     }
 
 
@@ -84,41 +94,120 @@ public class ExchangeFinder {
      * @return Type of Connection
      * @since 0.29.3
      */
-    private func findConnection(connectTimeout:Option<Duration>): Connection {
-        // TODO Connection reuse
+    private func findConnection(connectTimeout:Option<Duration>, connectionRetryEnabled: Bool): Connection {
         var toClose: Option<Socket>
         var result: Option<Connection> = Option<Connection>.None
+        var selectedRoute: Option<Route> = None
         synchronized (connectionPool.mutex) {
             if (transmitter.isCanceled()) {
                 throw Exception("Transmitter has Canceled")
             }
+            hasStreamFailure = false
             match(transmitter.connection) {
                 case Some(conn) =>
-                    toClose = transmitter.releaseConnectionNoEvents()
                     result = transmitter.connection
+                    if (conn.noNewExchanges) {
+                        toClose = transmitter.releaseConnectionNoEvents()
+                    } else {
+                        toClose = Option<Socket>.None
+                    }
                 case _ =>
                     toClose = Option<Socket>.None
-                    // Attempt to get a connection from the pool.
-                    // TODO route
-                    if (connectionPool.transmitterAcquirePooledConnection(address,transmitter)){
-                        result = transmitter.connection
-                    }
             }
+            //Attempt to get a connection from the pool first time .
+             match (result) {
+                case Some(r) => ()
+                case None =>
+                    if (connectionPool.transmitterAcquirePooledConnection(address, transmitter, Option<RouteSelector>.None)){
+                        result = transmitter.connection
+                    } else {
+                        match(nextRouteToTry) {
+                            case Some(route) =>
+                                selectedRoute = route
+                                nextRouteToTry = None
+                            case None =>
+                                if (retryCurrentRoute()) {
+                                    selectedRoute = transmitter.connection.getOrThrow().route
+                                }
+                        }
+                    }
+             }
         }
         Util.closeQuietly(toClose)
-        let ret: Connection = match (result) {
-            case Some(r) =>
-                transmitter.acquireConnectionNoEvents(r)
-                return  r
-            case None =>
-                let conn = Connection(connectionPool, routeSelector.next())
-                conn.connect(connectTimeout)
-                connectionPool.put(conn)
-                transmitter.acquireConnectionNoEvents(conn)
-                connectingConnection = Option<Connection>.Some(conn)
-                return conn
+        match (result) {
+            case Some(r) => return r
+            case None => ()
         }
-        return ret
+        let newRouteSelection: Bool = match (selectedRoute) {
+            case Some(route) =>  false
+            case None =>  true
+        }
+        synchronized (connectionPool.mutex) {
+            if (transmitter.isCanceled()) {
+                throw HttpException("Canceled")
+            }
+            if (newRouteSelection) {
+                if (routeSelector.hasNext() && connectionPool.transmitterAcquirePooledConnection(
+                    address, transmitter, routeSelector, requireMultiplexed: false)) {
+                    result = transmitter.connection
+                    return result.getOrThrow()
+                }
+            }
+        }
+        selectedRoute = routeSelector.next()
+        result = Connection(connectionPool, selectedRoute.getOrThrow())
+        connectingConnection = result
+        var conn: Connection = result.getOrThrow()
+        conn.connect(connectTimeout, connectionRetryEnabled)
+        connectionPool.routeDatabase.connected(conn.route)
+        var socket: Option<Socket> = None
+        synchronized (connectionPool.mutex) {
+            connectingConnection = None
+            if (connectionPool.transmitterAcquirePooledConnection(
+                                address, transmitter, routeSelector, requireMultiplexed: true)) {
+                conn.noNewExchanges = true
+                socket = conn.getSocket()
+                conn = transmitter.connection.getOrThrow()
+                nextRouteToTry = selectedRoute
+            } else {
+                connectionPool.put(conn)
+                transmitter.acquireConnectionNoEvents(result)
+            }
+        }
+        Util.closeQuietly(socket)
+        return result.getOrThrow()
+    }
+    func getHasStreamFailure(): Bool {
+        synchronized (connectionPool.mutex) {
+          return hasStreamFailure
+        }
+      }
+
+    func hasRouteToTry(): Bool {
+        synchronized(connectionPool.mutex) {
+            match(nextRouteToTry) {
+                case Some(route) => return true
+                case None => ()
+            }
+            if (retryCurrentRoute()) {
+                nextRouteToTry = transmitter.connection.getOrThrow().route
+                return true
+            }
+        return routeSelector.hasNext()
+        }
+    }
+
+    private func retryCurrentRoute(): Bool {
+        match (transmitter.connection) {
+            case Some(conn) =>
+                if(conn.routeFailureCount == 0 &&
+                    Util.sameConnection(conn.route.getAddress().getUrl(), address.getUrl())) {
+                    return true
+                } else {
+                    return false
+                }
+            case None => return false
+        }
     }
 }
 
@@ -198,4 +287,9 @@ public class Exchange {
         cancel()
         transmitter.exchangeMessageDone(this, true, true)
     }
+
+    public func noNewExchangesOnConnection(): Unit {
+        codec.getConnection().noExchanges()
+    }
+
 }

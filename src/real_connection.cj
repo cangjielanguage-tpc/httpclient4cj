@@ -37,6 +37,8 @@ public class Connection {
 
     var successCount: Int64 = 0
 
+    var routeFailureCount: Int64 = 0
+
     /**
      * The Function is init constructor
      *
@@ -96,7 +98,7 @@ public class Connection {
      * @return Type of Route
      * @since 0.29.3
      */
-    public func getRoute(): Route{
+    public func getRoute(): Route {
         return route
     }
 
@@ -108,15 +110,53 @@ public class Connection {
      * @return Type of Bool
      * @since 0.29.3
      */
-    public func isEligible(address: Address): Bool {
+    func isEligible(address: Address, routeSelector: Option<RouteSelector>): Bool {
         if (transmitters.size() >= allocationLimit || noNewExchanges) {
+            return false
+        }
+
+        if (this.route.getAddress() != address) {
             return false
         }
 
         if (address.getUrl().host == route.getAddress().getUrl().host) {
             return true
         }
+        // HTTP/2.
+        match(h2conn) {
+            case Some(conn) => ()
+            case None => return false
+        }
+        //any same address
+        match (routeSelector) {
+            case Some(rs) =>
+                if(!routeMatchesAny(rs)) {
+                    return false
+                }
+                ()
+            case None => return false
+        }
+        return true
+    }
 
+    public func isHealthy(): Bool {
+        if(socket.getOrThrow().isClosed()) {
+            return false
+        }
+        match (h2conn) {
+            case Some(h2con) =>
+                return h2con.connState.value() == 0x3
+            case None => ()
+        }
+        return true
+    }
+
+    private func routeMatchesAny(routeSelector: RouteSelector): Bool {
+        for (select in routeSelector.getAll()) {
+            if(route.inetSocketAddress == select.inetSocketAddress) {
+                return true
+            }
+        }
         return false
     }
 
@@ -136,9 +176,36 @@ public class Connection {
      *
      * @since 0.29.3
      */
-    public func connect(connectTimeout: Option<Duration>) {
-        connectSocket(connectTimeout)
-        establishProtocol()
+    public func connect(connectTimeout: Option<Duration>, connectionRetryEnabled: Bool) {
+        while (true) {
+            try {
+                connectSocket(connectTimeout)
+                establishProtocol()
+                break
+            } catch(e : ConnectException) {
+                Util.closeQuietly(socket)
+                socket = None
+                h2conn = None
+                if (!connectionRetryEnabled || !connectionFailed(e)) {
+                    throw RouteException("${e.getMessage()}", e)
+                }
+            }
+
+        }
+        match(h2conn) {
+            case Some(h2) =>
+               synchronized (connectionPool.mutex) {
+                  allocationLimit = Int64(Int32.Max)
+               }
+            case None => ()
+        }
+    }
+
+    func connectionFailed(e: ConnectException): Bool {
+        match (e.contain) {
+            case timeout: SocketTimeoutException => return false
+            case _ => return e is TlsException
+        }
     }
 
     /*
@@ -147,28 +214,21 @@ public class Connection {
      * @since 0.29.3
      */
     private func connectSocket(connectTimeout: Option<Duration>) {
-        var port:UInt16 = 80
-        var url = route.getAddress().getUrl()
-        var host = url.hostname()
-        match(parseUInt16(url.port())){
-            case Some(v) => port = v
-            case None =>
-                if (url.toString().startsWith("https")) {
-                    port = 443
-                } else {
-                    port = 80
-                }
+        let socketAddress: SocketAddress =  route.inetSocketAddress
+        try {
+            let s = Socket(TCP, socketAddress.hostAddress, socketAddress.port)
+            match (connectTimeout) {
+                case Some(time) => s.connect(time)
+                case None => s.connect()
+            }
+            socket = Some(s)
+        } catch (e: SocketException){
+            throw ConnectException("Failed to connect to ${socketAddress}", e)
+        } catch (e1: SocketTimeoutException){
+            throw ConnectException("connect to ${socketAddress} time out", e1)
+        } catch (e2: TlsException) {
+            throw ConnectException("{e2.getMessage()}", e2)
         }
-
-        if(host.contains(":")) {
-            host =host.substring(0,host.indexOf(':').getOrThrow())
-        }
-        let s = Socket(TCP, host, port)
-        match (connectTimeout) {
-            case Some(time) => s.connect(time)
-            case None => s.connect()
-        }
-        socket = Some(s)
     }
 
     private func establishProtocol() {

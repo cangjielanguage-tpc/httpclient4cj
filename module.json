@@ -15,7 +15,12 @@
     "http2/http2_http": "./ci_lib/http2/http.cjo",
     "http2/http2_proto": "./ci_lib/http2/proto.cjo"
   },
-  "foreign_requires": {},
+  "foreign_requires": {
+    "dns": {
+      "path": "./lib/",
+      "export": []
+    }
+  },
   "output_type": "dynamic",
   "command_option": ""
 }

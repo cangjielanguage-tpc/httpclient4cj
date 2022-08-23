@@ -10,5 +10,5 @@ main() {
     .header("User-Agent", "OkHttp-Example")
     .build()
     let response: Response = client.newCall(request).execute()
-    println(String(toArray(response.getBody().getOrThrow().getSource().readToEnd())))
+    println(response.getMessage())
 }

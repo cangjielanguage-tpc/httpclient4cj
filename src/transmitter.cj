@@ -106,10 +106,14 @@ public class Transmitter {
      * @return Type of Unit
      * @since 0.29.3
      */
-    public func acquireConnectionNoEvents(connection: Connection): Unit {
+    public func acquireConnectionNoEvents(connection: Option<Connection>): Unit {
         synchronized (connectionPool.mutex) {
-            this.connection =  Option<Connection>.Some(connection)
-            connection.transmitters.append(this)
+            match (connection) {
+                case Some(conn) => ()
+                    this.connection =  conn
+                    conn.transmitters.append(this)
+                case None => throw HttpException("IllegalStateException")
+            }
         }
     }
 
@@ -124,7 +128,7 @@ public class Transmitter {
     public func prepareToConnect(request: Request): Unit {
         match (this.request) {
             case Some(r) =>
-                if (Util.sameConnection(r.getUrl(), request.getUrl())) {
+                if (Util.sameConnection(r.getUrl(), request.getUrl()) && exchangeFinder.getOrThrow().hasRouteToTry()) {
                     return ()
                 }
                 if (hasExchange()) {
@@ -175,7 +179,7 @@ public class Transmitter {
     }
 
     private func maybeReleaseConnection(force: Bool) {
-        var releasedConnection: Option<Connection>;
+        var releasedConnection: Option<Connection>
         var socket: Option<Socket>
         synchronized (connectionPool.mutex) {
             if(force && hasExchange()) {
@@ -248,5 +252,9 @@ public class Transmitter {
             maybeReleaseConnection(false)
         }
     }
-}
 
+    public func canRetry(): Bool {
+        let ex = exchangeFinder.getOrThrow()
+        return ex.getHasStreamFailure() && ex.hasRouteToTry()
+    }
+}

@@ -53,13 +53,26 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
                 throw Exception("Canceled")
             }
             var response: Response
+            var success: Bool = false
             try {
                 //invoke next interceptor
-               response =  chain.proceed(request, transmitter, Option<Exchange>.None)
-            } catch (e: Exception) {
+               response = chain.proceed(request, transmitter, Option<Exchange>.None)
+               success = true
+            } catch (e1: RouteException) {
                 //TODO confirm redirect condition
+                if (!recover(e1.getLastConnectException(), transmitter, false, request)) {
+                    throw e1.getFirstConnectException()
+                }
+                continue
+            } catch (e1: HttpException) {
+                if (!recover(e1, transmitter, !(e1 is H2ConnectionException), request)) {
+                    throw e1
+                }
+                continue
             } finally {
-
+                if (!success) {
+                    //transmitter.exchangeDoneDueToException();
+                }
             }
             match(priorResponse) {
                 case Some(resp) => response = response.newBuilder()
@@ -78,7 +91,7 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
             // TODO requestBody
             followUpCount++
             if (followUpCount > MAX_FOLLOW_UPS) {
-                throw Exception("Too many follow-up requests: ${followUpCount}");
+                throw ProtocolException("Too many follow-up requests: ${followUpCount}");
             }
             request = followUp.getOrThrow()
             priorResponse = Option<Response>.Some(response)
@@ -86,6 +99,28 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
         return Response.builder().build()
     }
 
+    private func recover(e: Exception, transmitter: Transmitter, requestSendStarted: Bool, userRequest: Request) {
+        if(!client.getRetryOnConnectionFailure()) {
+            return false
+        }
+        if (isRecoverable(e, requestSendStarted)) {
+            return false
+        }
+
+        if (!transmitter.canRetry()) {
+            return false
+        }
+        return true
+    }
+
+    private func isRecoverable(e: Exception, requestSendStarted: Bool): Bool {
+        match (e) {
+            case p: ProtocolException => return false
+            case timeOut: SocketTimeoutException => return !requestSendStarted
+            case tls: TlsException => return false
+            case _  => return true
+        }
+    }
 
     /*
      * The Function is followUpRequest
