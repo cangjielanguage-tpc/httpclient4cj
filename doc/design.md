@@ -13,7 +13,7 @@
  func build(): T
 ```
 
-###  class okhttpClinet
+###  class okhttpClient
 
 Call的工厂类，可用于发送 HTTP 请求并读取其响应，外观形式上等于http客户端，每个客户端都拥有自己的连接池和线程池。重用连接可减少延迟并节省内存。
 
@@ -45,9 +45,9 @@ public func getReadTimeout(): Option<Duration>
 public func getWriteTimeout(): Option<Duration>
 ```
 
-###  class okhttpClinetBuilder
+###  class okhttpClientBuilder
 
-用于创建okhttpClinet，用户通过链式调用配置其属性
+用于创建okhttpClient，用户通过链式调用配置其属性
 
 ```cangjie
 //创建 OkHttpClient
@@ -97,7 +97,7 @@ public func isCanceled(): Bool
 public func clone(): Call
 ```
 
-### class Dispather
+### class Dispatcher
 网络请求的执行器，可以定制发起异步请求的策略，以及同时运行异步请求的数量
 
 ```cangjie
@@ -172,8 +172,8 @@ public static func builder(): RequestBuilder
 public func newBuilder(): RequestBuilder
 //获取整个Header头
 public func getHeaders(): Header
-//获取Header中key对应的value,如果没有报错
-public func getHeader(name: String): String
+//获取Header中key对应的 Option<String>
+public func getHeader(name: String): Option<String>
 //获取Header中key对应的value,如果没有返回默认值
 public func getHeader(name: String, defaultValue: String): String
 //将其转换成仓颉http对应的Request对象
@@ -219,7 +219,7 @@ public func getCode(): Int64
 public func isSuccess(): Bool
 //获取整个Header头
 public func getHeaders(): Header
-//获取Header中key对应的value,如果没有报错
+//获取Header中key对应的value, Option<String>
 public func getHeader(name: String): String
 //获取Header中key对应的value,如果没有返回默认值
 public func getHeader(name: String, defaultValue: String): String

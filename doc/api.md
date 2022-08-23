@@ -25,7 +25,7 @@ public func cancel()
 public func executeOn(): Unit
 public func execute(): Unit
 ```
-#### calss ConnectInterceptor
+#### class ConnectInterceptor
 
 ```
 public init (client: OkHttpClient)

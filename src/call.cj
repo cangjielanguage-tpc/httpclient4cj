@@ -84,6 +84,7 @@ public interface Call {
  * @since 0.29.3
  */
 public class RealCall<: Call {
+    public var mutex: Monitor = Monitor()
     /** var member forWebSocket type is Bool */
     public var forWebSocket: Bool
     /** var member client type is OkHttpClient */
@@ -92,7 +93,7 @@ public class RealCall<: Call {
     public var originalRequest: Request
     /** var member transmitter type is Option<Transmitter> */
     public var transmitter: Option<Transmitter> = Option<Transmitter>.None
-    private var  executed: Bool = false
+    private var executed: Bool = false
 
     /*
      * The Function is init constructor
@@ -136,6 +137,12 @@ public class RealCall<: Call {
      * @since 0.29.3
      */
     public func execute(): Response {
+       synchronized (this.mutex) {
+         if (executed) {
+            throw HttpException("Already Executed")
+         }
+         executed = true;
+       }
        try {
            client.getDispatcher().executed(this)
            return getResponseWithInterceptorChain()
@@ -152,8 +159,10 @@ public class RealCall<: Call {
      * @since 0.29.3
      */
     public func enqueue(responseCallback: Callback):Unit {
-        if (executed) {
-            throw Exception("Already Executed")
+        synchronized (this.mutex) {
+            if (executed) {
+                throw HttpException("Already Executed")
+            }
         }
         executed = true;
         client.getDispatcher().enqueue(AsyncCall(responseCallback, this))
@@ -176,7 +185,7 @@ public class RealCall<: Call {
      * @since 0.29.3
      */
     public func isExecuted(): Bool {
-        return false
+        return executed
     }
     /**
      * The Function is isCanceled
@@ -185,7 +194,7 @@ public class RealCall<: Call {
      * @since 0.29.3
      */
     public func isCanceled(): Bool {
-        return false
+        return getTransmitter().isCanceled()
     }
     /**
      * The Function is timeout
