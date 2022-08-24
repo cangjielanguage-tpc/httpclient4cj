@@ -25,20 +25,6 @@ interface CallFactory {
      func newCall(request: Request): Call
 }
 
-/*
- * http://user:pass@www.example.com:80/dir/index.html?uid=1#ch1
- *
- * client: OkHttpClient= OkHttpClient.builder()
- *     .addInterceptor(HttpLoggingInterceptor())
- *     .build()
- * request: Request = Request.builder()
- *   .url("http://www.publicobject.com/helloworld.txt")
- *   .header("User-Agent", "OkHttp Example")
- *   .build()
- * response: Response = client.newCall(request).execute()
- * response.body().close()
- */
-
 /**
  * The class is OkHttpClient
  * @author guo_tingtingtekla,luoyukai4

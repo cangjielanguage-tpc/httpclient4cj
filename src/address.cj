@@ -7,6 +7,7 @@
  * The file declars the Address class.
  */
 package okhttp
+from std import socket.*
 
 /**
  * The class is Address
