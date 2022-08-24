@@ -71,7 +71,7 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
                 continue
             } finally {
                 if (!success) {
-                    //transmitter.exchangeDoneDueToException();
+                    transmitter.exchangeDoneDueToException();
                 }
             }
             match(priorResponse) {
