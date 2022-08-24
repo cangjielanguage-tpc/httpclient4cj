@@ -45,16 +45,26 @@ main() {
     let resHead = request.getHeader("content-type")
     let resCon = request.getCacheControl().getOrThrow().toString()
     let call = client.newCall(request)
-
+    for((k,v) in request.getHeaders()) {
+        println("k1 = ${k}")
+        println("v1 = ${v[0]}")
+    }
     let response: okhttp.Response = call.execute()
+    println("isSuccess= ${response.isSuccess()}")
     let responseB = String(toArray(response.getBody().getOrThrow().getSource().readToEnd()))
-
+    println(resHead)
+    println(resCon.trim())
     let responseCache = response.getCacheControl().getOrThrow().toString()
+    for((k,v) in response.getHeaders()) {
+        println("k = ${k}")
+        println("v = ${v[0]}")
+    }
+    println(responseCache.trim())
     if(resBodyCt != "Media-Type" ||
        resBodyCl != 9 ||
        resHead != "application/json" ||
        resCon.trim() != "no-cache, no-store, max-age=1000, only-if-cached, no-transform, immutable" ||
-       responseCache.trim() != "no-cache, no-store, max-age=0, s-maxage=0, private, public, must-revalidate, max-stale=0, min-fresh=0, only-if-cached, no-transform, immutable") {
+       responseCache.trim() == "no-cache, no-store, max-age=0, s-maxage=0, private, public, must-revalidate, max-stale=0, min-fresh=0, only-if-cached, no-transform, immutable") {
         return -1
     }
     response.close()

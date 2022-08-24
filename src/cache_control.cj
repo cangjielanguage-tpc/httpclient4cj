@@ -58,7 +58,20 @@ public class CacheControl {
     private var noTransformInit: Bool = true
     
     private var immutableInit: Bool = true
-    
+
+    private static let NO_CACHE: String = "no-cache"
+    private static let NO_STORE: String = "no-store"
+    private static let MAX_AGE: String = "max-age"
+    private static let S_MAXAGE: String = "s-maxage"
+    private static let PUBLIC: String = "public"
+    private static let PRIVATE: String = "private"
+    private static let MUST_REVALIDATE: String = "must-revalidate"
+    private static let MAX_STALE: String = "max-stale"
+    private static let MIN_FRESH: String = "min-fresh"
+    private static let ONLY_IF_CACHED: String = "only-if-cached"
+    private static let NO_TRANSFORM: String = "no-transform"
+    private static let IMMUTABLE: String = "immutable"
+
     // Lazily computed, null if absent
     var headerValue: String = ""
 
@@ -247,27 +260,43 @@ public class CacheControl {
      * @since 0.30.4
      */
     public static func parse(header: Header): CacheControl {
-        var noCache: Bool = true;var noStore: Bool = true;var maxAgeSeconds: Int32 = 0
-        var sMaxAgeSeconds: Int32 = 0; var isPrivate: Bool = true; var isPublic: Bool = true
-        var mustRevalidate: Bool = true; var maxStaleSeconds: Int32 = 0;
-        var minFreshSeconds: Int32 = 0; var onlyIfCached: Bool = true; var noTransform: Bool = true;
-        var immutable: Bool = true; var canUseHeaderValue: Bool = true; var headerValue: String = ""
+        let map: HashMap<String,String> =  HashMap<String,String>()
+        map.put(NO_CACHE, "false")
+        map.put(NO_STORE, "false")
+        map.put(MAX_AGE, "-1")
+        map.put(S_MAXAGE, "-1")
+        map.put(PUBLIC, "false")
+        map.put(PRIVATE, "false")
+        map.put(MUST_REVALIDATE, "false")
+        map.put(MAX_STALE, "-1")
+        map.put(MIN_FRESH, "-1")
+        map.put(ONLY_IF_CACHED, "false")
+        map.put(NO_TRANSFORM, "false")
+        map.put(IMMUTABLE, "false")
+        let headerValue: String = parseNameValues(header, map)
+        println("headerValue= ${headerValue}")
+        return CacheControl(Bool.parse(map[NO_CACHE]), Bool.parse(map[NO_STORE]), Int32.parse(map[MAX_AGE]),
+            Int32.parse(map[S_MAXAGE]), Bool.parse(map[PRIVATE]), Bool.parse(map[PUBLIC]),
+            Bool.parse(map[MUST_REVALIDATE]), Int32.parse(map[MAX_STALE]), Int32.parse(map[MIN_FRESH]),
+            Bool.parse(map[ONLY_IF_CACHED]), Bool.parse(map[NO_TRANSFORM]), Bool.parse(map[IMMUTABLE]),
+            headerValue.trim())
+    }
 
+    private static func parseNameValues(header: Header, map: HashMap<String,String>): String {
         let headers: ArrayList<String> = makeNameValues(header)
+        var headerValue: String = ""; var canUseHeaderValue: Bool = true
         var index: Int64 = 0
         for(i in 0..headers.size()/2) {
-            index++  
+            index++
             let name: String = headers[i * 2]
-            let value: String = headers[i * 2 + 1]  
+            let value: String = headers[i * 2 + 1]
             if (name.toLower().equals("cache-control")) {
                 if (!headerValue.isEmpty()) {
-                    // Multiple cache-control headers means we can't use the raw value.
                     canUseHeaderValue = false
                 } else {
                     headerValue = value
                 }
             } else if (name.toLower().equals("pragma")) {
-                // Might specify additional cache-control params. We invalidate just in case.
                 canUseHeaderValue = false
             } else {
                 continue
@@ -284,43 +313,43 @@ public class CacheControl {
                 } else {
                     pos++ // consume '='
                     pos = Int64(Util.skipWhitespace(value, Int32(pos)))
-                    // quoted string
                     if (pos < value.size() && value.charAt(pos) == '\"') {
                         pos++ // consume '"' open quote
                         let parameterStart: Int64 = pos
                         pos = Int64(Util.skipUntil(value, Int32(pos), "\""))
                         parameter = value.substring(parameterStart, pos - parameterStart)
                         pos++ // consume '"' close quote (if necessary)
-                        // unquoted string
                     } else {
-                        let parameterStart: Int64 = pos   
+                        let parameterStart: Int64 = pos
                         pos = Int64(Util.skipUntil(value, Int32(pos), ",;"))
                         parameter = value.substring(parameterStart, pos - parameterStart).trim()
                     }
                 }
-                match (directive.toLower()) {
-                    case "no-cache" => noCache = true
-                    case "no-store" => noStore = true
-                    case "max-age" => maxAgeSeconds = Util.parseSeconds(parameter, -1)
-                    case "s-maxage" => Util.parseSeconds(parameter, -1)
-                    case "private" =>  isPrivate = true
-                    case "public" => isPublic = true
-                    case "must-revalidate" => mustRevalidate = true
-                    case "max-stale" =>  maxStaleSeconds = Util.parseSeconds(parameter, Int32.Max)
-                    case "min-fresh" => minFreshSeconds = Util.parseSeconds(parameter, -1)
-                    case "only-if-cached" =>  onlyIfCached = true
-                    case "no-transform" => noTransform = true
-                    case "immutable" => immutable = true
-                    case _ => ()
-                }
+               parseDirective(directive, map, parameter)
+               if (!canUseHeaderValue) {
+                   headerValue = ""
+               }
             }
         }
-        if (!canUseHeaderValue) {
-            headerValue = ""
+        return headerValue
+    }
+
+    private static func parseDirective (directive: String, map: HashMap<String,String>, parameter: String): Unit {
+        match (directive.toLower()) {
+            case "no-cache" => map.put(NO_CACHE, "true")
+            case "no-store" => map.put(NO_STORE, "true")
+            case "max-age" => map.put(MAX_AGE, "${Util.parseSeconds(parameter, -1)}")
+            case "s-maxage" => map.put(S_MAXAGE, "${Util.parseSeconds(parameter, -1)}")
+            case "public" =>  map.put(PUBLIC, "true")
+            case "private" => map.put(PRIVATE, "true")
+            case "must-revalidate" => map.put(MUST_REVALIDATE, "true")
+            case "max-stale" =>  map.put(MAX_STALE, "${Util.parseSeconds(parameter, Int32.Max)}")
+            case "min-fresh" => map.put(MIN_FRESH, "${Util.parseSeconds(parameter, -1)}")
+            case "only-if-cached" => map.put(ONLY_IF_CACHED, "true")
+            case "no-transform" => map.put(NO_TRANSFORM, "true")
+            case "immutable" => map.put(IMMUTABLE, "true")
+            case _ => ()
         }
-        return CacheControl(noCache, noStore, maxAgeSeconds, sMaxAgeSeconds, isPrivate, isPublic,
-        mustRevalidate, maxStaleSeconds, minFreshSeconds, onlyIfCached, noTransform, immutable,
-        headerValue.trim())
     }
 
     /**
@@ -335,7 +364,7 @@ public class CacheControl {
            return result 
         } else { 
             headerValue = headerValueFunc()
-            return  headerValue
+            return headerValue
         }    
     }
 

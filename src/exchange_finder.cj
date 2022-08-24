@@ -95,44 +95,10 @@ public class ExchangeFinder {
      * @since 0.29.3
      */
     private func findConnection(connectTimeout:Option<Duration>, connectionRetryEnabled: Bool): Connection {
-        var toClose: Option<Socket>
-        var result: Option<Connection> = Option<Connection>.None
-        var selectedRoute: Option<Route> = None
-        synchronized (connectionPool.mutex) {
-            if (transmitter.isCanceled()) {
-                throw Exception("Transmitter has Canceled")
-            }
-            hasStreamFailure = false
-            match(transmitter.connection) {
-                case Some(conn) =>
-                    result = transmitter.connection
-                    if (conn.noNewExchanges) {
-                        toClose = transmitter.releaseConnectionNoEvents()
-                    } else {
-                        toClose = Option<Socket>.None
-                    }
-                case _ =>
-                    toClose = Option<Socket>.None
-            }
-            //Attempt to get a connection from the pool first time .
-             match (result) {
-                case Some(r) => ()
-                case None =>
-                    if (connectionPool.transmitterAcquirePooledConnection(address, transmitter, Option<RouteSelector>.None)){
-                        result = transmitter.connection
-                    } else {
-                        match(nextRouteToTry) {
-                            case Some(route) =>
-                                selectedRoute = route
-                                nextRouteToTry = None
-                            case None =>
-                                if (retryCurrentRoute()) {
-                                    selectedRoute = transmitter.connection.getOrThrow().route
-                                }
-                        }
-                    }
-             }
-        }
+        let tuple: (Option<Socket>,Option<Connection>,Option<Route>) = firstGetConn();
+        var toClose: Option<Socket> = tuple[0]
+        var result: Option<Connection> = tuple[1]
+        var selectedRoute: Option<Route> = tuple[2]
         Util.closeQuietly(toClose)
         match (result) {
             case Some(r) => return r
@@ -177,6 +143,49 @@ public class ExchangeFinder {
         Util.closeQuietly(socket)
         return result.getOrThrow()
     }
+
+    func firstGetConn(): (Option<Socket>,Option<Connection>,Option<Route>){
+        var toClose: Option<Socket>
+        var result: Option<Connection> = Option<Connection>.None
+        var selectedRoute: Option<Route> = None
+        synchronized (connectionPool.mutex) {
+            if (transmitter.isCanceled()) {
+                throw Exception("Transmitter has Canceled")
+            }
+            hasStreamFailure = false
+            match(transmitter.connection) {
+                case Some(conn) =>
+                    result = transmitter.connection
+                    if (conn.noNewExchanges) {
+                        toClose = transmitter.releaseConnectionNoEvents()
+                    } else {
+                        toClose = Option<Socket>.None
+                    }
+                case _ =>
+                    toClose = Option<Socket>.None
+            }
+            //Attempt to get a connection from the pool first time .
+             match (result) {
+                case Some(r) => ()
+                case None =>
+                    if (connectionPool.transmitterAcquirePooledConnection(address, transmitter, Option<RouteSelector>.None)){
+                        result = transmitter.connection
+                    } else {
+                        match(nextRouteToTry) {
+                            case Some(route) =>
+                                selectedRoute = route
+                                nextRouteToTry = None
+                            case None =>
+                                if (retryCurrentRoute()) {
+                                    selectedRoute = transmitter.connection.getOrThrow().route
+                                }
+                        }
+                    }
+             }
+        }
+        return (toClose, result, selectedRoute)
+    }
+
     func getHasStreamFailure(): Bool {
         synchronized (connectionPool.mutex) {
           return hasStreamFailure

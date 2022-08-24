@@ -253,6 +253,15 @@ public class Transmitter {
         }
     }
 
+     public func exchangeDoneDueToException(): Unit {
+        synchronized (connectionPool.mutex) {
+          if (noExchanges) {
+             throw HttpException("IllegalStateException");
+          }
+          exchange = None
+        }
+    }
+
     public func canRetry(): Bool {
         let ex = exchangeFinder.getOrThrow()
         return ex.getHasStreamFailure() && ex.hasRouteToTry()

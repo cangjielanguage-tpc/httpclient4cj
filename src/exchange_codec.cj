@@ -328,14 +328,13 @@ public class Http1ExchangeCodec<: ExchangeCodec{
                     case None => throw ProtocolException("statusCode is invalid: ${itemStr}")
                 }
             }
-            responseBuilder.protocol(Protocol.get(proto))
-            .code(statusCode)
-
+            responseBuilder.protocol(Protocol.get(proto)).code(statusCode)
         }
         doLoopHeader(responseBuilder)
         res = responseBuilder
         return responseBuilder
     }
+
     private func doLoopHeader(responseBuilder: ResponseBuilder) {
         while (true) {
             match (indexOf(this.allBuf.bytes(),CRLF, start: this.parsedIndex)) {
