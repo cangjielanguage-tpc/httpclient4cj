@@ -18,7 +18,9 @@ main (){
 
     var res = CacheControl.parse(m)
 
-    println(res.toString())
+    if(res.toString() != "no-cache, no-store, max-age=0, s-maxage=7200, private, public, must-revalidate, max-stale=0, min-fresh=0, only-if-cached, no-transform, immutable") {
+        return -1
+    }
     
     return 0
 }

@@ -320,7 +320,7 @@ public class CacheControl {
         }
         return CacheControl(noCache, noStore, maxAgeSeconds, sMaxAgeSeconds, isPrivate, isPublic,
         mustRevalidate, maxStaleSeconds, minFreshSeconds, onlyIfCached, noTransform, immutable,
-        headerValue)
+        headerValue.trim())
     }
 
     /**
@@ -355,7 +355,7 @@ public class CacheControl {
         if (immutableInit) { result.append("immutable, ") }
         if (result.size() == 0) { return "" }
         result.remove(result.size() - 2, 1)
-        return result.toString()
+        return result.toString().trim()
     }
 }
 
