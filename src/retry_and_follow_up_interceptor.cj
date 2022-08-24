@@ -250,8 +250,6 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
         if (header == "") {
           return defaultDelay;
         }
-
-        // https://tools.ietf.org/html/rfc7231#section-7.1.3
         // currently ignores a HTTP-date, and assumes any non int 0 is a delay
         match (parseInt64(header)) {
             case Some(delay) => return delay
