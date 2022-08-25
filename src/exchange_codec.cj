@@ -281,8 +281,7 @@ public class Http1ExchangeCodec<: ExchangeCodec{
      * @since 0.29.3
      */
     private func parseHead(): ResponseBuilder {
-        let responseBuilder: ResponseBuilder  = ResponseBuilder()
-        var statusCode: Int64 = 200
+        let responseBuilder: ResponseBuilder  = ResponseBuilder(); var statusCode: Int64 = 200
         if (this.parsedIndex == 0) {
             var crlfIndex = match(indexOf(this.allBuf.bytes(), CRLF, start: 0)) {
                 case Some(i) =>
@@ -299,7 +298,7 @@ public class Http1ExchangeCodec<: ExchangeCodec{
                 case Some(i) => i
                 case None => throw ProtocolException("header data is invalid: ")
             }
-            var proto = String.fromUtf8(this.allBuf.bytes().slice(0, protoEndIndex), isAscii: true)
+            var proto = bufSlice(0, protoEndIndex)
             if (!proto.startsWith("HTTP/1.")) {
                 if((proto == "ICY ")) {
                    proto = "http/1.0"
@@ -311,18 +310,15 @@ public class Http1ExchangeCodec<: ExchangeCodec{
                 case Some(i) => i
                 case None => throw ProtocolException("header data is invalid: ")
             }
-            let status = String.fromUtf8(this.allBuf.bytes().slice(protoEndIndex+1,
-                            crlfIndex - protoEndIndex - 1), isAscii: true)
-            responseBuilder.message(String.fromUtf8(this.allBuf.bytes().slice(messageIndex+1,
-                            crlfIndex- messageIndex-1), isAscii: true))
+            let status = bufSlice(protoEndIndex+1, crlfIndex - protoEndIndex - 1)
+            responseBuilder.message(bufSlice(messageIndex+1, crlfIndex- messageIndex-1))
             if (statusCodeEndIndex > crlfIndex) {
                 statusCode = match (parseInt64(status)) {
                     case Some(x) => x
                     case None => throw ProtocolException("statusCode is invalid: ${status}")
                 }
             } else {
-                var itemStr = String.fromUtf8(this.allBuf.bytes().slice(protoEndIndex + 1,
-                    statusCodeEndIndex - protoEndIndex - 1), isAscii: true)
+                var itemStr = bufSlice(protoEndIndex + 1, statusCodeEndIndex - protoEndIndex - 1)
                 statusCode = match (parseInt64(itemStr)) {
                     case Some (x) => x
                     case None => throw ProtocolException("statusCode is invalid: ${itemStr}")
@@ -333,6 +329,10 @@ public class Http1ExchangeCodec<: ExchangeCodec{
         doLoopHeader(responseBuilder)
         res = responseBuilder
         return responseBuilder
+    }
+
+    private func bufSlice(start: Int64, end: Int64): String {
+        return String.fromUtf8(this.allBuf.bytes().slice(start, end), isAscii: true)
     }
 
     private func doLoopHeader(responseBuilder: ResponseBuilder) {
