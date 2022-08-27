@@ -32,6 +32,12 @@ public class Address <: Hashable & Equatable<Address>{
         this.tlsConfig = tlsConfig
     }
 
+    public init (url: URL, protocols: ArrayList<String>) {
+        this.url = url
+        this.protocols = protocols
+        this.tlsConfig = None
+    }
+
     /**
      * The Function is getUrl
      *

@@ -32,11 +32,6 @@ class MyInterceptor<: Interceptor {
         poor.connectionCount()
         poor.idleConnectionCount()
         poor.evictAll()
-        tr.acquireConnectionNoEvents(chain.getConnection().getOrThrow())
-        tr.releaseConnectionNoEvents()
-         println("tr=======")
-
-        println("tr=======")
         return respB.build()
     }
 }

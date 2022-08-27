@@ -147,8 +147,19 @@ public open class ResponseBuilder <: Builder<Response> {
      * @since 0.29.3
      */
     public func prevResponse(prevResponse: Option<Response>): ResponseBuilder {
+       match (prevResponse) {
+           case Some(resp) => checkPrevResponse(resp)
+           case None => ()
+       }
        this.prevResponseBuild = prevResponse
        return this
+    }
+
+    private func checkPrevResponse(response: Response): Unit {
+        match (response.getBody()) {
+            case Some(b) => throw IllegalArgumentException("prevResponse.body != None")
+            case None => ()
+        }
     }
 
     /**

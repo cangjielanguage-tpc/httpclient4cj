@@ -17,13 +17,13 @@ from http2 import proto.*
  */
 public class Connection {
     /* var member connectionPool type is ConnectionPool */
-    private var connectionPool: ConnectionPool
+    private let connectionPool: ConnectionPool
     /* var member transmitters type is ArrayList<Transmitter> */
     var transmitters: ArrayList<Transmitter> = ArrayList<Transmitter>()
     /* var member socket type is Option<Socket> */
     var socket: Option<Socket> = Option<Socket>.None
     /* var member route type is Route */
-    var route: Route
+    let route: Route
     /*If true, no new exchanges can be created on this connection.*/
     var noNewExchanges: Bool = false
 
@@ -166,9 +166,11 @@ public class Connection {
      * @return Type of Bool
      * @since 0.29.3
      */
-    public func isMultiplexed(): Bool{
-        // TODO
-        return false
+    public func isMultiplexed(): Bool {
+        match (h2conn) {
+            case Some(v) => return true
+            case None => return false
+        }
     }
 
     /**
@@ -260,7 +262,7 @@ public class Connection {
      * @return Type of ExchangeCodec
      * @since 0.29.3
      */
-    public func newCodec(client: OkHttpClient, chain: Chain): ExchangeCodec {
+    func newCodec(client: OkHttpClient, chain: Chain): ExchangeCodec {
         match (h2conn) {
             case None => Http1ExchangeCodec(client, this,  client.getReadTimeout(), client.getWriteTimeout())
             case Some(conn) => Http2ExchangeCodec(this, conn)

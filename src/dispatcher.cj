@@ -14,7 +14,7 @@ package okhttp
  * @author guo_tingtingtekla,luoyukai4
  * @since 0.29.3
  */
-public class Dispatcher{
+public class Dispatcher {
     /** var member mutex type is Monitor */
     public  var mutex: Monitor = Monitor()
     /* var member maxRequests type is Int64 */
@@ -289,7 +289,7 @@ public class Dispatcher{
      *
      * @since 0.30.4
      */
-    public func queuedCallsCount() {
+    public func queuedCallsCount(): Int64 {
         synchronized(mutex) {
             return readyAsyncCalls.size()
         }

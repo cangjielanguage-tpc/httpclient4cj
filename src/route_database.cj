@@ -8,7 +8,7 @@
  */
 package okhttp
 
-public class RouteDatabase {
+class RouteDatabase {
     public var mutex: Monitor = Monitor()
     private let failedRoutes: HashSet<Route> = HashSet<Route>()
 
