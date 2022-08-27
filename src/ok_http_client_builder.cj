@@ -23,7 +23,7 @@ public class OkHttpClientBuilder <: Builder<OkHttpClient> {
     /* var member networkInterceptorsBuild type is ArrayList<Interceptor> */
     var networkInterceptorsBuild: ArrayList<Interceptor> = ArrayList<Interceptor>()
     /* var member followRedirectsBuild type is Bool */
-    var followRedirectsBuild: Bool = false
+    var followRedirectsBuild: Bool = true
     /* var member retryOnConnectionFailureBuild type is Bool */
     var retryOnConnectionFailureBuild: Bool = true
     /* var member connectionPoolBuild type is Option<ConnectionPool> */
@@ -132,7 +132,7 @@ public class OkHttpClientBuilder <: Builder<OkHttpClient> {
      * @return Type of OkHttpClientBuilder
      * @since 0.29.3
      */
-    public func cookieJar(cookieJar: CookieJar): OkHttpClientBuilder {
+    func cookieJar(cookieJar: CookieJar): OkHttpClientBuilder {
         this.cookieJarBuild = cookieJar
         return this
     }

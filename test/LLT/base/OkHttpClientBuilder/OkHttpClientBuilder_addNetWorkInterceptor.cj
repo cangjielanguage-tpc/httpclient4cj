@@ -9,7 +9,6 @@ main (){
     .followRedirects(true)
     .retryOnConnectionFailure(true)
     .connectionPool(Option<ConnectionPool>.None)
-    .cookieJar(CookieJar())
     .build()
 
     if (client.getFollowRedirects() == true && client.getRetryOnConnectionFailure() == true) {

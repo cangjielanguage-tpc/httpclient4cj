@@ -58,8 +58,29 @@ public class Transmitter {
      *
      * @since 0.29.3
      */
-    public func cancel() {
-        canceled = true
+    public func cancel(): Unit {
+        let exchangeToCancel: Option<Exchange>
+        let connectionToCancel: Option<Connection>
+        synchronized (connectionPool.mutex) {
+            canceled = true
+            exchangeToCancel = exchange
+            connectionToCancel = match (exchangeFinder) {
+                case Some(find) =>
+                    match (find.getConnectingConnection()) {
+                        case Some(conn) => Option<Connection>.Some(conn)
+                        case None => this.connection
+                    }
+                case None => this.connection
+            }
+        }
+        match(exchangeToCancel) {
+            case Some(cancelEx) => cancelEx.cancel()
+            case None =>
+                match (connectionToCancel) {
+                    case Some(cancelConn) => cancelConn.cancel()
+                    case None => ()
+                }
+        }
     }
 
     /**
@@ -67,8 +88,10 @@ public class Transmitter {
      *
      * @since 0.29.3
      */
-    public func isCanceled() {
-        return canceled
+    public func isCanceled(): Bool {
+        synchronized (connectionPool.mutex) {
+            return canceled
+        }
     }
 
     /**
@@ -77,7 +100,7 @@ public class Transmitter {
      * @return Type of Option<Socket>
      * @since 0.29.3
      */
-    public func releaseConnectionNoEvents(): Option<Socket> {
+     func releaseConnectionNoEvents(): Option<Socket> {
         let conn = connection.getOrThrow()
         let arr = conn.getTransmitters()
         for (index in 0..arr.size()) {
@@ -106,7 +129,7 @@ public class Transmitter {
      * @return Type of Unit
      * @since 0.29.3
      */
-    public func acquireConnectionNoEvents(connection: Option<Connection>): Unit {
+     func acquireConnectionNoEvents(connection: Option<Connection>): Unit {
         synchronized (connectionPool.mutex) {
             match (connection) {
                 case Some(conn) => ()
@@ -161,7 +184,7 @@ public class Transmitter {
      * @return Type of Exchange
      * @since 0.29.3
      */
-    public func newExchange(chain: Chain, doExtensiveHealthChecks: Bool): Exchange {
+     func newExchange(chain: Chain, doExtensiveHealthChecks: Bool): Exchange {
         let finder: ExchangeFinder = exchangeFinder.getOrThrow()
         let exchangeCodec: ExchangeCodec = finder.find(client, chain, doExtensiveHealthChecks)
         let result: Exchange = Exchange(this, call, finder, exchangeCodec)
@@ -204,7 +227,7 @@ public class Transmitter {
        }
     }
 
-    public func hasConnection() {
+    public func hasConnection(): Bool {
         synchronized (connectionPool.mutex){
             return match (this.connection) {
                case Some(conn) => true
@@ -213,7 +236,7 @@ public class Transmitter {
        }
     }
 
-    public func hasExchange() {
+    public func hasExchange(): Bool {
         synchronized (connectionPool.mutex) {
             return match (exchange) {
                case Some(e) => return true

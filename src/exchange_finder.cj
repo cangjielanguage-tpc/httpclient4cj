@@ -26,7 +26,7 @@ public class ExchangeFinder {
     /* var member routeSelector type is RouteSelector */
     private var routeSelector: RouteSelector
     /* var member connectingConnection type is Option<Connection> */
-    private var connectingConnection:Option<Connection> = None
+    private var connectingConnection: Option<Connection> = None
     private var hasStreamFailure: Bool = false
     private var nextRouteToTry: Option<Route> = None
 
@@ -61,8 +61,16 @@ public class ExchangeFinder {
     public func find(client: OkHttpClient, chain: Chain, doExtensiveHealthChecks: Bool): ExchangeCodec {
         let connectTimeout: Option<Duration> = client.getConnectTimeout()
         let connectionRetryEnabled: Bool = client.getRetryOnConnectionFailure()
-        let conn = findHealthyConnection(connectTimeout, connectionRetryEnabled)
-        return conn.getOrThrow().newCodec(client, chain)
+        try {
+            let conn = findHealthyConnection(connectTimeout, connectionRetryEnabled)
+            return conn.getOrThrow().newCodec(client, chain)
+        } catch (e: RouteException) {
+            trackFailure()
+            throw e
+        } catch(e1: ConnectException) {
+            trackFailure()
+            throw RouteException(e1.getMessage(), e1)
+        }
     }
 
     /*
@@ -190,7 +198,11 @@ public class ExchangeFinder {
         synchronized (connectionPool.mutex) {
           return hasStreamFailure
         }
-      }
+    }
+
+    func getConnectingConnection(): Option<Connection>  {
+        return connectingConnection
+    }
 
     func hasRouteToTry(): Bool {
         synchronized(connectionPool.mutex) {
@@ -217,6 +229,11 @@ public class ExchangeFinder {
                 }
             case None => return false
         }
+    }
+    func trackFailure() {
+       synchronized (connectionPool.mutex) {
+             hasStreamFailure = true
+       }
     }
 }
 
