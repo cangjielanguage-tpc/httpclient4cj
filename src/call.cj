@@ -355,8 +355,9 @@ public class AsyncCall {
             signalledCallback = true
             responseCallback.onResponse(realCall, response)
         } catch(e : Exception) {
+            cancel()
             if (!signalledCallback) {
-                responseCallback.onFailure(realCall, e);
+                responseCallback.onFailure(realCall, e)
             }
         } finally {
            realCall.client.getDispatcher().finished(this)

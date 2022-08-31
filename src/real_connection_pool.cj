@@ -171,7 +171,7 @@ public class ConnectionPool {
     }
 
     func cleanup(): Int64{
-        var longestIdleDurationNs: Duration = Duration.nanosecond(0x7fffffffffffffff)
+        var longestIdleDurationNs: Duration = Duration.nanosecond(0)
         var idleConnectionCount = 0
         var longestIdleConnection: Option<Connection> = None
         synchronized (this.mutex) {
@@ -181,6 +181,7 @@ public class ConnectionPool {
                 match (it.next()) {
                     case Some(conn) =>
                         let idleDurationNs: Duration = Time.now() - conn.idleAtNanos
+                        idleConnectionCount++
                         if (idleDurationNs > longestIdleDurationNs) {
                             longestIdleDurationNs = idleDurationNs
                             longestIdleConnection = conn
@@ -188,7 +189,7 @@ public class ConnectionPool {
                         // weather the connection is ready to be evicted
                         if (longestIdleDurationNs >= keepAliveDurationNs ||
                             idleConnectionCount > this.maxIdleConnections) {
-                            connections.remove(index);
+                            connections.remove(index)
                         } else if (idleConnectionCount > 0) {
                              // wait for next time
                              return (keepAliveDurationNs - longestIdleDurationNs).nanoseconds()

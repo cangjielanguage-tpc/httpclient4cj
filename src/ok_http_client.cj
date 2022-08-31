@@ -8,22 +8,6 @@
  */
 package okhttp
 
-/*
- * The interface is CallFactory
- * @author guo_tingtingtekla,luoyukai4
- * @since 0.29.3
- */
-interface CallFactory {
-     /*
-      * The Function is newCall
-      *
-      * @param request of Request
-      *
-      * @return Type of Call
-      * @since 0.29.3
-      */
-     func newCall(request: Request): Call
-}
 
 /**
  * The class is OkHttpClient

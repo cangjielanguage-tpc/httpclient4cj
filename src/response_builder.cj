@@ -28,6 +28,7 @@ public open class ResponseBuilder <: Builder<Response> {
     var bodyBuild: Option<ResponseBody> = Option<ResponseBody>.None
     /* var member prevResponseBuild type is Option<Response> */
     var prevResponseBuild: Option<Response> =  Option<Response>.None
+    var exchange: Option<Exchange> = None
 
     /**
      * The Function is init constructor
@@ -49,6 +50,7 @@ public open class ResponseBuilder <: Builder<Response> {
         this.messageBuild = response.getMessage()
         this.headerBuild = response.getHeaders()
         this.bodyBuild = response.getBody()
+        this.exchange = response.exchange
     }
 
     /**
@@ -195,6 +197,10 @@ public open class ResponseBuilder <: Builder<Response> {
      */
     public func build(): Response {
         return Response(this)
+    }
+
+    func initExchange(deferredTrailers: Exchange): Unit {
+         this.exchange = Option<Exchange>.Some(deferredTrailers)
     }
 }
 

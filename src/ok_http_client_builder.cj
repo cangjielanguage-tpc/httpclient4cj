@@ -30,9 +30,9 @@ public class OkHttpClientBuilder <: Builder<OkHttpClient> {
     var connectionPoolBuild: Option<ConnectionPool> = Option<ConnectionPool>.None
     /* var member cookieJarBuild type is CookieJar */
     var cookieJarBuild: CookieJar = CookieJar()
-    var connectTimeoutBuild: Option<Duration> = Option<Duration>.None
-    var readTimeoutBuild: Option<Duration> = Option<Duration>.None
-    var writeTimeoutBuild: Option<Duration> = Option<Duration>.None
+    var connectTimeoutBuild: Option<Duration> = Option<Duration>.Some(Duration.millisecond(10000))
+    var readTimeoutBuild: Option<Duration> = Option<Duration>.Some(Duration.millisecond(10000))
+    var writeTimeoutBuild: Option<Duration> = Option<Duration>.Some(Duration.millisecond(10000))
     var tlsConfigBuild: Option<TlsClientConfig> = None
     var protocolsBuild: ArrayList<String> = ArrayList<String>([Protocol.get("HTTP/1.1").toString()])
 

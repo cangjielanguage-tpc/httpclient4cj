@@ -49,6 +49,13 @@ public class Transmitter {
      */
     public init (client: OkHttpClient, call: Call) {
         this.client = client
+        match (client.getConnectionPool()) {
+            case Some(pool) => this.connectionPool = pool
+            case None =>
+                let pool = ConnectionPool()
+                this.connectionPool =  pool
+                client.connectionPool = pool
+        }
         this.connectionPool = client.getConnectionPool() ?? ConnectionPool()
         this.call = call
     }

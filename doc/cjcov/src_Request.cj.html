@@ -275,7 +275,7 @@ pre
         <table cellpadding="1" border="0" width="100%">
           <tr>
             <td class="headerName">File:</td>
-            <td class="headerValue">src/Request.cj</td>
+            <td class="headerValue">src/request.cj</td>
             <td width="5%"></td>
             <td width="15%"></td>
             <td width="10%" class="headerValue" style="text-align:right;">Hit</td>
@@ -284,12 +284,12 @@ pre
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2022-07-29 20:31:06</td>
+            <td class="headerValue">2022-08-31 19:23:42</td>
             <td></td>
             <td class="headerName">Lines:</td>
-            <td class="headerTableEntry">33</td>
-            <td class="headerTableEntry">35</td>
-            <td class="headerTableEntry" style="background-color:LightGreen">94.0 %</td>
+            <td class="headerTableEntry">34</td>
+            <td class="headerTableEntry">34</td>
+            <td class="headerTableEntry" style="background-color:LightGreen">100.0 %</td>
           </tr>
           <tr>
             <td class="headerName">Legend:</td>
@@ -983,14 +983,14 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>111</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    public func getHeader(name: String): String {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func getHeader(name: String): Option&lt;String&gt; {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>112</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        return getHeader(name, "")</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return header.get(name)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>113</pre></td>
@@ -1128,55 +1128,55 @@ pre
 <td align="right" class="lineno"><pre>135</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>         let b: Option&lt;ReadCloseStream&gt; = match (body) {</pre></td>
+<td align="left" class="src coveredLine"><pre>         let method = Util.getRequestMethod(method)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>136</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>             case Some(v) =&gt;  Option&lt;ReadCloseStream&gt;.Some(v.get())</pre></td>
+<td align="left" class="src coveredLine"><pre>         let req = match (body) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>137</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>             case _ =&gt;  Option&lt;ReadCloseStream&gt;.None</pre></td>
+<td align="left" class="src coveredLine"><pre>             case Some(v) =&gt;  h1.Request(method, url.toString(), v.get())</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>138</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>             case _ =&gt;  h1.Request(method, url.toString())</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>139</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>         }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>139</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>         let method = Util.getRequestMethod(method)</pre></td>
-</tr>
-<tr>
 <td align="right" class="lineno"><pre>140</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>         let r = h1.Request(method, url.toString(), stream: b)</pre></td>
+<td align="left" class="src coveredLine"><pre>         req.header = header.clone()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>141</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>         r.header = header.clone()</pre></td>
+<td align="left" class="src coveredLine"><pre>         return req</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>142</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>         return r</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>143</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>144</pre></td>
@@ -1188,94 +1188,88 @@ pre
 <td align="right" class="lineno"><pre>145</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="left" class="src "><pre>    /**</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>146</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    /**</pre></td>
+<td align="left" class="src "><pre>     * Returns the cache control directives for this response. This is never null, even if this</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>147</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * Returns the cache control directives for this response. This is never null, even if this</pre></td>
+<td align="left" class="src "><pre>     * response contains no {@code Cache-Control} header.</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>148</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * response contains no {@code Cache-Control} header.</pre></td>
+<td align="left" class="src "><pre>     *</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>149</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     *</pre></td>
+<td align="left" class="src "><pre>     * @since 0.30.4</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>150</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * @since 0.30.4</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>151</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>152</pre></td>
+<td align="right" class="lineno"><pre>151</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    public func getCacheControl(): Option&lt;CacheControl&gt; {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>153</pre></td>
+<td align="right" class="lineno"><pre>152</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        match(cacheControl) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>154</pre></td>
+<td align="right" class="lineno"><pre>153</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case Some(b) =&gt;  return b</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>155</pre></td>
+<td align="right" class="lineno"><pre>154</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            case None =&gt;</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>156</pre></td>
+<td align="right" class="lineno"><pre>155</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                cacheControl = CacheControl.parse(header)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>157</pre></td>
+<td align="right" class="lineno"><pre>156</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                return cacheControl</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>158</pre></td>
+<td align="right" class="lineno"><pre>157</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>159</pre></td>
+<td align="right" class="lineno"><pre>158</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>160</pre></td>
+<td align="right" class="lineno"><pre>159</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>}</pre></td>

@@ -220,16 +220,17 @@ public class Connection {
         try {
             let s = Socket(TCP, socketAddress.hostAddress, socketAddress.port)
             match (connectTimeout) {
-                case Some(time) => s.connect(time)
+                case Some(time) =>
+                s.connect(time)
                 case None => s.connect()
             }
             socket = Some(s)
-        } catch (e: SocketException){
-            throw ConnectException("Failed to connect to ${socketAddress}", e)
-        } catch (e1: SocketTimeoutException){
-            throw ConnectException("connect to ${socketAddress} time out", e1)
+        } catch (e1: SocketException){
+            throw ConnectException("Failed to connect to ${socketAddress}", e1)
         } catch (e2: TlsException) {
             throw ConnectException("{e2.getMessage()}", e2)
+        } catch (e3: SocketTimeoutException){
+            throw ConnectException("connect to ${socketAddress} time out", e3)
         }
     }
 

@@ -30,7 +30,7 @@ public class Response {
       var prevResponse: Option<Response>
 
       private var cacheControl: Option<CacheControl> = Option<CacheControl>.None
-
+      var exchange: Option<Exchange>
 
 
       /**
@@ -47,6 +47,7 @@ public class Response {
          this.header = builder.headerBuild
          this.body = builder.bodyBuild
          this.prevResponse = builder.prevResponseBuild
+         this.exchange = builder.exchange
       }
 
       /**
@@ -152,7 +153,6 @@ public class Response {
          } else {
             return false
          }
-
       }
 
       /**
@@ -195,6 +195,10 @@ public class Response {
        */
       public static func builder(): ResponseBuilder {
           return ResponseBuilder()
+      }
+
+      func initExchange(deferredTrailers: Exchange) {
+          this.exchange = deferredTrailers
       }
 
       /**

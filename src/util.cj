@@ -27,9 +27,9 @@ public class Util {
      * @param socket of Option<Socket>
      * @since 0.29.3
      */
-    public static func closeQuietly(socket: Option<Socket>) {
+    public static func closeQuietly(socket: Option<Socket>): Unit {
         match(socket) {
-            case Some(s) =>{
+            case Some(s) =>
                 try {
                     s.close()
                 } catch (rethrown: RuntimeException) {
@@ -37,8 +37,7 @@ public class Util {
                 } catch (ignored: Exception) {
                     throw ignored
                 }
-            }
-            case None => {}
+            case None => ()
         }
 
     }

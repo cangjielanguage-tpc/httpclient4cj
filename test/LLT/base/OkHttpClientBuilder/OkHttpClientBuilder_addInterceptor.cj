@@ -30,9 +30,7 @@ class MyInterceptor<: Interceptor {
                             Option<TlsClientConfig>.None
                         )
         add.getTlsConfig()
-        conn.noExchanges()
         println(conn.isMultiplexed())
-        conn.cancel()
         let request: okhttp.Request = chain.getRequest()
         let header: Header = request.getHeaders()
         let c = request.getCacheControl() ?? CacheControl.parse(header)

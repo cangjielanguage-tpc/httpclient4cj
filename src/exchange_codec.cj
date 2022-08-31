@@ -108,15 +108,18 @@ public class Http1ExchangeCodec<: ExchangeCodec{
      * @since 0.29.3
      */
     public func write(request: Request): Unit {
-        let req4cj =  request.toHttpRequest()
-        var writeBuf: ByteArrayStream = ByteArrayStream()
-
-        req4cj.copyTo(writeBuf)
-        let socket = this.realConnection.getSocket().getOrThrow()
-        match (writeTimeout) {
-            case Some(time) => socket.write(writeBuf.readToEnd(), time)
-            case None => socket.write(writeBuf.readToEnd())
-
+        try {
+            let req4cj =  request.toHttpRequest()
+            var writeBuf: ByteArrayStream = ByteArrayStream()
+            req4cj.copyTo(writeBuf)
+            let socket = this.realConnection.getSocket().getOrThrow()
+            match (writeTimeout) {
+                case Some(time) => socket.write(writeBuf.readToEnd(), time)
+                case None => socket.write(writeBuf.readToEnd())
+            }
+        } catch (e: Exception) {
+             realConnection.noExchanges()
+             throw e
         }
         state = STATE_OPEN_REQUEST_BODY
     }
@@ -128,16 +131,21 @@ public class Http1ExchangeCodec<: ExchangeCodec{
      * @since 0.29.3
      */
     public func readResponseHeaders(): ResponseBuilder {
-        if (state != STATE_OPEN_REQUEST_BODY) {
-            throw Exception("state: ${state}")
+        try {
+            if (state != STATE_OPEN_REQUEST_BODY) {
+                throw Exception("state: ${state}")
+            }
+            var readBuf: Array<Byte> = Array<Byte>(readLength, item: 0)
+            var lenNum: Int64 = this.readBytesToBuffer(readBuf)
+            if (lenNum <= 0) {
+                throw Exception()
+            }
+            this.allBuf.write(readBuf.slice(0, lenNum))
+            return this.parseHead()
+        } catch (e: Exception) {
+             realConnection.noExchanges()
+             throw e
         }
-        var readBuf: Array<Byte> = Array<Byte>(readLength, item: 0)
-        var lenNum: Int64 = this.readBytesToBuffer(readBuf)
-        if (lenNum <= 0) {
-            throw Exception()
-        }
-        this.allBuf.write(readBuf.slice(0, lenNum))
-        return this.parseHead()
     }
 
     /*
@@ -174,40 +182,45 @@ public class Http1ExchangeCodec<: ExchangeCodec{
      * @since 0.29.3
      */
     public func openResponseBody(): Option<ResponseBody> {
-        let contentType = this.respHead.get("Content-Type").getOrThrow()
-        let contentLength: Int64 =  reportedContentLength()
-        let readLimit: Int64
-        if (contentLength > 0 ) {
-            if ( allBuf.size() - parsedIndex < contentLength) {
-                readLimit = contentLength + parsedIndex - allBuf.size() + 1
+        try{
+            let contentType = this.respHead.get("Content-Type").getOrThrow()
+            let contentLength: Int64 =  reportedContentLength()
+            let readLimit: Int64
+            if (contentLength > 0 ) {
+                if ( allBuf.size() - parsedIndex < contentLength) {
+                    readLimit = contentLength + parsedIndex - allBuf.size() + 1
+                    var readBuf: Array<Byte> = Array<Byte>(readLimit, item: 0)
+                    let lenNum: Int64 =this.readBytesToBuffer(readBuf)
+                    this.allBuf.write(readBuf.slice( 0, lenNum))
+                }
+            } else if (contentLength < 0) {
+                readLimit = 4096
+                var bodyItemIndex = this.parsedIndex
                 var readBuf: Array<Byte> = Array<Byte>(readLimit, item: 0)
-                let lenNum: Int64 =this.readBytesToBuffer(readBuf)
-                this.allBuf.write(readBuf.slice( 0, lenNum))
-            }
-        } else if (contentLength < 0) {
-            readLimit = 4096
-            var bodyItemIndex = this.parsedIndex
-            var readBuf: Array<Byte> = Array<Byte>(readLimit, item: 0)
-            var read: Int64 = 0
-            while (true) {
-                var read: Int64 = this.readBytesToBuffer(readBuf)
-                this.allBuf.write(readBuf.slice(0, read))
-                let crlfCrlfIndex = indexOf(this.allBuf.bytes(), CRLF_CRLF, start: bodyItemIndex)
-                if (bodyItemIndex == this.parsedIndex) {
-                    bodyItemIndex -= CRLF_CRLF.size()
+                var read: Int64 = 0
+                while (true) {
+                    var read: Int64 = this.readBytesToBuffer(readBuf)
+                    this.allBuf.write(readBuf.slice(0, read))
+                    let crlfCrlfIndex = indexOf(this.allBuf.bytes(), CRLF_CRLF, start: bodyItemIndex)
+                    if (bodyItemIndex == this.parsedIndex) {
+                        bodyItemIndex -= CRLF_CRLF.size()
+                    }
+                    match (crlfCrlfIndex) {
+                        case Some(x) =>
+                            break
+                        case None =>
+                            bodyItemIndex += read
+                            continue
+                    }
                 }
-                match (crlfCrlfIndex) {
-                    case Some(x) =>
-                        break
-                    case None =>
-                        bodyItemIndex += read
-                        continue
-                }
+            } else if (contentLength == 0) {
+                return None
             }
-        } else if (contentLength == 0) {
-            return None
+            return  ResponseBody(contentType, contentLength, parseBody())
+        } catch (e: Exception) {
+             realConnection.noExchanges()
+             throw e
         }
-        return  ResponseBody(contentType, contentLength, parseBody())
     }
 
     /**
