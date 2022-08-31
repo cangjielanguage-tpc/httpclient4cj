@@ -45,7 +45,6 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
         var request: Request = chain.getRequest()
         var priorResponse: Option<Response> = Option<Response>.None
         let transmitter: Transmitter = chain.getTransmitter();
-
         var followUpCount: Int64 = 0
         while (true) {
             transmitter.prepareToConnect(request)
@@ -81,14 +80,23 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
                       .build()
                 case _ => ()
             }
-
             let followUp = followUpRequest(response)
+            let exchange: Option<Exchange> = response.exchange
             match (followUp) {
-                case Some(r)  => ()
-                case _ => return response
+                case Some(r)  =>
+                ()
+                case _ =>
+                 return response
             }
-
             // TODO requestBody
+            let followUpBody: Option<RequestBody> = followUp.getOrThrow().getBody()
+            match (followUpBody) {
+                case Some(b) => return response
+                case None => ()
+            }
+            if(transmitter.hasExchange()) {
+                exchange.getOrThrow().detachWithViolence();
+            }
             followUpCount++
             if (followUpCount > MAX_FOLLOW_UPS) {
                 throw ProtocolException("Too many follow-up requests: ${followUpCount}");
@@ -135,17 +143,15 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
         let method: String = response.getRequest().getMethod()
         match (code) {
             // TODO proxy
-            case 307 | 308 => {
+            case 307 | 308 =>
                     // 307,308 If this is not a GET or HEAD request, the browser disables automatic redirection
                     if (method == "GET" || method == "HEAD") {
                         return Option<Request>.None
                     }
                     return redirectRequest(response)
-                }
-            case 300 | 301 | 302 | 303 =>{
+            case 300 | 301 | 302 | 303 =>
                     return redirectRequest(response)
-                }
-            case 408 => {
+            case 408 =>
                  if (!client.getRetryOnConnectionFailure()) {
                     // The application layer has directed us not to retry the request.
                     return Option<Request>.None
@@ -163,9 +169,7 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
                     return Option<Request>.None
                 }
                 return response.getRequest()
-
-            }
-            case 503 => {
+            case 503 =>
                 match (response.getPrevResponse()) {
                     case Some(resp) =>
                         if (resp.getCode() == HttpStatusCode.STATUS_GATEWAY_TIMEOUT) {
@@ -177,7 +181,6 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
                     return response.getRequest()
                 }
                 return Option<Request>.None
-            }
             case _ => return Option<Request>.None
         }
 

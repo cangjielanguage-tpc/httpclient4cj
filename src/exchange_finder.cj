@@ -288,7 +288,13 @@ public class Exchange {
      * @since 0.29.3
      */
     public func readResponseHeaders(): ResponseBuilder {
-        return codec.readResponseHeaders()
+        let result: ResponseBuilder = codec.readResponseHeaders()
+        initExchange(result, this)
+        return result
+    }
+
+    private func initExchange(respb: ResponseBuilder, exchange: Exchange): Unit {
+         respb.initExchange(exchange)
     }
 
     /**

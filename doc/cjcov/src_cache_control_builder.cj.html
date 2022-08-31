@@ -284,7 +284,7 @@ pre
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2022-07-29 20:31:06</td>
+            <td class="headerValue">2022-08-31 19:23:42</td>
             <td></td>
             <td class="headerName">Lines:</td>
             <td class="headerTableEntry">37</td>
@@ -726,7 +726,7 @@ pre
 <td align="right" class="lineno"><pre>68</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        this.maxAgeSeconds = if ( maxAgeSecondsLong &gt;  Int64(MaxInt32) ) { MaxInt32 } else { Int32(maxAgeSecondsLong) }</pre></td>
+<td align="left" class="src coveredLine"><pre>        this.maxAgeSeconds = if ( maxAgeSecondsLong &gt;  Int64(Int32.Max) ) { Int32.Max } else { Int32(maxAgeSecondsLong) }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>69</pre></td>
@@ -816,7 +816,7 @@ pre
 <td align="right" class="lineno"><pre>83</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        this.maxStaleSeconds = if ( maxStaleSecondsLong &gt;  Int64(MaxInt32) ) { MaxInt32 } else { Int32(maxStaleSecondsLong) }</pre></td>
+<td align="left" class="src coveredLine"><pre>        this.maxStaleSeconds = if ( maxStaleSecondsLong &gt;  Int64(Int32.Max) ) {Int32.Max } else { Int32(maxStaleSecondsLong) }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>84</pre></td>
@@ -912,7 +912,7 @@ pre
 <td align="right" class="lineno"><pre>99</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        this.maxStaleSeconds = if ( minFreshSecondsLong &gt;  Int64(MaxInt32) ) { MaxInt32 } else { Int32(minFreshSecondsLong) }</pre></td>
+<td align="left" class="src coveredLine"><pre>        this.maxStaleSeconds = if ( minFreshSecondsLong &gt;  Int64(Int32.Max) ) {Int32.Max } else { Int32(minFreshSecondsLong) }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>100</pre></td>

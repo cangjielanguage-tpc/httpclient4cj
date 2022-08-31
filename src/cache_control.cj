@@ -274,7 +274,6 @@ public class CacheControl {
         map.put(NO_TRANSFORM, "false")
         map.put(IMMUTABLE, "false")
         let headerValue: String = parseNameValues(header, map)
-        println("headerValue= ${headerValue}")
         return CacheControl(Bool.parse(map[NO_CACHE]), Bool.parse(map[NO_STORE]), Int32.parse(map[MAX_AGE]),
             Int32.parse(map[S_MAXAGE]), Bool.parse(map[PRIVATE]), Bool.parse(map[PUBLIC]),
             Bool.parse(map[MUST_REVALIDATE]), Int32.parse(map[MAX_STALE]), Int32.parse(map[MIN_FRESH]),

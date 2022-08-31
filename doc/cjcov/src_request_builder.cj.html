@@ -275,7 +275,7 @@ pre
         <table cellpadding="1" border="0" width="100%">
           <tr>
             <td class="headerName">File:</td>
-            <td class="headerValue">src/RequestBuilder.cj</td>
+            <td class="headerValue">src/request_builder.cj</td>
             <td width="5%"></td>
             <td width="15%"></td>
             <td width="10%" class="headerValue" style="text-align:right;">Hit</td>
@@ -284,12 +284,12 @@ pre
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2022-07-29 20:31:06</td>
+            <td class="headerValue">2022-08-31 19:23:42</td>
             <td></td>
             <td class="headerName">Lines:</td>
-            <td class="headerTableEntry">29</td>
+            <td class="headerTableEntry">36</td>
             <td class="headerTableEntry">37</td>
-            <td class="headerTableEntry" style="background-color:Yellow">78.0 %</td>
+            <td class="headerTableEntry" style="background-color:LightGreen">97.3 %</td>
           </tr>
           <tr>
             <td class="headerName">Legend:</td>
@@ -743,20 +743,20 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>71</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    public func url(url: URL): RequestBuilder {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func url(url: URL): RequestBuilder {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>72</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        this.urlBuild = url</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        this.urlBuild = url</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>73</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        return this</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return this</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>74</pre></td>
@@ -1277,20 +1277,20 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>160</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    public func cacheControl(cacheControl: CacheControl): RequestBuilder {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func cacheControl(cacheControl: CacheControl): RequestBuilder {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>161</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        let value: String = cacheControl.toString()</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        let value: String = cacheControl.toString()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>162</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        if (value.isEmpty()) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (value.isEmpty()) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>163</pre></td>
@@ -1307,8 +1307,8 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>165</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        return header("Cache-Control", value)</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return header("Cache-Control", value)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>166</pre></td>
