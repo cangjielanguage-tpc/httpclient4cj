@@ -243,7 +243,7 @@ public class CacheControl {
         var head: ArrayList<String> = ArrayList<String>()
         let headers: ArrayList<String> = ArrayList<String>()
         head.appendAll(nameAndValue)
-        head.remove(nameAndValue.size() - 1)
+        head.remove(nameAndValue.size - 1)
         for(i in head){
             let c: Array<String> = i.split(":")
             headers.appendAll(c)
@@ -285,7 +285,7 @@ public class CacheControl {
         let headers: ArrayList<String> = makeNameValues(header)
         var headerValue: String = ""; var canUseHeaderValue: Bool = true
         var index: Int64 = 0
-        for(i in 0..headers.size()/2) {
+        for(i in 0..headers.size/2) {
             index++
             let name: String = headers[i * 2]
             let value: String = headers[i * 2 + 1]
@@ -301,18 +301,18 @@ public class CacheControl {
                 continue
             }
             var pos: Int64 = 0
-            while(pos < value.size()) {
+            while(pos < value.size) {
                 let tokenStart: Int64 = pos
                 pos = Int64(Util.skipUntil(value, Int32(pos), "=,;"))
                 let directive: String = value.substring(tokenStart, pos - tokenStart).trim()
                 var parameter: String = ""
-                if (pos == value.size() || value.charAt(pos) == ',' || value.charAt(pos) == ';') {
+                if (pos == value.size || value.charAt(pos) == ',' || value.charAt(pos) == ';') {
                     pos++ // consume ',' or ';' (if necessary)
                     parameter = ""
                 } else {
                     pos++ // consume '='
                     pos = Int64(Util.skipWhitespace(value, Int32(pos)))
-                    if (pos < value.size() && value.charAt(pos) == '\"') {
+                    if (pos < value.size && value.charAt(pos) == '\"') {
                         pos++ // consume '"' open quote
                         let parameterStart: Int64 = pos
                         pos = Int64(Util.skipUntil(value, Int32(pos), "\""))
@@ -381,8 +381,8 @@ public class CacheControl {
         if (onlyIfCachedInit) { result.append("only-if-cached, ") }
         if (noTransformInit) { result.append("no-transform, ") }
         if (immutableInit) { result.append("immutable, ") }
-        if (result.size() == 0) { return "" }
-        result.remove(result.size() - 2, 1)
+        if (result.size == 0) { return "" }
+        result.remove(result.size - 2..result.size - 1)
         return result.toString().trim()
     }
 }

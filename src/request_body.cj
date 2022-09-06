@@ -49,7 +49,7 @@ public class RequestBody {
      * @since 0.29.3
      */
     public func contentLength(): Int64 {
-        return content.size()
+        return content.size
 
     }
 

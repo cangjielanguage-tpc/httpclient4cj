@@ -14,7 +14,7 @@ package okhttp
  * @author guo_tingtingtekla,luoyukai4
  * @since 0.29.3
  */
-public open class HttpException <: RuntimeException {
+public open class HttpException <: Exception {
     /**
      * The Function is init constructor
      *
@@ -59,8 +59,8 @@ public class RouteException <: HttpException {
 }
 
 public class ConnectException <: HttpException {
-    public let contain: RuntimeException
-    public init(message: String, e: RuntimeException) {
+    public let contain: Exception
+    public init(message: String, e: Exception) {
         super(message)
         this.contain = e
     }

@@ -114,7 +114,7 @@ public class ConnectionPool {
     public func idleConnectionCount(): Int64 {
         var total = 0
         for (connection in connections) {
-            if(connection.getTransmitters().size() == 0) {
+            if(connection.getTransmitters().size == 0) {
                 total++
             }
         }
@@ -132,7 +132,7 @@ public class ConnectionPool {
         synchronized(mutex) {
             connections.removeIf(
                 { connection: Connection =>
-                    if (connection.getTransmitters().size() == 0) {
+                    if (connection.getTransmitters().size == 0) {
                          connection.noNewExchanges = true
                          evictedConnections.append(connection)
                          return true

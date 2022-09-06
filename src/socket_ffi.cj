@@ -25,14 +25,14 @@ func resolveDomain(net: SocketNet, domain: String, index: UInt64): Option<(Socke
     }
     let sz = Int64(unsafe { ip.read() })
     if (sz != SOCK_ADDR_IPV4_LEN && sz != SOCK_ADDR_IPV6_LEN) {
-        unsafe { free(ip) }
+        unsafe { free(CPointer<Unit>(ip)) }
         return None
     }
     var arr = Array<UInt8>(sz, item: 0)
     for (i in 0..sz) {
         arr[i] = unsafe { ip.read(i + 1)}
     }
-    unsafe { free(ip) }
+    unsafe { free(CPointer<Unit>(ip)) }
     return match {
         case sz == SOCK_ADDR_IPV4_LEN => Some((IPv4, arr))
         case _ => Some((IPv6, arr))

@@ -111,7 +111,7 @@ public class Connection {
      * @since 0.29.3
      */
     func isEligible(address: Address, routeSelector: Option<RouteSelector>): Bool {
-        if (transmitters.size() >= allocationLimit || noNewExchanges) {
+        if (transmitters.size >= allocationLimit || noNewExchanges) {
             return false
         }
 
@@ -189,7 +189,7 @@ public class Connection {
                 socket = None
                 h2conn = None
                 if (!connectionRetryEnabled || !connectionFailed(e)) {
-                    throw RouteException("${e.getMessage()}", e)
+                    throw RouteException("${e.message}", e)
                 }
             }
 

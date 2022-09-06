@@ -44,14 +44,14 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
     public func intercept(chain: Chain): Response {
         var request: Request = chain.getRequest()
         var priorResponse: Option<Response> = Option<Response>.None
-        let transmitter: Transmitter = chain.getTransmitter();
+        let transmitter: Transmitter = chain.getTransmitter()
         var followUpCount: Int64 = 0
         while (true) {
             transmitter.prepareToConnect(request)
             if (transmitter.isCanceled()) {
                 throw Exception("Canceled")
             }
-            var response: Response
+            var response: Response = Response.builder().build()
             var success: Bool = false
             try {
                 //invoke next interceptor

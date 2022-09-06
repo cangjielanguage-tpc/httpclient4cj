@@ -195,14 +195,14 @@ public class OkHttpClientBuilder <: Builder<OkHttpClient> {
                 throw  IllegalArgumentException(
                     "protocols must contain h2_prior_knowledge or http/1.1")
         }
-        if (protocols.contains(Protocol.get("H2_PRIOR_KNOWLEDGE").toString()) && protocols.size() > 1) {
+        if (protocols.contains(Protocol.get("H2_PRIOR_KNOWLEDGE").toString()) && protocols.size > 1) {
             throw  IllegalArgumentException(
                 "protocols containing h2_prior_knowledge cannot use other protocols");
         }
         if (protocols.contains(Protocol.get("HTTP/1.0").toString())) {
             throw IllegalArgumentException("protocols must not contain http/1.0")
         }
-        if (protocols.size() == 0) {
+        if (protocols.size == 0) {
             throw IllegalArgumentException("protocols must not contain empty")
         }
         this.protocolsBuild = protocols

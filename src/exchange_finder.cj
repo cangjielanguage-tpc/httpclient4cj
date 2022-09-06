@@ -69,7 +69,7 @@ public class ExchangeFinder {
             throw e
         } catch(e1: ConnectException) {
             trackFailure()
-            throw RouteException(e1.getMessage(), e1)
+            throw RouteException(e1.message, e1)
         }
     }
 

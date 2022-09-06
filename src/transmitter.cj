@@ -110,7 +110,7 @@ public class Transmitter {
      func releaseConnectionNoEvents(): Option<Socket> {
         let conn = connection.getOrThrow()
         let arr = conn.getTransmitters()
-        for (index in 0..arr.size()) {
+        for (index in 0..arr.size) {
             if (refEq(arr[index],this)) {
                 arr.remove(index)
                 break
