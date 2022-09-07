@@ -23,7 +23,7 @@ class MyInterceptor<: Interceptor {
      public func intercept(chain: Chain): okhttp.Response {
         let conn = chain.getConnection().getOrThrow()
         println(conn.getProtocol().toString())
-        println(conn.getTransmitters().size())
+        println(conn.getTransmitters().size)
         conn.getRoute()
         let add = Address(URL.parse("http://36.152.44.95/index.html"),
                             ArrayList<String>([Protocol.get("H2_PRIOR_KNOWLEDGE").toString()]),

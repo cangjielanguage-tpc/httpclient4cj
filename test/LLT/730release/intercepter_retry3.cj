@@ -25,7 +25,7 @@ main() {
     try{
         let response: okhttp.Response = call.execute()
     }catch (e: Exception) {
-        println(e.getMessage())
+        println(e.message)
         return 1
     }
     return 0

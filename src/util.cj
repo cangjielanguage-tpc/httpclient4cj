@@ -32,8 +32,6 @@ public class Util {
             case Some(s) =>
                 try {
                     s.close()
-                } catch (rethrown: RuntimeException) {
-                    throw rethrown
                 } catch (ignored: Exception) {
                     throw ignored
                 }
@@ -83,7 +81,7 @@ public class Util {
 
     public static func skipUntil(input: String, pos: Int32, characters: String): Int32 {
         var posi: Int64 = Int64(pos)
-        while(posi < input.size()) {
+        while(posi < input.size) {
             posi++
             let res: Int64 = characters.indexOf(input.charAt(Int64(posi))) ?? -1
             if (res != -1) {
@@ -95,7 +93,7 @@ public class Util {
 
     public static func skipWhitespace(input: String, pos: Int32): Int32 {
         var posi: Int32 = pos
-        while(posi < Int32(input.size())) {
+        while(posi < Int32(input.size)) {
             posi++
             let c: Char = input.charAt(Int64(posi))
             if (UInt32(c) != UInt32(' ') && UInt32(c) != UInt32('\t')) {
@@ -187,8 +185,8 @@ public enum SocketClient {
  * @since 0.29.3
  */
 func toArray(a: Array<Char>) : Array<UInt8> {
-    var buf2 = Array<UInt8>(a.size(), item: 0)
-    for (i in 0..buf2.size()) {
+    var buf2 = Array<UInt8>(a.size, item: 0)
+    for (i in 0..buf2.size) {
         buf2[i] = UInt8(UInt32(a[i]))
     }
     return buf2
@@ -203,8 +201,8 @@ func toArray(a: Array<Char>) : Array<UInt8> {
  * @since 0.29.3
  */
 public func toArray(a: Array<UInt8>) : Array<Char> {
-    var buf2 = Array<Char>(a.size(), item: '0')
-    for (i in 0..buf2.size()) {
+    var buf2 = Array<Char>(a.size, item: '0')
+    for (i in 0..buf2.size) {
         buf2[i] = Char(UInt32(a[i]))
     }
     return buf2

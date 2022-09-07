@@ -265,7 +265,7 @@ public class Dispatcher {
         synchronized(mutex) {
              for (index in (0..readyAsyncCalls.size())) {
                 let asyncCall: AsyncCall = readyAsyncCalls.get(index)
-                if (runningAsyncCalls.toArrayList().size() >= maxRequests) {
+                if (runningAsyncCalls.toArrayList().size >= maxRequests) {
                     break; // Max capacity.
                 }
 
@@ -277,7 +277,7 @@ public class Dispatcher {
                 executableCalls.append(asyncCall)
                 runningAsyncCalls.add(asyncCall)
              }
-             isRunning = runningAsyncCalls.toArrayList().size() + runningSyncCalls.toArrayList().size() > 0
+             isRunning = runningAsyncCalls.toArrayList().size + runningSyncCalls.toArrayList().size > 0
         }
         for (asyncCall in executableCalls) {
             asyncCall.executeOn();

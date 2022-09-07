@@ -185,10 +185,10 @@ public class Http1ExchangeCodec<: ExchangeCodec{
         try{
             let contentType = this.respHead.get("Content-Type").getOrThrow()
             let contentLength: Int64 =  reportedContentLength()
-            let readLimit: Int64
+            var readLimit: Int64
             if (contentLength > 0 ) {
-                if ( allBuf.size() - parsedIndex < contentLength) {
-                    readLimit = contentLength + parsedIndex - allBuf.size() + 1
+                if ( allBuf.length - parsedIndex < contentLength) {
+                    readLimit = contentLength + parsedIndex - allBuf.length + 1
                     var readBuf: Array<Byte> = Array<Byte>(readLimit, item: 0)
                     let lenNum: Int64 =this.readBytesToBuffer(readBuf)
                     this.allBuf.write(readBuf.slice( 0, lenNum))
@@ -203,7 +203,7 @@ public class Http1ExchangeCodec<: ExchangeCodec{
                     this.allBuf.write(readBuf.slice(0, read))
                     let crlfCrlfIndex = indexOf(this.allBuf.bytes(), CRLF_CRLF, start: bodyItemIndex)
                     if (bodyItemIndex == this.parsedIndex) {
-                        bodyItemIndex -= CRLF_CRLF.size()
+                        bodyItemIndex -= CRLF_CRLF.size
                     }
                     match (crlfCrlfIndex) {
                         case Some(x) =>
@@ -232,15 +232,15 @@ public class Http1ExchangeCodec<: ExchangeCodec{
     private func parseBody() : ByteArrayStream {
         let byteBuf = this.allBuf.bytes()
         if(reportedContentLength() != -1) {
-            if ( this.parsedIndex == byteBuf.size()) {
+            if ( this.parsedIndex == byteBuf.size) {
                 return ByteArrayStream(0)
             }
             let contentLength = reportedContentLength()
             var body = ByteArrayStream(contentLength)
-            body.write(byteBuf.slice(this.parsedIndex, byteBuf.size() - this.parsedIndex))
+            body.write(byteBuf.slice(this.parsedIndex, byteBuf.size - this.parsedIndex))
             return body
         } else {
-            var itemBody = Array<Byte>(byteBuf.size() - this.parsedIndex, item: 0)
+            var itemBody = Array<Byte>(byteBuf.size - this.parsedIndex, item: 0)
             var itemIndex = 0
             var chunkStart = this.parsedIndex
             do {
@@ -256,7 +256,7 @@ public class Http1ExchangeCodec<: ExchangeCodec{
                 if (chunkLen == 0) {
                     break
                 }
-                if(crlfIndex + 2 + chunkLen > byteBuf.size()) {
+                if(crlfIndex + 2 + chunkLen > byteBuf.size) {
                     break
                 }
                 let bufferSlice = byteBuf.slice(crlfIndex+2, chunkLen)
@@ -264,7 +264,7 @@ public class Http1ExchangeCodec<: ExchangeCodec{
                 itemIndex += chunkLen
                 chunkStart = crlfIndex + 2 + chunkLen + 2
             } while (true)
-            var body = ByteArrayStream(itemBody.size())
+            var body = ByteArrayStream(itemBody.size)
             body.write(itemBody)
             return body
         }

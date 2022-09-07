@@ -39,7 +39,7 @@ main() {
         let response: okhttp.Response = call.execute()
         println(response.isSuccess())
     } catch (e: Exception) {
-        return 0
+        return 1
     }
-    return -1
+    return 0
 }

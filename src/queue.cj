@@ -78,7 +78,7 @@ public class ConcurrentQueue<T> <:  Iterable<T>{
    }
 
    public func size(): Int64  {
-        list.size()
+        list.size
    }
 
     /**

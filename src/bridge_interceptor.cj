@@ -67,7 +67,7 @@ public class BridgeInterceptor<: Interceptor {
           //TODO transparentGzip = true requestBuilder.header("Accept-Encoding", "gzip")
         }
         let cookies = cookieJar.cookies(request.getUrl())
-        if (cookies.size() != 0) {
+        if (cookies.size != 0) {
            requestBuilder.header("Cookie", cookieHeader(cookies))
         }
         if (request.getHeader("User-Agent", "") == "") {
@@ -102,7 +102,7 @@ public class BridgeInterceptor<: Interceptor {
         for (cookie in cookies) {
             sb.append("${; cookie}")
         }
-        sb.remove(0,2)
+        sb.remove(0..2)
         return "${sb}"
     }
 
@@ -118,8 +118,8 @@ public class BridgeInterceptor<: Interceptor {
      */
     func receiveHeaders(cookieJar: CookieJar, url: URL, header: Header): Unit {
         let cookie: ArrayList<String> = header.getAll("Set-Cookie")
-        let cookies =  Array<Cookie>(cookie.size(), item: Cookie())
-        for (index in 0..cookie.size()) {
+        let cookies =  Array<Cookie>(cookie.size, item: Cookie())
+        for (index in 0..cookie.size) {
             // TODO parse Cookie
             cookies.set(index, Cookie(url.toString(), cookie[index]))
         }

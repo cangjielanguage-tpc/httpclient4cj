@@ -25,7 +25,7 @@ main() {
 public class MyCallbacks <: Callback {
 
     public func onFailure(call: Call,  e: Exception): Unit{
-        println(e.getMessage())
+        println(e.message)
         asyncCount = 1;
     }
     public func onResponse(call: Call,  response: Response): Unit{
