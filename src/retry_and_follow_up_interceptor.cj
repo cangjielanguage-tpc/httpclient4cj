@@ -48,58 +48,43 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
         var followUpCount: Int64 = 0
         while (true) {
             transmitter.prepareToConnect(request)
-            if (transmitter.isCanceled()) {
-                throw Exception("Canceled")
-            }
+            if (transmitter.isCanceled()) {throw Exception("Canceled") }
             var response: Response = Response.builder().build()
             var success: Bool = false
             try {
-                //invoke next interceptor
                response = chain.proceed(request, transmitter, Option<Exchange>.None)
                success = true
             } catch (e1: RouteException) {
-                //TODO confirm redirect condition
                 if (!recover(e1.getLastConnectException(), transmitter, false, request)) {
                     throw e1.getFirstConnectException()
                 }
                 continue
             } catch (e1: HttpException) {
-                if (!recover(e1, transmitter, !(e1 is H2ConnectionException), request)) {
-                    throw e1
-                }
+                if (!recover(e1, transmitter, !(e1 is H2ConnectionException), request)) {throw e1}
                 continue
             } finally {
-                if (!success) {
-                    transmitter.exchangeDoneDueToException();
-                }
+                if (!success) { transmitter.exchangeDoneDueToException() }
             }
             match(priorResponse) {
                 case Some(resp) => response = response.newBuilder()
-                      .prevResponse(Option<Response>.Some(resp.newBuilder()
-                              .build()))
-                      .build()
+                .prevResponse(Option<Response>.Some(resp.newBuilder().build())).build()
                 case _ => ()
             }
             let followUp = followUpRequest(response)
             let exchange: Option<Exchange> = response.exchange
             match (followUp) {
-                case Some(r)  =>
-                ()
-                case _ =>
-                 return response
+                case Some(r) => ()
+                case _ => return response
             }
-            // TODO requestBody
             let followUpBody: Option<RequestBody> = followUp.getOrThrow().getBody()
             match (followUpBody) {
                 case Some(b) => return response
                 case None => ()
             }
-            if(transmitter.hasExchange()) {
-                exchange.getOrThrow().detachWithViolence();
-            }
+            if (transmitter.hasExchange()) { exchange.getOrThrow().detachWithViolence() }
             followUpCount++
             if (followUpCount > MAX_FOLLOW_UPS) {
-                throw ProtocolException("Too many follow-up requests: ${followUpCount}");
+                throw ProtocolException("Too many follow-up requests: ${followUpCount}")
             }
             request = followUp.getOrThrow()
             priorResponse = Option<Response>.Some(response)
