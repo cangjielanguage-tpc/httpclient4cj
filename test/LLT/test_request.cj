@@ -8,50 +8,44 @@ from std import io.*
 from std import time.*
 from std import socket.*
 from encoding import url.*
-
+from std import collection.*
 var port: UInt16 = 0
 main() {
+    println("call0")
     spawn {
         serve()
-    } 
+    }
     sleep(1000*1000*1000)
-
+    println("call000")
     let url: URL = URL.parse("http://127.0.0.1:${port}/index")
 
     let cache: CacheControl = CacheControl.builder()
                                 .maxAge(Duration.second(1000))
                                 .build()
-    let body: okhttp.RequestBody = okhttp.RequestBody("Media-Type", "text/html")
-    body.get()
-
-    let resBodyCt = body.contentType()
-    let resBodyCl = body.contentLength()
-    println(resBodyCt)
-    println(resBodyCl)
 
     let head: http.Header = Header()
-    head.add("content-type", "application/json") 
+    head.add("content-type", "application/json")
     head.add("content-type2", "application2/json")
-    
+
     let client: OkHttpClient= OkHttpClient.builder().build()
     let request: okhttp.Request = okhttp.Request.builder()
                                     .url(url)
                                     .method("GET")
-                                    .body(body)
                                     .header(head)
                                     .cacheControl(cache)
                                     .build()
-                                    
+
     let resHead = request.getHeader("content-type")
     let resCon = request.getCacheControl().getOrThrow().toString()
+     println("call1")
     let call = client.newCall(request)
+     println("call3")
     for((k,v) in request.getHeaders()) {
         println("k1 = ${k}")
         println("v1 = ${v[0]}")
     }
     let response: okhttp.Response = call.execute()
     println("isSuccess= ${response.isSuccess()}")
-    let responseB = String(toArray(response.getBody().getOrThrow().getSource().readToEnd()))
     println(resHead)
     println(resCon.trim())
     let responseCache = response.getCacheControl().getOrThrow().toString()
@@ -60,9 +54,7 @@ main() {
         println("v = ${v[0]}")
     }
     println(responseCache.trim())
-    if(resBodyCt != "Media-Type" ||
-       resBodyCl != 9 ||
-       resHead != "application/json" ||
+    if(resHead != "application/json" ||
        resCon.trim() != "no-cache, no-store, max-age=1000, only-if-cached, no-transform, immutable" ||
        responseCache.trim() == "no-cache, no-store, max-age=0, s-maxage=0, private, public, must-revalidate, max-stale=0, min-fresh=0, only-if-cached, no-transform, immutable") {
         return -1
@@ -81,5 +73,5 @@ func serve(){
     let server = http.Server(hd)
     let socket = socket.SocketServer(SocketNet.TCP, "0.0.0.0", port)
     port = socket.port
-    server.serve(socket) 
+    server.serve(socket)
 }

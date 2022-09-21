@@ -22,12 +22,6 @@ main (){
 class MyInterceptor<: Interceptor {
      public func intercept(chain: Chain): okhttp.Response {
         let request = chain.getRequest()
-        let exchange: Exchange = chain.getExchange()
-        exchange.write(request)
-        let respB = exchange.readResponseHeaders()
-        .body(exchange.openResponseBody())
-        .request(request)
-        exchange.cancel()
-        return return respB.build()
+        return chain.proceed(request)
     }
 }

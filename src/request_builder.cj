@@ -95,23 +95,12 @@ public class RequestBuilder <: Builder<Request> {
      * @return Type of RequestBuilder
      * @since 0.29.3
      */
-    public func method(method: String): RequestBuilder {
+    public func method(method: String, body!: Option<RequestBody> = Option<RequestBody>.None): RequestBuilder {
         this.methodBuild = method
+        this.bodyBuild = body
         return this
     }
 
-    /**
-     * The Function is body
-     *
-     * @param requestBody of RequestBody
-     *
-     * @return Type of RequestBuilder
-     * @since 0.29.3
-     */
-    public func body(requestBody: RequestBody): RequestBuilder {
-        this.bodyBuild = Option<RequestBody>.Some(requestBody)
-        return this
-    }
 
     /**
      * The Function is build

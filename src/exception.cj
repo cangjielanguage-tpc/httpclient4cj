@@ -77,3 +77,16 @@ public class H2ConnectionException <: HttpException {
         super(message)
     }
 }
+
+public class IllegalStateException <: HttpException {
+    public init(message: String) {
+        super(message)
+    }
+}
+
+
+public class NetException <: Exception {
+    public init(message: String) {
+        super(message)
+    }
+}

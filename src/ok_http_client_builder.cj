@@ -35,6 +35,9 @@ public class OkHttpClientBuilder <: Builder<OkHttpClient> {
     var writeTimeoutBuild: Option<Duration> = Option<Duration>.Some(Duration.millisecond(10000))
     var tlsConfigBuild: Option<TlsClientConfig> = None
     var protocolsBuild: ArrayList<String> = ArrayList<String>([Protocol.get("HTTP/1.1").toString()])
+    var followSslRedirectsBuild: Bool = true
+    var authenticatorBuild: (Option<Route>, Response) -> Option<Request> =
+        {route: Option<Route>, response: Response => Option<Request>.None}
 
     /**
      * The Function is build
@@ -44,6 +47,13 @@ public class OkHttpClientBuilder <: Builder<OkHttpClient> {
      */
     public func build(): OkHttpClient {
          return OkHttpClient(this)
+    }
+
+    init() {
+        var cfg = TlsClientConfig("")
+        cfg.verifyMode = VerifyNone
+        tlsConfigBuild = cfg
+
     }
 
     /**
@@ -209,5 +219,14 @@ public class OkHttpClientBuilder <: Builder<OkHttpClient> {
         return this
     }
 
+    public func authenticator(authenticator: (Option<Route>, Response) -> Option<Request>): OkHttpClientBuilder {
+        this.authenticatorBuild =  authenticator
+        return this
+    }
+
+    public func followSslRedirects(followSslRedirects: Bool): OkHttpClientBuilder{
+        this.followSslRedirectsBuild = followSslRedirects
+        return this
+    }
 }
 

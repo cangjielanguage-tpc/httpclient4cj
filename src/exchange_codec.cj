@@ -21,17 +21,23 @@ from std import io.*
  */
 public interface ExchangeCodec {
 
-    func write(request: Request): Unit
+    func readResponseHeaders(expectContinue: Bool): Option<ResponseBuilder>
 
-    func readResponseHeaders(): ResponseBuilder
+    func reportedContentLength(response: Response): Int64
 
-    func reportedContentLength(): Int64
-
-    func openResponseBody(): Option<ResponseBody>
+    func openResponseBodySource(response: Response): Source
 
     func getConnection(): Connection
 
     func cancel(): Unit
+
+    func createRequestBody(request: Request): Sink
+
+    func writeRequestHeaders(request: Request): Unit
+
+    func flushRequest(): Unit
+
+    func finishRequest(): Unit
 }
 
 /* let member CRLF_CRLF type is Array<Byte> */
@@ -42,28 +48,32 @@ let CRLF: Array<Byte> = b"\r\n"
 let SP = b" "
 /* let member TRIM_BYTE type is Array<Byte> */
 let TRIM_BYTE: Array<Byte> = SP
+let CRLF_STR: String = "\r\n"
+let CHAR_ZERO: UInt32 = 48
+let UInt64ToHex: Utf8View = "0123456789abcdef".utf8View
 
 /**
  * The class is ExchangeCodec
  * @author guo_tingtingtekla,luoyukai4
  * @since 0.29.3
  */
-public class Http1ExchangeCodec<: ExchangeCodec{
+public class Http1ExchangeCodec <: ExchangeCodec{
+    public static let CRLF: String = "\r\n";
 
     /* let member STATE_IDLE type is Int64 */
-    private static let STATE_IDLE: Int64 = 0// Idle connections are ready to write request headers.
+    static let STATE_IDLE: Int64 = 0// Idle connections are ready to write request headers.
     /* let member STATE_OPEN_REQUEST_BODY type is Int64 */
-    private static let STATE_OPEN_REQUEST_BODY: Int64 = 1
+    static let STATE_OPEN_REQUEST_BODY: Int64 = 1
     /* let member STATE_WRITING_REQUEST_BODY type is Int64 */
-    private static let STATE_WRITING_REQUEST_BODY: Int64 = 2
+    static let STATE_WRITING_REQUEST_BODY: Int64 = 2
     /* let member STATE_READ_RESPONSE_HEADERS type is Int64 */
-    private static let STATE_READ_RESPONSE_HEADERS: Int64 = 3
+    static let STATE_READ_RESPONSE_HEADERS: Int64 = 3
     /* let member STATE_OPEN_RESPONSE_BODY type is Int64 */
-    private static let STATE_OPEN_RESPONSE_BODY: Int64 = 4
+    static let STATE_OPEN_RESPONSE_BODY: Int64 = 4
     /* let member STATE_READING_RESPONSE_BODY type is Int64 */
     private static let STATE_READING_RESPONSE_BODY: Int64 = 5
     /* let member STATE_CLOSED type is Int64 */
-    private static let STATE_CLOSED: Int64 = 6
+    static let STATE_CLOSED: Int64 = 6
     /* let member HEADER_LIMIT type is Int64 */
     private static let HEADER_LIMIT: Int64 = 256 * 1024
     /* var member realConnection type is Connection */
@@ -75,7 +85,7 @@ public class Http1ExchangeCodec<: ExchangeCodec{
     /* var member parsedIndex type is Int64 */
     private var parsedIndex: Int64 = 0
     /* var member state type is Int64 */
-    private var state: Int64 = STATE_IDLE
+    var state: Int64 = STATE_IDLE
     /* let member readLength type is Int64 */
     private let readLength: Int64 = HEADER_LIMIT
     /* var member respHead type is Header */
@@ -85,6 +95,11 @@ public class Http1ExchangeCodec<: ExchangeCodec{
     private var readTimeout: Option<Duration>
     private var writeTimeout: Option<Duration>
 
+    let sink: BufferedOutputStream
+    let source: OkBuffer
+    private var headerLimit: Int64 = HEADER_LIMIT
+    var trailers: Header = Header()
+
     /**
      * The Function is init constructor
      *
@@ -92,35 +107,97 @@ public class Http1ExchangeCodec<: ExchangeCodec{
      * @param realConnection of Connection
      * @since 0.29.3
      */
-    public init (client: OkHttpClient, realConnection: Connection, readTimeout:Option<Duration>, writeTimeout: Option<Duration>) {
+    public init (client: OkHttpClient, realConnection: Connection, readTimeout:Option<Duration>,
+        writeTimeout: Option<Duration>, source: OkBuffer, sink: BufferedOutputStream) {
         this.client = client
         this.realConnection = realConnection
         this.readTimeout = readTimeout
         this.writeTimeout = writeTimeout
+        this.source = source
+        this.sink = sink
     }
 
-    /**
-     * The Function is write
-     *
-     * @param request of Request
-     *
-     * @return Type of Unit
-     * @since 0.29.3
-     */
-    public func write(request: Request): Unit {
+    private func newKnownLengthSink(): Sink{
+        if (state != STATE_OPEN_REQUEST_BODY) {
+            throw IllegalStateException("state: ${state}")
+        }
+        state = STATE_WRITING_REQUEST_BODY
+        return KnownLengthSink(this)
+    }
+
+    private func newChunkedSink() {
+        if (state != STATE_OPEN_REQUEST_BODY) {
+            throw IllegalStateException("state: ${state}")
+        }
+        state = STATE_WRITING_REQUEST_BODY
+        return ChunkedSink(this)
+    }
+
+    private func newFixedLengthSource(length: Int64) {
+        if (state != STATE_OPEN_RESPONSE_BODY) {
+            throw IllegalStateException("state: ${state}")
+        }
+        state = STATE_READING_RESPONSE_BODY
+        return FixedLengthSource(length,this)
+    }
+
+    private func newChunkedSource(url: URL): Source {
+        if (state != STATE_OPEN_RESPONSE_BODY) {
+            throw IllegalStateException("state: ${state}")
+        }
+        state = STATE_READING_RESPONSE_BODY
+        return ChunkedSource(url, this)
+   }
+
+    private func newUnknownLengthSource(): Source {
+        if (state != STATE_OPEN_RESPONSE_BODY) {
+            throw IllegalStateException("state: ${state}")
+        }
+        state = STATE_READING_RESPONSE_BODY;
+        realConnection.noExchanges()
+        return UnknownLengthSource(this)
+    }
+
+    public func flushRequest(): Unit {
         try {
-            let req4cj =  request.toHttpRequest()
-            var writeBuf: ByteArrayStream = ByteArrayStream()
-            req4cj.copyTo(writeBuf)
-            let socket = this.realConnection.getSocket().getOrThrow()
-            match (writeTimeout) {
-                case Some(time) => socket.write(writeBuf.readToEnd(), time)
-                case None => socket.write(writeBuf.readToEnd())
-            }
+             sink.flush()
         } catch (e: Exception) {
              realConnection.noExchanges()
              throw e
         }
+    }
+
+    public func finishRequest(): Unit {
+        try {
+             sink.flush()
+        } catch (e: Exception) {
+             realConnection.noExchanges()
+             throw e
+        }
+    }
+
+    public func writeRequestHeaders(request: Request): Unit {
+        let requestLine: String = RequestLine.get(request)
+        writeRequest(request.getHeaders(), requestLine)
+    }
+
+    public func writeRequest(headers: Header, requestLine: String): Unit {
+        if (state != STATE_IDLE) {
+            throw IllegalStateException("state: ${state}")
+        }
+        var buffer: StringBuilder = StringBuilder(512)
+        buffer.append(requestLine).append(CRLF)
+        for ((ks,v) in headers) {
+            var k = HeaderDfaUtil.CanonicalHeaderKey(ks)
+            buffer.append(k).append(": ")
+            for ( i in v ) {
+                buffer.append(i).append(';')
+            }
+            buffer.removeLast()
+            buffer.append(CRLF)
+        }
+        buffer.append(CRLF_STR)
+        sink.write(buffer.toString().toUtf8Array())
         state = STATE_OPEN_REQUEST_BODY
     }
 
@@ -130,22 +207,64 @@ public class Http1ExchangeCodec<: ExchangeCodec{
      * @return Type of ResponseBuilder
      * @since 0.29.3
      */
-    public func readResponseHeaders(): ResponseBuilder {
-        try {
-            if (state != STATE_OPEN_REQUEST_BODY) {
-                throw Exception("state: ${state}")
-            }
-            var readBuf: Array<Byte> = Array<Byte>(readLength, item: 0)
-            var lenNum: Int64 = this.readBytesToBuffer(readBuf)
-            if (lenNum <= 0) {
-                throw Exception()
-            }
-            this.allBuf.write(readBuf.slice(0, lenNum))
-            return this.parseHead()
-        } catch (e: Exception) {
-             realConnection.noExchanges()
-             throw e
+    public func readResponseHeaders(expectContinue: Bool): Option<ResponseBuilder> {
+        if (state != STATE_OPEN_REQUEST_BODY) {
+            throw Exception("state: ${state}")
         }
+        let responseBuilder: ResponseBuilder = Response.builder()
+        let line: String = readHeaderLine()
+        let statusLine: StatusLine = StatusLine.parse(line)
+        responseBuilder.protocol(statusLine.protocol).code(statusLine.code)
+                       .message(statusLine.message).header(readHeaders())
+        if (expectContinue && statusLine.code == HttpStatusCode.STATUS_CONTINUE) {
+            return None
+        } else if (statusLine.code == HttpStatusCode.STATUS_CONTINUE) {
+             state = STATE_READ_RESPONSE_HEADERS
+             return responseBuilder
+        }
+        state = STATE_OPEN_RESPONSE_BODY
+        return responseBuilder
+    }
+
+    private func readHeaderLine(): String {
+        let line = source.readUtf8LineStrict(headerLimit)
+        headerLimit -= line.size
+        return line
+    }
+
+    func readHeaders(): Header {
+        let header: Header = Header()
+        while (true) {
+            var line = readHeaderLine()
+            if (line.size == 0) {
+                break
+            }
+            match (line.indexOf(":", 1)) {
+                case Some(index) => header.add(line.substring(0, index), line.substring(index + 1).trim())
+                case None =>
+                    if(!line.startsWith(":")) {
+                        header.add("", line)
+                    } else {
+                        throw ProtocolException("Unexpected header: ${line}")
+                    }
+            }
+        }
+        return header
+    }
+
+    public func createRequestBody(request: Request): Sink {
+        let contentLength: Int64 =  match(request.getBody()) {
+            case Some(v) => v.getContentLength()
+            case None => throw  ProtocolException("no request body");
+        }
+        if ("chunked" == request.getHeader("Transfer-Encoding","").toLower()) {
+            return newChunkedSink()
+        }
+        if (contentLength != -1) {
+            return newKnownLengthSink()
+        }
+        throw IllegalStateException(
+                "Cannot stream a request body without chunked encoding or a known content length!")
     }
 
     /*
@@ -154,214 +273,34 @@ public class Http1ExchangeCodec<: ExchangeCodec{
      * @return Type of Int64
      * @since 0.29.3
      */
-    public func reportedContentLength(): Int64{
-        if(!hasBody(res.build())) {
+    public func reportedContentLength(response: Response): Int64{
+        if(!hasBody(response)) {
             return 0
         }
-        match (this.respHead.get("Transfer-Encoding")) {
-            case Some(s) =>
-                if (s == "chunked") {
-                    return -1
-                }
-            case None => ()
+        if ("chunked" == response.getHeader("Transfer-Encoding","").toLower()) {
+            return -1
         }
-        match (this.respHead.get("Content-Length")) {
+        match (response.getHeader("Content-Length")) {
             case Some(s) =>
             match (parseInt64(s)) {
                 case Some(n) => return n
-                case None => throw HttpException("Content-Length is invalid: ${s}.")
+                case None => return -1
             }
             case None => return  -1
         }
     }
-
-    /**
-     * The Function is openResponseBody
-     *
-     * @return Type of ResponseBody
-     * @since 0.29.3
-     */
-    public func openResponseBody(): Option<ResponseBody> {
-        try{
-            let contentType = this.respHead.get("Content-Type").getOrThrow()
-            let contentLength: Int64 =  reportedContentLength()
-            var readLimit: Int64
-            if (contentLength > 0 ) {
-                if ( allBuf.length - parsedIndex < contentLength) {
-                    readLimit = contentLength + parsedIndex - allBuf.length + 1
-                    var readBuf: Array<Byte> = Array<Byte>(readLimit, item: 0)
-                    let lenNum: Int64 =this.readBytesToBuffer(readBuf)
-                    this.allBuf.write(readBuf.slice( 0, lenNum))
-                }
-            } else if (contentLength < 0) {
-                readLimit = 4096
-                var bodyItemIndex = this.parsedIndex
-                var readBuf: Array<Byte> = Array<Byte>(readLimit, item: 0)
-                var read: Int64 = 0
-                while (true) {
-                    var read: Int64 = this.readBytesToBuffer(readBuf)
-                    this.allBuf.write(readBuf.slice(0, read))
-                    let crlfCrlfIndex = indexOf(this.allBuf.bytes(), CRLF_CRLF, start: bodyItemIndex)
-                    if (bodyItemIndex == this.parsedIndex) {
-                        bodyItemIndex -= CRLF_CRLF.size
-                    }
-                    match (crlfCrlfIndex) {
-                        case Some(x) =>
-                            break
-                        case None =>
-                            bodyItemIndex += read
-                            continue
-                    }
-                }
-            } else if (contentLength == 0) {
-                return None
-            }
-            return  ResponseBody(contentType, contentLength, parseBody())
-        } catch (e: Exception) {
-             realConnection.noExchanges()
-             throw e
+    public func openResponseBodySource(response: Response): Source {
+        if(!hasBody(response)) {
+            return newFixedLengthSource(0)
         }
-    }
-
-    /**
-     * The Function is parseBody
-     *
-     * @return Type of StringStream
-     * @since 0.29.3
-     */
-    private func parseBody() : ByteArrayStream {
-        let byteBuf = this.allBuf.bytes()
-        if(reportedContentLength() != -1) {
-            if ( this.parsedIndex == byteBuf.size) {
-                return ByteArrayStream(0)
-            }
-            let contentLength = reportedContentLength()
-            var body = ByteArrayStream(contentLength)
-            body.write(byteBuf.slice(this.parsedIndex, byteBuf.size - this.parsedIndex))
-            return body
-        } else {
-            var itemBody = Array<Byte>(byteBuf.size - this.parsedIndex, item: 0)
-            var itemIndex = 0
-            var chunkStart = this.parsedIndex
-            do {
-                var crlfIndex = match (indexOf(byteBuf, CRLF, start: chunkStart)) {
-                    case Some(x) => x
-                    case None => throw Exception("chunked data is invalid:")
-                }
-                var chunkLenStr = String.fromUtf8(byteBuf.slice(chunkStart, crlfIndex - chunkStart), isAscii: true)
-                var chunkLen = match(parseUInt64("0x"+chunkLenStr)) {
-                    case Some (x) => Int64(x)
-                    case None => throw Exception("header data is invalid:")
-                }
-                if (chunkLen == 0) {
-                    break
-                }
-                if(crlfIndex + 2 + chunkLen > byteBuf.size) {
-                    break
-                }
-                let bufferSlice = byteBuf.slice(crlfIndex+2, chunkLen)
-                bufferSlice.copyTo(itemBody, 0, itemIndex, chunkLen)
-                itemIndex += chunkLen
-                chunkStart = crlfIndex + 2 + chunkLen + 2
-            } while (true)
-            var body = ByteArrayStream(itemBody.size)
-            body.write(itemBody)
-            return body
+        if ("chunked" == response.getHeader("Transfer-Encoding","").toLower()) {
+            return newChunkedSource(response.getRequest().getUrl())
         }
-    }
-
-     /*
-      * The Function is readBytesToBuffer
-      *
-      * @param readBuf of Array<Byte>
-      *
-      * @return Type of Int64
-      * @since 0.29.3
-      */
-     private func readBytesToBuffer(readBuf: Array<Byte>): Int64 {
-        return match(readTimeout){
-               case Some(time) =>
-                   return  this.realConnection.getSocket().getOrThrow().read(readBuf, time)
-               case None =>
-                   return  this.realConnection.getSocket().getOrThrow().read(readBuf)
-       }
-    }
-
-    /*
-     * The Function is parseHead
-     *
-     * @return Type of ResponseBuilder
-     * @since 0.29.3
-     */
-    private func parseHead(): ResponseBuilder {
-        let responseBuilder: ResponseBuilder  = ResponseBuilder(); var statusCode: Int64 = 200
-        if (this.parsedIndex == 0) {
-            var crlfIndex = match(indexOf(this.allBuf.bytes(), CRLF, start: 0)) {
-                case Some(i) =>
-                    this.parsedIndex = i+2
-                    i
-                case None =>
-                    throw ProtocolException("no head")
-            }
-            var protoEndIndex = match (indexOf(this.allBuf.bytes(), SP, start: 0)) {
-                case Some(i) => i
-                case None => throw ProtocolException("header data is invalid: ")
-            }
-            var statusCodeEndIndex = match (indexOf(this.allBuf.bytes(), SP, start: protoEndIndex + 1)) {
-                case Some(i) => i
-                case None => throw ProtocolException("header data is invalid: ")
-            }
-            var proto = bufSlice(0, protoEndIndex)
-            var messageIndex = match (indexOf(this.allBuf.bytes(), SP, start: protoEndIndex+1)) {
-                case Some(i) => i
-                case None => throw ProtocolException("header data is invalid: ")
-            }
-            let status = bufSlice(protoEndIndex+1, crlfIndex - protoEndIndex - 1)
-            responseBuilder.message(bufSlice(messageIndex+1, crlfIndex- messageIndex-1))
-            if (statusCodeEndIndex > crlfIndex) {
-                statusCode = match (parseInt64(status)) {
-                    case Some(x) => x
-                    case None => throw ProtocolException("statusCode is invalid: ${status}")
-                }
-            } else {
-                var itemStr = bufSlice(protoEndIndex + 1, statusCodeEndIndex - protoEndIndex - 1)
-                statusCode = match (parseInt64(itemStr)) {
-                    case Some (x) => x
-                    case None => throw ProtocolException("statusCode is invalid: ${itemStr}")
-                }
-            }
-            responseBuilder.protocol(Protocol.get(proto)).code(statusCode)
+        let contentLength: Int64 = contentLength(response)
+        if (contentLength != -1) {
+            return newFixedLengthSource(contentLength)
         }
-        doLoopHeader(responseBuilder)
-        res = responseBuilder
-        return responseBuilder
-    }
-
-    private func bufSlice(start: Int64, end: Int64): String {
-        return String.fromUtf8(this.allBuf.bytes().slice(start, end), isAscii: true)
-    }
-
-    private func doLoopHeader(responseBuilder: ResponseBuilder) {
-        while (true) {
-            match (indexOf(this.allBuf.bytes(),CRLF, start: this.parsedIndex)) {
-                case Some(i) =>
-                    if (i == this.parsedIndex) {
-                        state = STATE_OPEN_RESPONSE_BODY
-                        this.parsedIndex = i + 2
-                        break
-                    }
-                    var colonIndex = indexOf(this.allBuf.bytes(), b":", start: this.parsedIndex) ?? -1
-                    if (colonIndex == -1 || colonIndex > i) {
-                        throw Exception("header data is invalid:")
-                    }
-                    var key = String.fromUtf8(this.allBuf.bytes().slice(this.parsedIndex, colonIndex - this.parsedIndex), isAscii: true)
-                    var val = String.fromUtf8(trim(this.allBuf.bytes().slice(colonIndex + 1, i - colonIndex - 1),SP), isAscii: true)
-                    this.respHead.set(key, val)
-                    responseBuilder.addHeader(key,val)
-                    this.parsedIndex = i+2
-                case None => ()
-            }
-        }
+        return newUnknownLengthSource()
     }
 
     /**
@@ -372,6 +311,16 @@ public class Http1ExchangeCodec<: ExchangeCodec{
      */
     public func getConnection(): Connection {
         return this.realConnection
+    }
+
+    func responseBodyComplete() {
+         if (state == STATE_CLOSED)  {
+            return
+         }
+         if (state != STATE_READING_RESPONSE_BODY) {
+            throw IllegalStateException("state: ${state}")
+         }
+         state = STATE_CLOSED
     }
 
     /**
@@ -390,7 +339,7 @@ public class Http1ExchangeCodec<: ExchangeCodec{
  * @author luoyukai4
  * @since 0.29.3
  */
-public class Http2ExchangeCodec <: ExchangeCodec{
+public class Http2ExchangeCodec{
     private var connection: Connection
     private var realConnection: H2ClientConn
     private var respHead: Header = Header()
@@ -473,7 +422,7 @@ public class Http2ExchangeCodec <: ExchangeCodec{
                     return None
                 }
                 return ResponseBody(h2resp.header.get("Content-Type") ?? "", contentLength,
-                    (h2resp.body as ByteArrayStream).getOrThrow())
+                    OkBuffer((h2resp.body as ByteArrayStream).getOrThrow()))
             case None => throw Exception("invoke write first")
         }
     }

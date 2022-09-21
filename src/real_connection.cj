@@ -9,6 +9,7 @@
 package okhttp
 
 from http2 import proto.*
+from net import tls.*
 
 /**
  * The class is Connection
@@ -20,8 +21,9 @@ public class Connection {
     private let connectionPool: ConnectionPool
     /* var member transmitters type is ArrayList<Transmitter> */
     var transmitters: ArrayList<Transmitter> = ArrayList<Transmitter>()
-    /* var member socket type is Option<Socket> */
-    var socket: Option<Socket> = Option<Socket>.None
+    var rawSocket : Option<SocketClient> = Option<SocketClient>.None
+    /* var member socket type is Option<SocketClient> */
+    var socket: Option<SocketClient> = Option<SocketClient>.None
     /* var member route type is Route */
     let route: Route
     /*If true, no new exchanges can be created on this connection.*/
@@ -38,6 +40,10 @@ public class Connection {
     var successCount: Int64 = 0
 
     var routeFailureCount: Int64 = 0
+
+    private var sink: Option<BufferedOutputStream> = Option<BufferedOutputStream>.None
+
+    private var source: Option<OkBuffer> = Option<OkBuffer>.None
 
     /**
      * The Function is init constructor
@@ -89,7 +95,7 @@ public class Connection {
      * @return Type of Option<Socket>
      * @since 0.29.3
      */
-    public func getSocket(): Option<Socket>{
+    public func getSocket(): Option<SocketClient>{
         return socket
     }
     /**
@@ -179,15 +185,19 @@ public class Connection {
      * @since 0.29.3
      */
     public func connect(connectTimeout: Option<Duration>, connectionRetryEnabled: Bool) {
+        checkSslSocket()
         while (true) {
             try {
                 connectSocket(connectTimeout)
                 establishProtocol()
                 break
             } catch(e : ConnectException) {
+                Util.closeQuietly(rawSocket)
                 Util.closeQuietly(socket)
                 socket = None
                 h2conn = None
+                sink = None
+                source = None
                 if (!connectionRetryEnabled || !connectionFailed(e)) {
                     throw RouteException("${e.message}", e)
                 }
@@ -203,6 +213,18 @@ public class Connection {
         }
     }
 
+    private func checkSslSocket(): Unit {
+        match (route.getAddress().getTlsConfig()) {
+            case None => ()
+            case Some(tls)=>
+                if (route.getAddress().getProtocols().contains(Protocol.H2_PRIOR_KNOWLEDGE.toString())) {
+                    throw RouteException("H2_PRIOR_KNOWLEDGE cannot be used with HTTPS",
+                        HttpException("H2_PRIOR_KNOWLEDGE cannot be used with HTTPS"));
+                }
+        }
+
+    }
+
     func connectionFailed(e: ConnectException): Bool {
         match (e.contain) {
             case timeout: SocketTimeoutException => return false
@@ -216,7 +238,7 @@ public class Connection {
      * @since 0.29.3
      */
     private func connectSocket(connectTimeout: Option<Duration>) {
-        let socketAddress: SocketAddress =  route.inetSocketAddress
+        let socketAddress: SocketAddress = route.inetSocketAddress
         try {
             let s = Socket(TCP, socketAddress.hostAddress, socketAddress.port)
             match (connectTimeout) {
@@ -224,7 +246,10 @@ public class Connection {
                 s.connect(time)
                 case None => s.connect()
             }
-            socket = Some(s)
+            rawSocket = SocketC(s)
+            sink = BufferedOutputStream(s)
+            source = OkBuffer(s)
+
         } catch (e1: SocketException){
             throw ConnectException("Failed to connect to ${socketAddress}", e1)
         } catch (e2: TlsException) {
@@ -235,24 +260,49 @@ public class Connection {
     }
 
     private func establishProtocol() {
-        //TODO TLS
-        if (route.getAddress().getProtocols().contains(Protocol.H2_PRIOR_KNOWLEDGE.toString())) {
-            this.protocol = H2_PRIOR_KNOWLEDGE
-            startHttp2()
-        }
-        if (route.getAddress().getProtocols().contains(Protocol.HTTP_2.toString())) {
-            this.protocol = HTTP_2
-            startHttp2()
+        match (route.getAddress().getTlsConfig()) {
+            case None =>
+                socket = rawSocket
+                if (route.getAddress().getProtocols().contains(Protocol.H2_PRIOR_KNOWLEDGE.toString())) {
+                    this.protocol = H2_PRIOR_KNOWLEDGE
+                    startHttp2()
+                }
+            case Some(tls)=>
+                //ALPN
+                connectTls()
+                if (protocol.toString() == "h2") {
+                    startHttp2()
+                }
         }
     }
 
     private func startHttp2() {
         match (socket) {
-            case Some(s) => h2conn = H2ClientConn.createClientConn(H2Transport(), s)
+            case Some(s) =>
+                match (s)  {
+                    case SocketC(ss) => h2conn = H2ClientConn.createClientConn(H2Transport(), ss)
+                    case TlsC(ss) =>   throw RouteException("h2 cannot be used with TLS now",
+                                                 HttpException("h2 cannot be used with TLS now"))
+                }
             case None => ()
         }
     }
 
+    private func connectTls() {
+        let address = route.getAddress()
+        var cfg = route.getAddress().getTlsConfig().getOrThrow()
+        cfg.alpnList = collectArray(address.getProtocols().iterator())
+        let socketAddress: SocketAddress = route.inetSocketAddress
+        var client = TlsSocket(TCP, socketAddress.hostAddress, socketAddress.port, cfg)
+        let aplnSelected: String = client.getAlpnSelected()
+        Util.closeQuietly(rawSocket)
+        socket = TlsC(client)
+        sink = BufferedOutputStream(client)
+        source = OkBuffer(client)
+        if(aplnSelected != "") {
+            protocol = Protocol.get(aplnSelected)
+        }
+    }
 
     /**
      * The Function is newCodec
@@ -265,9 +315,10 @@ public class Connection {
      */
     func newCodec(client: OkHttpClient, chain: Chain): ExchangeCodec {
         match (h2conn) {
-            case None => Http1ExchangeCodec(client, this,  client.getReadTimeout(), client.getWriteTimeout())
-            case Some(conn) => Http2ExchangeCodec(this, conn)
-        }
+            case None => Http1ExchangeCodec(client, this,  client.getReadTimeout(),
+                               client.getWriteTimeout(), this.source.getOrThrow(), this.sink.getOrThrow())
+            case Some(conn) => throw Exception("not support http2 now")
+       }
     }
 
     /**
@@ -278,5 +329,18 @@ public class Connection {
      */
     public func cancel(): Unit {
         Util.closeQuietly(socket)
+    }
+
+    func trackFailure(e: NetException): Unit {
+        synchronized (connectionPool.mutex) {
+            //TODO HTTP2Stream
+            if(!isMultiplexed()) {
+                noNewExchanges = true
+                if (successCount == 0) {
+                    connectionPool.connectFailed(route)
+                }
+                routeFailureCount++
+            }
+        }
     }
 }

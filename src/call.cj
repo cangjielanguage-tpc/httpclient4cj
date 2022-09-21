@@ -234,6 +234,7 @@ public class RealCall<: Call {
        let chain: Chain = Chain(interceptors, getTransmitter(), 0, originalRequest, this, Option<Exchange>.None,
        client.getConnectTimeout(), client.getReadTimeout(), client.getWriteTimeout())
        let response: Response
+       var calledNoMoreExchanges = false
        try {
            response = chain.proceed(originalRequest)
            if (getTransmitter().isCanceled()) {
@@ -243,10 +244,14 @@ public class RealCall<: Call {
                 }
            }
            return response
-       } catch(e: Exception) {
+       } catch(e: NetException) {
+            calledNoMoreExchanges = true
+            getTransmitter().noMoreExchanges()
             throw e
        } finally {
-           getTransmitter().noMoreExchanges()
+           if(!calledNoMoreExchanges) {
+              getTransmitter().noMoreExchanges()
+           }
        }
     }
 

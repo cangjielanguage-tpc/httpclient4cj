@@ -15,7 +15,6 @@ main () {
     let request: okhttp.Request = okhttp.Request.builder()
     .url("http://36.152.44.95/index.html")
     .header("User-Agent", "OkHttp-Example")
-    .body(RequestBody("text/plain","TEST"))
     .build()
     let response: okhttp.Response = client.newCall(request).execute()
     println(d.getMaxRequests())

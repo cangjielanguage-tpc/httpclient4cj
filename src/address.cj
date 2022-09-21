@@ -26,7 +26,7 @@ public class Address <: Hashable & Equatable<Address>{
      * @param url of URL
      * @since 0.29.3
      */
-    public init (url: URL, protocols: ArrayList<String>, tlsConfig: Option<TlsClientConfig> ) {
+    public init (url: URL, protocols: ArrayList<String>, tlsConfig: Option<TlsClientConfig>) {
         this.url = url
         this.protocols = protocols
         this.tlsConfig = tlsConfig

@@ -16,7 +16,14 @@ main() {
         serve()
     }
     sleep(1000*1000*1000)
-    let url: URL = URL.parse("http://127.0.0.1:${port}/1234")
+    //http://127.0.0.1:${port}/1234
+    //http://www.zhihu.com
+    //http://www.baidu.com/index.html
+    //https://www.zhihu.com/signin?next=%2F
+    //"https://restapi.amap.com/v3/weather/weatherInfo?city=深圳&key=13eb58f5884f9749287abbead9c65"
+    //http://www.weather.com.cn/data/sk/101010100.html
+    //http://wjhsh.net/Jimc-p-10250861.html
+    let url: URL = URL.parse("https://restapi.amap.com/v3/weather/weatherInfo?city=深圳&key=13eb58f5884f9749287abbead9c65")
     let client: OkHttpClient= OkHttpClient.builder().build()
     let request: okhttp.Request = okhttp.Request.builder()
                                     .url(url)
@@ -24,18 +31,21 @@ main() {
     let call = client.newCall(request)
     try{
         let response: okhttp.Response = call.execute()
+        println(response.toString())
+        println(response.getBody().getOrThrow().getContentLength())
     }catch (e: Exception) {
-        return 0
+        e.printStackTrace()
+        return 1
     }
-    return 1
+    return 0
 }
 
 func serve(){
     let hd = http.Route()
     hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
         let resp = "Hello from /red".toUtf8Array()
-        rws.writeStatusCode(301)
-        rws.header().set("Location","http://127.0.0.1:${port}/1234")
+        //rws.writeStatusCode(301)
+        //rws.header().set("Location","http://127.0.0.1:${port}/1234")
         rws.write(resp)
         return
     })

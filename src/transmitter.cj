@@ -107,7 +107,7 @@ public class Transmitter {
      * @return Type of Option<Socket>
      * @since 0.29.3
      */
-     func releaseConnectionNoEvents(): Option<Socket> {
+     func releaseConnectionNoEvents(): Option<SocketClient> {
         let conn = connection.getOrThrow()
         let arr = conn.getTransmitters()
         for (index in 0..arr.size) {
@@ -125,7 +125,7 @@ public class Transmitter {
            }
         }
 
-        return Option<Socket>.None
+        return Option<SocketClient>.None
     }
 
     /**
@@ -162,7 +162,7 @@ public class Transmitter {
                     return ()
                 }
                 if (hasExchange()) {
-                    throw Exception()
+                    throw IllegalStateException("hasExchange")
                 }
                 if (hasExchangeFinder()) {
                     maybeReleaseConnection(true)
@@ -177,9 +177,10 @@ public class Transmitter {
 
     private func createAddress(url: URL): Address {
         if (url.scheme == "https") {
-            //TODO certificatePinner
+            return Address(url, client.getProtocols(), client.getTlsConfig())
+        } else {
+            return Address(url, client.getProtocols())
         }
-        return Address(url, client.getProtocols(), client.getTlsConfig())
     }
 
     /**
@@ -197,6 +198,8 @@ public class Transmitter {
         let result: Exchange = Exchange(this, call, finder, exchangeCodec)
         synchronized(connectionPool.mutex) {
             this.exchange = Some(result)
+            this.exchangeRequestDone = false
+            this.exchangeResponseDone = false
         }
         return result
     }
@@ -209,20 +212,15 @@ public class Transmitter {
     }
 
     private func maybeReleaseConnection(force: Bool) {
-        var releasedConnection: Option<Connection>
-        var socket: Option<Socket>
+        var socket: Option<SocketClient>
         synchronized (connectionPool.mutex) {
             if(force && hasExchange()) {
-                throw HttpException("cannot release connection while it is in use")
+                throw IllegalStateException("cannot release connection while it is in use")
             }
-            releasedConnection = this.connection
             if (hasConnection() && !hasExchange() && (force || noExchanges)) {
                 socket = releaseConnectionNoEvents()
             } else {
                 socket = None
-            }
-            if(hasConnection()) {
-                releasedConnection = None
             }
             Util.closeQuietly(socket)
         }
@@ -255,7 +253,7 @@ public class Transmitter {
     func exchangeMessageDone(exchange: Exchange, requestDone: Bool, responseDone: Bool){
         var exchangeDone = false
         synchronized (connectionPool.mutex) {
-            if (refEq(this.exchange.getOrThrow(), exchange)) {
+            if (!refEq(this.exchange.getOrThrow(), exchange)) {
                 // from detached violently
                 return
             }

@@ -8,14 +8,11 @@ main (){
     let index1 = str1.toString()
     let str2 = Protocol.get("http/1.1")
     let index2 = str2.toString()
-    let str3 = Protocol.get("spdy/3.1")
-    let index3 = str3.toString()
+
     let str4 = Protocol.get("h2")
     let index4 = str4.toString()
     let str5 = Protocol.get("h2_prior_knowledge")
     let index5 = str5.toString()
-    let str6 = Protocol.get("quic")
-    let index6 = str6.toString()
     try {
         let str7 = Protocol.get("ccc")
         let index7 = str7.toString()

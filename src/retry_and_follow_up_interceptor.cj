@@ -59,7 +59,7 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
                     throw e1.getFirstConnectException()
                 }
                 continue
-            } catch (e1: HttpException) {
+            } catch (e1: IOException) {
                 if (!recover(e1, transmitter, !(e1 is H2ConnectionException), request)) {throw e1}
                 continue
             } finally {
@@ -70,18 +70,24 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
                 .prevResponse(Option<Response>.Some(resp.newBuilder().build())).build()
                 case _ => ()
             }
-            let followUp = followUpRequest(response)
+            let route: Option<Route> = match (response.exchange) {
+                case Some(ex) => ex.getConnection().getRoute()
+                case None => Option<Route>.None
+            }
+            let followUp = followUpRequest(response, route)
             let exchange: Option<Exchange> = response.exchange
-            match (followUp) {
-                case Some(r) => ()
+            let followUpBody: Option<RequestBody> = match (followUp) {
+                case Some(r)  => r.getBody()
                 case _ => return response
             }
-            let followUpBody: Option<RequestBody> = followUp.getOrThrow().getBody()
             match (followUpBody) {
                 case Some(b) => return response
                 case None => ()
             }
-            if (transmitter.hasExchange()) { exchange.getOrThrow().detachWithViolence() }
+            Util.closeQuietly(response.getBody())
+            if(transmitter.hasExchange()) {
+                exchange.getOrThrow().detachWithViolence();
+            }
             followUpCount++
             if (followUpCount > MAX_FOLLOW_UPS) {
                 throw ProtocolException("Too many follow-up requests: ${followUpCount}")
@@ -123,33 +129,37 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
      * @return Type of Option<Request>
      * @since 0.29.3
      */
-    func followUpRequest(response: Response): Option<Request> {
+    func followUpRequest(response: Response, route: Option<Route>): Option<Request> {
         let code: Int64 = response.code
         let method: String = response.getRequest().getMethod()
         match (code) {
-            // TODO proxy
             case 307 | 308 =>
-                    // 307,308 If this is not a GET or HEAD request, the browser disables automatic redirection
-                    if (method == "GET" || method == "HEAD") {
-                        return Option<Request>.None
-                    }
-                    return redirectRequest(response)
+                   // 307,308 If this is not a GET or HEAD request, the browser disables automatic redirection
+                   if (method != "GET" && method != "HEAD") {
+                       return Option<Request>.None
+                   }
+                   return redirectRequest(response)
             case 300 | 301 | 302 | 303 =>
-                    return redirectRequest(response)
+                   return redirectRequest(response)
+            case 401 =>
+                   return client.getAuthenticator()(route, response)
             case 408 =>
-                 if (!client.getRetryOnConnectionFailure()) {
-                    // The application layer has directed us not to retry the request.
-                    return Option<Request>.None
-                 }
-                 // TODO RequestBody
+                if (!client.getRetryOnConnectionFailure()) {
+                   // The application layer has directed us not to retry the request.
+                   return Option<Request>.None
+                }
+                match (response.getRequest().getBody()) {
+                    case Some(body) => ()
+                    case None => return Option<Request>.None
+                }
                 match (response.getPrevResponse()) {
                     case Some(resp) =>
                         if (resp.getCode() == HttpStatusCode.STATUS_REQUEST_TIMEOUT) {
                             return Option<Request>.None
                         }
-                    case _ => return Option<Request>.None
+                        ()
+                    case _ => ()
                 }
-
                 if (retryAfter(response, 0) > 0) {
                     return Option<Request>.None
                 }
@@ -160,7 +170,8 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
                         if (resp.getCode() == HttpStatusCode.STATUS_GATEWAY_TIMEOUT) {
                             return Option<Request>.None
                         }
-                    case _ => return Option<Request>.None
+                        ()
+                    case _ => ()
                 }
                 if (retryAfter(response, 1) == 0) {
                     return response.getRequest()
@@ -168,10 +179,6 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
                 return Option<Request>.None
             case _ => return Option<Request>.None
         }
-
-
-    return Option<Request>.None
-
     }
 
     /*
@@ -187,40 +194,33 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
             return Option<Request>.None
         }
         let location: String = response.getHeader("Location", "")
+        let url: URL = response.getRequest().getUrl().resolveReference(URL.parse(location))
         let method: String = response.getRequest().getMethod()
         if (location == "") {
             return Option<Request>.None
         }
-        let requestBuilder: RequestBuilder  = response.getRequest().newBuilder()
-        //redirects should also maintain the request body
-        if (!method.equals("PROPFIND")) {
-            requestBuilder.method("GET")
-            ()
-        } else {
-            requestBuilder.method(method)
-            //TODO set re4questBody
-            requestBuilder.removeHeader("Transfer-Encoding")
-            requestBuilder.removeHeader("Content-Length")
-            requestBuilder.removeHeader("Content-Type")
-            ()
-        }
-        let locationUrl: URL
-        try {
-            locationUrl =  URL.parseRequestURI(location)
-            if(locationUrl.scheme != response.getRequest().getUrl().scheme) {
-                return Option<Request>.None
-            }
-            // When redirecting across hosts, drop all authentication headers. This
-            // is potentially annoying to the application layer since they have no
-            // way to retain them.
-            if (!Util.sameConnection(response.getRequest().getUrl(), locationUrl)) {
-                requestBuilder.removeHeader("Authorization")
-            }
-            return Option<Request>.Some(requestBuilder.url(locationUrl).build())
-        } catch (e: Exception){
+        if (url.scheme != response.getRequest().getUrl().scheme && !client.getFollowSslRedirects()) {
             return Option<Request>.None
         }
-
+        let requestBuilder: RequestBuilder  = response.getRequest().newBuilder()
+        //redirects should also maintain the request body
+        if (permitsRequestBody(method)) {
+            if (redirectsToGet(method)) {
+                requestBuilder.method("GET")
+            } else {
+                requestBuilder.method(method, body: response.getRequest().getBody())
+                requestBuilder.removeHeader("Transfer-Encoding")
+                requestBuilder.removeHeader("Content-Length")
+                requestBuilder.removeHeader("Content-Type")
+            }
+        }
+        // When redirecting across hosts, drop all authentication headers. This
+        // is potentially annoying to the application layer since they have no
+        // way to retain them.
+        if (!Util.sameConnection(response.getRequest().getUrl(), url)) {
+            requestBuilder.removeHeader("Authorization")
+        }
+        return Option<Request>.Some(requestBuilder.url(url).build())
     }
 
     /*
@@ -234,14 +234,13 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
      */
     func retryAfter( userResponse: Response,  defaultDelay: Int64): Int64 {
         let header: String = userResponse.getHeader("Retry-After", "");
-
         if (header == "") {
           return defaultDelay;
         }
         // currently ignores a HTTP-date, and assumes any non int 0 is a delay
         match (parseInt64(header)) {
             case Some(delay) => return delay
-            case None => return 1
+            case None => return Int64(Int32.Max)
         }
     }
 }

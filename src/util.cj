@@ -27,7 +27,7 @@ public class Util {
      * @param socket of Option<Socket>
      * @since 0.29.3
      */
-    public static func closeQuietly(socket: Option<Socket>): Unit {
+    public static func closeQuietly <T> (socket: Option<T>): Unit where T<: Resource{
         match(socket) {
             case Some(s) =>
                 try {
@@ -37,7 +37,6 @@ public class Util {
                 }
             case None => ()
         }
-
     }
 
     /**
@@ -119,7 +118,7 @@ public class Util {
     }
 }
 
-public enum SocketClient {
+public enum SocketClient <: Resource {
     | SocketC(Socket)
     | TlsC(TlsSocket)
 
@@ -173,6 +172,15 @@ public enum SocketClient {
                 conn.close()
         }
     }
+
+    public func isClosed(): Bool {
+        return match(this) {
+            case SocketC(conn) =>
+                conn.isClosed()
+            case TlsC(conn) =>
+                conn.isClosed()
+        }
+    }
 }
 
 
@@ -192,3 +200,56 @@ public func toArray(a: Array<UInt8>) : Array<Char> {
     return buf2
 }
 
+func UInt64ToHexString(n: UInt64): Array<Byte> {
+    var num: UInt64 = n
+    var arrSize: Int64 = 0
+    for (i in 0..16) {
+        if(num > 0) {
+            arrSize++
+            num = num >> 4
+        } else {
+            break
+        }
+    }
+
+    var arr = Array<Byte>(arrSize, item: UInt8(CHAR_ZERO))
+    var mask: UInt64 = 0x0f
+    var idx = 0
+    num = n
+    for (i in arrSize-1..-1:-1) {
+        if (num > 0) {
+            var item = num & mask
+            arr[i] = UInt64ToHex[Int64(item)]
+            num = num >>4
+        } else {
+            break
+        }
+    }
+    return arr
+}
+
+func HexStringToUInt64(arr: Array<Byte>): Option<UInt64> {
+    var arrSize = arr.size
+    var num: UInt64 = 0
+    for (i in 0..arrSize) {
+        var b = arr[i]
+        if (b'0' <= b && b <= b'9') {
+            b = b - b'0'
+        } else if (b'a' <= b && b <= b'f') {
+            b = b - (b'a' - 10)
+        } else if (b'A' <= b && b <= b'F') {
+            b = b - (b'A' - 10)
+        } else {
+            return None
+        }
+        num = num * 16 + UInt64(b)
+    }
+    return Some(num)
+}
+
+func has<T>(op: Option<T>): Bool {
+    match(op) {
+        case Some(v) => return true
+        case None => return false
+    }
+}

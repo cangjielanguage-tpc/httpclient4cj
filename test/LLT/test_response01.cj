@@ -7,7 +7,7 @@ main (){
     let response = Response.builder().build()
     let b = ByteArrayStream()
     b.write("abcdefG".toUtf8Array())
-    let body: ResponseBody = ResponseBody("text/html", 31946, b)
+    let body: ResponseBody = ResponseBody("text/html", 31946, OkBuffer(b))
     response.getRequest()
     response.getProtocol()
     response.getCode()

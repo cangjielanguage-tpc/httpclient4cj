@@ -35,6 +35,8 @@ public class OkHttpClient {
 
      private var protocols: ArrayList<String>
      private var tlsConfig: Option<TlsClientConfig>
+     private var authenticator: (Option<Route>, Response) -> Option<Request>
+     private var followSslRedirects: Bool
 
      /**
       * The Function is init constructor
@@ -47,6 +49,7 @@ public class OkHttpClient {
           this.interceptors = builder.interceptorsBuild
           this.networkInterceptors = builder.networkInterceptorsBuild
           this.followRedirects = builder.followRedirectsBuild
+          this.followSslRedirects = builder.followSslRedirectsBuild
           this.retryOnConnectionFailure = builder.retryOnConnectionFailureBuild
           this.connectionPool = builder.connectionPoolBuild
           this.cookieJar = builder.cookieJarBuild
@@ -55,6 +58,7 @@ public class OkHttpClient {
           this.writeTimeout = builder.writeTimeoutBuild
           this.tlsConfig = builder.tlsConfigBuild
           this.protocols = builder.protocolsBuild
+          this.authenticator = builder.authenticatorBuild
      }
      /**
       * The Function is builder
@@ -164,6 +168,14 @@ public class OkHttpClient {
 
      public func getTlsConfig(): Option<TlsClientConfig>  {
         return tlsConfig
+     }
+
+     public func getAuthenticator(): (Option<Route>, Response)-> Option<Request>{
+        return authenticator
+     }
+
+     public func getFollowSslRedirects(): Bool {
+        return followSslRedirects
      }
 }
 

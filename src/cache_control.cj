@@ -240,10 +240,12 @@ public class CacheControl {
         var ss: ByteArrayStream = ByteArrayStream()
         header.writeTo(ss)
         let nameAndValue: Array<String> = String.fromUtf8(ss.readToEnd()).split("\r\n")
+        let nvSize = nameAndValue.size
         var head: ArrayList<String> = ArrayList<String>()
+        for(i in 0..nvSize-1) {
+            head.append(nameAndValue[i])
+        }
         let headers: ArrayList<String> = ArrayList<String>()
-        head.appendAll(nameAndValue)
-        head.remove(nameAndValue.size - 1)
         for(i in head){
             let c: Array<String> = i.split(":")
             headers.appendAll(c)

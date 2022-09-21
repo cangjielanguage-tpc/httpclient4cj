@@ -26,8 +26,6 @@ main() {
                                     .build()
     let call = client.newCall(request)
     let response: okhttp.Response = call.execute()
-
-    println(String(toArray(response.getBody().getOrThrow().getSource().readToEnd())))
     return 0
 }
 

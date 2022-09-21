@@ -14,13 +14,14 @@ from std import io.*
  * @author guo_tingtingtekla,luoyukai4
  * @since 0.29.3
  */
-public class ResponseBody {
+public class ResponseBody <: Resource{
     /* var member source type is StringStream */
-    var source: ByteArrayStream = ByteArrayStream()
+    var source: Source
     /* var member contentType type is String */
     var contentType:String = ""
     /* var member contentLength type is Int64 */
     var contentLength: Int64 = 0
+
 
     /**
      * The Function is init constructor
@@ -30,18 +31,11 @@ public class ResponseBody {
      * @param source of StringStream
      * @since 0.29.3
      */
-    public init(contentType: String, contentLength: Int64, source: ByteArrayStream) {
+    public init(contentType: String, contentLength: Int64, source: Source) {
         this.source = source
         this.contentType = contentType
         this.contentLength = contentLength
     }
-
-    /**
-     * The Function is init constructor
-     *
-     * @since 0.29.3
-     */
-    public init(){}
 
     /**
      * The Function is getSource
@@ -49,7 +43,7 @@ public class ResponseBody {
      * @return Type of StringStream
      * @since 0.29.3
      */
-    public func getSource(): ByteArrayStream {
+    public func getSource(): Source{
         return source
     }
 
@@ -60,21 +54,21 @@ public class ResponseBody {
      * @since 0.29.3
      */
     public func close(): Unit {
+        source.close()
+    }
 
+    public func isClosed(): Bool {
+        return source.isClosed()
     }
 
     public func getContentLength(): Int64 {
         return contentLength
     }
 
-  /**
-     * The Function is contentType
-     *
-     * @return Type of String
-     * @since 0.29.3
-     */
-    public func getContentType(): String {
-        return contentType
+    public func getString(): String {
+        let stream = ByteArrayStream()
+        while (source.read(stream, 4096) != -1) {}
+        return String.fromUtf8(stream.readToEnd())
     }
 }
 
