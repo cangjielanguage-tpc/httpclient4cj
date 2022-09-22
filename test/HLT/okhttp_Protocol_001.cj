@@ -77,7 +77,7 @@ public class okhttp_Protocol_001{
         try {
             let protocol_15 = Protocol.get("ABC")
         } catch(e: Exception) {
-            exc = e.getMessage()
+            exc = e.message
         }
         @Assert(exc, "no find protocol")
 

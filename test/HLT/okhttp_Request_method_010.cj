@@ -16,7 +16,7 @@ from std import core.*
 public class okhttp_Request_method_010{
 
 
-    var port: UInt16 = 8888
+    var port: UInt16 = 8889
     func serve(){
         let hd = http.Route()
         hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
@@ -49,7 +49,7 @@ public class okhttp_Request_method_010{
         var response: okhttp.Response = call.execute()
 
     } catch(e: Exception) {
-        exc = e.getMessage()
+        exc = e.message
     }
     println(exc)
     @Assert(exc, "no such method")

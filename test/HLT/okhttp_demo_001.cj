@@ -16,10 +16,10 @@ from std import core.*
 @Test
 public class okhtttp_demo{
 
-    var port: UInt16 = 8888
+    var port: UInt16 = 8890
     func serve(){
         let hd = http.Route()
-        hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
+        hd.handle("/1235", { rws: http.ResponseWriteStream, req: http.Request =>
             let resp = "Hello from /red".toUtf8Array()
             rws.write(resp)
             return
@@ -43,7 +43,7 @@ public class okhtttp_demo{
     let client: OkHttpClient= OkHttpClient.builder().build()
     let body: okhttp.RequestBody = okhttp.RequestBody("Media-Type", "text/html")
     let request: okhttp.Request = okhttp.Request.builder()
-                                    .url("http://127.0.0.1:${port}/1234")
+                                    .url("http://127.0.0.1:${port}/1235")
                                     .method("GET")
                                     .cacheControl(cache)
                                     .body(body)
@@ -85,7 +85,7 @@ public class okhtttp_demo{
 @Test
 public class htttp_demo{
 
-    var port: UInt16 = 8888
+    var port: UInt16 = 8891
     func serve(){
         let hd = http.Route()
         hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
