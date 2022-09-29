@@ -18,10 +18,10 @@ main() {
     let arr  = ArrayList<String>([Protocol.get("H2_PRIOR_KNOWLEDGE").toString()])
     let a1 = Address(parseUrl2, arr)
     let a2 = Address(parseUrl3, arr)
-    if(a1 == a2) {
-        return 0
+    if(a1 != a2) {
+        return -1
     }
-    return -1
+    return 0
 }
 
 func printlnURL(url: URL) {

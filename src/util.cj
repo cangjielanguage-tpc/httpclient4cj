@@ -179,22 +179,6 @@ public enum SocketClient {
 /**
  * The Function is toArray
  *
- * @param a of Array<Char>
- *
- * @return Type of Array<UInt8>
- * @since 0.29.3
- */
-func toArray(a: Array<Char>) : Array<UInt8> {
-    var buf2 = Array<UInt8>(a.size, item: 0)
-    for (i in 0..buf2.size) {
-        buf2[i] = UInt8(UInt32(a[i]))
-    }
-    return buf2
-}
-
-/**
- * The Function is toArray
- *
  * @param a of ArrayList<String>
  *
  * @return Type of Array<String>

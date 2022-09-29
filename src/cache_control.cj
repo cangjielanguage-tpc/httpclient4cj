@@ -239,7 +239,7 @@ public class CacheControl {
     private static func makeNameValues(header: Header): ArrayList<String>{
         var ss: ByteArrayStream = ByteArrayStream()
         header.writeTo(ss)
-        let nameAndValue: Array<String> = String(toArray(ss.readToEnd())).split("\r\n")
+        let nameAndValue: Array<String> = String.fromUtf8(ss.readToEnd()).split("\r\n")
         var head: ArrayList<String> = ArrayList<String>()
         let headers: ArrayList<String> = ArrayList<String>()
         head.appendAll(nameAndValue)

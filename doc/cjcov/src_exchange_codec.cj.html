@@ -284,12 +284,12 @@ pre
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2022-08-31 19:23:42</td>
+            <td class="headerValue">2022-09-29 16:50:56</td>
             <td></td>
             <td class="headerName">Lines:</td>
-            <td class="headerTableEntry">165</td>
-            <td class="headerTableEntry">208</td>
-            <td class="headerTableEntry" style="background-color:Yellow">79.3 %</td>
+            <td class="headerTableEntry">161</td>
+            <td class="headerTableEntry">202</td>
+            <td class="headerTableEntry" style="background-color:Yellow">79.7 %</td>
           </tr>
           <tr>
             <td class="headerName">Legend:</td>
@@ -725,8 +725,8 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>68</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    private static let HEADER_LIMIT: Int64 = 256 * 1024</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    private static let HEADER_LIMIT: Int64 = 256 * 1024</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>69</pre></td>
@@ -785,8 +785,8 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>78</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    private var state: Int64 = STATE_IDLE</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    private var state: Int64 = STATE_IDLE</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>79</pre></td>
@@ -797,8 +797,8 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>80</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    private let readLength: Int64 = HEADER_LIMIT</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    private let readLength: Int64 = HEADER_LIMIT</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>81</pre></td>
@@ -1049,8 +1049,8 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>122</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>             throw e</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>             throw e</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>123</pre></td>
@@ -1199,8 +1199,8 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>147</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>             throw e</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>             throw e</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>148</pre></td>
@@ -1446,7 +1446,7 @@ pre
 <td align="right" class="lineno"><pre>188</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>            let readLimit: Int64</pre></td>
+<td align="left" class="src "><pre>            var readLimit: Int64</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>189</pre></td>
@@ -1458,13 +1458,13 @@ pre
 <td align="right" class="lineno"><pre>190</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                if ( allBuf.size() - parsedIndex &lt; contentLength) {</pre></td>
+<td align="left" class="src coveredLine"><pre>                if ( allBuf.length - parsedIndex &lt; contentLength) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>191</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                    readLimit = contentLength + parsedIndex - allBuf.size() + 1</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                    readLimit = contentLength + parsedIndex - allBuf.length + 1</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>192</pre></td>
@@ -1554,7 +1554,7 @@ pre
 <td align="right" class="lineno"><pre>206</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                        bodyItemIndex -= CRLF_CRLF.size()</pre></td>
+<td align="left" class="src coveredLine"><pre>                        bodyItemIndex -= CRLF_CRLF.size</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>207</pre></td>
@@ -1637,20 +1637,20 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>220</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        } catch (e: Exception) {</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>        } catch (e: Exception) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>221</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>             realConnection.noExchanges()</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>             realConnection.noExchanges()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>222</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>             throw e</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>             throw e</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>223</pre></td>
@@ -1728,7 +1728,7 @@ pre
 <td align="right" class="lineno"><pre>235</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            if ( this.parsedIndex == byteBuf.size()) {</pre></td>
+<td align="left" class="src coveredLine"><pre>            if ( this.parsedIndex == byteBuf.size) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>236</pre></td>
@@ -1758,7 +1758,7 @@ pre
 <td align="right" class="lineno"><pre>240</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            body.write(byteBuf.slice(this.parsedIndex, byteBuf.size() - this.parsedIndex))</pre></td>
+<td align="left" class="src coveredLine"><pre>            body.write(byteBuf.slice(this.parsedIndex, byteBuf.size - this.parsedIndex))</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>241</pre></td>
@@ -1776,7 +1776,7 @@ pre
 <td align="right" class="lineno"><pre>243</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            var itemBody = Array&lt;Byte&gt;(byteBuf.size() - this.parsedIndex, item: 0)</pre></td>
+<td align="left" class="src coveredLine"><pre>            var itemBody = Array&lt;Byte&gt;(byteBuf.size - this.parsedIndex, item: 0)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>244</pre></td>
@@ -1859,8 +1859,8 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>257</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                    break</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                    break</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>258</pre></td>
@@ -1872,13 +1872,13 @@ pre
 <td align="right" class="lineno"><pre>259</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                if(crlfIndex + 2 + chunkLen &gt; byteBuf.size()) {</pre></td>
+<td align="left" class="src coveredLine"><pre>                if(crlfIndex + 2 + chunkLen &gt; byteBuf.size) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>260</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                    break</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                    break</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>261</pre></td>
@@ -1920,7 +1920,7 @@ pre
 <td align="right" class="lineno"><pre>267</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            var body = ByteArrayStream(itemBody.size())</pre></td>
+<td align="left" class="src coveredLine"><pre>            var body = ByteArrayStream(itemBody.size)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>268</pre></td>
@@ -2208,1156 +2208,1114 @@ pre
 <td align="right" class="lineno"><pre>315</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            if (!proto.startsWith("HTTP/1.")) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>316</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                if((proto == "ICY ")) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>317</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                   proto = "http/1.0"</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>318</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>                } else {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>319</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                    throw ProtocolException("Unexpected proto: " + "${proto}")</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>320</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>                }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>321</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>            }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>322</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            var messageIndex = match (indexOf(this.allBuf.bytes(), SP, start: protoEndIndex+1)) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>323</pre></td>
+<td align="right" class="lineno"><pre>316</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                case Some(i) =&gt; i</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>324</pre></td>
+<td align="right" class="lineno"><pre>317</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                case None =&gt; throw ProtocolException("header data is invalid: ")</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>325</pre></td>
+<td align="right" class="lineno"><pre>318</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>326</pre></td>
+<td align="right" class="lineno"><pre>319</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let status = bufSlice(protoEndIndex+1, crlfIndex - protoEndIndex - 1)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>327</pre></td>
+<td align="right" class="lineno"><pre>320</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            responseBuilder.message(bufSlice(messageIndex+1, crlfIndex- messageIndex-1))</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>328</pre></td>
+<td align="right" class="lineno"><pre>321</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (statusCodeEndIndex &gt; crlfIndex) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>329</pre></td>
+<td align="right" class="lineno"><pre>322</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                statusCode = match (parseInt64(status)) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>330</pre></td>
+<td align="right" class="lineno"><pre>323</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                    case Some(x) =&gt; x</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>331</pre></td>
+<td align="right" class="lineno"><pre>324</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                    case None =&gt; throw ProtocolException("statusCode is invalid: ${status}")</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>332</pre></td>
+<td align="right" class="lineno"><pre>325</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>333</pre></td>
+<td align="right" class="lineno"><pre>326</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            } else {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>334</pre></td>
+<td align="right" class="lineno"><pre>327</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                var itemStr = bufSlice(protoEndIndex + 1, statusCodeEndIndex - protoEndIndex - 1)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>335</pre></td>
+<td align="right" class="lineno"><pre>328</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                statusCode = match (parseInt64(itemStr)) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>336</pre></td>
+<td align="right" class="lineno"><pre>329</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                    case Some (x) =&gt; x</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>337</pre></td>
+<td align="right" class="lineno"><pre>330</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                    case None =&gt; throw ProtocolException("statusCode is invalid: ${itemStr}")</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>338</pre></td>
+<td align="right" class="lineno"><pre>331</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>339</pre></td>
+<td align="right" class="lineno"><pre>332</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>340</pre></td>
+<td align="right" class="lineno"><pre>333</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            responseBuilder.protocol(Protocol.get(proto)).code(statusCode)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>341</pre></td>
+<td align="right" class="lineno"><pre>334</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>342</pre></td>
+<td align="right" class="lineno"><pre>335</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        doLoopHeader(responseBuilder)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>343</pre></td>
+<td align="right" class="lineno"><pre>336</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        res = responseBuilder</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>344</pre></td>
+<td align="right" class="lineno"><pre>337</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return responseBuilder</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>345</pre></td>
+<td align="right" class="lineno"><pre>338</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>346</pre></td>
+<td align="right" class="lineno"><pre>339</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>347</pre></td>
+<td align="right" class="lineno"><pre>340</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    private func bufSlice(start: Int64, end: Int64): String {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>348</pre></td>
+<td align="right" class="lineno"><pre>341</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return String.fromUtf8(this.allBuf.bytes().slice(start, end), isAscii: true)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>349</pre></td>
+<td align="right" class="lineno"><pre>342</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>350</pre></td>
+<td align="right" class="lineno"><pre>343</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>351</pre></td>
+<td align="right" class="lineno"><pre>344</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    private func doLoopHeader(responseBuilder: ResponseBuilder) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>352</pre></td>
+<td align="right" class="lineno"><pre>345</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        while (true) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>353</pre></td>
+<td align="right" class="lineno"><pre>346</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            match (indexOf(this.allBuf.bytes(),CRLF, start: this.parsedIndex)) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>354</pre></td>
+<td align="right" class="lineno"><pre>347</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                case Some(i) =&gt;</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>355</pre></td>
+<td align="right" class="lineno"><pre>348</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                    if (i == this.parsedIndex) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>356</pre></td>
+<td align="right" class="lineno"><pre>349</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                        state = STATE_OPEN_RESPONSE_BODY</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>357</pre></td>
+<td align="right" class="lineno"><pre>350</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                        this.parsedIndex = i + 2</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>358</pre></td>
+<td align="right" class="lineno"><pre>351</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                        break</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>359</pre></td>
+<td align="right" class="lineno"><pre>352</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>360</pre></td>
+<td align="right" class="lineno"><pre>353</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                    var colonIndex = indexOf(this.allBuf.bytes(), b":", start: this.parsedIndex) ?? -1</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>361</pre></td>
+<td align="right" class="lineno"><pre>354</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                    if (colonIndex == -1 || colonIndex &gt; i) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>362</pre></td>
+<td align="right" class="lineno"><pre>355</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                        throw Exception("header data is invalid:")</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>363</pre></td>
+<td align="right" class="lineno"><pre>356</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>364</pre></td>
+<td align="right" class="lineno"><pre>357</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                    var key = String.fromUtf8(this.allBuf.bytes().slice(this.parsedIndex, colonIndex - this.parsedIndex), isAscii: true)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>365</pre></td>
+<td align="right" class="lineno"><pre>358</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                    var val = String.fromUtf8(trim(this.allBuf.bytes().slice(colonIndex + 1, i - colonIndex - 1),SP), isAscii: true)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>366</pre></td>
+<td align="right" class="lineno"><pre>359</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                    this.respHead.set(key, val)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>367</pre></td>
+<td align="right" class="lineno"><pre>360</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                    responseBuilder.addHeader(key,val)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>368</pre></td>
+<td align="right" class="lineno"><pre>361</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                    this.parsedIndex = i+2</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>369</pre></td>
+<td align="right" class="lineno"><pre>362</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                case None =&gt; ()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>370</pre></td>
+<td align="right" class="lineno"><pre>363</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>364</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>365</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>366</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>367</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    /**</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>368</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     * The Function is getConnection</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>369</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     *</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>370</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     * @return Type of Connection</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>371</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
+<td align="left" class="src "><pre>     * @since 0.30.4</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>372</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>373</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>374</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    /**</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>375</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * The Function is getConnection</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>376</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     *</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>377</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * @return Type of Connection</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>378</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * @since 0.30.4</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>379</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>380</pre></td>
+<td align="right" class="lineno"><pre>373</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>    public func getConnection(): Connection {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>381</pre></td>
+<td align="right" class="lineno"><pre>374</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>        return this.realConnection</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>382</pre></td>
+<td align="right" class="lineno"><pre>375</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>383</pre></td>
+<td align="right" class="lineno"><pre>376</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>384</pre></td>
+<td align="right" class="lineno"><pre>377</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    /**</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>385</pre></td>
+<td align="right" class="lineno"><pre>378</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * The Function is cancel</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>386</pre></td>
+<td align="right" class="lineno"><pre>379</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     *</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>387</pre></td>
+<td align="right" class="lineno"><pre>380</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @return Type of Unit</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>388</pre></td>
+<td align="right" class="lineno"><pre>381</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @since 0.30.4</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>389</pre></td>
+<td align="right" class="lineno"><pre>382</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>390</pre></td>
+<td align="right" class="lineno"><pre>383</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    public func cancel(): Unit {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>391</pre></td>
+<td align="right" class="lineno"><pre>384</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        this.realConnection.cancel()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>392</pre></td>
+<td align="right" class="lineno"><pre>385</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>393</pre></td>
+<td align="right" class="lineno"><pre>386</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>}</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>394</pre></td>
+<td align="right" class="lineno"><pre>387</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>395</pre></td>
+<td align="right" class="lineno"><pre>388</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>/**</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>396</pre></td>
+<td align="right" class="lineno"><pre>389</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre> * The class is Http2ExchangeCodec inherited from ExchangeCodec</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>397</pre></td>
+<td align="right" class="lineno"><pre>390</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre> * @author luoyukai4</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>398</pre></td>
+<td align="right" class="lineno"><pre>391</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre> * @since 0.29.3</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>399</pre></td>
+<td align="right" class="lineno"><pre>392</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre> */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>400</pre></td>
+<td align="right" class="lineno"><pre>393</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>public class Http2ExchangeCodec &lt;: ExchangeCodec{</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>401</pre></td>
+<td align="right" class="lineno"><pre>394</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    private var connection: Connection</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>402</pre></td>
+<td align="right" class="lineno"><pre>395</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    private var realConnection: H2ClientConn</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>403</pre></td>
+<td align="right" class="lineno"><pre>396</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    private var respHead: Header = Header()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>404</pre></td>
+<td align="right" class="lineno"><pre>397</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    private var response: ?H2Response = None</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>405</pre></td>
+<td align="right" class="lineno"><pre>398</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>406</pre></td>
+<td align="right" class="lineno"><pre>399</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    /*</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>407</pre></td>
+<td align="right" class="lineno"><pre>400</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * The Function is init constructor</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>408</pre></td>
+<td align="right" class="lineno"><pre>401</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     *</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>409</pre></td>
+<td align="right" class="lineno"><pre>402</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @param connection of Connection</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>410</pre></td>
+<td align="right" class="lineno"><pre>403</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @param realConnection of H2ClientConn</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>411</pre></td>
+<td align="right" class="lineno"><pre>404</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @since 0.30.4</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>412</pre></td>
+<td align="right" class="lineno"><pre>405</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>413</pre></td>
+<td align="right" class="lineno"><pre>406</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    init(connection: Connection, realConnection: H2ClientConn) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>414</pre></td>
+<td align="right" class="lineno"><pre>407</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        this.connection = connection</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>415</pre></td>
+<td align="right" class="lineno"><pre>408</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        this.realConnection = realConnection</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>416</pre></td>
+<td align="right" class="lineno"><pre>409</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>417</pre></td>
+<td align="right" class="lineno"><pre>410</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>418</pre></td>
+<td align="right" class="lineno"><pre>411</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>419</pre></td>
+<td align="right" class="lineno"><pre>412</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    /**</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>420</pre></td>
+<td align="right" class="lineno"><pre>413</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * The Function is reportedContentLength</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>421</pre></td>
+<td align="right" class="lineno"><pre>414</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     *</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>422</pre></td>
+<td align="right" class="lineno"><pre>415</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @return Type of Int64</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>423</pre></td>
+<td align="right" class="lineno"><pre>416</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @since 0.30.4</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>424</pre></td>
+<td align="right" class="lineno"><pre>417</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>425</pre></td>
+<td align="right" class="lineno"><pre>418</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    public func reportedContentLength(): Int64{</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>426</pre></td>
+<td align="right" class="lineno"><pre>419</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        match (this.respHead.get("Content-Length")) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>427</pre></td>
+<td align="right" class="lineno"><pre>420</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case Some(s) =&gt;</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>428</pre></td>
+<td align="right" class="lineno"><pre>421</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            match (parseInt64(s)) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>429</pre></td>
+<td align="right" class="lineno"><pre>422</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                case Some(n) =&gt; return n</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>430</pre></td>
+<td align="right" class="lineno"><pre>423</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                case None =&gt;</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>431</pre></td>
+<td align="right" class="lineno"><pre>424</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                    throw HttpException("Content-Length is invalid: ${s}.")</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>432</pre></td>
+<td align="right" class="lineno"><pre>425</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>433</pre></td>
+<td align="right" class="lineno"><pre>426</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case None =&gt; return response.getOrThrow().contentLength</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>434</pre></td>
+<td align="right" class="lineno"><pre>427</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>435</pre></td>
+<td align="right" class="lineno"><pre>428</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>436</pre></td>
+<td align="right" class="lineno"><pre>429</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>437</pre></td>
+<td align="right" class="lineno"><pre>430</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    /**</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>438</pre></td>
+<td align="right" class="lineno"><pre>431</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * The Function is write</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>439</pre></td>
+<td align="right" class="lineno"><pre>432</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     *</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>440</pre></td>
+<td align="right" class="lineno"><pre>433</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @param request of Request</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>441</pre></td>
+<td align="right" class="lineno"><pre>434</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     *</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>442</pre></td>
+<td align="right" class="lineno"><pre>435</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @return Type of Unit</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>443</pre></td>
+<td align="right" class="lineno"><pre>436</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @since 0.30.4</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>444</pre></td>
+<td align="right" class="lineno"><pre>437</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>445</pre></td>
+<td align="right" class="lineno"><pre>438</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    public func write(request: Request): Unit {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>446</pre></td>
+<td align="right" class="lineno"><pre>439</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let req4cj = request.toHttpRequest()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>447</pre></td>
+<td align="right" class="lineno"><pre>440</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let res: H2Response = realConnection.doRequest(H2Request(req4cj))</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>448</pre></td>
+<td align="right" class="lineno"><pre>441</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        respHead = res.header</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>449</pre></td>
+<td align="right" class="lineno"><pre>442</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        response = res</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>450</pre></td>
+<td align="right" class="lineno"><pre>443</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>451</pre></td>
+<td align="right" class="lineno"><pre>444</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>452</pre></td>
+<td align="right" class="lineno"><pre>445</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>453</pre></td>
+<td align="right" class="lineno"><pre>446</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    /**</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>454</pre></td>
+<td align="right" class="lineno"><pre>447</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * The Function is readResponseHeaders</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>455</pre></td>
+<td align="right" class="lineno"><pre>448</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     *</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>456</pre></td>
+<td align="right" class="lineno"><pre>449</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @return Type of ResponseBuilder</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>457</pre></td>
+<td align="right" class="lineno"><pre>450</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @since 0.30.4</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>458</pre></td>
+<td align="right" class="lineno"><pre>451</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>459</pre></td>
+<td align="right" class="lineno"><pre>452</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    public func readResponseHeaders(): ResponseBuilder {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>460</pre></td>
+<td align="right" class="lineno"><pre>453</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        match(response) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>461</pre></td>
+<td align="right" class="lineno"><pre>454</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case Some(h2resp) =&gt;</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>462</pre></td>
+<td align="right" class="lineno"><pre>455</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                return Response.builder().protocol(Protocol.get(h2resp.proto)).code(h2resp.statusCode)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>463</pre></td>
+<td align="right" class="lineno"><pre>456</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                    .header(h2resp.header.clone())</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>464</pre></td>
+<td align="right" class="lineno"><pre>457</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            case None =&gt;</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>465</pre></td>
+<td align="right" class="lineno"><pre>458</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                throw Exception("invoke write first")</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>466</pre></td>
+<td align="right" class="lineno"><pre>459</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>467</pre></td>
+<td align="right" class="lineno"><pre>460</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>468</pre></td>
+<td align="right" class="lineno"><pre>461</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>469</pre></td>
+<td align="right" class="lineno"><pre>462</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    /**</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>470</pre></td>
+<td align="right" class="lineno"><pre>463</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * The Function is openResponseBody</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>471</pre></td>
+<td align="right" class="lineno"><pre>464</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     *</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>472</pre></td>
+<td align="right" class="lineno"><pre>465</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @return Type of Option&lt;ResponseBody&gt;</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>473</pre></td>
+<td align="right" class="lineno"><pre>466</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @since 0.30.4</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>474</pre></td>
+<td align="right" class="lineno"><pre>467</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>475</pre></td>
+<td align="right" class="lineno"><pre>468</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    public func openResponseBody(): Option&lt;ResponseBody&gt; {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>476</pre></td>
+<td align="right" class="lineno"><pre>469</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        match(response) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>477</pre></td>
+<td align="right" class="lineno"><pre>470</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case Some(h2resp) =&gt;</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>478</pre></td>
+<td align="right" class="lineno"><pre>471</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                let contentLength =  reportedContentLength()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>479</pre></td>
+<td align="right" class="lineno"><pre>472</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                if ( contentLength == 0){</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>480</pre></td>
+<td align="right" class="lineno"><pre>473</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                    return None</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>481</pre></td>
+<td align="right" class="lineno"><pre>474</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>482</pre></td>
+<td align="right" class="lineno"><pre>475</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                return ResponseBody(h2resp.header.get("Content-Type") ?? "", contentLength,</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>483</pre></td>
+<td align="right" class="lineno"><pre>476</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                    (h2resp.body as ByteArrayStream).getOrThrow())</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>484</pre></td>
+<td align="right" class="lineno"><pre>477</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            case None =&gt; throw Exception("invoke write first")</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>485</pre></td>
+<td align="right" class="lineno"><pre>478</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>486</pre></td>
+<td align="right" class="lineno"><pre>479</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>487</pre></td>
+<td align="right" class="lineno"><pre>480</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>488</pre></td>
+<td align="right" class="lineno"><pre>481</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    /**</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>489</pre></td>
+<td align="right" class="lineno"><pre>482</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * The Function is getConnection</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>490</pre></td>
+<td align="right" class="lineno"><pre>483</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     *</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>491</pre></td>
+<td align="right" class="lineno"><pre>484</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @return Type of Connection</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>492</pre></td>
+<td align="right" class="lineno"><pre>485</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @since 0.30.4</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>493</pre></td>
+<td align="right" class="lineno"><pre>486</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>494</pre></td>
+<td align="right" class="lineno"><pre>487</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    public func getConnection(): Connection {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>495</pre></td>
+<td align="right" class="lineno"><pre>488</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return this.connection</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>496</pre></td>
+<td align="right" class="lineno"><pre>489</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>497</pre></td>
+<td align="right" class="lineno"><pre>490</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>498</pre></td>
+<td align="right" class="lineno"><pre>491</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    /**</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>499</pre></td>
+<td align="right" class="lineno"><pre>492</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * The Function is cancel</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>500</pre></td>
+<td align="right" class="lineno"><pre>493</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     *</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>501</pre></td>
+<td align="right" class="lineno"><pre>494</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @return Type of Unit</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>502</pre></td>
+<td align="right" class="lineno"><pre>495</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @since 0.30.4</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>503</pre></td>
+<td align="right" class="lineno"><pre>496</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>504</pre></td>
+<td align="right" class="lineno"><pre>497</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>    public func cancel(): Unit {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>505</pre></td>
+<td align="right" class="lineno"><pre>498</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>        this.realConnection.connState = ConnectionState.CLOSE</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>506</pre></td>
+<td align="right" class="lineno"><pre>499</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>507</pre></td>
+<td align="right" class="lineno"><pre>500</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>}</pre></td>

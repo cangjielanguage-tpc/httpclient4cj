@@ -20,11 +20,6 @@ main (){
 
 class MyInterceptor<: Interceptor {
      public func intercept(chain: Chain): okhttp.Response {
-        chain.connectTimeoutMillis()
-        chain.readTimeoutMillis()
-        chain.writeTimeoutMillis()
-        chain.withConnectTimeout(1,TimeUnit())
-        chain.withReadTimeout(1,TimeUnit())
         let request: http.Request = chain.getRequest().toHttpRequest()
         var ssv = ByteArrayStream()
         request.copyTo(ssv)

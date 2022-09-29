@@ -312,13 +312,6 @@ public class Http1ExchangeCodec<: ExchangeCodec{
                 case None => throw ProtocolException("header data is invalid: ")
             }
             var proto = bufSlice(0, protoEndIndex)
-            if (!proto.startsWith("HTTP/1.")) {
-                if((proto == "ICY ")) {
-                   proto = "http/1.0"
-                } else {
-                    throw ProtocolException("Unexpected proto: " + "${proto}")
-                }
-            }
             var messageIndex = match (indexOf(this.allBuf.bytes(), SP, start: protoEndIndex+1)) {
                 case Some(i) => i
                 case None => throw ProtocolException("header data is invalid: ")
