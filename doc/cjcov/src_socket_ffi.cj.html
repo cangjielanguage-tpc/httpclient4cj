@@ -284,7 +284,7 @@ pre
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2022-08-31 19:23:42</td>
+            <td class="headerValue">2022-09-29 16:50:56</td>
             <td></td>
             <td class="headerName">Lines:</td>
             <td class="headerTableEntry">14</td>
@@ -486,7 +486,7 @@ pre
 <td align="right" class="lineno"><pre>28</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        unsafe { free(ip) }</pre></td>
+<td align="left" class="src uncoveredLine"><pre>        unsafe { free(CPointer&lt;Unit&gt;(ip)) }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>29</pre></td>
@@ -528,7 +528,7 @@ pre
 <td align="right" class="lineno"><pre>35</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    unsafe { free(ip) }</pre></td>
+<td align="left" class="src coveredLine"><pre>    unsafe { free(CPointer&lt;Unit&gt;(ip)) }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>36</pre></td>

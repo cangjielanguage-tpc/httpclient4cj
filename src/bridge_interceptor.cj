@@ -64,7 +64,8 @@ public class BridgeInterceptor<: Interceptor {
         // If we add an "Accept-Encoding: gzip" header field we're responsible for also decompressing
         // the transfer stream.
         if (request.getHeader("Accept-Encoding", "") == "" && request.getHeader("Range", "") == "") {
-          //TODO transparentGzip = true requestBuilder.header("Accept-Encoding", "gzip")
+           transparentGzip = true
+           requestBuilder.header("Accept-Encoding", "gzip")
         }
         let cookies = cookieJar.cookies(request.getUrl())
         if (cookies.size != 0) {
@@ -75,7 +76,7 @@ public class BridgeInterceptor<: Interceptor {
         }
         var response: Response =  chain.proceed(requestBuilder.build())
         let responseHeader: Header = response.getHeaders()
-        // receiveHeaders(cookieJar, request.getUrl(), responseHeader)
+        receiveHeaders(cookieJar, request.getUrl(), responseHeader)
         let responseBuilder: ResponseBuilder = response.newBuilder().request(request)
         if (transparentGzip && "gzip".equals(response.getHeader("Content-Encoding","")) && hasBody(response)) {
             let strippedHeader = response.getHeaders().clone()
@@ -117,13 +118,12 @@ public class BridgeInterceptor<: Interceptor {
      * @since 0.29.3
      */
     func receiveHeaders(cookieJar: CookieJar, url: URL, header: Header): Unit {
-        let cookie: ArrayList<String> = header.getAll("Set-Cookie")
-        let cookies =  Array<Cookie>(cookie.size, item: Cookie())
-        for (index in 0..cookie.size) {
-            // TODO parse Cookie
-            cookies.set(index, Cookie(url.toString(), cookie[index]))
+        match(header.get("Set-Cookie")) {
+            case Some (c) =>
+                let cookies = Array<Cookie>(1, item:  Cookie(url.toString(), c))
+                cookieJar.setCookies(url, cookies)
+            case None => ()
         }
-
     }
 }
 

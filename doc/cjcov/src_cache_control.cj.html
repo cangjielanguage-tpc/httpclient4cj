@@ -284,11 +284,11 @@ pre
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2022-08-31 19:23:42</td>
+            <td class="headerValue">2022-09-29 16:50:56</td>
             <td></td>
             <td class="headerName">Lines:</td>
-            <td class="headerTableEntry">172</td>
-            <td class="headerTableEntry">177</td>
+            <td class="headerTableEntry">173</td>
+            <td class="headerTableEntry">178</td>
             <td class="headerTableEntry" style="background-color:LightGreen">97.2 %</td>
           </tr>
           <tr>
@@ -773,8 +773,8 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>76</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    var headerValue: String = ""</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    var headerValue: String = ""</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>77</pre></td>
@@ -1770,7 +1770,7 @@ pre
 <td align="right" class="lineno"><pre>242</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        let nameAndValue: Array&lt;String&gt; = String(toArray(ss.readToEnd())).split("\r\n")</pre></td>
+<td align="left" class="src coveredLine"><pre>        let nameAndValue: Array&lt;String&gt; = String.fromUtf8(ss.readToEnd()).split("\r\n")</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>243</pre></td>
@@ -1794,7 +1794,7 @@ pre
 <td align="right" class="lineno"><pre>246</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        head.remove(nameAndValue.size() - 1)</pre></td>
+<td align="left" class="src coveredLine"><pre>        head.remove(nameAndValue.size - 1)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>247</pre></td>
@@ -2046,7 +2046,7 @@ pre
 <td align="right" class="lineno"><pre>288</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        for(i in 0..headers.size()/2) {</pre></td>
+<td align="left" class="src coveredLine"><pre>        for(i in 0..headers.size/2) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>289</pre></td>
@@ -2142,7 +2142,7 @@ pre
 <td align="right" class="lineno"><pre>304</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            while(pos &lt; value.size()) {</pre></td>
+<td align="left" class="src coveredLine"><pre>            while(pos &lt; value.size) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>305</pre></td>
@@ -2172,7 +2172,7 @@ pre
 <td align="right" class="lineno"><pre>309</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                if (pos == value.size() || value.charAt(pos) == ',' || value.charAt(pos) == ';') {</pre></td>
+<td align="left" class="src coveredLine"><pre>                if (pos == value.size || value.charAt(pos) == ',' || value.charAt(pos) == ';') {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>310</pre></td>
@@ -2208,7 +2208,7 @@ pre
 <td align="right" class="lineno"><pre>315</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                    if (pos &lt; value.size() &amp;&amp; value.charAt(pos) == '\"') {</pre></td>
+<td align="left" class="src coveredLine"><pre>                    if (pos &lt; value.size &amp;&amp; value.charAt(pos) == '\"') {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>316</pre></td>
@@ -2622,13 +2622,13 @@ pre
 <td align="right" class="lineno"><pre>384</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        if (result.size() == 0) { return "" }</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (result.size == 0) { return "" }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>385</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        result.remove(result.size() - 2, 1)</pre></td>
+<td align="left" class="src coveredLine"><pre>        result.remove(result.size - 2..result.size - 1)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>386</pre></td>
