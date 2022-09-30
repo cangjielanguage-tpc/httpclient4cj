@@ -21,6 +21,7 @@ main (){
 
 class MyInterceptor<: Interceptor {
      public func intercept(chain: Chain): okhttp.Response {
+        chain.getTransmitter().hasExchangeFinder()
         let request = chain.getRequest()
         let exchange: Exchange = chain.getExchange()
         exchange.write(request)

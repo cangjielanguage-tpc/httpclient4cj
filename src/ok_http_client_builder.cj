@@ -132,7 +132,7 @@ public class OkHttpClientBuilder <: Builder<OkHttpClient> {
      * @return Type of OkHttpClientBuilder
      * @since 0.29.3
      */
-    func cookieJar(cookieJar: CookieJar): OkHttpClientBuilder {
+    public func cookieJar(cookieJar: CookieJar): OkHttpClientBuilder {
         this.cookieJarBuild = cookieJar
         return this
     }
