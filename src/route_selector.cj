@@ -100,8 +100,4 @@ class RouteSelector {
         allRoutes.appendAll(routes)
         return routes
     }
-
-    public func clone(): RouteSelector {
-        return RouteSelector(address, routeDatabase)
-    }
 }
