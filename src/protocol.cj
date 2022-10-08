@@ -14,7 +14,7 @@ public enum Protocol {
     /**
     * An obsolete plaintext framing that does not use persistent sockets by default.
     */
-   | HTTP_1_0| HTTP_1_1| SPDY_3 |  HTTP_2 | H2_PRIOR_KNOWLEDGE | QUIC
+   | HTTP_1_0| HTTP_1_1|  HTTP_2 | H2_PRIOR_KNOWLEDGE
 
     /**
      * The Function is get
@@ -29,10 +29,8 @@ public enum Protocol {
         return match (protocol) {
             case "http/1.0" | "HTTP/1.0" => HTTP_1_0
             case "http/1.1" | "HTTP/1.1" => HTTP_1_1
-            case "spdy/3.1" | "SPDY/3.1" => SPDY_3
             case "h2" | "H2"| "http/2.0" | "HTTP/2.0" => HTTP_2
             case "h2_prior_knowledge" | "H2_PRIOR_KNOWLEDGE"=> H2_PRIOR_KNOWLEDGE
-            case "quic" | "QUIC"=> QUIC
             case _  =>
                 throw ProtocolException("no find protocol")
 
@@ -49,10 +47,8 @@ public enum Protocol {
         match (this) {
             case HTTP_1_0 => "http/1.0"
             case HTTP_1_1 => "http/1.1"
-            case SPDY_3 => "spdy/3.1"
             case HTTP_2 => "h2"
             case H2_PRIOR_KNOWLEDGE => "h2_prior_knowledge"
-            case QUIC => "quic"
         }
     }
 }

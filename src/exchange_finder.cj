@@ -14,7 +14,7 @@ package okhttp
  * @author guo_tingtingtekla,luoyukai4
  * @since 0.29.3
  */
-public class ExchangeFinder {
+class ExchangeFinder {
     /* var member transmitter type is Transmitter */
     private var transmitter: Transmitter
     /* var member address type is Address */
@@ -40,7 +40,7 @@ public class ExchangeFinder {
      * @param call of Call
      * @since 0.29.3
      */
-    public init (transmitter: Transmitter, connectionPool: ConnectionPool, address: Address, call: Call) {
+    init (transmitter: Transmitter, connectionPool: ConnectionPool, address: Address, call: Call) {
         this.transmitter = transmitter
         this.connectionPool = connectionPool
         this.call = call
@@ -103,8 +103,8 @@ public class ExchangeFinder {
      * @since 0.29.3
      */
     private func findConnection(connectTimeout:Option<Duration>, connectionRetryEnabled: Bool): Connection {
-        let tuple: (Option<Socket>,Option<Connection>,Option<Route>) = firstGetConn();
-        var toClose: Option<Socket> = tuple[0]
+        let tuple: (Option<SocketClient>,Option<Connection>,Option<Route>) = firstGetConn();
+        var toClose: Option<SocketClient> = tuple[0]
         var result: Option<Connection> = tuple[1]
         var selectedRoute: Option<Route> = tuple[2]
         Util.closeQuietly(toClose)
@@ -134,7 +134,7 @@ public class ExchangeFinder {
         var conn: Connection = result.getOrThrow()
         conn.connect(connectTimeout, connectionRetryEnabled)
         connectionPool.routeDatabase.connected(conn.route)
-        var socket: Option<Socket> = None
+        var socket: Option<SocketClient> = None
         synchronized (connectionPool.mutex) {
             connectingConnection = None
             if (connectionPool.transmitterAcquirePooledConnection(
@@ -152,8 +152,8 @@ public class ExchangeFinder {
         return result.getOrThrow()
     }
 
-    func firstGetConn(): (Option<Socket>,Option<Connection>,Option<Route>){
-        var toClose: Option<Socket>
+    func firstGetConn(): (Option<SocketClient>,Option<Connection>,Option<Route>){
+        var toClose: Option<SocketClient>
         var result: Option<Connection> = Option<Connection>.None
         var selectedRoute: Option<Route> = None
         synchronized (connectionPool.mutex) {
@@ -167,10 +167,10 @@ public class ExchangeFinder {
                     if (conn.noNewExchanges) {
                         toClose = transmitter.releaseConnectionNoEvents()
                     } else {
-                        toClose = Option<Socket>.None
+                        toClose = Option<SocketClient>.None
                     }
                 case _ =>
-                    toClose = Option<Socket>.None
+                    toClose = Option<SocketClient>.None
             }
             //Attempt to get a connection from the pool first time .
              match (result) {
@@ -230,7 +230,7 @@ public class ExchangeFinder {
             case None => return false
         }
     }
-    func trackFailure() {
+    func trackFailure(): Unit {
        synchronized (connectionPool.mutex) {
              hasStreamFailure = true
        }
@@ -245,13 +245,13 @@ public class ExchangeFinder {
 public class Exchange {
 
     /** var member transmitter type is Transmitter */
-    public var transmitter: Transmitter
+    let transmitter: Transmitter
     /** var member call type is Call */
-    public var call: Call
+    let call: Call
     /** var member finder type is ExchangeFinder */
-    public var finder: ExchangeFinder
+    let finder: ExchangeFinder
     /** var member codec type is ExchangeCodec */
-    public var codec: ExchangeCodec
+    let codec: ExchangeCodec
 
     /**
      * The Function is init constructor
@@ -262,23 +262,11 @@ public class Exchange {
      * @param codec of ExchangeCodec
      * @since 0.29.3
      */
-    public init (transmitter: Transmitter, call: Call, finder: ExchangeFinder, codec: ExchangeCodec) {
+     init (transmitter: Transmitter, call: Call, finder: ExchangeFinder, codec: ExchangeCodec) {
         this.transmitter = transmitter
         this.call = call
         this.finder = finder
         this.codec = codec
-    }
-
-    /**
-     * The Function is write
-     *
-     * @param request of Request
-     *
-     * @return Type of Unit
-     * @since 0.29.3
-     */
-    public func write(request: Request): Unit {
-        codec.write(request)
     }
 
     /**
@@ -287,9 +275,12 @@ public class Exchange {
      * @return Type of ResponseBuilder
      * @since 0.29.3
      */
-    public func readResponseHeaders(): ResponseBuilder {
-        let result: ResponseBuilder = codec.readResponseHeaders()
-        initExchange(result, this)
+    public func readResponseHeaders(expectContinue: Bool): Option<ResponseBuilder> {
+        let result: Option<ResponseBuilder> = codec.readResponseHeaders(expectContinue)
+        match (result) {
+            case Some(r) => initExchange(r, this)
+            case None => ()
+        }
         return result
     }
 
@@ -303,8 +294,11 @@ public class Exchange {
      * @return Type of ResponseBody
      * @since 0.29.3
      */
-    public func openResponseBody(): Option<ResponseBody>{
-         return codec.openResponseBody()
+    public func openResponseBody(response: Response): ResponseBody{
+         let contentType: String = response.getHeader("Content-Type","")
+         let contentLength: Int64 = codec.reportedContentLength(response)
+         let source = codec.openResponseBodySource(response)
+         return ResponseBody(contentType, contentLength, ResponseBodySource(source, this, contentLength))
     }
 
     public func getConnection(): Connection {
@@ -324,4 +318,42 @@ public class Exchange {
         codec.getConnection().noExchanges()
     }
 
+    public func noRequestBody(): Unit {
+        transmitter.exchangeMessageDone(this, true, false);
+    }
+
+    public func createRequestBody(request: Request): Sink{
+        let contentLength = request.getBody().getOrThrow().getContentLength()
+        let rawRequestBody: Sink = codec.createRequestBody(request)
+        return RequestBodySink(rawRequestBody, contentLength, this)
+    }
+
+    public func writeRequestHeaders(request: Request): Unit {
+        try {
+            codec.writeRequestHeaders(request)
+        } catch (e: IOException) {
+             throw e
+        }
+    }
+
+    public func flushRequest(): Unit {
+        codec.flushRequest()
+    }
+
+    public func finishRequest(): Unit {
+        codec.finishRequest()
+    }
+
+    func bodyComplete(responseDone: Bool, requestDone: Bool, exception: Option<NetException>): Unit{
+        match(exception) {
+            case Some(e) => trackFailure(e)
+            case None => ()
+        }
+        transmitter.exchangeMessageDone(this, requestDone, responseDone)
+    }
+
+    func trackFailure(exception: NetException): Unit{
+        finder.trackFailure()
+        codec.getConnection().trackFailure(exception)
+    }
 }

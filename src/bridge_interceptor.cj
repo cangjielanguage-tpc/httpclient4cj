@@ -42,8 +42,8 @@ public class BridgeInterceptor<: Interceptor {
         match(request.getBody()) {
             case Some(b) =>  
                 requestBuilder.header("Content-Type", b.contentType())
-                if (b.contentLength() != -1) {
-                    requestBuilder.header("Content-Length", "${b.contentLength()}")
+                if (b.getContentLength() != -1) {
+                    requestBuilder.header("Content-Length", "${b.getContentLength()}")
                     requestBuilder.removeHeader("Transfer-Encoding")
                 } else {
                     requestBuilder.header("Transfer-Encoding", "chunked")
@@ -85,7 +85,7 @@ public class BridgeInterceptor<: Interceptor {
             responseBuilder.header(strippedHeader)
             var contentType = response.getHeader("Content-Type","")
             // TODO
-            responseBuilder.body(ResponseBody())
+            responseBuilder.body(response.getBody())
         }
         return responseBuilder.build()
     }
@@ -151,4 +151,12 @@ public class BridgeInterceptor<: Interceptor {
             return true
          }
         return false
+    }
+
+    public func contentLength(response: Response): Int64 {
+        return contentLength(response.getHeaders())
+    }
+
+    public func contentLength(headers: Header): Int64 {
+        return parseInt64(headers.get("Content-Length") ?? "") ?? -1
     }

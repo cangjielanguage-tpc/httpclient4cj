@@ -15,10 +15,10 @@ package okhttp
  */
 public class RequestBody {
     /* var member content type is String */
-    private var content: String
+    private let buffer: ByteArrayStream = ByteArrayStream()
     /* var member MediaType type is String */
     private var mediaType: String
-
+    private let contentLength: Int64
     /*
      * The Function is init constructor
      *
@@ -26,8 +26,9 @@ public class RequestBody {
      * @param content of String
      * @since 0.29.3
      */
-   public init(mediaType: String, content: String) {
-        this.content = content
+   public init(mediaType: String, bytes: Array<Byte>) {
+        contentLength = bytes.size
+        this.buffer.write(bytes)
         this.mediaType = mediaType
     }
 
@@ -48,10 +49,14 @@ public class RequestBody {
      * @return Type of Int64
      * @since 0.29.3
      */
-    public func contentLength(): Int64 {
-        return content.size
+   public func getContentLength(): Int64 {
+        return contentLength
 
-    }
+   }
+
+   public func writeTo(sink: Sink): Unit {
+       sink.write(buffer.readToEnd())
+   }
 
     /**
      * The Function is get
@@ -60,9 +65,20 @@ public class RequestBody {
      * @since 0.29.3
      */
     public func get(): InputStream {
-        let stream = ByteArrayStream()
-        stream.write(content.toUtf8Array())
-        return stream
+        return buffer
+    }
+
+
+    public static func create(contentType: String, content: String): RequestBody {
+        return create(contentType, content.toUtf8Array())
+    }
+
+    public static func create(contentType: String, bytes: Array<Byte>): RequestBody {
+        return RequestBody(contentType, bytes)
+    }
+
+    public static func create(contentType: String, file: File): RequestBody {
+        return create(contentType, file.readToEnd())
     }
 
 }

@@ -10,7 +10,6 @@ main() {
     let client: OkHttpClient= OkHttpClient.builder().build()
     let request2: Request = Request.builder().url("http://44.152.44.95/index.html")
     .header("User-Agent", "OkHttp-Example")
-    .body(RequestBody("text","test"))
     .build()
     let async = client.newCall(request2)
     try {
