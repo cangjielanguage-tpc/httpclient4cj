@@ -64,7 +64,7 @@ public class Chain {
      */
     public init(interceptors: ArrayList<Interceptor>, transmitter: Transmitter , index:Int64, request: Request,
         call: Call, exchange: Option<Exchange>, connectTimeout:Option<Duration>, readTimeout:Option<Duration>,
-            writeTimeout: Option<Duration>){
+            writeTimeout: Option<Duration>) {
         this.transmitter = transmitter
         this.index = index
         this.request = request
@@ -117,7 +117,7 @@ public class Chain {
      * @since 0.29.3
      */
     public func proceed(request: Request,  transmitter: Transmitter, exchange: Option<Exchange>): Response {
-        if (index >= interceptors.size){
+        if (index >= interceptors.size) {
             throw Exception("interceptors error")
         }
         calls++

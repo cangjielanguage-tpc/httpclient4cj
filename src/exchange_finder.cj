@@ -60,9 +60,11 @@ class ExchangeFinder {
      */
     public func find(client: OkHttpClient, chain: Chain, doExtensiveHealthChecks: Bool): ExchangeCodec {
         let connectTimeout: Option<Duration> = client.getConnectTimeout()
+        let readTimeout: Option<Duration> = client.getReadTimeout()
+        let writeTimeout: Option<Duration> = client.getWriteTimeout()
         let connectionRetryEnabled: Bool = client.getRetryOnConnectionFailure()
         try {
-            let conn = findHealthyConnection(connectTimeout, connectionRetryEnabled)
+            let conn = findHealthyConnection(connectTimeout, readTimeout, writeTimeout, connectionRetryEnabled)
             return conn.getOrThrow().newCodec(client, chain)
         } catch (e: RouteException) {
             trackFailure()
@@ -79,15 +81,17 @@ class ExchangeFinder {
      * @return Type of Connection
      * @since 0.29.3
      */
-    private func findHealthyConnection(connectTimeout:Option<Duration>, connectionRetryEnabled: Bool): Option<Connection> {
+    private func findHealthyConnection(connectTimeout: Option<Duration>, readTimeout: Option<Duration>,
+        writeTimeout: Option<Duration>, connectionRetryEnabled: Bool): Option<Connection> {
         while (true) {
-            let candidate: Connection  =  findConnection(connectTimeout, connectionRetryEnabled)
+            let candidate: Connection  =  findConnection(connectTimeout, readTimeout,
+                writeTimeout, connectionRetryEnabled)
             synchronized (connectionPool.mutex) {
                 if (candidate.successCount == 0 && !candidate.isMultiplexed()) {
                   return candidate
                 }
             }
-            if(!candidate.isHealthy()) {
+            if (!candidate.isHealthy()) {
                 candidate.noExchanges()
             }
             return candidate
@@ -102,9 +106,10 @@ class ExchangeFinder {
      * @return Type of Connection
      * @since 0.29.3
      */
-    private func findConnection(connectTimeout:Option<Duration>, connectionRetryEnabled: Bool): Connection {
-        let tuple: (Option<SocketClient>,Option<Connection>,Option<Route>) = firstGetConn();
-        var toClose: Option<SocketClient> = tuple[0]
+    private func findConnection(connectTimeout:Option<Duration>, readTimeout: Option<Duration>,
+        writeTimeout: Option<Duration>, connectionRetryEnabled: Bool): Connection {
+        let tuple: (Option<OKSocket>,Option<Connection>,Option<Route>) = firstGetConn();
+        var toClose: Option<OKSocket> = tuple[0]
         var result: Option<Connection> = tuple[1]
         var selectedRoute: Option<Route> = tuple[2]
         Util.closeQuietly(toClose)
@@ -132,9 +137,9 @@ class ExchangeFinder {
         result = Connection(connectionPool, selectedRoute.getOrThrow())
         connectingConnection = result
         var conn: Connection = result.getOrThrow()
-        conn.connect(connectTimeout, connectionRetryEnabled)
+        conn.connect(connectTimeout, readTimeout, writeTimeout, connectionRetryEnabled)
         connectionPool.routeDatabase.connected(conn.route)
-        var socket: Option<SocketClient> = None
+        var socket: Option<OKSocket> = None
         synchronized (connectionPool.mutex) {
             connectingConnection = None
             if (connectionPool.transmitterAcquirePooledConnection(
@@ -152,8 +157,8 @@ class ExchangeFinder {
         return result.getOrThrow()
     }
 
-    func firstGetConn(): (Option<SocketClient>,Option<Connection>,Option<Route>){
-        var toClose: Option<SocketClient>
+    func firstGetConn(): (Option<OKSocket>,Option<Connection>,Option<Route>) {
+        var toClose: Option<OKSocket>
         var result: Option<Connection> = Option<Connection>.None
         var selectedRoute: Option<Route> = None
         synchronized (connectionPool.mutex) {
@@ -167,16 +172,17 @@ class ExchangeFinder {
                     if (conn.noNewExchanges) {
                         toClose = transmitter.releaseConnectionNoEvents()
                     } else {
-                        toClose = Option<SocketClient>.None
+                        toClose = Option<OKSocket>.None
                     }
                 case _ =>
-                    toClose = Option<SocketClient>.None
+                    toClose = Option<OKSocket>.None
             }
             //Attempt to get a connection from the pool first time .
              match (result) {
                 case Some(r) => ()
                 case None =>
-                    if (connectionPool.transmitterAcquirePooledConnection(address, transmitter, Option<RouteSelector>.None)){
+                    if (connectionPool.transmitterAcquirePooledConnection(address,
+                            transmitter, Option<RouteSelector>.None)) {
                         result = transmitter.connection
                     } else {
                         match(nextRouteToTry) {
@@ -205,7 +211,7 @@ class ExchangeFinder {
     }
 
     func hasRouteToTry(): Bool {
-        synchronized(connectionPool.mutex) {
+        synchronized (connectionPool.mutex) {
             match(nextRouteToTry) {
                 case Some(route) => return true
                 case None => ()
@@ -221,7 +227,7 @@ class ExchangeFinder {
     private func retryCurrentRoute(): Bool {
         match (transmitter.connection) {
             case Some(conn) =>
-                if(conn.routeFailureCount == 0 &&
+                if (conn.routeFailureCount == 0 &&
                     Util.sameConnection(conn.route.getAddress().getUrl(), address.getUrl())) {
                     return true
                 } else {

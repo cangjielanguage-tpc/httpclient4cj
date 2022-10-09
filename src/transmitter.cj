@@ -107,7 +107,7 @@ public class Transmitter {
      * @return Type of Option<Socket>
      * @since 0.29.3
      */
-     func releaseConnectionNoEvents(): Option<SocketClient> {
+     func releaseConnectionNoEvents(): Option<OKSocket> {
         let conn = connection.getOrThrow()
         let arr = conn.getTransmitters()
         for (index in 0..arr.size) {
@@ -124,8 +124,7 @@ public class Transmitter {
                return released.getSocket()
            }
         }
-
-        return Option<SocketClient>.None
+        return Option<OKSocket>.None
     }
 
     /**
@@ -196,7 +195,7 @@ public class Transmitter {
         let finder: ExchangeFinder = exchangeFinder.getOrThrow()
         let exchangeCodec: ExchangeCodec = finder.find(client, chain, doExtensiveHealthChecks)
         let result: Exchange = Exchange(this, call, finder, exchangeCodec)
-        synchronized(connectionPool.mutex) {
+        synchronized (connectionPool.mutex) {
             this.exchange = Some(result)
             this.exchangeRequestDone = false
             this.exchangeResponseDone = false
@@ -212,9 +211,9 @@ public class Transmitter {
     }
 
     private func maybeReleaseConnection(force: Bool) {
-        var socket: Option<SocketClient>
+        var socket: Option<OKSocket>
         synchronized (connectionPool.mutex) {
-            if(force && hasExchange()) {
+            if (force && hasExchange()) {
                 throw IllegalStateException("cannot release connection while it is in use")
             }
             if (hasConnection() && !hasExchange() && (force || noExchanges)) {
@@ -233,7 +232,7 @@ public class Transmitter {
     }
 
     public func hasConnection(): Bool {
-        synchronized (connectionPool.mutex){
+        synchronized (connectionPool.mutex) {
             return match (this.connection) {
                case Some(conn) => true
                case None => false
@@ -250,7 +249,7 @@ public class Transmitter {
         }
     }
 
-    func exchangeMessageDone(exchange: Exchange, requestDone: Bool, responseDone: Bool){
+    func exchangeMessageDone(exchange: Exchange, requestDone: Bool, responseDone: Bool) {
         var exchangeDone = false
         synchronized (connectionPool.mutex) {
             if (!refEq(this.exchange.getOrThrow(), exchange)) {
@@ -259,13 +258,13 @@ public class Transmitter {
             }
             var changed = false
             if (requestDone) {
-                if(!exchangeRequestDone) {
+                if (!exchangeRequestDone) {
                     changed = true
                 }
                 this.exchangeRequestDone =true
             }
             if (responseDone) {
-                if(!exchangeResponseDone) {
+                if (!exchangeResponseDone) {
                     changed = true
                 }
                 this.exchangeResponseDone = true

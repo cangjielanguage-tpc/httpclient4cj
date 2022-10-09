@@ -127,14 +127,14 @@ public class Dispatcher {
         var idleCallback: Option<()-> Unit>
         synchronized (mutex) {
             for (index in 0..calls.size()) {
-                if(refEq(call, calls.get(index))) {
+                if (refEq(call, calls.get(index))) {
                     calls.remove(index)
                 }
             }
             idleCallback  = this.idleCallback
         }
        var isRunning: Bool = promoteAndExecute()
-       if(!isRunning) {
+       if (!isRunning) {
             match (idleCallback) {
                case Some(cb) =>
                 spawn {
@@ -150,14 +150,14 @@ public class Dispatcher {
         var idleCallback: Option<()-> Unit>;
         synchronized (mutex) {
             for (index in 0..calls.size()) {
-                if(refEq(call, calls.get(index))) {
+                if (refEq(call, calls.get(index))) {
                     calls.remove(index)
                 }
             }
             idleCallback  = this.idleCallback
         }
        var isRunning: Bool = promoteAndExecute()
-       if(!isRunning) {
+       if (!isRunning) {
             match (idleCallback) {
                case Some(cb) =>
                 spawn {
@@ -197,7 +197,7 @@ public class Dispatcher {
     func enqueue( call: AsyncCall): Unit{
         synchronized (mutex) {
             readyAsyncCalls.add(call)
-            if(!call.get().forWebSocket) {
+            if (!call.get().forWebSocket) {
                 match (findExistingCallWithHost(call.host())) {
                     case Some(existingCall) => call.reuseCallsPerHostFrom(existingCall);
                     case None => ()
@@ -262,7 +262,7 @@ public class Dispatcher {
     func promoteAndExecute(): Bool {
         let executableCalls: ArrayList<AsyncCall> = ArrayList<AsyncCall>()
         var isRunning: Bool
-        synchronized(mutex) {
+        synchronized (mutex) {
              for (index in (0..readyAsyncCalls.size())) {
                 let asyncCall: AsyncCall = readyAsyncCalls.get(index)
                 if (runningAsyncCalls.toArrayList().size >= maxRequests) {
@@ -290,7 +290,7 @@ public class Dispatcher {
      * @since 0.30.4
      */
     public func queuedCallsCount(): Int64 {
-        synchronized(mutex) {
+        synchronized (mutex) {
             return readyAsyncCalls.size()
         }
     }
@@ -302,7 +302,7 @@ public class Dispatcher {
      * @since 0.30.4
      */
     public func runningCallsCount(): Int64 {
-        synchronized(mutex) {
+        synchronized (mutex) {
             return runningAsyncCalls.size() + runningSyncCalls.size();
         }
     }

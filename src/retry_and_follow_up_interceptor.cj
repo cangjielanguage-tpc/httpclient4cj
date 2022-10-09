@@ -85,7 +85,7 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
                 case None => ()
             }
             Util.closeQuietly(response.getBody())
-            if(transmitter.hasExchange()) {
+            if (transmitter.hasExchange()) {
                 exchange.getOrThrow().detachWithViolence();
             }
             followUpCount++
@@ -99,7 +99,7 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
     }
 
     private func recover(e: Exception, transmitter: Transmitter, requestSendStarted: Bool, userRequest: Request) {
-        if(!client.getRetryOnConnectionFailure()) {
+        if (!client.getRetryOnConnectionFailure()) {
             return false
         }
         if (isRecoverable(e, requestSendStarted)) {

@@ -61,7 +61,7 @@ public class CallServerInterceptor<: Interceptor {
             exchange.noRequestBody()
         }
         exchange.finishRequest()
-        if(!has(responseBuilder)) {
+        if (!has(responseBuilder)) {
             responseBuilder = exchange.readResponseHeaders(false)
         }
         let response: Response = responseBuilder.getOrThrow().request(request).build()
@@ -72,7 +72,7 @@ public class CallServerInterceptor<: Interceptor {
     private func checkResponse( exchange: Exchange, request: Request, checkResponse: Response) : Response {
         var response: Response = checkResponse
         let code = response.getCode()
-        if(code == 100) {
+        if (code == 100) {
             response = exchange.readResponseHeaders(false).getOrThrow().request(request).build()
         }
         response = response.newBuilder()

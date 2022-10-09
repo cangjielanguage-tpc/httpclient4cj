@@ -54,6 +54,7 @@ public class Util {
             && a.scheme == b.scheme
     }
 
+
     /**
      * The Function is getRequestMethod
      *
@@ -80,7 +81,7 @@ public class Util {
 
     public static func skipUntil(input: String, pos: Int32, characters: String): Int32 {
         var posi: Int64 = Int64(pos)
-        while(posi < input.size) {
+        while (posi < input.size) {
             posi++
             let res: Int64 = characters.indexOf(input.charAt(Int64(posi))) ?? -1
             if (res != -1) {
@@ -92,7 +93,7 @@ public class Util {
 
     public static func skipWhitespace(input: String, pos: Int32): Int32 {
         var posi: Int32 = pos
-        while(posi < Int32(input.size)) {
+        while (posi < Int32(input.size)) {
             posi++
             let c: Char = input.charAt(Int64(posi))
             if (UInt32(c) != UInt32(' ') && UInt32(c) != UInt32('\t')) {
@@ -118,71 +119,15 @@ public class Util {
     }
 }
 
-public enum SocketClient <: Resource {
-    | SocketC(Socket)
-    | TlsC(TlsSocket)
-
-    public func connect(): Unit {
-        match(this) {
-            case SocketC(conn) => conn.connect()
-            case TlsC(conn) => ()
-        }
-    }
-
-    public func connect(timeout: Duration): Unit {
-        match(this) {
-            case SocketC(conn) => conn.connect(timeout)
-            case TlsC(conn) => ()
-        }
-    }
-
-    public func read(buffer: Array<Byte>): Int64 {
-        return match(this) {
-            case SocketC(conn) => conn.read(buffer)
-            case TlsC(conn) => conn.read(buffer)
-        }
-    }
-
-    public func read(buffer: Array<Byte>, timeout: Duration): Int64 {
-        return match(this) {
-            case SocketC(conn) => conn.read(buffer, timeout)
-            case TlsC(conn) => conn.read(buffer)
-        }
-    }
-
-    public func write(buffer: Array<Byte>): Unit {
-        match(this) {
-            case SocketC(conn) => conn.write(buffer)
-            case TlsC(conn) => conn.write(buffer)
-        }
-    }
-
-    public func write(buffer: Array<Byte>, timeout: Duration): Unit {
-        match(this) {
-            case SocketC(conn) => conn.write(buffer, timeout)
-            case TlsC(conn) => conn.write(buffer)
-        }
-    }
-
-    public func close(): Unit {
-        return match(this) {
-            case SocketC(conn) =>
-                conn.close()
-            case TlsC(conn) =>
-                conn.close()
-        }
-    }
-
-    public func isClosed(): Bool {
-        return match(this) {
-            case SocketC(conn) =>
-                conn.isClosed()
-            case TlsC(conn) =>
-                conn.isClosed()
-        }
+public func disCard(source: Source): Bool {
+    try{
+        let arr = ByteArrayStream()
+        while (source.read(arr, 4096) != -1) {}
+        return true
+    }catch (e: SocketTimeoutException) {
+        return false
     }
 }
-
 
 /**
  * The Function is toArray
@@ -204,7 +149,7 @@ func UInt64ToHexString(n: UInt64): Array<Byte> {
     var num: UInt64 = n
     var arrSize: Int64 = 0
     for (i in 0..16) {
-        if(num > 0) {
+        if (num > 0) {
             arrSize++
             num = num >> 4
         } else {

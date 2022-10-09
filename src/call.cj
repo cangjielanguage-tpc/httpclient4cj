@@ -249,7 +249,7 @@ public class RealCall<: Call {
             getTransmitter().noMoreExchanges()
             throw e
        } finally {
-           if(!calledNoMoreExchanges) {
+           if (!calledNoMoreExchanges) {
               getTransmitter().noMoreExchanges()
            }
        }

@@ -23,7 +23,7 @@ main() {
     //"https://restapi.amap.com/v3/weather/weatherInfo?city=深圳&key=13eb58f5884f9749287abbead9c65"
     //http://www.weather.com.cn/data/sk/101010100.html
     //http://wjhsh.net/Jimc-p-10250861.html
-    let url: URL = URL.parse("https://restapi.amap.com/v3/weather/weatherInfo?city=深圳&key=13eb58f5884f9749287abbead9c65")
+    let url: URL = URL.parse("http://www.weather.com.cn/data/sk/101010100.html")
     let client: OkHttpClient= OkHttpClient.builder().build()
     let request: okhttp.Request = okhttp.Request.builder()
                                     .url(url)
@@ -33,6 +33,14 @@ main() {
         let response: okhttp.Response = call.execute()
         println(response.toString())
         println(response.getBody().getOrThrow().getContentLength())
+        //println(response.getBody().getOrThrow().getString())
+        println("count1 =======================")
+        println(client.getConnectionPool().getOrThrow().connectionCount())
+        println(client.getConnectionPool().getOrThrow().idleConnectionCount())
+        client.newCall(request).execute()
+        println("count =======================")
+        println(client.getConnectionPool().getOrThrow().connectionCount())
+        println(client.getConnectionPool().getOrThrow().idleConnectionCount())
     }catch (e: Exception) {
         e.printStackTrace()
         return 1

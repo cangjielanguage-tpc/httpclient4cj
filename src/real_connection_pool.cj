@@ -56,7 +56,7 @@ public class ConnectionPool {
                    break
                }
             }
-            if(removeIndex != -1) {
+            if (removeIndex != -1) {
                 connections.remove(removeIndex)
             }
             return true
@@ -84,7 +84,7 @@ public class ConnectionPool {
              if (requireMultiplexed && !conn.isMultiplexed()) {
                 continue
              }
-             if(!conn.isEligible(address, routeSelector)) {
+             if (!conn.isEligible(address, routeSelector)) {
                 continue
              }
              transmitter.acquireConnectionNoEvents(conn)
@@ -100,7 +100,7 @@ public class ConnectionPool {
      * @since 0.30.4
      */
     public func connectionCount(): Int64 {
-        synchronized(mutex) {
+        synchronized (mutex) {
             return connections.size()
         }
     }
@@ -114,7 +114,7 @@ public class ConnectionPool {
     public func idleConnectionCount(): Int64 {
         var total = 0
         for (connection in connections) {
-            if(connection.getTransmitters().size == 0) {
+            if (connection.getTransmitters().size == 0) {
                 total++
             }
         }
@@ -129,7 +129,7 @@ public class ConnectionPool {
      */
     public func evictAll(): Unit {
         let evictedConnections: ArrayList<Connection> = ArrayList<Connection>()
-        synchronized(mutex) {
+        synchronized (mutex) {
             connections.removeIf(
                 { connection: Connection =>
                     if (connection.getTransmitters().size == 0) {
@@ -147,7 +147,7 @@ public class ConnectionPool {
     }
 
     func put(connection: Connection) {
-        if(!cleanupRunning) {
+        if (!cleanupRunning) {
             cleanupRunning = true
             spawnCleanup()
         }
@@ -177,7 +177,7 @@ public class ConnectionPool {
         synchronized (this.mutex) {
             let it = connections.iterator()
             var index = 0
-            while(true) {
+            while (true) {
                 match (it.next()) {
                     case Some(conn) =>
                         let idleDurationNs: Duration = Time.now() - conn.idleAtNanos
