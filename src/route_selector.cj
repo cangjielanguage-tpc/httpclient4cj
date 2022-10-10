@@ -46,7 +46,7 @@ class RouteSelector {
             case Some(route) =>
                 index++
                 let url = address.getUrl()
-                let port:UInt16 = match(parseUInt16(url.port())){
+                let port:UInt16 = match(parseUInt16(url.port())) {
                     case Some(v) =>  v
                     case None =>
                         if (url.toString().startsWith("https")) {
@@ -74,16 +74,16 @@ class RouteSelector {
     }
 
     public func getAll(): ArrayList<Route> {
-        if(!allRoutes.isEmpty()) {
+        if (!allRoutes.isEmpty()) {
             return allRoutes
         }
         let routes: ArrayList<Route> = ArrayList<Route>()
         var index: UInt64 =0
-        while(true) {
+        while (true) {
             match (resolveDomain(TCP, address.getUrl().hostname(), index)) {
                 case Some(route) =>
                     let url = address.getUrl()
-                    let port:UInt16 = match(parseUInt16(url.port())){
+                    let port:UInt16 = match(parseUInt16(url.port())) {
                         case Some(v) => v
                         case None =>
                             if (url.toString().startsWith("https")) {

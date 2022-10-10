@@ -28,14 +28,14 @@ class KnownLengthSink<: Sink {
     }
 
     public func flush(): Unit {
-        if(closed) {
+        if (closed) {
             return
         }
         exchange.sink.flush()
     }
 
     public func close(): Unit {
-        if(closed) {
+        if (closed) {
             return
         }
         closed = true
@@ -67,14 +67,14 @@ class ChunkedSink<: Sink{
     }
 
     public func flush(): Unit {
-        if(closed) {
+        if (closed) {
             return
         }
         exchange.sink.flush()
     }
 
     public func close(): Unit {
-        if(closed) {
+        if (closed) {
             return
         }
         closed = true
@@ -122,7 +122,7 @@ class RequestBodySink<: Sink {
          }
     }
     public func close(): Unit {
-        if(closed) {
+        if (closed) {
             return
         }
         closed = true

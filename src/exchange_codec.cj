@@ -10,7 +10,6 @@ package okhttp
 
 
 from http2 import http.*
-from net import http.* as h2.*
 from std import io.*
 
 
@@ -78,23 +77,10 @@ public class Http1ExchangeCodec <: ExchangeCodec{
     private static let HEADER_LIMIT: Int64 = 256 * 1024
     /* var member realConnection type is Connection */
     private var realConnection: Connection
-    /* var member client type is OkHttpClient */
-    private var client: OkHttpClient
-    /* var member allBuf type is ByteArrayStream */
-    private var allBuf: ByteArrayStream = ByteArrayStream()
-    /* var member parsedIndex type is Int64 */
-    private var parsedIndex: Int64 = 0
     /* var member state type is Int64 */
     var state: Int64 = STATE_IDLE
-    /* let member readLength type is Int64 */
-    private let readLength: Int64 = HEADER_LIMIT
-    /* var member respHead type is Header */
-    private var respHead: Header = Header()
-    /* var member res type is ResponseBuilder */
-    private var res:ResponseBuilder = ResponseBuilder()
-    private var readTimeout: Option<Duration>
-    private var writeTimeout: Option<Duration>
-
+    /* var member client type is OkHttpClient */
+    private var client: OkHttpClient
     let sink: BufferedOutputStream
     let source: OkBuffer
     private var headerLimit: Int64 = HEADER_LIMIT
@@ -107,12 +93,9 @@ public class Http1ExchangeCodec <: ExchangeCodec{
      * @param realConnection of Connection
      * @since 0.29.3
      */
-    public init (client: OkHttpClient, realConnection: Connection, readTimeout:Option<Duration>,
-        writeTimeout: Option<Duration>, source: OkBuffer, sink: BufferedOutputStream) {
+    public init (client: OkHttpClient, realConnection: Connection, source: OkBuffer, sink: BufferedOutputStream) {
         this.client = client
         this.realConnection = realConnection
-        this.readTimeout = readTimeout
-        this.writeTimeout = writeTimeout
         this.source = source
         this.sink = sink
     }
@@ -240,9 +223,10 @@ public class Http1ExchangeCodec <: ExchangeCodec{
                 break
             }
             match (line.indexOf(":", 1)) {
-                case Some(index) => header.add(line.substring(0, index), line.substring(index + 1).trim())
+                case Some(index) =>
+                header.add(line.substring(0, index), line.substring(index + 1).trim())
                 case None =>
-                    if(!line.startsWith(":")) {
+                    if (!line.startsWith(":")) {
                         header.add("", line)
                     } else {
                         throw ProtocolException("Unexpected header: ${line}")
@@ -274,7 +258,7 @@ public class Http1ExchangeCodec <: ExchangeCodec{
      * @since 0.29.3
      */
     public func reportedContentLength(response: Response): Int64{
-        if(!hasBody(response)) {
+        if (!hasBody(response)) {
             return 0
         }
         if ("chunked" == response.getHeader("Transfer-Encoding","").toLower()) {
@@ -290,7 +274,7 @@ public class Http1ExchangeCodec <: ExchangeCodec{
         }
     }
     public func openResponseBodySource(response: Response): Source {
-        if(!hasBody(response)) {
+        if (!hasBody(response)) {
             return newFixedLengthSource(0)
         }
         if ("chunked" == response.getHeader("Transfer-Encoding","").toLower()) {
@@ -369,8 +353,7 @@ public class Http2ExchangeCodec{
             case Some(s) =>
             match (parseInt64(s)) {
                 case Some(n) => return n
-                case None =>
-                    throw HttpException("Content-Length is invalid: ${s}.")
+                case None => throw HttpException("Content-Length is invalid: ${s}.")
             }
             case None => return response.getOrThrow().contentLength
         }
@@ -418,7 +401,7 @@ public class Http2ExchangeCodec{
         match(response) {
             case Some(h2resp) =>
                 let contentLength =  reportedContentLength()
-                if ( contentLength == 0){
+                if ( contentLength == 0) {
                     return None
                 }
                 return ResponseBody(h2resp.header.get("Content-Type") ?? "", contentLength,

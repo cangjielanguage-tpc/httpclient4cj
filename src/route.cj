@@ -59,7 +59,7 @@ public class Route <: Hashable & Equatable<Route>{
     }
 
     public operator func != (rhs: Route): Bool {
-        if(this == rhs) {
+        if (this == rhs) {
             return false
         } else {
             return true

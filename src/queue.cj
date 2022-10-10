@@ -119,7 +119,7 @@ public class ConcurrentQueue<T> <:  Iterable<T>{
      * @since
      */
     public func recycle() {
-        synchronized(m) {
+        synchronized (m) {
             this.list.clear()
         }
     }

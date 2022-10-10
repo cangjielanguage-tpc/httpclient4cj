@@ -19,7 +19,7 @@ func resolveDomain(net: SocketNet, domain: String, index: UInt64): Option<(Socke
     }
     var domainName = CString(domain)
     var ip = unsafe { okhttp_SOCKET_GetAddrInfo(protocol, domainName, index)}
-    domainName.free()
+    unsafe { domainName.free() }
     if (ip.isNull()) {
         return None
     }

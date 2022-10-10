@@ -91,7 +91,7 @@ public class Address <: Hashable & Equatable<Address>{
         let it1 = protocols.iterator()
         let it2 = rhs.getProtocols().iterator()
         var index = 0
-        while(true) {
+        while (true) {
             let next1 = match (it1.next()) {
                 case Some(conn) => conn
                 case None => ""
@@ -103,7 +103,7 @@ public class Address <: Hashable & Equatable<Address>{
             if (!next1.equals(next2)) {
                 return false;
             }
-            if(next1 == "" || next2 ==  "") {
+            if (next1 == "" || next2 ==  "") {
                 break;
             }
         }

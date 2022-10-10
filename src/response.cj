@@ -39,7 +39,7 @@ public class Response {
        * @param builder of ResponseBuilder
        * @since 0.29.3
        */
-      public init(builder: ResponseBuilder){
+      public init(builder: ResponseBuilder) {
          this.request = builder.requestBuild
          this.protocol = builder.protocolBuild
          this.code = builder.codeBuild
@@ -142,13 +142,12 @@ public class Response {
 
       /** Returns true if this response redirects to another resource. */
       public func isRedirect(): Bool {
-         if(code == StatusLine.HTTP_PERM_REDIRECT ||
+         if (code == StatusLine.HTTP_PERM_REDIRECT ||
             code == StatusLine.HTTP_TEMP_REDIRECT ||
             code == StatusLine.HTTP_MULT_CHOICE ||
             code == StatusLine.HTTP_MOVED_PERM ||
             code == StatusLine.HTTP_MOVED_TEMP ||
-            code == StatusLine.HTTP_SEE_OTHER
-            ) {
+            code == StatusLine.HTTP_SEE_OTHER) {
             return true
          } else {
             return false

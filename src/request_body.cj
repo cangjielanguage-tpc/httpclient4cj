@@ -8,6 +8,7 @@
  */
 package okhttp
 
+from std import fs.*
 /**
  * The class is RequestBody
  * @author guo_tingtingtekla,luoyukai4

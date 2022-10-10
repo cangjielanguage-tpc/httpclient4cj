@@ -95,7 +95,7 @@ public class CacheControl {
         this.headerValue = headerValue 
     }
 
-    public init(builder: CacheControlBuilder){
+    public init(builder: CacheControlBuilder) {
         this.noCacheInit = builder.noCacheBuild
         this.noStoreInit = builder.noStoreBuild
         this.maxAgeSecondsInit = builder.maxAgeSeconds
@@ -246,7 +246,7 @@ public class CacheControl {
             head.append(nameAndValue[i])
         }
         let headers: ArrayList<String> = ArrayList<String>()
-        for(i in head){
+        for(i in head) {
             let c: Array<String> = i.split(":")
             headers.appendAll(c)
         }
@@ -303,7 +303,7 @@ public class CacheControl {
                 continue
             }
             var pos: Int64 = 0
-            while(pos < value.size) {
+            while (pos < value.size) {
                 let tokenStart: Int64 = pos
                 pos = Int64(Util.skipUntil(value, Int32(pos), "=,;"))
                 let directive: String = value.substring(tokenStart, pos - tokenStart).trim()
@@ -361,7 +361,7 @@ public class CacheControl {
      */
     public func toString(): String {
         let result: String = headerValue
-        if(result != "") { 
+        if (result != "") {
            return result 
         } else { 
             headerValue = headerValueFunc()

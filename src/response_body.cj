@@ -18,7 +18,7 @@ public class ResponseBody <: Resource{
     /* var member source type is StringStream */
     var source: Source
     /* var member contentType type is String */
-    var contentType:String = ""
+    var contentType: String
     /* var member contentLength type is Int64 */
     var contentLength: Int64 = 0
 
@@ -47,6 +47,10 @@ public class ResponseBody <: Resource{
         return source
     }
 
+    public func getContentType(): String {
+        return contentType
+    }
+
     /**
      * The Function is close
      *
@@ -54,7 +58,7 @@ public class ResponseBody <: Resource{
      * @since 0.29.3
      */
     public func close(): Unit {
-        source.close()
+        Util.closeQuietly(source)
     }
 
     public func isClosed(): Bool {

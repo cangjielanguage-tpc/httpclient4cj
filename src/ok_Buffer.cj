@@ -21,8 +21,8 @@ public class OkBuffer <: Source {
 
     private func read(bytes: Array<Byte>): Int64 {
         let read = source.read(bytes)
-        if(read != -1) {
-            if(read == bytes.size) {
+        if (read != -1) {
+            if (read == bytes.size) {
                 buffer.write(bytes)
             } else {
                 buffer.write(bytes.slice(0, read))
@@ -35,7 +35,7 @@ public class OkBuffer <: Source {
         if (buffer.length == 0) {
            let arr = Array<Byte>(4096, item: 0)
            let read  =  read(arr)
-           if( read == -1) {
+           if ( read == -1) {
                return -1
            }
         }
@@ -47,14 +47,16 @@ public class OkBuffer <: Source {
 
     func skipBuffer(limit: Int64): Unit {
        let bytes = Array<Byte>(limit, item: 0)
+       buffer.read(bytes)
     }
 
     func skipSource(limit: Int64): Unit {
        let bytes = Array<Byte>(limit, item: 0)
+       source.read(bytes)
     }
 
     public func checkOffsetAndCount(size: Int64, offset: Int64, byteCount: Int64): Unit {
-        if(offset > size || size -offset < byteCount || size < 0 || byteCount < 0) {
+        if (offset > size || size -offset < byteCount || size < 0 || byteCount < 0) {
             throw IllegalArgumentException("from=${offset} byteCount=${byteCount}")
         }
     }
@@ -70,7 +72,7 @@ public class OkBuffer <: Source {
 
                }
            } else {
-              while(offSet < end) {
+              while (offSet < end) {
                   for(i in offSet..buffer.length) {
                      if (buffer.bytes()[i] == b) {
                        return i
@@ -91,13 +93,13 @@ public class OkBuffer <: Source {
     }
 
     public func readUtf8LineStrict(limit: Int64): String {
-        if(limit < 0) {
+        if (limit < 0) {
             throw  IllegalArgumentException("limit < 0: ${limit}")
         }
         let indexLF = indexOf(0xAu8, 0, limit)
         let indexCR = indexOf(0xDu8, 0, indexLF)
         if (indexCR != -1 && indexCR + 1 == indexLF) {
-            if(indexCR == 0) {
+            if (indexCR == 0) {
                 skipBuffer(2)
                 return ""
             }

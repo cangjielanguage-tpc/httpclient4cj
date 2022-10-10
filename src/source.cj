@@ -68,9 +68,12 @@ class FixedLengthSource <: AbstractSource {
     }
 
     public func close(): Unit {
-        if(closed) {return}
-        if (bytesRemaining != 0){
-            exchangeCode.source.skipSource(bytesRemaining)
+        if (closed) {
+            return
+        }
+        if (bytesRemaining != 0 && !disCard(this)) {
+            exchangeCode.getConnection().noExchanges()
+            exchangeCode.responseBodyComplete()
         }
         closed = true
     }
@@ -100,7 +103,9 @@ class UnknownLengthSource <: AbstractSource {
     }
 
     public func close(): Unit {
-        if(closed) {return}
+        if (closed) {
+            return
+        }
         if (!inputExhausted) {
            exchangeCode.responseBodyComplete()
         }
@@ -150,7 +155,7 @@ class ChunkedSource <: Source {
         let chunkedLength: String = exchangeCode.source.readUtf8LineStrict().trim()
         match (HexStringToUInt64(chunkedLength.toUtf8Array())) {
             case Some(c) =>
-                if(c == 0) {
+                if (c == 0) {
                     hasMoreChunks = false
                     exchangeCode.trailers = exchangeCode.readHeaders()
                     exchangeCode.responseBodyComplete()
@@ -161,9 +166,10 @@ class ChunkedSource <: Source {
     }
 
     public func close(): Unit {
-        if(closed) {return}
-        if (hasMoreChunks) {
-           //TODO skipALl
+        if (closed) {return}
+        if (hasMoreChunks && !disCard(this)) {
+           exchangeCode.getConnection().noExchanges()
+           exchangeCode.responseBodyComplete()
         }
         closed = true
     }
@@ -181,7 +187,7 @@ class ResponseBodySource <:Source {
    private let exchange: Exchange
    private let source: Source
 
-   init(source: Source, exchange: Exchange, contentLength: Int64){
+   init(source: Source, exchange: Exchange, contentLength: Int64) {
         this.source = source
         this.exchange = exchange
         this.contentLength = contentLength
@@ -201,11 +207,11 @@ class ResponseBodySource <:Source {
                 return -1
             }
             let newBytesReceived = bytesReceived + read
-            if(contentLength != -1 && newBytesReceived > contentLength) {
+            if (contentLength != -1 && newBytesReceived > contentLength) {
                 throw ProtocolException("expected ${contentLength} bytes but received ${newBytesReceived}")
             }
             bytesReceived = newBytesReceived
-            if(newBytesReceived == contentLength) {
+            if (newBytesReceived == contentLength) {
                 complete(Option<NetException>.None)
             }
             return read

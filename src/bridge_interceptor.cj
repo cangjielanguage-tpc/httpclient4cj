@@ -76,16 +76,16 @@ public class BridgeInterceptor<: Interceptor {
         }
         var response: Response =  chain.proceed(requestBuilder.build())
         let responseHeader: Header = response.getHeaders()
-        receiveHeaders(cookieJar, request.getUrl(), responseHeader)
+        //receiveHeaders(cookieJar, request.getUrl(), responseHeader)
         let responseBuilder: ResponseBuilder = response.newBuilder().request(request)
         if (transparentGzip && "gzip".equals(response.getHeader("Content-Encoding","")) && hasBody(response)) {
             let strippedHeader = response.getHeaders().clone()
             strippedHeader.remove("Content-Encoding")
             strippedHeader.remove("Content-Length")
             responseBuilder.header(strippedHeader)
-            var contentType = response.getHeader("Content-Type","")
-            // TODO
-            responseBuilder.body(response.getBody())
+            let contentType = response.getHeader("Content-Type","")
+            responseBuilder.body(ResponseBody(contentType, -1,
+                OkGzipSource(response.getBody().getOrThrow().getSource())))
         }
         return responseBuilder.build()
     }
@@ -146,7 +146,7 @@ public class BridgeInterceptor<: Interceptor {
             return true
         }
         let contentLength = response.getHeader("Content-Length", "")
-        if(contentLength != "" && ((parseInt64(contentLength) ?? -1) != -1) ||
+        if (contentLength != "" && ((parseInt64(contentLength) ?? -1) != -1) ||
          "chunked".equals(response.getHeader("Transfer-Encoding", ""))) {
             return true
          }

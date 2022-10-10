@@ -13,19 +13,19 @@ class RouteDatabase {
     private let failedRoutes: HashSet<Route> = HashSet<Route>()
 
     public func failed(failedRoute: Route): Unit {
-        synchronized(mutex){
+        synchronized (mutex) {
             failedRoutes.put(failedRoute)
         }
     }
 
     public func connected(route: Route): Unit {
-        synchronized(mutex){
+        synchronized (mutex) {
             failedRoutes.remove(route)
         }
     }
 
     public func shouldPostpone(route: Route) {
-        synchronized(mutex){
+        synchronized (mutex) {
             return failedRoutes.contains(route)
         }
     }
