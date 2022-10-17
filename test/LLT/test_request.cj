@@ -2,76 +2,52 @@
 // EXEC: ./main
 
 from okhttp import okhttp.*
-
-from net import http.*
 from std import io.*
-from std import time.*
+from net import http.*
 from std import socket.*
 from encoding import url.*
+from net import tls.*
+from std import core.*
 from std import collection.*
-var port: UInt16 = 0
-main() {
-    println("call0")
-    spawn {
-        serve()
-    }
-    sleep(1000*1000*1000)
-    println("call000")
-    let url: URL = URL.parse("http://127.0.0.1:${port}/index")
 
-    let cache: CacheControl = CacheControl.builder()
-                                .maxAge(Duration.second(1000))
-                                .build()
 
-    let head: http.Header = Header()
-    head.add("content-type", "application/json")
-    head.add("content-type2", "application2/json")
-
-    let client: OkHttpClient= OkHttpClient.builder().build()
-    let request: okhttp.Request = okhttp.Request.builder()
-                                    .url(url)
-                                    .method("GET")
-                                    .header(head)
-                                    .cacheControl(cache)
-                                    .build()
-
-    let resHead = request.getHeader("content-type")
-    let resCon = request.getCacheControl().getOrThrow().toString()
-     println("call1")
-    let call = client.newCall(request)
-     println("call3")
-    for((k,v) in request.getHeaders()) {
-        println("k1 = ${k}")
-        println("v1 = ${v[0]}")
-    }
-    let response: okhttp.Response = call.execute()
-    println("isSuccess= ${response.isSuccess()}")
-    println(resHead)
-    println(resCon.trim())
-    let responseCache = response.getCacheControl().getOrThrow().toString()
-    for((k,v) in response.getHeaders()) {
-        println("k = ${k}")
-        println("v = ${v[0]}")
-    }
-    println(responseCache.trim())
-    if(resHead != "application/json" ||
-       resCon.trim() != "no-cache, no-store, max-age=1000, only-if-cached, no-transform, immutable" ||
-       responseCache.trim() == "no-cache, no-store, max-age=0, s-maxage=0, private, public, must-revalidate, max-stale=0, min-fresh=0, only-if-cached, no-transform, immutable") {
-        return -1
-    }
-    response.close()
-    return 0
+main(){
+  spawn {
+    serve()
+  }
+  sleep(1000*1000*1000*2)
+ let mUrl = "http://0.0.0.0:7692/1241"
+ var jsonStr = ##"{"name":"Tom","age":"18","version":"0.1.1"}"##
+ let requestBody:Option<RequestBody> = Option<RequestBody>.Some(RequestBody("json",jsonStr.toUtf8Array()))
+ var proArray = ArrayList<String>()
+ proArray.append("http/1.1")
+  let header: http.Header = Header()
+  header.add("aaa", "application/json")
+  header.add("aaa", "application2/json")
+ let client = OkHttpClient.builder().protocols(proArray).build()
+ let request: okhttp.Request = okhttp.Request.builder().url(mUrl).header(header).method("POST",body:requestBody).build()
+ let response: okhttp.Response = client.newCall(request).execute()
+ match(response.getBody()){
+    case Some(v) =>
+    print("true成功")
+    v.close()
+    case _ =>
+    print("false失败")
+    ()
+ }
+ ()
 }
 
-func serve(){
+ public func serve(){
+    var port: UInt16 = 7692
     let hd = http.Route()
-    hd.handle("/index", { rws: http.ResponseWriteStream, req: http.Request =>
-        let resp = "Hello from /red".toUtf8Array()
-        rws.write(resp)
-        return
+    hd.handle("/1241", { rws: http.ResponseWriteStream, req: http.Request =>
+      let resp = "Hello from /red".toUtf8Array()
+      rws.write(resp)
+      return
     })
     let server = http.Server(hd)
     let socket = socket.SocketServer(SocketNet.TCP, "0.0.0.0", port)
     port = socket.port
     server.serve(socket)
-}
+  }

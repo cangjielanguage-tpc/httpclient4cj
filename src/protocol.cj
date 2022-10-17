@@ -31,9 +31,7 @@ public enum Protocol {
             case "http/1.1" | "HTTP/1.1" => HTTP_1_1
             case "h2" | "H2"| "http/2.0" | "HTTP/2.0" => HTTP_2
             case "h2_prior_knowledge" | "H2_PRIOR_KNOWLEDGE"=> H2_PRIOR_KNOWLEDGE
-            case _  =>
-                throw ProtocolException("no find protocol")
-
+            case _  => throw ProtocolException("no find protocol")
         }
     }
 

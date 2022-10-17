@@ -39,6 +39,7 @@ public class StatusLine {
     public static func parse(statusLine: String): StatusLine {
         let codeStart: Int64 = 9
         var protocol = Protocol.HTTP_1_0
+
         if (statusLine.startsWith("HTTP/1.")) {
             if (statusLine.size < 9 || statusLine.charAt(8) != ' ') {
                 throw ProtocolException("Unexpected status line: ${statusLine}")
@@ -54,20 +55,25 @@ public class StatusLine {
         } else {
             throw ProtocolException("Unexpected status line: ${statusLine}")
         }
+
         if (statusLine.size < codeStart + 3) {
            throw ProtocolException("Unexpected status line: ${statusLine}")
         }
+
         let statusCode = match (parseInt64(statusLine.substring(9, 3))) {
             case Some (x) => x
             case None => throw ProtocolException("Unexpected status line: ${statusLine}")
         }
-        var message: String = "";
+
+        var message: String = ""
+
         if (statusLine.size > codeStart + 3) {
           if (statusLine.charAt(codeStart + 3) != ' ') {
             throw ProtocolException("Unexpected status line: ${statusLine}")
           }
           message = statusLine.substring(codeStart + 4)
         }
+
         return StatusLine(protocol, statusCode , message)
     }
 }

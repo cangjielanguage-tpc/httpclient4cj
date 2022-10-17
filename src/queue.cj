@@ -17,7 +17,7 @@ from std import collection.ArrayList
  * The class is ConcurrentQueue<T>
  * @since
  */
-public class ConcurrentQueue<T> <:  Iterable<T>{
+public class ConcurrentQueue<T> <:  Iterable<T> {
     private let maxQueueMemory: Int64
 
     private var list: ArrayList<T> = ArrayList<T>(32)

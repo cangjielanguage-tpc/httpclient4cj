@@ -67,18 +67,18 @@ public class BridgeInterceptor<: Interceptor {
            transparentGzip = true
            requestBuilder.header("Accept-Encoding", "gzip")
         }
-        let cookies = cookieJar.cookies(request.getUrl())
+        let cookies = cookieJar.loadForRequest(request.getUrl())
         if (cookies.size != 0) {
            requestBuilder.header("Cookie", cookieHeader(cookies))
         }
         if (request.getHeader("User-Agent", "") == "") {
             requestBuilder.header("User-Agent", "okhttp4cj");
         }
-        var response: Response =  chain.proceed(requestBuilder.build())
+        var response: Response = chain.proceed(requestBuilder.build())
         let responseHeader: Header = response.getHeaders()
-        //receiveHeaders(cookieJar, request.getUrl(), responseHeader)
+        receiveHeaders(cookieJar, request.getUrl(), responseHeader)
         let responseBuilder: ResponseBuilder = response.newBuilder().request(request)
-        if (transparentGzip && "gzip".equals(response.getHeader("Content-Encoding","")) && hasBody(response)) {
+        if (transparentGzip && "gzip".equals(response.getHeader("Content-Encoding", "")) && hasBody(response)) {
             let strippedHeader = response.getHeaders().clone()
             strippedHeader.remove("Content-Encoding")
             strippedHeader.remove("Content-Length")
@@ -101,62 +101,44 @@ public class BridgeInterceptor<: Interceptor {
     func cookieHeader(cookies: Array<Cookie>): String {
         let sb: StringBuilder = StringBuilder()
         for (cookie in cookies) {
-            sb.append("${; cookie}")
+            sb.append("; ")
+            sb.append(cookie.name).append("=").append(cookie.value)
         }
         sb.remove(0..2)
         return "${sb}"
     }
-
-    /*
-     * The Function is receiveHeaders
-     *
-     * @param cookieJar of CookieJar
-     * @param url of URL
-     * @param header of Header
-     *
-     * @return Type of Unit
-     * @since 0.29.3
-     */
-    func receiveHeaders(cookieJar: CookieJar, url: URL, header: Header): Unit {
-        match(header.get("Set-Cookie")) {
-            case Some (c) =>
-                let cookies = Array<Cookie>(1, item:  Cookie(url.toString(), c))
-                cookieJar.setCookies(url, cookies)
-            case None => ()
-        }
-    }
 }
 
-    /**
-     * The Function is hasBody
-     *
-     * @param response of Response
-     *
-     * @return Type of Bool
-     * @since 0.29.3
-     */
-    public func hasBody(response: Response): Bool {
-        if (response.getRequest().getMethod().equals("HEAD")) {
-            return false
-        }
-        let responseCode: Int64 = response.getCode()
-        if ((responseCode < HttpStatusCode.STATUS_CONTINUE || responseCode >= HttpStatusCode.STATUS_OK) &&
-            responseCode != HttpStatusCode.STATUS_NO_CONTENT &&
-            responseCode != HttpStatusCode.STATUS_NOT_MODIFIED) {
-            return true
-        }
-        let contentLength = response.getHeader("Content-Length", "")
-        if (contentLength != "" && ((parseInt64(contentLength) ?? -1) != -1) ||
-         "chunked".equals(response.getHeader("Transfer-Encoding", ""))) {
-            return true
-         }
+/**
+ * The Function is hasBody
+ *
+ * @param response of Response
+ *
+ * @return Type of Bool
+ * @since 0.29.3
+ */
+public func hasBody(response: Response): Bool {
+    if (response.getRequest().getMethod().equals("HEAD")) {
         return false
     }
-
-    public func contentLength(response: Response): Int64 {
-        return contentLength(response.getHeaders())
+    let responseCode: Int64 = response.getCode()
+    if ((responseCode < HttpStatusCode.STATUS_CONTINUE || responseCode >= HttpStatusCode.STATUS_OK) &&
+        responseCode != HttpStatusCode.STATUS_NO_CONTENT &&
+        responseCode != HttpStatusCode.STATUS_NOT_MODIFIED) {
+        return true
     }
+    let contentLength = response.getHeader("Content-Length", "")
+    if (contentLength != "" && ((parseInt64(contentLength) ?? -1) != -1) ||
+     "chunked".equals(response.getHeader("Transfer-Encoding", ""))) {
+        return true
+     }
+    return false
+}
 
-    public func contentLength(headers: Header): Int64 {
-        return parseInt64(headers.get("Content-Length") ?? "") ?? -1
-    }
+public func contentLength(response: Response): Int64 {
+    return contentLength(response.getHeaders())
+}
+
+public func contentLength(headers: Header): Int64 {
+    return parseInt64(headers.get("Content-Length") ?? "") ?? -1
+}

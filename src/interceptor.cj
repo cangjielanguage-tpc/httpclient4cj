@@ -82,7 +82,7 @@ public class Chain {
      * @return Type of Transmitter
      * @since 0.29.3
      */
-    public func getTransmitter(): Transmitter{
+    public func getTransmitter(): Transmitter {
         return transmitter
     }
 
@@ -120,6 +120,7 @@ public class Chain {
         if (index >= interceptors.size) {
             throw Exception("interceptors error")
         }
+
         calls++
         var next: Chain =  Chain(interceptors,transmitter, index + 1, request, call, exchange, connectTimeout,
          readTimeout, writeTimeout )
@@ -136,8 +137,8 @@ public class Chain {
      * @return Type of Response
      * @since 0.29.3
      */
-    public func proceed(request: Request): Response{
-        return proceed(request, transmitter, exchange);
+    public func proceed(request: Request): Response {
+        return proceed(request, transmitter, exchange)
     }
 
     /**
@@ -168,14 +169,4 @@ public class Chain {
             case None => return None
         }
     }
-}
-
-/**
- * The class is TimeUnit
- * @author guo_tingtingtekla,luoyukai4
- * @since 0.29.3
- */
-public class TimeUnit {
-
-
 }

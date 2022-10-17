@@ -56,7 +56,7 @@ public class RequestBuilder <: Builder<Request> {
      * @since 0.29.3
      */
     public func url(url: String): RequestBuilder {
-        this.urlBuild = URL.parse(url)
+        this.urlBuild = URL.parseRequestURI(url)
         return this
     }
 
@@ -148,9 +148,11 @@ public class RequestBuilder <: Builder<Request> {
      */
     public func cacheControl(cacheControl: CacheControl): RequestBuilder {
         let value: String = cacheControl.toString()
+
         if (value.isEmpty()) {
             return removeHeader("Cache-Control")
         }
+
         return header("Cache-Control", value) 
     }
 }

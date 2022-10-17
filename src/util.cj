@@ -20,6 +20,7 @@ let METHOD_GET = "GET"
  * @since 0.29.3
  */
 public class Util {
+    private static let VERIFY_AS_IP_ADDRESS = "([0-9a-fA-F]*:[0-9a-fA-F:.]*)|([\\d.]+)"
 
     /**
      * The Function is closeQuietly
@@ -81,6 +82,7 @@ public class Util {
 
     public static func skipUntil(input: String, pos: Int32, characters: String): Int32 {
         var posi: Int64 = Int64(pos)
+
         while (posi < input.size) {
             posi++
             let res: Int64 = characters.indexOf(input.charAt(Int64(posi))) ?? -1
@@ -88,11 +90,13 @@ public class Util {
                 break
             }
         }
+
         return Int32(posi)
     }
 
     public static func skipWhitespace(input: String, pos: Int32): Int32 {
         var posi: Int32 = pos
+
         while (posi < Int32(input.size)) {
             posi++
             let c: Char = input.charAt(Int64(posi))
@@ -100,6 +104,7 @@ public class Util {
                 break
             }
         }
+
         return posi-1
     }
 
@@ -117,6 +122,38 @@ public class Util {
             return defaultValue
         }
     }
+
+    public static func verifyAsIpAddress(host: String): Bool {
+
+        match(Regex(VERIFY_AS_IP_ADDRESS).matches(host)) {
+            case Some(v) => return true
+            case None => return false
+        }
+    }
+}
+
+/*
+ * The Function is receiveHeaders
+ *
+ * @param cookieJar of CookieJar
+ * @param url of URL
+ * @param header of Header
+ *
+ * @return Type of Unit
+ * @since 0.29.3
+ */
+public func receiveHeaders(cookieJar: CookieJar, url: URL, headers: Header): Unit {
+    match(cookieJar) {
+        case noCookie: NoCookieJar => return ()
+        case _ => ()
+    }
+
+    let cookies: ArrayList<Cookie> = CookieUtil.parseAll(url, headers)
+
+    if (cookies.isEmpty()) {
+        return ()
+    }
+    cookieJar.saveFromResponse(url, cookies.toArray())
 }
 
 public func disCard(source: Source): Bool {
@@ -129,6 +166,10 @@ public func disCard(source: Source): Bool {
     }
 }
 
+func equalsIgnoreCase(left: String, right: String): Bool {
+    return left.toUpper() == right.toUpper()
+}
+
 /**
  * The Function is toArray
  *
@@ -139,6 +180,7 @@ public func disCard(source: Source): Bool {
  */
 public func toArray(a: Array<UInt8>) : Array<Char> {
     var buf2 = Array<Char>(a.size, item: '0')
+
     for (i in 0..buf2.size) {
         buf2[i] = Char(UInt32(a[i]))
     }
@@ -148,6 +190,7 @@ public func toArray(a: Array<UInt8>) : Array<Char> {
 func UInt64ToHexString(n: UInt64): Array<Byte> {
     var num: UInt64 = n
     var arrSize: Int64 = 0
+
     for (i in 0..16) {
         if (num > 0) {
             arrSize++
@@ -161,6 +204,7 @@ func UInt64ToHexString(n: UInt64): Array<Byte> {
     var mask: UInt64 = 0x0f
     var idx = 0
     num = n
+
     for (i in arrSize-1..-1:-1) {
         if (num > 0) {
             var item = num & mask
@@ -176,6 +220,7 @@ func UInt64ToHexString(n: UInt64): Array<Byte> {
 func HexStringToUInt64(arr: Array<Byte>): Option<UInt64> {
     var arrSize = arr.size
     var num: UInt64 = 0
+
     for (i in 0..arrSize) {
         var b = arr[i]
         if (b'0' <= b && b <= b'9') {

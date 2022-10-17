@@ -14,7 +14,7 @@ from std import io.*
  * @author guo_tingtingtekla,luoyukai4
  * @since 0.29.3
  */
-public class ResponseBody <: Resource{
+public class ResponseBody <: Resource {
     /* var member source type is StringStream */
     var source: Source
     /* var member contentType type is String */

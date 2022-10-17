@@ -40,6 +40,7 @@ public class CallServerInterceptor<: Interceptor {
         let exchange: Exchange = chain.getExchange()
         exchange.writeRequestHeaders(request)
         var responseBuilder: Option<ResponseBuilder> = None
+
         if (permitsRequestBody(request.getMethod()) && has(request.getBody())) {
             let body = request.getBody().getOrThrow()
             if ("100-continue" == request.getHeader("Expect","").toLower()) {
@@ -60,10 +61,13 @@ public class CallServerInterceptor<: Interceptor {
         } else {
             exchange.noRequestBody()
         }
+
         exchange.finishRequest()
+
         if (!has(responseBuilder)) {
             responseBuilder = exchange.readResponseHeaders(false)
         }
+
         let response: Response = responseBuilder.getOrThrow().request(request).build()
         return checkResponse(exchange, request, response)
     }
@@ -72,12 +76,15 @@ public class CallServerInterceptor<: Interceptor {
     private func checkResponse( exchange: Exchange, request: Request, checkResponse: Response) : Response {
         var response: Response = checkResponse
         let code = response.getCode()
+
         if (code == 100) {
             response = exchange.readResponseHeaders(false).getOrThrow().request(request).build()
         }
+
         response = response.newBuilder()
                   .body(exchange.openResponseBody(response))
                   .build()
+
         if ("close".equals(response.getRequest().getHeader("Connection","")) ||
             "close".equals(response.getHeader("Connection",""))) {
             exchange.noNewExchangesOnConnection()
@@ -92,6 +99,7 @@ public class CallServerInterceptor<: Interceptor {
                 case None => ()
            }
         }
+
         return response
     }
 }

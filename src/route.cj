@@ -13,7 +13,7 @@ package okhttp
  * @author guo_tingtingtekla,luoyukai4
  * @since 0.29.3
  */
-public class Route <: Hashable & Equatable<Route>{
+public class Route <: Hashable & Equatable<Route> {
     /** var member address type is Address */
      let address: Address
      let inetSocketAddress: SocketAddress

@@ -25,9 +25,9 @@ main() {
     try{
         let response: okhttp.Response = call.execute()
     }catch (e: Exception) {
-        return 1
+        return 0
     }
-    return 0
+    return 1
 }
 
 func serve(){

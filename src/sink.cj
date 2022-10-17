@@ -55,10 +55,13 @@ class ChunkedSink<: Sink{
          if (closed) {
             throw IllegalStateException("closed");
          }
+
          let dataSize = bytes.size
+
          if (dataSize == 0) {
              return
          }
+
          var lengthHex = UInt64ToHexString(UInt64(dataSize))
          this.exchange.sink.write(lengthHex)
          this.exchange.sink.write(CRLF)
@@ -70,6 +73,7 @@ class ChunkedSink<: Sink{
         if (closed) {
             return
         }
+
         exchange.sink.flush()
     }
 
@@ -77,6 +81,7 @@ class ChunkedSink<: Sink{
         if (closed) {
             return
         }
+
         closed = true
         this.exchange.sink.write(b"0\r\n\r\n")
         exchange.state = Http1ExchangeCodec.STATE_READ_RESPONSE_HEADERS
@@ -102,9 +107,11 @@ class RequestBodySink<: Sink {
         if (closed) {
             throw IllegalStateException("closed")
         }
+
         if (contentLength != -1 && bytesReceived + byteCount > contentLength) {
             throw ProtocolException("expected ${contentLength} bytes but received ${bytesReceived + byteCount}")
         }
+
         try {
             sink.write(bytes)
             this.bytesReceived += byteCount
@@ -125,10 +132,12 @@ class RequestBodySink<: Sink {
         if (closed) {
             return
         }
+
         closed = true
         if (contentLength != -1 && bytesReceived != contentLength) {
             throw ProtocolException("unexpected end of stream");
         }
+
         try {
            sink.close()
            complete(Option<NetException>.None)
@@ -142,6 +151,7 @@ class RequestBodySink<: Sink {
         if (completed) {
             return
         }
+
         completed = true
         exchange.bodyComplete(false, true, e)
     }

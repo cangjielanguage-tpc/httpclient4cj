@@ -21,6 +21,7 @@ public class OkBuffer <: Source {
 
     private func read(bytes: Array<Byte>): Int64 {
         let read = source.read(bytes)
+
         if (read != -1) {
             if (read == bytes.size) {
                 buffer.write(bytes)
@@ -28,17 +29,19 @@ public class OkBuffer <: Source {
                 buffer.write(bytes.slice(0, read))
             }
         }
+
         return read
     }
 
     public func read(bytes: ByteArrayStream, byteCount: Int64): Int64 {
         if (buffer.length == 0) {
            let arr = Array<Byte>(4096, item: 0)
-           let read  =  read(arr)
-           if ( read == -1) {
+           let read = read(arr)
+           if (read == -1) {
                return -1
            }
         }
+
         let arr = Array<Byte>(min(byteCount, buffer.length), item: 0)
         let read = buffer.read(arr)
         bytes.write(arr)
@@ -69,7 +72,6 @@ public class OkBuffer <: Source {
                    if (buffer.bytes()[i] == b) {
                        return i
                    }
-
                }
            } else {
               while (offSet < end) {
@@ -77,9 +79,10 @@ public class OkBuffer <: Source {
                      if (buffer.bytes()[i] == b) {
                        return i
                      }
-
                  }
-                 read(Array<Byte>(4096, item: 0))
+                 if (read(Array<Byte>(4096, item: 0)) == -1) {
+                     return -1
+                 }
               }
            }
            return -1
@@ -96,18 +99,25 @@ public class OkBuffer <: Source {
         if (limit < 0) {
             throw  IllegalArgumentException("limit < 0: ${limit}")
         }
-        let indexLF = indexOf(0xAu8, 0, limit)
-        let indexCR = indexOf(0xDu8, 0, indexLF)
-        if (indexCR != -1 && indexCR + 1 == indexLF) {
-            if (indexCR == 0) {
-                skipBuffer(2)
-                return ""
+        var index = 0
+        while (true) {
+            let indexLF = indexOf(0xAu8, index, limit)
+            if (indexLF == -1) {
+                break
             }
-            let arr = Array<Byte>(indexCR, item: 0)
-            buffer.read(arr)
-            let line = String.fromUtf8(arr)
-            skipBuffer(2)
-            return line
+            let indexCR = indexOf(0xDu8, indexLF - 1, indexLF)
+            if (indexCR != -1 && indexCR + 1 == indexLF) {
+                if (indexCR == 0) {
+                    skipBuffer(2)
+                    return ""
+                }
+                let arr = Array<Byte>(indexCR, item: 0)
+                buffer.read(arr)
+                let line = String.fromUtf8(arr)
+                skipBuffer(2)
+                return line
+            }
+            index = indexLF
         }
         throw IllegalArgumentException("can't find CRLF line")
     }
@@ -116,6 +126,7 @@ public class OkBuffer <: Source {
         if (closed) {
             return
         }
+
         closed = true
     }
 

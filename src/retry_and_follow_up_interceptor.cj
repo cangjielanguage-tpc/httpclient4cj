@@ -65,9 +65,13 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
             } finally {
                 if (!success) { transmitter.exchangeDoneDueToException() }
             }
+
             match(priorResponse) {
                 case Some(resp) => response = response.newBuilder()
-                .prevResponse(Option<Response>.Some(resp.newBuilder().build())).build()
+                .prevResponse(Option<Response>.Some(resp.newBuilder()
+                    .body(Option<ResponseBody>.None)
+                    .build()))
+                    .build()
                 case _ => ()
             }
             let route: Option<Route> = match (response.exchange) {
@@ -194,7 +198,7 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
             return Option<Request>.None
         }
         let location: String = response.getHeader("Location", "")
-        let url: URL = response.getRequest().getUrl().resolveReference(URL.parse(location))
+        let url: URL = response.getRequest().getUrl().resolveReference(URL.parseRequestURI(location))
         let method: String = response.getRequest().getMethod()
         if (location == "") {
             return Option<Request>.None

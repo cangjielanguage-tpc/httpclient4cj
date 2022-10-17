@@ -14,7 +14,7 @@ from std import socket.*
  * @author guo_tingtingtekla,luoyukai4
  * @since 0.29.3
  */
-public class Address <: Hashable & Equatable<Address>{
+public class Address <: Hashable & Equatable<Address> {
     /** var member url type is URL */
     public var url: URL
     private var tlsConfig: Option<TlsClientConfig>
@@ -54,7 +54,7 @@ public class Address <: Hashable & Equatable<Address>{
      * @return Type of ArrayList<String>
      * @since 0.30.4.
      */
-    public func getProtocols(): ArrayList<String>{
+    public func getProtocols(): ArrayList<String> {
         return protocols
     }
 
@@ -91,6 +91,7 @@ public class Address <: Hashable & Equatable<Address>{
         let it1 = protocols.iterator()
         let it2 = rhs.getProtocols().iterator()
         var index = 0
+
         while (true) {
             let next1 = match (it1.next()) {
                 case Some(conn) => conn
@@ -107,6 +108,7 @@ public class Address <: Hashable & Equatable<Address>{
                 break;
             }
         }
+
         return true
     }
 
