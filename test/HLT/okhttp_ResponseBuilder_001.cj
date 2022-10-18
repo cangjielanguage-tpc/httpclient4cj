@@ -35,7 +35,7 @@ class MyInterceptor<: Interceptor {
 @Test
 public class okhttp_ResponseBuilder_001{
 
-    var port: UInt16 = 8888
+    var port: UInt16 = 1120
     func serve(){
         let hd = http.Route()
         hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
@@ -56,11 +56,10 @@ public class okhttp_ResponseBuilder_001{
     sleep(1000*1000*1000)
     let client: OkHttpClient= OkHttpClient.builder().addNetworkInterceptor(MyInterceptor())
                                           .build()
-    let body: okhttp.RequestBody = okhttp.RequestBody("Media-Type", "text/html")
+    // let body: okhttp.RequestBody = okhttp.RequestBody("Media-Type", "text/html")
     let request: okhttp.Request = okhttp.Request.builder()
                                     .url("http://127.0.0.1:${port}/1234")
                                     .method("GET")
-                                    .body(body)
                                     .build()
     let response: okhttp.Response = client.newCall(request).execute()
     func exception(): String{ "exception"}

@@ -18,15 +18,15 @@ public class okhttp_RequestBody_002{
     @TestCase
     func okhttp_RequestBody_002(): Unit {
       
-        let body: okhttp.RequestBody = okhttp.RequestBody("HTML", "")
+        let body: okhttp.RequestBody = okhttp.RequestBody("HTML","".toUtf8Array())
         let request: okhttp.Request = okhttp.Request.builder()
-                                        .body(body)
+                                        .method("GET",body:body)
                                         .build()
     
         var body_Type = request.getBody().getOrThrow().contentType()
         @Assert(body_Type, "HTML")
         
-        var body_Length = request.getBody().getOrThrow().contentLength()
+        var body_Length = request.getBody().getOrThrow().getContentLength()
         @Assert(body_Length, Int64(0))
         
         var str_body:Array<Byte> = Array<Byte>(0, item: 0)

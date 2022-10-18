@@ -16,7 +16,7 @@ from std import core.*
 @Test
 public class okhttp_ResponseBody_003{
 
-    var port: UInt16 = 8888
+    var port: UInt16 = 1119
     func serve(){
         let hd = http.Route()
         hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
@@ -41,31 +41,30 @@ public class okhttp_ResponseBody_003{
                                 .maxAge(Duration.second(1000))
                                 .build()
     let client: OkHttpClient= OkHttpClient.builder().build()
-    let body: okhttp.RequestBody = okhttp.RequestBody("Media-Type", "text/html")
+    let body: okhttp.RequestBody = okhttp.RequestBody("Media-Type", "text/html".toUtf8Array())
     let request: okhttp.Request = okhttp.Request.builder()
                                     .url("http://127.0.0.1:${port}/1234")
                                     .method("GET")
                                     .cacheControl(cache)
-                                    .body(body)
                                     .build()
     var call = client.newCall(request)
     var response: okhttp.Response = call.execute()
     var response_heads: http.Header = response.getHeaders()
 
     var response_body:Array<Byte> = Array<Byte>(5, item: 0)
-    println("response.getBody().getOrThrow().close()")
-    response.getBody().getOrThrow().close()
+    // println("response.getBody().getOrThrow().close()")
+    // response.getBody().getOrThrow().close()
     
-    var response_body1:Array<Byte> = response.getBody().getOrThrow().getSource().readToEnd()
-    var str =String.fromUtf8(response_body1)
+    var response_body1 = response.getBody().getOrThrow().getString()
+    // var str =String.fromUtf8(response_body1)
     var response_protocol = response.getProtocol().toString()
     var response_code : Int64 = response.getCode()
     var response_isSuccess:Bool= response.isSuccess()
-    println("response_body")
-    println(str)
+    // println("response_body")
+    // println(str)
 
-    @Assert(str, "hello")
-    @Assert(response_body1, "hello".toUtf8Array())
+    // @Assert(str, "hello")
+    @Assert(response_body1, "hello")
 
 
     }

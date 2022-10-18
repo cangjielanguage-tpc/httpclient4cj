@@ -49,7 +49,7 @@ public class okhttp_Chain_001{
     static var check2:String = "" 
     static var check3:String = "" 
 
-    var port: UInt16 = 8888
+    var port: UInt16 = 1101
     func serve(){
         let hd = http.Route()
         hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
@@ -72,11 +72,10 @@ public class okhttp_Chain_001{
                                                     .addNetworkInterceptor(MyInterceptor2())
                                                     .addNetworkInterceptor(MyInterceptor3())
                                           .build()
-    let body: okhttp.RequestBody = okhttp.RequestBody("Media-Type", "text/html")
+    // let body: okhttp.RequestBody = okhttp.RequestBody("Media-Type", "text/html")
     let request: okhttp.Request = okhttp.Request.builder()
                                     .url("http://127.0.0.1:${port}/1234")
-                                    .method("GET")
-                                    .body(body)
+                                    .method("GET")//加body
                                     .build()
     let response: okhttp.Response = client.newCall(request).execute()
     @Assert(check1,"MyInterceptor1 called ")
