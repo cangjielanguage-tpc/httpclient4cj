@@ -106,7 +106,7 @@ public class OkHttpClient {
       * @return Type of Option<ConnectionPool>
       * @since 0.29.3
       */
-     public func getConnectionPool(): Option<ConnectionPool>{
+     public func getConnectionPool(): Option<ConnectionPool> {
         return connectionPool
      }
 
@@ -150,15 +150,15 @@ public class OkHttpClient {
         return cookieJar
      }
 
-     public func getConnectTimeout(): Option<Duration>{
+     public func getConnectTimeout(): Option<Duration> {
         return connectTimeout
      }
 
-     public func getReadTimeout(): Option<Duration>{
+     public func getReadTimeout(): Option<Duration> {
         return readTimeout
      }
 
-     public func getWriteTimeout(): Option<Duration>{
+     public func getWriteTimeout(): Option<Duration> {
          return writeTimeout
      }
 
@@ -166,11 +166,11 @@ public class OkHttpClient {
         return protocols
      }
 
-     public func getTlsConfig(): Option<TlsClientConfig>  {
+     public func getTlsConfig(): Option<TlsClientConfig> {
         return tlsConfig
      }
 
-     public func getAuthenticator(): (Option<Route>, Response)-> Option<Request>{
+     public func getAuthenticator(): (Option<Route>, Response)-> Option<Request> {
         return authenticator
      }
 

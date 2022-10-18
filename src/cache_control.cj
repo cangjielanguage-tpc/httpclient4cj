@@ -236,16 +236,19 @@ public class CacheControl {
         return immutableInit
     }
 
-    private static func makeNameValues(header: Header): ArrayList<String>{
+    private static func makeNameValues(header: Header): ArrayList<String> {
         var ss: ByteArrayStream = ByteArrayStream()
         header.writeTo(ss)
         let nameAndValue: Array<String> = String.fromUtf8(ss.readToEnd()).split("\r\n")
         let nvSize = nameAndValue.size
         var head: ArrayList<String> = ArrayList<String>()
+
         for(i in 0..nvSize-1) {
             head.append(nameAndValue[i])
         }
+
         let headers: ArrayList<String> = ArrayList<String>()
+
         for(i in head) {
             let c: Array<String> = i.split(":")
             headers.appendAll(c)
@@ -287,6 +290,7 @@ public class CacheControl {
         let headers: ArrayList<String> = makeNameValues(header)
         var headerValue: String = ""; var canUseHeaderValue: Bool = true
         var index: Int64 = 0
+
         for(i in 0..headers.size/2) {
             index++
             let name: String = headers[i * 2]

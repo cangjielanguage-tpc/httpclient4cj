@@ -95,7 +95,7 @@ public class Connection {
      * @return Type of Option<Socket>
      * @since 0.29.3
      */
-    public func getSocket(): Option<OKSocket>{
+    public func getSocket(): Option<OKSocket> {
         return socket
     }
     /**

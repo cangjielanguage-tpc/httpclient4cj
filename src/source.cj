@@ -38,6 +38,7 @@ class FixedLengthSource <: AbstractSource {
     init(length: Int64, exchange: Http1ExchangeCodec) {
         super(exchange)
         this.bytesRemaining = length
+
         if (bytesRemaining == 0) {
             exchangeCode.responseBodyComplete()
         }
@@ -45,22 +46,29 @@ class FixedLengthSource <: AbstractSource {
 
     public func read(bytes: ByteArrayStream, count: Int64): Int64 {
         var byteCount = count
+
         if (closed) {
             throw IllegalStateException("closed")
         }
+
         if (bytesRemaining == 0) {
             return -1
         }
+
         if (byteCount > bytesRemaining) {
             byteCount = bytesRemaining
         }
+
         let read = super.read(bytes, byteCount)
+
         if (read == -1) {
             exchangeCode.getConnection().noExchanges()
             exchangeCode.responseBodyComplete()
             throw ProtocolException("unexpected end of stream")
         }
+
         bytesRemaining -= read
+
         if (bytesRemaining == 0) {
            exchangeCode.responseBodyComplete()
         }
@@ -71,10 +79,12 @@ class FixedLengthSource <: AbstractSource {
         if (closed) {
             return
         }
+
         if (bytesRemaining != 0 && !disCard(this)) {
             exchangeCode.getConnection().noExchanges()
             exchangeCode.responseBodyComplete()
         }
+
         closed = true
     }
 }
@@ -90,15 +100,19 @@ class UnknownLengthSource <: AbstractSource {
         if (closed) {
             throw IllegalStateException("closed")
         }
+
         if (inputExhausted) {
             return -1
         }
+
         let buffer = exchangeCode.source
         let read = buffer.read(bytes, byteCount)
+
         if (read == -1) {
             inputExhausted = true
             exchangeCode.responseBodyComplete()
         }
+
         return read
     }
 
@@ -106,9 +120,11 @@ class UnknownLengthSource <: AbstractSource {
         if (closed) {
             return
         }
+
         if (!inputExhausted) {
            exchangeCode.responseBodyComplete()
         }
+
         closed = true
     }
 }
@@ -131,17 +147,21 @@ class ChunkedSource <: Source {
         if (closed) {
             throw IllegalStateException("closed")
         }
+
         if (!hasMoreChunks) {
             return -1
         }
+
         if (bytesRemainingInChunk == 0 || bytesRemainingInChunk == NO_CHUNK_YET) {
            readChunkSize()
            if (!hasMoreChunks) {
                return -1
            }
         }
+
         let buffer = exchangeCode.source
         let read = buffer.read(bytes, min(byteCount, bytesRemainingInChunk))
+
         if (read == -1) {
             exchangeCode.getConnection().noExchanges()
             exchangeCode.responseBodyComplete()
@@ -152,25 +172,37 @@ class ChunkedSource <: Source {
     }
 
     private func readChunkSize() {
+        let arr = ByteArrayStream()
+
+        if (bytesRemainingInChunk != NO_CHUNK_YET) {
+            exchangeCode.source.skipBuffer(2)
+        }
+
         let chunkedLength: String = exchangeCode.source.readUtf8LineStrict().trim()
-        match (HexStringToUInt64(chunkedLength.toUtf8Array())) {
-            case Some(c) =>
-                if (c == 0) {
-                    hasMoreChunks = false
-                    exchangeCode.trailers = exchangeCode.readHeaders()
-                    exchangeCode.responseBodyComplete()
-                }
-                bytesRemainingInChunk = Int64(c)
-            case None => throw ProtocolException("expected chunked size failed")
+
+        if (chunkedLength.size != 0) {
+            match (HexStringToUInt64(chunkedLength.toUtf8Array())) {
+                case Some(c) =>
+                    if (c == 0) {
+                        hasMoreChunks = false
+                        exchangeCode.trailers = exchangeCode.readHeaders()
+                        receiveHeaders(exchangeCode.client.getCookieJar(), url, exchangeCode.trailers)
+                        exchangeCode.responseBodyComplete()
+                    }
+                    bytesRemainingInChunk = Int64(c)
+                case None => throw ProtocolException("expected chunked size failed")
+            }
         }
     }
 
     public func close(): Unit {
         if (closed) {return}
+
         if (hasMoreChunks && !disCard(this)) {
            exchangeCode.getConnection().noExchanges()
            exchangeCode.responseBodyComplete()
         }
+
         closed = true
     }
 
@@ -191,6 +223,7 @@ class ResponseBodySource <:Source {
         this.source = source
         this.exchange = exchange
         this.contentLength = contentLength
+
         if (contentLength == 0) {
             complete(Option<NetException>.None)
         }
@@ -200,6 +233,7 @@ class ResponseBodySource <:Source {
         if (closed) {
             throw IllegalStateException("closed")
         }
+
         try{
             let read = source.read(bytes, byteCount)
             if (read == -1) {
@@ -224,6 +258,7 @@ class ResponseBodySource <:Source {
        if (closed) {
            return
        }
+
        closed = true
        try {
            source.close()
@@ -241,6 +276,7 @@ class ResponseBodySource <:Source {
         if (completed) {
             return
         }
+
         completed = true
         exchange.bodyComplete(true, false, e)
    }

@@ -80,7 +80,7 @@ public class Http1ExchangeCodec <: ExchangeCodec{
     /* var member state type is Int64 */
     var state: Int64 = STATE_IDLE
     /* var member client type is OkHttpClient */
-    private var client: OkHttpClient
+    var client: OkHttpClient
     let sink: BufferedOutputStream
     let source: OkBuffer
     private var headerLimit: Int64 = HEADER_LIMIT
@@ -104,6 +104,7 @@ public class Http1ExchangeCodec <: ExchangeCodec{
         if (state != STATE_OPEN_REQUEST_BODY) {
             throw IllegalStateException("state: ${state}")
         }
+
         state = STATE_WRITING_REQUEST_BODY
         return KnownLengthSink(this)
     }
@@ -112,6 +113,7 @@ public class Http1ExchangeCodec <: ExchangeCodec{
         if (state != STATE_OPEN_REQUEST_BODY) {
             throw IllegalStateException("state: ${state}")
         }
+
         state = STATE_WRITING_REQUEST_BODY
         return ChunkedSink(this)
     }
@@ -120,6 +122,7 @@ public class Http1ExchangeCodec <: ExchangeCodec{
         if (state != STATE_OPEN_RESPONSE_BODY) {
             throw IllegalStateException("state: ${state}")
         }
+
         state = STATE_READING_RESPONSE_BODY
         return FixedLengthSource(length,this)
     }
@@ -128,6 +131,7 @@ public class Http1ExchangeCodec <: ExchangeCodec{
         if (state != STATE_OPEN_RESPONSE_BODY) {
             throw IllegalStateException("state: ${state}")
         }
+
         state = STATE_READING_RESPONSE_BODY
         return ChunkedSource(url, this)
    }
@@ -136,6 +140,7 @@ public class Http1ExchangeCodec <: ExchangeCodec{
         if (state != STATE_OPEN_RESPONSE_BODY) {
             throw IllegalStateException("state: ${state}")
         }
+
         state = STATE_READING_RESPONSE_BODY;
         realConnection.noExchanges()
         return UnknownLengthSource(this)
@@ -168,8 +173,10 @@ public class Http1ExchangeCodec <: ExchangeCodec{
         if (state != STATE_IDLE) {
             throw IllegalStateException("state: ${state}")
         }
+
         var buffer: StringBuilder = StringBuilder(512)
         buffer.append(requestLine).append(CRLF)
+
         for ((ks,v) in headers) {
             var k = HeaderDfaUtil.CanonicalHeaderKey(ks)
             buffer.append(k).append(": ")
@@ -179,6 +186,7 @@ public class Http1ExchangeCodec <: ExchangeCodec{
             buffer.removeLast()
             buffer.append(CRLF)
         }
+
         buffer.append(CRLF_STR)
         sink.write(buffer.toString().toUtf8Array())
         state = STATE_OPEN_REQUEST_BODY
@@ -191,20 +199,23 @@ public class Http1ExchangeCodec <: ExchangeCodec{
      * @since 0.29.3
      */
     public func readResponseHeaders(expectContinue: Bool): Option<ResponseBuilder> {
-        if (state != STATE_OPEN_REQUEST_BODY) {
+        if (state != STATE_OPEN_REQUEST_BODY && state != STATE_READ_RESPONSE_HEADERS) {
             throw Exception("state: ${state}")
         }
+
         let responseBuilder: ResponseBuilder = Response.builder()
         let line: String = readHeaderLine()
         let statusLine: StatusLine = StatusLine.parse(line)
         responseBuilder.protocol(statusLine.protocol).code(statusLine.code)
                        .message(statusLine.message).header(readHeaders())
+
         if (expectContinue && statusLine.code == HttpStatusCode.STATUS_CONTINUE) {
             return None
         } else if (statusLine.code == HttpStatusCode.STATUS_CONTINUE) {
              state = STATE_READ_RESPONSE_HEADERS
              return responseBuilder
         }
+
         state = STATE_OPEN_RESPONSE_BODY
         return responseBuilder
     }
@@ -217,6 +228,7 @@ public class Http1ExchangeCodec <: ExchangeCodec{
 
     func readHeaders(): Header {
         let header: Header = Header()
+
         while (true) {
             var line = readHeaderLine()
             if (line.size == 0) {
@@ -241,12 +253,15 @@ public class Http1ExchangeCodec <: ExchangeCodec{
             case Some(v) => v.getContentLength()
             case None => throw  ProtocolException("no request body");
         }
+
         if ("chunked" == request.getHeader("Transfer-Encoding","").toLower()) {
             return newChunkedSink()
         }
+
         if (contentLength != -1) {
             return newKnownLengthSink()
         }
+
         throw IllegalStateException(
                 "Cannot stream a request body without chunked encoding or a known content length!")
     }
@@ -261,9 +276,11 @@ public class Http1ExchangeCodec <: ExchangeCodec{
         if (!hasBody(response)) {
             return 0
         }
+
         if ("chunked" == response.getHeader("Transfer-Encoding","").toLower()) {
             return -1
         }
+
         match (response.getHeader("Content-Length")) {
             case Some(s) =>
             match (parseInt64(s)) {
@@ -277,13 +294,17 @@ public class Http1ExchangeCodec <: ExchangeCodec{
         if (!hasBody(response)) {
             return newFixedLengthSource(0)
         }
+
         if ("chunked" == response.getHeader("Transfer-Encoding","").toLower()) {
             return newChunkedSource(response.getRequest().getUrl())
         }
+
         let contentLength: Int64 = contentLength(response)
+
         if (contentLength != -1) {
             return newFixedLengthSource(contentLength)
         }
+
         return newUnknownLengthSource()
     }
 
@@ -298,12 +319,15 @@ public class Http1ExchangeCodec <: ExchangeCodec{
     }
 
     func responseBodyComplete() {
+
          if (state == STATE_CLOSED)  {
             return
          }
+
          if (state != STATE_READING_RESPONSE_BODY) {
             throw IllegalStateException("state: ${state}")
          }
+
          state = STATE_CLOSED
     }
 

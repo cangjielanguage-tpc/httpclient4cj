@@ -14,7 +14,6 @@ main (){
     client.getConnectTimeout(), client.getReadTimeout(), client.getWriteTimeout())
     chain.getRequest()
     chain.getCall()
-    let unit = TimeUnit()
     return 0
 }
 

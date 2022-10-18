@@ -52,6 +52,7 @@ public class Dispatcher {
         if (maxRequests < 1) {
           throw IllegalArgumentException("max < 1:${ maxRequests}")
         }
+
         synchronized (mutex) {
             this.maxRequests = maxRequests
         }
@@ -82,6 +83,7 @@ public class Dispatcher {
         if (maxRequestsPerHost < 1) {
           throw  IllegalArgumentException("max < 1: ${ maxRequestsPerHost}")
         }
+
         synchronized (mutex) {
           this.maxRequestsPerHost = maxRequestsPerHost;
         }
@@ -134,6 +136,7 @@ public class Dispatcher {
             idleCallback  = this.idleCallback
         }
        var isRunning: Bool = promoteAndExecute()
+
        if (!isRunning) {
             match (idleCallback) {
                case Some(cb) =>
@@ -156,8 +159,9 @@ public class Dispatcher {
             }
             idleCallback  = this.idleCallback
         }
-       var isRunning: Bool = promoteAndExecute()
-       if (!isRunning) {
+        var isRunning: Bool = promoteAndExecute()
+
+        if (!isRunning) {
             match (idleCallback) {
                case Some(cb) =>
                 spawn {
@@ -166,7 +170,7 @@ public class Dispatcher {
                 ()
                 case None => ()
            }
-       }
+        }
     }
 
     /*
@@ -221,11 +225,13 @@ public class Dispatcher {
               return (existingCall)
           }
         }
+
         for (existingCall in readyAsyncCalls) {
           if (existingCall.host().equals(host)) {
               return (existingCall)
           }
         }
+
         return None
     }
 
@@ -279,9 +285,11 @@ public class Dispatcher {
              }
              isRunning = runningAsyncCalls.toArrayList().size + runningSyncCalls.toArrayList().size > 0
         }
+
         for (asyncCall in executableCalls) {
-            asyncCall.executeOn();
+            asyncCall.executeOn()
         }
+
         return isRunning
       }
     /**

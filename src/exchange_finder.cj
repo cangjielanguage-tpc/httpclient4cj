@@ -300,7 +300,7 @@ public class Exchange {
      * @return Type of ResponseBody
      * @since 0.29.3
      */
-    public func openResponseBody(response: Response): ResponseBody{
+    public func openResponseBody(response: Response): ResponseBody {
          let contentType: String = response.getHeader("Content-Type","")
          let contentLength: Int64 = codec.reportedContentLength(response)
          let source = codec.openResponseBodySource(response)

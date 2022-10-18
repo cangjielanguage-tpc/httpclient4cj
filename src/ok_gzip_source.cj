@@ -22,11 +22,13 @@ public class OkGzipSource <: Source {
 
     public func read(bytes: ByteArrayStream, byteCount: Int64): Int64 {
         let read = source.read(base, byteCount)
+
         if (read > 0) {
             let arr = Array<Byte>(read, item: 0)
             let read2 = gzip.read(arr)
-            bytes.write(arr)
+            bytes.write(arr.slice(0,read))
         }
+
         return read
     }
 

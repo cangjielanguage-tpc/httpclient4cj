@@ -227,14 +227,17 @@ public class RealCall<: Call {
        interceptors.append(RetryAndFollowUpInterceptor(client))
        interceptors.append(BridgeInterceptor(client.getCookieJar()))
        interceptors.append(ConnectInterceptor(client))
+
        if (!forWebSocket) {
            interceptors.appendAll(client.getNetworkInterceptors())
        }
+
        interceptors.append(CallServerInterceptor(forWebSocket))
        let chain: Chain = Chain(interceptors, getTransmitter(), 0, originalRequest, this, Option<Exchange>.None,
        client.getConnectTimeout(), client.getReadTimeout(), client.getWriteTimeout())
        let response: Response
        var calledNoMoreExchanges = false
+
        try {
            response = chain.proceed(originalRequest)
            if (getTransmitter().isCanceled()) {
@@ -355,6 +358,7 @@ public class AsyncCall {
       */
      public func execute(): Unit {
         var signalledCallback: Bool = false
+
         try {
             let response: Response = realCall.getResponseWithInterceptorChain()
             signalledCallback = true

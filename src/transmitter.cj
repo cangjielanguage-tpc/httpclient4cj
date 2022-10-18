@@ -110,20 +110,24 @@ public class Transmitter {
      func releaseConnectionNoEvents(): Option<OKSocket> {
         let conn = connection.getOrThrow()
         let arr = conn.getTransmitters()
+
         for (index in 0..arr.size) {
             if (refEq(arr[index],this)) {
                 arr.remove(index)
                 break
             }
         }
+
         let released = conn
         this.connection = Option<Connection>.None
+
         if (arr.isEmpty()) {
            released.idleAtNanos = Time.now()
            if (connectionPool.connectionBecameIdle(released)) {
                return released.getSocket()
            }
         }
+
         return Option<OKSocket>.None
     }
 

@@ -7,9 +7,12 @@
 ## 2 三方库对外提供的特性
 
 1. 支持同步和异步请求
-2. 支持http1.1 和 http2 协议
-3. 支持连接复用
-4. 使用连接池减少请求延迟
+2. 支持http1.1 和 http2 协议(由于 http2暂不支持 tls 1030 release 中 okhttp 暂不支持 http2)
+3. 支持 tls， 对于https协议默认开启tls
+4. 支持连接复用
+5. 使用连接池减少请求延迟
+6. 支持gzip压缩，默认开启
+
 
 ## 3 License分析
 
@@ -18,7 +21,7 @@ apache 2.0 License
 
 ## 4 依赖分析
 
-依赖仓颉标准库 time ，collection， http，socket， tls， io
+依赖仓颉标准库 time， collection， http， socket， tls， io， fs， regex， sync， math， convert
 三方库 http2
 
 
@@ -39,20 +42,23 @@ apache 2.0 License
 
 Call的工厂类，可用于发送 HTTP 请求并读取其响应，外观形式上等同于http客户端，每个客户端都拥有自己的连接池和线程池。重用连接可减少延迟并节省内存。
 
-|           成员函数           |       入参        |         返回值          |         作用描述          |
-| --------------------------- | ---------------- | ---------------------- | ------------------------- |
-| newCall                     | request: Request | Call                   | 增强请求对象               |
-| getFollowRedirects          | 无                | Bool                   | 请求是否允许重定向         |
-| getRetryOnConnectionFailure | 无                | Bool                   | 连接失败是否允许重试       |
-| getConnectionPool           | 无                | Option<ConnectionPool> | 获取客户端使用的连接池对象 |
-| getDispatcher               | 无                | Dispatcher             | 获取客户端分发器          |
-| getInterceptors()           | 无                | ArrayList<Interceptor> | 获取自定义连接前处理拦截器 |
-| getNetworkInterceptors      | 无                | getNetworkInterceptors | 获取自定义连接后处理拦截器 |
-| getCookieJar                | 无                | CookieJar              | 获取CookieJar             |
-| getConnectTimeout           | 无                | Option<Duration>       | 获取连接超时时间           |
-| getReadTimeout              | 无                | Option<Duration>       | 获取读取连接超时时间       |
-| getWriteTimeout()           | 无                | Option<Duration>       | 获取写连接超时时间         |
-| getProtocols                | 无                | ArrayList<String       | 获取使用的http协议         |
+|           成员函数         |       入参        | 返回值                                             | 作用描述           |
+| ---------------------- | ---------------- |-------------------------------------------------|----------------|
+| newCall                | request: Request | Call                                            | 增强请求对象         |
+| getFollowRedirects     | 无                | Bool                                            | 请求是否允许重定向      |
+| getRetryOnConnectionFailure | 无                | Bool                                            | 连接失败是否允许重试     |
+| getConnectionPool      | 无                | Option\<ConnectionPool\>                        | 获取客户端使用的连接池对象  |
+| getDispatcher          | 无                | Dispatcher                                      | 获取客户端分发器       |
+| getInterceptors        | 无                | ArrayList\<Interceptor\>                        | 获取自定义连接前处理拦截器  |
+| getNetworkInterceptors | 无                | getNetworkInterceptors                          | 获取自定义连接后处理拦截器  |
+| getCookieJar           | 无                | CookieJar                                       | 获取CookieJar    |
+| getConnectTimeout      | 无                | Option\<Duration\>                              | 获取连接超时时间       |
+| getReadTimeout         | 无                | Option\<Duration\>                              | 获取读取连接超时时间     |
+| getWriteTimeout        | 无                | Option\<Duration\>                              | 获取写连接超时时间      |
+| getProtocols           | 无                | ArrayList\<String\>                             | 获取使用的http协议    |
+| getTlsConfig             | 无               | Option\<TlsClientConfig\>                       | 获取tls的CA证书路径   |
+| getAuthenticator            |无             | (Option\<Route\>, Response)-> Option\<Request\> | 获取鉴权配置         |
+| getFollowSslRedirects               | 无         | Bool                                            | 获取是否允许跨协议进行重定向 |
 
 | 静态函数 | 入参 |        返回值        |         作用描述          |
 | -------- | ---- | ------------------- | --------------------------- |
@@ -63,20 +69,23 @@ Call的工厂类，可用于发送 HTTP 请求并读取其响应，外观形式�
 
 用于创建okhttpClient，用户通过链式调用配置其属性
 
-|        成员函数         |                入参                |       返回值       |                                            作用描述                                             |
-| --------------------- | ---------------------------------- | ----------------- | --------------------------------------------------------------------------------------------- |
-| init                   | 无                                 | 无                | 无参构造                                                                                        |
-| build                  | 无                                 | OkHttpClient        | 通过配置项创建出核心类 OkHttpClient                                                                 |
-| dispatcher              | dispatcher: Dispatcher               | OkHttpClientBuilder | 配置个性化的请求分发器                                                                             |
-| followRedirects         | followRedirects: Bool                | OkHttpClientBuilder | 配置是否允许重定向, 默认为true                                                                      |
-| retryOnConnectionFailure | retryOnConnectionFailure: Bool        | OkHttpClientBuilder | 配置连接失败是否允许重试,默认为true                                                                  |
-| connectionPool          | connectionPool: Option<ConnectionPool> | OkHttpClientBuilder | 配置客户端使用个性化的连接池对象 ，默认最大空闲数为5，最大空闲时间为5分钟                                   |
-| addInterceptor          | interceptor: Interceptor              | OkHttpClientBuilder | 添加用户自定义的连接前处理的拦截器                                                                   |
-| addNetworkInterceptor    | interceptor: Interceptor              | OkHttpClientBuilder | 添加用户自定义的连接后处理的拦截器                                                                   |
-| connectTimeout          | connectTimeout: Duration               | OkHttpClientBuilder | 配置连接超时时间                                                                                 |
-| readTimeout             | readTimeout: Duration                | OkHttpClientBuilder | 配置读取连接超时时间                                                                              |
-| writeTimeout            | writeTimeout: Duration               | OkHttpClientBuilder | 配置读取连接超时时间                                                                              |
-| protocols               | protocols: ArrayList<String>          | OkHttpClientBuilder | 参数 protocols 使用协议的集合, 目前版本只支持 http/1.1, 强制使用http1.1 以及 h2_prior_knowledge, 强制使用http2 |
+|        成员函数         | 入参                                                              |       返回值       | 作用描述                                                                                 |
+| --------------------- |-----------------------------------------------------------------| ----------------- |--------------------------------------------------------------------------------------|
+| init                   | 无                                                               | 无                | 无参构造                                                                                 |
+| build                  | 无                                                               | OkHttpClient        | 通过配置项创建出核心类 OkHttpClient                                                             |
+| dispatcher              | dispatcher: Dispatcher                                          | OkHttpClientBuilder | 配置个性化的请求分发器                                                                          |
+| followRedirects         | followRedirects: Bool                                           | OkHttpClientBuilder | 配置是否允许重定向, 默认为true                                                                   |
+| retryOnConnectionFailure | retryOnConnectionFailure: Bool                                  | OkHttpClientBuilder | 配置连接失败是否允许重试,默认为true                                                                 |
+| connectionPool          | connectionPool: Option\<ConnectionPool\>                        | OkHttpClientBuilder | 配置客户端使用个性化的连接池对象 ，默认最大空闲数为5，最大空闲时间为5分钟                                               |
+| addInterceptor          | interceptor: Interceptor                                        | OkHttpClientBuilder | 添加用户自定义的连接前处理的拦截器                                                                    |
+| addNetworkInterceptor    | interceptor: Interceptor                                        | OkHttpClientBuilder | 添加用户自定义的连接后处理的拦截器                                                                    |
+| connectTimeout          | connectTimeout: Duration                                        | OkHttpClientBuilder | 配置连接超时时间                                                                             |
+| readTimeout             | readTimeout: Duration                                           | OkHttpClientBuilder | 配置读取连接超时时间                                                                           |
+| writeTimeout            | writeTimeout: Duration                                          | OkHttpClientBuilder | 配置读取连接超时时间                                                                           |
+| protocols               | protocols: ArrayList\<String\>                                  | OkHttpClientBuilder | 参数 protocols 使用协议的集合, 目前版本只支持 http/1.1, 强制使用http1.1 以及 h2_prior_knowledge, 强制使用http2 |
+| tlsConfig             | path: String                                                    | OkHttpClientBuilder | 开启tls, 配置tls 的 CA证书路径                                                                |
+| authenticator            | authenticator: (Option\<Route\>, Response) -> Option\<Request\> | OkHttpClientBuilder | 开启鉴权配置 (如果 code 返回 401 则需要鉴权配置), 如果lamda返回None则不再进行重试, 否则进行鉴权配置后重试请求                 |
+| followSslRedirects               | followSslRedirects: Bool                                        | OkHttpClientBuilder | 配置是否允许跨协议进行重定向                                                                       |
 
 
 #### interface Call
@@ -88,44 +97,53 @@ Call的工厂类，可用于发送 HTTP 请求并读取其响应，外观形式�
 | getRequest | 无                       | Request  | 获取封装的请求对象                   |
 | execute    | 无                       | Response | 同步进行请求                        |
 | enqueue    | responseCallback: Callback | Unit     | 异步进行请求                        |
-| cancel     | 无                       | String   | 取消请求，注意对于已经完成的请求无法取消 |
+| cancel     | 无                       | Unit   | 取消请求，注意对于已经完成的请求无法取消 |
 | isExecuted | 无                       | Bool     | 请求是否正在执行中或者已经执行完成      |
 | isCanceled | 无                       | Bool     | 请求是否已取消                       |
 | clone      | 无                       | Call     | 克隆新的Call对象                     |
+
+#### interface CallBack
+
+异步请求的回调处理接口
+
+|  成员函数   |           入参           |  返回值   | 作用描述   |
+| --------- | ----------------------- | ------- |--------|
+| onFailure | call: Call,  e: Exception                       | Unit  | 异常回调处理 |
+| onResponse    | call: Call,  response: Response                       | Unit | 正常回调处理 |
 
 #### class Dispatcher
 
 网络请求的执行器，可以定制发起异步请求的策略，以及同时运行异步请求的数量
 
 
-|       成员函数       |             入参             | 返回值 |                                                  作用描述                                                  |
-| ------------------- | ---------------------------- | ----- | --------------------------------------------------------------------------------------------------------- |
-| init                | 无                           | Unit   | 无参构造                                                                                                   |
-| setMaxRequests        | maxRequests: Int64             | Unit   | 设置并发调用Call最大数                                                                                        |
-| getMaxRequests        | 无                           | Int64  | 获取并发调用Call最大数                                                                                        |
-| setIdleCallback       | idleCallback: Option<()-> Unit> | Unit   | 设置分发器空闲时的回调函数                                                                                     |
-| setMaxRequestsPerHost | maxRequestsPerHost: Int64       | Unit   | 设置同一个hostname的Call最大并发数， 注意这里是对URL解析后的hostname而不是dns解析后的ip 如果不同域名解析成同一个ip这里无法限制 |
-| getMaxRequestsPerHost | 无                           | Int64  | 获取同一个hostname的Call最大并发数                                                                             |
-| cancelAll            | 无                           | Unit   | 消执行所有运行中和预备运行的Call对象                                                                            |
-| queuedCallsCount      | 无                           | Int64  | 获取等待运行的Call数量                                                                                        |
-| runningCallsCount     | 无                           | Int64  | 获取正在运行中的Call数量                                                                                      |
+|       成员函数       | 入参                                | 返回值 |                                                  作用描述                                                  |
+| ------------------- |-----------------------------------| ----- | --------------------------------------------------------------------------------------------------------- |
+| init                | 无                                 | Unit   | 无参构造                                                                                                   |
+| setMaxRequests        | maxRequests: Int64                | Unit   | 设置并发调用Call最大数                                                                                        |
+| getMaxRequests        | 无                                 | Int64  | 获取并发调用Call最大数                                                                                        |
+| setIdleCallback       | idleCallback: Option\<()-> Unit\> | Unit   | 设置分发器空闲时的回调函数                                                                                     |
+| setMaxRequestsPerHost | maxRequestsPerHost: Int64         | Unit   | 设置同一个hostname的Call最大并发数， 注意这里是对URL解析后的hostname而不是dns解析后的ip 如果不同域名解析成同一个ip这里无法限制 |
+| getMaxRequestsPerHost | 无                                 | Int64  | 获取同一个hostname的Call最大并发数                                                                             |
+| cancelAll            | 无                                 | Unit   | 消执行所有运行中和预备运行的Call对象                                                                            |
+| queuedCallsCount      | 无                                 | Int64  | 获取等待运行的Call数量                                                                                        |
+| runningCallsCount     | 无                                 | Int64  | 获取正在运行中的Call数量                                                                                      |
 
 
 #### class Request
 
 请求对象
 
-|    成员函数     | 入参 |             返回值              |                作用描述                 |
-| -------------- | ---- | ------------------------------ | -------------------------------------- |
-| getUrl         | 无   | URL                             | 获取URL对象                              |
-| getMethod       | 无   | String                          | 获取请求方法                             |
-| getBody        | 无   | Option<RequestBody>               | 获取请求体                               |
-| newBuilder      | 无   | RequestBuilder                   | 根据自身配置创建Builder                    |
-| getHeaders      | 无   | Header                          | 获取整个Header头对象                      |
-| getHeader       | 无   | name: String                     | 获取Header中key对应的 Option<String>        |
+|    成员函数     | 入参 | 返回值                                |                作用描述                 |
+| -------------- | ---- |------------------------------------| -------------------------------------- |
+| getUrl         | 无   | URL                                | 获取URL对象                              |
+| getMethod       | 无   | String                             | 获取请求方法                             |
+| getBody        | 无   | Option\<RequestBody\>              | 获取请求体                               |
+| newBuilder      | 无   | RequestBuilder                     | 根据自身配置创建Builder                    |
+| getHeaders      | 无   | Header                             | 获取整个Header头对象                      |
+| getHeader       | 无   | name: String                       | 获取Header中key对应的 Option<String>        |
 | getHeader       | 无   | name: String, defaultValue: String | 获取Header中key对应的value,如果没有返回默认值 |
-| toHttpRequest   | 无   | http.Request                     | 转换成仓颉http库对应的Request对象           |
-| getCacheControl | 无   | Option<CacheControl>              | 获取请求中缓存控制对象                     |
+| toHttpRequest   | 无   | http.Request                       | 转换成仓颉http库对应的Request对象           |
+| getCacheControl | 无   | Option\<CacheControl\>             | 获取请求中缓存控制对象                     |
 
 
 | 静态函数 | 入参 |     返回值     |       作用描述        |
@@ -136,49 +154,56 @@ Call的工厂类，可用于发送 HTTP 请求并读取其响应，外观形式�
 
 用于创建Request，用户通过链式调用配置其属性
 
-|   成员函数   |           入参            |     返回值     |             作用描述             |
-| ----------- | ------------------------ | ------------- | ------------------------------- |
-| url         | url: String               | RequestBuilder | 根据字符串配置URL                  |
-| url         | url: URL                  | RequestBuilder | 重载根据URL配置                   |
-| header       | name: String, value: String | RequestBuilder | 添加请求头key-value键值对           |
-| method       | method: String             | RequestBuilder | 配置请求方法                      |
-| body        | requestBody: RequestBody    | RequestBuilder | 配置请求体                        |
-| build        | Request                   | RequestBuilder | 创建Request                      |
-| removeHeader | name: String               | RequestBuilder | 移除请求头key对应的value            |
-| header       | header: Header             | RequestBuilder | 配置请求头                        |
-| cacheControl | cacheControl: CacheControl  | RequestBuilder | 配置请求中缓存控制头（830功能未实现） |
+| 成员函数         |           入参            |     返回值     | 作用描述              |
+|--------------| ------------------------ | ------------- |-------------------|
+| url          | url: String               | RequestBuilder | 根据字符串配置URL        |
+| url          | url: URL                  | RequestBuilder | 重载根据URL配置         |
+| header       | name: String, value: String | RequestBuilder | 添加请求头key-value键值对 |
+| method       | method: String, body!: Option<RequestBody> = Option<RequestBody>.None    | RequestBuilder | 配置请求方法 和请求体       |
+| build        | Request                   | RequestBuilder | 创建Request         |
+| removeHeader | name: String               | RequestBuilder | 移除请求头key对应的value  |
+| header       | header: Header             | RequestBuilder | 配置请求头             |
+| cacheControl | cacheControl: CacheControl  | RequestBuilder | 配置请求中缓存控制头        |
 
 #### class RequestBody
 
 请求体对象
 
-|   成员函数    |              入参               |   返回值    |                  作用描述                   |
-| ------------ | ------------------------------ | ---------- | ----------------------------------------- |
-| init         | mediaType: String, content: String | 无         | mediaType： 请求体数据类型， content： 请求体内容 |
-| contentType   | 无                              | String      | 获取请求体的请求体数据类型                     |
-| contentLength | 无                              | Int64       | 获取请求体的长度                             |
-| get          | 无                              | InputStream | 获取请求体的输出流                            |
+| 成员函数         |              入参               |   返回值    | 作用描述                             |
+|--------------| ------------------------------ | ---------- |----------------------------------|
+| init         | mediaType: String, bytes: Array<Byte> | 无         | mediaType： 请求体数据类型， bytes： 请求体内容 |
+| contentType  | 无                              | String      | 获取请求体的请求体数据类型                    |
+| getContentLength | 无                              | Int64       | 获取请求体的长度                         |
+| writeTo      | sink: Sink                              | Unit | 将请求体内容写入到sink对象中                 |
+| getContentLength | 无                              | Int64       | 获取请求体的长度                         |
+| get          | 无                              | InputStream | 获取请求体的输出流                        |
+
+| 静态函数 | 入参                                        |     返回值     | 作用描述                    |
+| -------- |-------------------------------------------| ------------- |-------------------------|
+| create  | contentType: String, content: String      | RequestBody | 创建请求内容为字符串的RequestBody  |
+| create  | contentType: String, bytes: Array\<Byte\> | RequestBody | 创建请求内容为Byte数组的RequestBody |
+| create  | contentType: String, file: File           | RequestBody | 创建请求内容为文件的RequestBody   |
 
 #### class Response
 
 请求的响应
 
-|    成员函数     |              入参               |       返回值        |                作用描述                 |
-| -------------- | ------------------------------ | ------------------ | -------------------------------------- |
-| newBuilder      | 无                              | ResponseBuilder      | 根据自身配置创建 Builder                   |
-| getRequest      | 无                              | String              | 获取对应的 Request 对象                    |
-| getProtocol     | 无                              | Protocol            | 获取使用协议                             |
-| getCode        | 无                              | Int64               | 获取状态码                               |
-| isSuccess       | 无                              | Bool               | 请求是否成功                             |
-| getHeaders      | 无                              | Header              | 获取整个响应头                            |
-| getHeader       | name: String                     | Option<String>       | 获取Header中key对应的value                 |
-| getHeader       | name: String, defaultValue: String | String              | 获取Header中key对应的value,如果没有返回默认值 |
-| getBody        | 无                              | Option<ResponseBody> | 获取响应体                               |
-| getPrevResponse | 无                              | Option<Response>     | 获取重定向的前置响应对象                   |
-| isRedirect      | 无                              | Bool               | 是否是重定向响应                          |
-| close          | 无                              | Unit               | 关闭响应体资源                               |
-| toString        | 无                              | String              | 格式化输出                               |
-| getCacheControl | 无                              | Option<CacheControl> | 获取缓存控制对象                          |
+|    成员函数     |              入参               | 返回值                    |                作用描述                 |
+| -------------- | ------------------------------ |------------------------| -------------------------------------- |
+| newBuilder      | 无                              | ResponseBuilder        | 根据自身配置创建 Builder                   |
+| getRequest      | 无                              | Request                | 获取对应的 Request 对象                    |
+| getProtocol     | 无                              | Protocol               | 获取使用协议                             |
+| getCode        | 无                              | Int64                  | 获取状态码                               |
+| isSuccess       | 无                              | Bool                   | 请求是否成功                             |
+| getHeaders      | 无                              | Header                 | 获取整个响应头                            |
+| getHeader       | name: String                     | Option\<String\>       | 获取Header中key对应的value                 |
+| getHeader       | name: String, defaultValue: String | String                 | 获取Header中key对应的value,如果没有返回默认值 |
+| getBody        | 无                              | Option\<ResponseBody\> | 获取响应体                               |
+| getPrevResponse | 无                              | Option\<Response\>     | 获取重定向的前置响应对象                   |
+| isRedirect      | 无                              | Bool                   | 是否是重定向响应                          |
+| close          | 无                              | Unit                   | 关闭响应体资源                               |
+| toString        | 无                              | String                 | 格式化输出                               |
+| getCacheControl | 无                              | Option\<CacheControl\> | 获取缓存控制对象                          |
 
 | 静态函数 | 入参 |     返回值      |        作用描述        |
 | -------- | ---- | -------------- | -------------------- |
@@ -188,13 +213,15 @@ Call的工厂类，可用于发送 HTTP 请求并读取其响应，外观形式�
 
 响应体
 
-|     成员函数     |                            入参                             |     返回值      |    作用描述     |
-| -------------- | ---------------------------------------------------------- | -------------- | ------------- |
-| init            | contentType: String, contentLength: Int64, source: ByteArrayStream | 无             | 构造器          |
-| getSource        | 无                                                          | ByteArrayStream | 获取响应体字节流 |
-| getContentLength | 无                                                          | Int64          | 获取响应体长度   |
-| getContentType   | 无                                                          | String         | 获取响应体类型   |
-
+|     成员函数     |                            入参                             |     返回值      | 作用描述        |
+| -------------- | ---------------------------------------------------------- | -------------- |-------------|
+| init            | contentType: String, contentLength: Int64, source: Source | 无             | 构造器         |
+| getSource        | 无                                                          | Source | 获取响应体source |
+| close | 无                                                          | Unit          | 关闭响应体资源     |
+| isClosed   | 无                                                          | Unit         | 响应体资源是否已关闭  |
+| getContentLength | 无                                                          | Int64          | 获取响应体长度     |
+| getContentType   | 无                                                          | String         | 获取响应体类型     |
+| getString   | 无                                                          | String         | 解析响应体为字符串   |
 
 #### class ResponseBuilder
 
@@ -218,31 +245,50 @@ Call的工厂类，可用于发送 HTTP 请求并读取其响应，外观形式�
 | -------- | ---- | -------------- | -------------------- |
 | builder  | 无   | ResponseBuilder | 创建 Response 的Builder |
 
+#### interface Source <: Resource
+
+|   成员函数   | 入参                                       | 返回值             | 作用描述        |
+| ----------- |------------------------------------------|-----------------|-------------|
+| read        | bytes: ByteArrayStream, byteCount: Int64 | Int64           | 读取指定字节的数据   |
+| close      | 无                                        | Unit            | 关闭source    |
+| isClosed     | 无                                        | Unit | source是否已关闭 |
+
+#### interface Sink
+
+| 成员函数  | 入参                                       | 返回值  | 作用描述            |
+|-------|------------------------------------------|------|-----------------|
+| write | bytes: Array<Byte> | Unit | 将buffer写入到sink中 |
+| flush | 无                                        | Unit | 将数据从缓存中刷入流中     |
+| close | 无                                        | Unit | 关闭sink          |
+
+
 ####  class Chain
 
 拦截器链
 
-|    成员函数    |                              入参                               |      返回值       |      作用描述      |
-| ------------- | --------------------------------------------------------------- | ---------------- | ----------------- |
-| getTransmitter | 无                                                              | Transmitter        | 获取Transmitter对象 |
-| getRequest     | 无                                                              | Request           | 获取请求对象        |
-| getExchange    | 无                                                              | Int32             | 获取Exchange对象    |
-| proceed        | request: Request                                                  | Transmitter        | 执行拦截器         |
-| proceed        | request: Request,  transmitter: Transmitter, exchange: Option<Exchange> | Request           | 执行拦截器重载      |
-| getCall        | 无                                                              | Call              | 获取Call对象        |
-| getConnection  | 无                                                              | Option<Connection> | 获取连接对象        |
+|    成员函数    | 入参                                                                        | 返回值                  |      作用描述      |
+| ------------- |---------------------------------------------------------------------------|----------------------| ----------------- |
+| getTransmitter | 无                                                                         | Transmitter          | 获取Transmitter对象 |
+| getRequest     | 无                                                                         | Request              | 获取请求对象        |
+| getExchange    | 无                                                                         | Exchange             | 获取Exchange对象    |
+| proceed        | request: Request                                                          | Response             | 执行拦截器         |
+| proceed        | request: Request,  transmitter: Transmitter, exchange: Option\<Exchange\> | Request              | 执行拦截器重载      |
+| getCall        | 无                                                                         | Call                 | 获取Call对象        |
+| getConnection  | 无                                                                         | Option\<Connection\> | 获取连接对象        |
 
 #### Interface Interceptor
 
 默认添加拦截器按顺序有
 
-1.  RetryAndFollowUpInterceptor (负责 HTTP 请求的重定向功能，和重试机制)
-2.  BridgeInterceptor(负责桥接功能，把用户所构建的请求转换为真正的 Request，将服务器所返回的响应转换为用户所能够使用的 Response)
-3.  CacheInterceptor(主要负责了对缓存的读取以及更新, 目前尚未开发)
-4.  ConnectInterceptor(主要负责的是与服务器的连接的建立)
-5.  CallServerInterceptor(它真正实现了对服务器连接的读取)
+1. RetryAndFollowUpInterceptor (负责 HTTP 请求的重定向功能，和重试机制)
+2. BridgeInterceptor(负责桥接功能，把用户所构建的请求转换为真正的 Request，将服务器所返回的响应转换为用户所能够使用的 Response)
+3. ConnectInterceptor(主要负责的是与服务器的连接的建立)
+4. CallServerInterceptor(它真正实现了对服务器连接的读取)
 
-#### Route
+| 成员函数 | 入参 |     返回值      | 作用描述   |
+| -------- | ---- | -------------- |--------|
+| intercept  | chain: Chain   | Response | 拦截处理请求 |
+#### class Route
 
 连接服务器的路由
 
@@ -252,20 +298,20 @@ Call的工厂类，可用于发送 HTTP 请求并读取其响应，外观形式�
 | getAddress | 无                                            | Address | 获取 Address 对象                                                                     |
 
 
-#### Address
+#### class Address
 
 包含服务器地址和连接协议的对象
 
-|   成员函数   |                入参                |      返回值      |              作用描述               |
-| ----------- | ---------------------------------- | --------------- | --------------------------------- |
-| init        | url: URL, protocols: ArrayList<String> | 无               | url  服务器URL资源， protocols 请求协议 |
-| getUrl       | 无                                 | URL              | 获取 URL 对象                       |
-| getProtocols | 无                                 | ArrayList<String> | 获取协议                            |
+|   成员函数   |                入参                | 返回值                 |              作用描述               |
+| ----------- | ---------------------------------- |---------------------| --------------------------------- |
+| init        | url: URL, protocols: ArrayList<String> | 无                   | url  服务器URL资源， protocols 请求协议 |
+| getUrl       | 无                                 | URL                 | 获取 URL 对象                       |
+| getProtocols | 无                                 | ArrayList\<String\> | 获取协议                            |
 
 
-#### protocol
+#### enum protocol
 
-HTTP_1_1 | H2_PRIOR_KNOWLEDGE
+| HTTP_1_0| HTTP_1_1|  HTTP_2 | H2_PRIOR_KNOWLEDGE
 
 | 成员函数  | 入参 | 返回值  |  作用描述  |
 | ------- | ---- | ------ | --------- |
@@ -276,33 +322,38 @@ HTTP_1_1 | H2_PRIOR_KNOWLEDGE
 | get     | protocol: String | Protocol | 字符串转protocol对象 |
 
 
-#### Transmitter
+#### class Transmitter
 
 TCP协议中应用层和传输层的连接流的抽象
 
-|         成员函数          |             入参              | 返回值 |                           作用描述                           |
-| ----------------------- | ---------------------------- | ----- | ---------------------------------------------------------- |
-| init                     | client: OkHttpClient, call: Call | 无     | client 客户端配置对象，  call 请求的增强                          |
-| cancel                   | 无                            | Bool   | 关闭连接                                                     |
-| prepareToConnect          | request: Request               | Unit   | 进行准备连接前必要的初始化 如果已经进行过一次连接，判断是否可以可以复用 |
-| hasConnection             | 无                            | Bool   | 是否已经建立连接                                              |
-| hasExchange               | 无                            | Bool   | 是否已经建立传输通道                                           |
-| exchangeDoneDueToException | 无                            | Unit   | 由于异常关闭传输通道                                           |
-| canRetry                 | 无                            | Bool   | 是否可以重试                                                 |
+|         成员函数          |             入参              | 返回值 | 作用描述                               |
+| ----------------------- | ---------------------------- | ----- |------------------------------------|
+| init                     | client: OkHttpClient, call: Call | 无     | client 客户端配置对象, call 请求的增强         |
+| cancel                   | 无                            | Unit   | 关闭socket                           |
+| isCanceled                   | 无                            | Unit   | 是否已经关闭                             |
+| prepareToConnect          | request: Request               | Unit   | 进行准备连接前必要的初始化 如果已经进行过连接，可以复用则不再初始化 |
+| hasConnection             | 无                            | Bool   | 是否已经建立连接                           |
+| hasExchange               | 无                            | Bool   | 是否已经建立传输通道                         |
+| exchangeDoneDueToException | 无                            | Unit   | 关闭传输通道                             |
+| noMoreExchanges | 无                            | Unit   | 由于异常关闭传输通道并取消连接                    |
+| canRetry                 | 无                            | Bool   | 是否可以重试                             |
 
 
 #### interface ExchangeCodec
 
 对不同协议解析逻辑的封装
 
-|       成员函数       |      入参       |       返回值        |   作用描述    |
-| ------------------- | ---------------- | ------------------ | ------------ |
-| write               | request: Request | 无                 | 发送请求      |
-| readResponseHeaders   | 无               | ResponseBuilder      | 读取请求头     |
-| reportedContentLength | 无              | Int64               | 解析请求体长度 |
-| openResponseBody      | 无               | Option<ResponseBody> | 解析请求体     |
-| getConnection        | 无               | Connection          | 获取连接对象   |
-| cancel               | 无               | Unit               | 关闭连接      |
+|       成员函数       |      入参       | 返回值                       | 作用描述                         |
+| ------------------- | ---------------- |---------------------------|------------------------------|
+| readResponseHeaders   | expectContinue: Bool               | Option\<ResponseBuilder\> | 读取请求头                        |
+| reportedContentLength | response: Response              | Int64                     | 解析请求体长度                      |
+| openResponseBodySource      | response: Response                | Source      | 创建用于输出响应体的source对象           |
+| getConnection        | 无               | Connection                | 获取连接对象                       |
+| writeRequestHeaders   | request: Request               | Unit           | 写入请求头报文                      |
+| finishRequest | 无              | Int64                     | 将请求从缓存中刷入套接字并且结束请求标记不再进行新的传输 |
+| createRequestBody      | request: Request               | Sink      | 创建写入请求体的sink                 |
+| flushRequest        | 无               | Unit                | 将请求从缓存中刷入套接字                 |
+| cancel               | 无               | Unit                      | 关闭socket                     |
 
 
 
@@ -310,37 +361,80 @@ TCP协议中应用层和传输层的连接流的抽象
 
 一次完整的http请求的 网络io通道的抽象
 
-|         成员函数          |                                   入参                                    |       返回值        |                           作用描述                           |
-| ----------------------- | ------------------------------------------------------------------------ | ------------------ | ---------------------------------------------------------- |
-| init                     | transmitter: Transmitter, call: Call, finder: ExchangeFinder, codec: ExchangeCodec | 无                 | 构造器                                                      |
-| write                    | 无                                                                        | Bool               | 发送请求                                                     |
-| readResponseHeaders        | 无                                                                        | Bool               | 读取请求头                                                   |
-| openResponseBody          | 无                                                                        | Option<ResponseBody> | 进行准备连接前必要的初始化 如果已经进行过一次连接，判断是否可以可以复用 |
-| getConnection             | 无                                                                        | Connection          | 获取连接                                                     |
-| cancel                   | 无                                                                        | Bool               | 关闭通道                                                     |
-| detachWithViolence        | 无                                                                        | Unit               | 暴力关闭                                                     |
-| noNewExchangesOnConnection | 无                                                                        | Bool               | 标记为此通道不再可用                                                |
+|         成员函数          |                                   入参                            |       返回值    | 作用描述       |
+| ----------------------- | --------------------------------------------------------------- | ------------ |------------|
+| init                     | transmitter: Transmitter, call: Call, finder: ExchangeFinder, codec: ExchangeCodec | 无            | 构造器        |
+| readResponseHeaders        | 无                                                               |  Option<ResponseBuilder>         | 读取请求头      |
+| openResponseBody          | 无                                                               | ResponseBody | 解析并创建响应体   |
+| getConnection             | 无                                                               | Connection   | 获取连接       |
+| cancel                   | 无                                                               | Bool         | 关闭通道       |
+| detachWithViolence        | 无                                                               | Unit         | 暴力关闭       |
+| noNewExchangesOnConnection | 无                                                               | Bool         | 标记为此通道不再可用 |
+| noRequestBody        | 无                                                               | Unit         | 标记无请求体     |
+| createRequestBody        | request: Request                                                | Sink| 创建写入请求体的sink         |
+| writeRequestHeaders        | request: Request                                                | Unit| 写入请求头报文         |
+| flushRequest        | 无                                               | Unit| 将请求从缓存中刷入套接字         |
+| finishRequest        | 无                                               | Unit| 将请求从缓存中刷入套接字并且结束请求标记不再进行新的传输         |
 
+#### class Http1ExchangeCodec <: ExchangeCodec
 
+处理Http1协议解析逻辑
 
-#### Connection
+| 成员函数                   | 入参                                                                                              | 返回值       | 作用描述               |
+|------------------------|-------------------------------------------------------------------------------------------------|-----------|--------------------|
+| init                   | client: OkHttpClient, realConnection: Connection, source: OkBuffer, sink: BufferedOutputStream  | 无         | 构造器              |
+
+#### class Connection
 
 包含socket和流的http1.1 ，http2连接
+ 
+|    成员函数     |                          入参                           | 返回值                      | 作用描述                                  |
+| -------------- | ------------------------------------------------------- |--------------------------|---------------------------------------|
+| init           | connectionPool: ConnectionPool, route: Route                 | 无                        | 构造器  connectionPool 连接池对象， route 路由对象 |
+| getProtocol     | 无                                                      | Protocol                 | 获取协议                                  |
+| getTransmitters | 无                                                      | ArrayList\<Transmitter\> | 获取该连接关联的所有Transmitter实例               |
+| noExchanges     | 无                                                      | Unit                     | 标记该连接上不再创建新的传输                        |
+| getSocket       | 无                                                      | Option\<OKSocket\>       | 获取socket                              |
+| getRoute        | 无                                                      | Route                    | 获取路由对象                                |
+| isHealthy       | 无                                                      | Bool                     | 连接是否健康可用                              |
+| isMultiplexed   | 无                                                      | Bool                     | 连接是否支持多路复用                            |
+| connect        | connectTimeout: Option<Duration>, connectionRetryEnabled: Bool | Unit                     | 开始连接                                  |
+| cancel         | 无                                                      | Unit                     | 关闭socket                              |
 
-|    成员函数     |                          入参                           |        返回值         |                   作用描述                   |
-| -------------- | ------------------------------------------------------- | -------------------- | ------------------------------------------- |
-| init           | connectionPool: ConnectionPool, route: Route                 | 无                   | 构造器  connectionPool 连接池对象， route 路由对象 |
-| getProtocol     | 无                                                      | Protocol              | 获取协议                                     |
-| getTransmitters | 无                                                      | ArrayList<Transmitter> | 获取该连接关联的所有Transmitter实例              |
-| noExchanges     | 无                                                      | Unit                 | 标记该连接上不可再传输                          |
-| getSocket       | 无                                                      | Option<Socket>        | 获取socket                                   |
-| getRoute        | 无                                                      | Route                | 获取路由对象                                  |
-| isHealthy       | 无                                                      | Bool                 | 连接是否健康可用                                  |
-| isMultiplexed   | 无                                                      | Bool                 | 连接是否支持多路复用                           |
-| connect        | connectTimeout: Option<Duration>, connectionRetryEnabled: Bool | Unit                 | 开始连接                                     |
-| cancel         | 无                                                      | Unit                 | 关闭socket                                   |
 
-#### ConnectionPool
+#### class OKSocket
+
+包装了SocketClient,用于支持socket被缓冲流包装时仍然具备使用读写超时的能力
+
+|    成员函数     | 入参                                                                                      |        返回值         | 作用描述                              |
+| -------------- |-----------------------------------------------------------------------------------------| -------------------- |-----------------------------------|
+| init           | client: SocketClient, readTimeOut: Option\<Duration\>, writeTimeOut: Option\<Duration\> | 无                   | 构造器                               |
+| read     | buffer: Array\<Byte\>                                                                   | Int64               | 从已建立的 Socket 连接中读取数据，存放到入参 buffer 中 |
+| write | buffer: Array\<Byte\>                                                                   | Unit | 将入参 buffer 中存储的数据写入到 Socket 连接中   |
+| close     | 无                                                                                       | Unit                 | 关闭socket                          |
+| isClosed       | 无                                                                                       | Bool       | socket是否已关闭                            |
+
+#### enum SocketClient <: Resource 
+
+封装 TlsSocket 和 Socket 便于提供统一接口
+
+```
+| SocketC(Socket)
+| TlsC(TlsSocket)  
+
+```
+|    成员函数     | 入参                                        | 返回值                      | 作用描述                                                                 |
+| -------------- |-------------------------------------------|--------------------------|----------------------------------------------------------------------|
+| connect           | 无                                         | Unit                     | 进行socket连接                                                           |
+| connect     | timeout: Duration                         | 在指定时间内进行socket的连接,超时抛出SocketTimeoutException异常 |
+| read     | buffer: Array\<Byte\>                     | Int64               | 从已建立的 Socket 连接中读取数据，存放到入参 buffer 中 |
+| read     | buffer: Array\<Byte\> , timeout: Duration | Int64               | 在指定时间内从已建立的 Socket 连接中读取数据，存放到入参 buffer 中, 超时抛出SocketTimeoutException异常 |
+| write | buffer: Array<Byte>                       | Unit                     | 将入参 buffer 中存储的数据写入到 Socket 连接中                                      |
+| write | buffer: Array<Byte> , timeout: Duration   | Unit                     | 在指定时间内将入参 buffer 中存储的数据写入到 Socket 连接中 , 超时抛出SocketTimeoutException异常 |
+| close     | 无                                         | Unit                     | 关闭socket                                                             |
+| isClosed       | 无                                         | Bool                     | socket是否已关闭                                                          |
+
+#### class ConnectionPool
 
 连接池
 
@@ -350,6 +444,18 @@ TCP协议中应用层和传输层的连接流的抽象
 | idleConnectionCount | 无                                                                        | Int64  | 获取当前空闲连接数                                                                      |
 | evictAll           | 无                                                                        | Unit   | 移除并关闭所有空闲连接                                                                   |
 | connectFailed       | failedRoute: Route                                                          | Unit   | 记录连接失败的路由                                                                      |
+
+#### class StatusLine
+
+解析报文第一行StatusLine
+
+|      成员函数       |                                    入参                                  | 返回值 | 作用描述        |
+| ----------------- | ----------------------------------------------------------------------- | ----- |-------------|
+| init               |  protocol: Protocol, code: Int64, message: String | 无     | 构造器         |
+
+| 静态函数 |      入参       |  返回值   | 作用描述                           |
+| -------- | -------------- | ------- |--------------------------------|
+| parse     | statusLine: String | StatusLine | 解析字符串为StatusLine, 如果格式不正确则抛出异常 |
 
 ### 5.2 展示示例
 

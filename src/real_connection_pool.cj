@@ -46,6 +46,7 @@ public class ConnectionPool {
      */
     func connectionBecameIdle(connection: Connection): Bool {
         let conn = connection
+
         if (connection.noNewExchanges || maxIdleConnections == 0) {
             var index = -1
             var removeIndex = -1
@@ -90,6 +91,7 @@ public class ConnectionPool {
              transmitter.acquireConnectionNoEvents(conn)
              return true
         }
+
         return false
     }
 
@@ -113,6 +115,7 @@ public class ConnectionPool {
      */
     public func idleConnectionCount(): Int64 {
         var total = 0
+
         for (connection in connections) {
             if (connection.getTransmitters().size == 0) {
                 total++
