@@ -8,6 +8,10 @@ public func permitsRequestBody(method: String): Bool {
     return method != "GET" && method != "HEAD"
 }
 
+public func requiresRequestBody(method: String): Bool {
+    return method.equals("POST") || method.equals("PUT") || method.equals("PATCH") || method.equals("PROPPATCH")
+}
+
 public func redirectsWithBody(method: String): Bool {
     // (WebDAV) redirects should also maintain the request body
     return method.equals("PROPFIND")

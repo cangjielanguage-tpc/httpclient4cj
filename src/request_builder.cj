@@ -32,11 +32,11 @@ public class RequestBuilder <: Builder<Request> {
      * @param request of Request
      * @since 0.29.3
      */
-    public init(request: Request) {
+     init(request: Request) {
         this.urlBuild = request.getUrl()
         this.methodBuild = request.getMethod()
         this.bodyBuild = request.getBody()
-        this.headerBuild = request.getHeaders()
+        this.headerBuild = request.getHeaders().clone()
 
     }
 
@@ -96,11 +96,74 @@ public class RequestBuilder <: Builder<Request> {
      * @since 0.29.3
      */
     public func method(method: String, body!: Option<RequestBody> = Option<RequestBody>.None): RequestBuilder {
+        if (method.isEmpty()) {
+            throw IllegalArgumentException("method length == 0")
+        }
+
+        match (body) {
+            case Some(v) =>
+                if (!permitsRequestBody(method)) {
+                    throw IllegalArgumentException("method ${method} must not have a request body.")
+                }
+            case None =>
+                if (requiresRequestBody(method)) {
+                    throw IllegalArgumentException("method ${method} must have a request body.")
+                }
+        }
         this.methodBuild = method
         this.bodyBuild = body
         return this
     }
 
+    /**
+     * The Function is put
+     *
+     * @return Type of Request
+     * @since 0.33.3
+     */
+    public func put(body: RequestBody): RequestBuilder {
+        return method("PUT", body: body)
+    }
+
+    /**
+     * The Function is patch
+     *
+     * @return Type of Request
+     * @since 0.33.3
+     */
+    public func patch(body: RequestBody): RequestBuilder {
+        return method("PATCH", body: body)
+    }
+
+    /**
+     * The Function is patch
+     *
+     * @return Type of Request
+     * @since 0.33.3
+     */
+    public func delete(body: Option<RequestBody>): RequestBuilder {
+        return method("DELETE", body: body)
+    }
+
+    /**
+     * The Function is get
+     *
+     * @return Type of Request
+     * @since 0.33.3
+     */
+    public func get(): RequestBuilder {
+        return method("GET")
+    }
+
+    /**
+     * The Function is head
+     *
+     * @return Type of Request
+     * @since 0.33.3
+     */
+    public func head(): RequestBuilder {
+        return method("HEAD")
+    }
 
     /**
      * The Function is build

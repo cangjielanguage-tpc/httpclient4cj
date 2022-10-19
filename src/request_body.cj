@@ -4,17 +4,29 @@
 
 /**
  * @file
- * The file declars the RequestBody class.
+ * The file declars the RequestBody interface.
  */
 package okhttp
 
 from std import fs.*
+
+public interface RequestBody {
+
+    func contentType(): String
+
+    func getContentLength(): Int64
+
+    func writeTo(sink: Sink): Unit
+
+    func get(): InputStream
+}
+
 /**
- * The class is RequestBody
+ * The class is RealRequestBody
  * @author guo_tingtingtekla,luoyukai4
  * @since 0.29.3
  */
-public class RequestBody {
+public class RealRequestBody <: RequestBody{
     /* var member content type is String */
     private let buffer: ByteArrayStream = ByteArrayStream()
     /* var member MediaType type is String */
@@ -27,7 +39,7 @@ public class RequestBody {
      * @param content of String
      * @since 0.29.3
      */
-   public init(mediaType: String, bytes: Array<Byte>) {
+    init(mediaType: String, bytes: Array<Byte>) {
         contentLength = bytes.size
         this.buffer.write(bytes)
         this.mediaType = mediaType
@@ -50,14 +62,14 @@ public class RequestBody {
      * @return Type of Int64
      * @since 0.29.3
      */
-   public func getContentLength(): Int64 {
+    public func getContentLength(): Int64 {
         return contentLength
 
-   }
+    }
 
-   public func writeTo(sink: Sink): Unit {
+    public func writeTo(sink: Sink): Unit {
        sink.write(buffer.readToEnd())
-   }
+    }
 
     /**
      * The Function is get
@@ -69,17 +81,15 @@ public class RequestBody {
         return buffer
     }
 
-
     public static func create(contentType: String, content: String): RequestBody {
         return create(contentType, content.toUtf8Array())
     }
 
     public static func create(contentType: String, bytes: Array<Byte>): RequestBody {
-        return RequestBody(contentType, bytes)
+        return RealRequestBody(contentType, bytes)
     }
 
     public static func create(contentType: String, file: File): RequestBody {
         return create(contentType, file.readToEnd())
     }
-
 }

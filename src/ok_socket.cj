@@ -9,7 +9,7 @@
 package okhttp
 
 public class OKSocket <: Resource & InputStream & OutputStream {
-    let client: SocketClient
+    public let client: SocketClient
     let readTimeOut: Option<Duration>
     let writeTimeOut: Option<Duration>
     public init(client: SocketClient, readTimeOut: Option<Duration>, writeTimeOut: Option<Duration>) {
