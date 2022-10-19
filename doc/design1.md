@@ -165,18 +165,18 @@ Call的工厂类，可用于发送 HTTP 请求并读取其响应，外观形式�
 | header       | header: Header             | RequestBuilder | 配置请求头             |
 | cacheControl | cacheControl: CacheControl  | RequestBuilder | 配置请求中缓存控制头        |
 
-#### class RequestBody
+#### interface RequestBody
 
 请求体对象
 
 | 成员函数         |              入参               |   返回值    | 作用描述                             |
 |--------------| ------------------------------ | ---------- |----------------------------------|
-| init         | mediaType: String, bytes: Array<Byte> | 无         | mediaType： 请求体数据类型， bytes： 请求体内容 |
 | contentType  | 无                              | String      | 获取请求体的请求体数据类型                    |
 | getContentLength | 无                              | Int64       | 获取请求体的长度                         |
 | writeTo      | sink: Sink                              | Unit | 将请求体内容写入到sink对象中                 |
-| getContentLength | 无                              | Int64       | 获取请求体的长度                         |
 | get          | 无                              | InputStream | 获取请求体的输出流                        |
+
+#### class RealRequestBody <: RequestBody
 
 | 静态函数 | 入参                                        |     返回值     | 作用描述                    |
 | -------- |-------------------------------------------| ------------- |-------------------------|

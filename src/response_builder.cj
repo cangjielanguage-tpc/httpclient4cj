@@ -35,7 +35,7 @@ public open class ResponseBuilder <: Builder<Response> {
      *
      * @since 0.29.3
      */
-    public init() {}
+     init() {}
 
     /**
      * The Function is init constructor
@@ -43,12 +43,12 @@ public open class ResponseBuilder <: Builder<Response> {
      * @param response of Response
      * @since 0.29.3
      */
-    public init(response: Response) {
+     init(response: Response) {
         this.requestBuild = response.getRequest()
         this.protocolBuild = response.getProtocol()
         this.codeBuild = response.getCode()
         this.messageBuild = response.getMessage()
-        this.headerBuild = response.getHeaders()
+        this.headerBuild = response.getHeaders().clone()
         this.bodyBuild = response.getBody()
         this.exchange = response.exchange
     }
@@ -187,7 +187,6 @@ public open class ResponseBuilder <: Builder<Response> {
         this.headerBuild = header
         return this
     }
-
 
     /**
      * The Function is build

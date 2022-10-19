@@ -18,7 +18,7 @@ main(){
   sleep(1000*1000*1000*2)
  let mUrl = "http://0.0.0.0:7692/1241"
  var jsonStr = ##"{"name":"Tom","age":"18","version":"0.1.1"}"##
- let requestBody:Option<RequestBody> = Option<RequestBody>.Some(RequestBody("json",jsonStr.toUtf8Array()))
+ let requestBody:Option<RequestBody> = Option<RequestBody>.Some(RealRequestBody.create("json",jsonStr.toUtf8Array()))
  var proArray = ArrayList<String>()
  proArray.append("http/1.1")
   let header: http.Header = Header()

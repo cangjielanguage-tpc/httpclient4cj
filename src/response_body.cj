@@ -71,7 +71,7 @@ public class ResponseBody <: Resource {
 
     public func getString(): String {
         let stream = ByteArrayStream()
-        while (source.read(stream, 4096) != -1) {}
+        while (source.read(stream, 4096) > 0) {}
         return String.fromUtf8(stream.readToEnd())
     }
 }

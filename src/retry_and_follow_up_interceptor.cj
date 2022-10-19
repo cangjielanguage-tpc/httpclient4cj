@@ -142,6 +142,7 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
                    if (method != "GET" && method != "HEAD") {
                        return Option<Request>.None
                    }
+
                    return redirectRequest(response)
             case 300 | 301 | 302 | 303 =>
                    return redirectRequest(response)
@@ -152,6 +153,7 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
                    // The application layer has directed us not to retry the request.
                    return Option<Request>.None
                 }
+
                 match (response.getRequest().getBody()) {
                     case Some(body) => ()
                     case None => return Option<Request>.None
@@ -164,9 +166,11 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
                         ()
                     case _ => ()
                 }
+
                 if (retryAfter(response, 0) > 0) {
                     return Option<Request>.None
                 }
+
                 return response.getRequest()
             case 503 =>
                 match (response.getPrevResponse()) {
@@ -177,9 +181,11 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
                         ()
                     case _ => ()
                 }
+
                 if (retryAfter(response, 1) == 0) {
                     return response.getRequest()
                 }
+
                 return Option<Request>.None
             case _ => return Option<Request>.None
         }
@@ -197,15 +203,20 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
         if (!client.getFollowRedirects()) {
             return Option<Request>.None
         }
+
         let location: String = response.getHeader("Location", "")
-        let url: URL = response.getRequest().getUrl().resolveReference(URL.parseRequestURI(location))
-        let method: String = response.getRequest().getMethod()
+
         if (location == "") {
             return Option<Request>.None
         }
+
+        let url: URL = response.getRequest().getUrl().resolveReference(URL.parseRequestURI(location))
+        let method: String = response.getRequest().getMethod()
+
         if (url.scheme != response.getRequest().getUrl().scheme && !client.getFollowSslRedirects()) {
             return Option<Request>.None
         }
+
         let requestBuilder: RequestBuilder  = response.getRequest().newBuilder()
         //redirects should also maintain the request body
         if (permitsRequestBody(method)) {
@@ -237,7 +248,8 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
      * @since 0.29.3
      */
     func retryAfter( userResponse: Response,  defaultDelay: Int64): Int64 {
-        let header: String = userResponse.getHeader("Retry-After", "");
+        let header: String = userResponse.getHeader("Retry-After", "")
+
         if (header == "") {
           return defaultDelay;
         }

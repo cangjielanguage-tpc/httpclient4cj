@@ -63,21 +63,27 @@ public class BridgeInterceptor<: Interceptor {
         var transparentGzip: Bool = false
         // If we add an "Accept-Encoding: gzip" header field we're responsible for also decompressing
         // the transfer stream.
+
         if (request.getHeader("Accept-Encoding", "") == "" && request.getHeader("Range", "") == "") {
            transparentGzip = true
            requestBuilder.header("Accept-Encoding", "gzip")
         }
+
         let cookies = cookieJar.loadForRequest(request.getUrl())
+
         if (cookies.size != 0) {
            requestBuilder.header("Cookie", cookieHeader(cookies))
         }
+
         if (request.getHeader("User-Agent", "") == "") {
             requestBuilder.header("User-Agent", "okhttp4cj");
         }
+
         var response: Response = chain.proceed(requestBuilder.build())
         let responseHeader: Header = response.getHeaders()
         receiveHeaders(cookieJar, request.getUrl(), responseHeader)
         let responseBuilder: ResponseBuilder = response.newBuilder().request(request)
+
         if (transparentGzip && "gzip".equals(response.getHeader("Content-Encoding", "")) && hasBody(response)) {
             let strippedHeader = response.getHeaders().clone()
             strippedHeader.remove("Content-Encoding")

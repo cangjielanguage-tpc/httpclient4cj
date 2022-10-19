@@ -11,6 +11,7 @@ from net import tls.*
 from std import core.*
 
 var port: UInt16 = 0
+//重定向次数超20次后，结束重定向并抛出异常
 main() {
     spawn {
         serve()
@@ -19,16 +20,15 @@ main() {
     let url: URL = URL.parse("http://127.0.0.1:${port}/1234")
     let client: OkHttpClient= OkHttpClient.builder().build()
     let request: okhttp.Request = okhttp.Request.builder()
-                                    .method("POST")
                                     .url(url)
                                     .build()
     let call = client.newCall(request)
     try{
         let response: okhttp.Response = call.execute()
     }catch (e: Exception) {
-        return 1
+        return 0
     }
-    return 0
+    return 1
 }
 
 func serve(){

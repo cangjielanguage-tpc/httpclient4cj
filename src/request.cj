@@ -87,7 +87,7 @@ public class Request {
      * @since 0.29.3
      */
     public func newBuilder(): RequestBuilder {
-        return  RequestBuilder(this)
+        return RequestBuilder(this)
     }
 
     /**
