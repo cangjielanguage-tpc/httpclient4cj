@@ -163,7 +163,7 @@ class ExchangeFinder {
         var selectedRoute: Option<Route> = None
         synchronized (connectionPool.mutex) {
             if (transmitter.isCanceled()) {
-                throw Exception("Transmitter has Canceled")
+                throw HttpException("Transmitter has Canceled")
             }
             hasStreamFailure = false
             match(transmitter.connection) {

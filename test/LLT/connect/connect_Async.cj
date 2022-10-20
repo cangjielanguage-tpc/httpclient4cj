@@ -7,6 +7,7 @@ from std import time.*
 
 main() {
     let client: OkHttpClient= OkHttpClient.builder().build()
+    client.getDispatcher().setIdleCallback( { => println("===================di idle======================")})
     let request: Request = Request.builder().url("http://36.152.44.95/index.html")
     .header("User-Agent", "OkHttp-Example")
     .build()

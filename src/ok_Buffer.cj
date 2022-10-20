@@ -53,17 +53,6 @@ public class OkBuffer <: Source {
        buffer.read(bytes)
     }
 
-    func skipSource(limit: Int64): Unit {
-       let bytes = Array<Byte>(limit, item: 0)
-       source.read(bytes)
-    }
-
-    public func checkOffsetAndCount(size: Int64, offset: Int64, byteCount: Int64): Unit {
-        if (offset > size || size -offset < byteCount || size < 0 || byteCount < 0) {
-            throw IllegalArgumentException("from=${offset} byteCount=${byteCount}")
-        }
-    }
-
     public func indexOf(b: Byte, start: Int64, end: Int64): Int64 {
         if (start >= 0 && end >= start) {
            var offSet = start

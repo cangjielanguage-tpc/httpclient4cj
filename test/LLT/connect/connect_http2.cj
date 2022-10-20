@@ -16,11 +16,11 @@ main() {
     let r = H2Request(GET, "http://127.0.0.1:50066/cangjie_test-1.0-SNAPSHOT/hello");
     var ssv = ByteArrayStream()
     r.req.copyTo(ssv)
-    println(String(okhttp.toArray(ssv.readToEnd())))
+    println(String.fromUtf8(ssv.readToEnd()))
     let r2 = h1.Request(GET, "http://127.0.0.1:50066/cangjie_test-1.0-SNAPSHOT/hello");
     var ssv2 = ByteArrayStream()
     r2.copyTo(ssv2)
-    println(String(okhttp.toArray(ssv2.readToEnd())))
+    println(String.fromUtf8(ssv2.readToEnd()))
     let resp = conn.doRequest(r)
     println(resp.status)
     showResp(resp,"TEST")
@@ -38,7 +38,7 @@ println("transferEncoding: ${resp.transferEncoding}")
 println("contentLength: ${resp.contentLength}")
 println("----------------respbody------------------------")
 var ss = resp.body as ByteArrayStream
-var s: String = String(okhttp.toArray(ss.getOrThrow().readToEnd()))
+var s: String = String.fromUtf8(ss.getOrThrow().readToEnd())
 println("body ==> ${s}")
 var buf = Array<UInt8>(100, {i => 0})
 println("----------------respbody------------------------")

@@ -48,7 +48,11 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
         var followUpCount: Int64 = 0
         while (true) {
             transmitter.prepareToConnect(request)
-            if (transmitter.isCanceled()) {throw Exception("Canceled") }
+
+            if (transmitter.isCanceled()) {
+                throw HttpException("Canceled")
+            }
+
             var response: Response = Response.builder().build()
             var success: Bool = false
             try {
@@ -89,13 +93,16 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
                 case None => ()
             }
             Util.closeQuietly(response.getBody())
+
             if (transmitter.hasExchange()) {
                 exchange.getOrThrow().detachWithViolence();
             }
             followUpCount++
+
             if (followUpCount > MAX_FOLLOW_UPS) {
                 throw ProtocolException("Too many follow-up requests: ${followUpCount}")
             }
+
             request = followUp.getOrThrow()
             priorResponse = Option<Response>.Some(response)
         }
@@ -106,6 +113,7 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
         if (!client.getRetryOnConnectionFailure()) {
             return false
         }
+
         if (isRecoverable(e, requestSendStarted)) {
             return false
         }

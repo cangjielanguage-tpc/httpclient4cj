@@ -60,13 +60,7 @@ public interface Call {
      * @since 0.29.3
      */
     func isCanceled(): Bool
-    /*
-     * The Function is timeout
-     *
-     * @return Type of Timeout
-     * @since 0.29.3
-     */
-    func timeout(): Timeout
+
     /*
      * The Function is clone
      *
@@ -83,7 +77,7 @@ public interface Call {
  * @author guo_tingtingtekla,luoyukai4
  * @since 0.29.3
  */
-public class RealCall<: Call {
+class RealCall<: Call {
     public var mutex: Monitor = Monitor()
     /** var member forWebSocket type is Bool */
     public var forWebSocket: Bool
@@ -196,15 +190,7 @@ public class RealCall<: Call {
     public func isCanceled(): Bool {
         return getTransmitter().isCanceled()
     }
-    /**
-     * The Function is timeout
-     *
-     * @return Type of Timeout
-     * @since 0.29.3
-     */
-    public func timeout(): Timeout {
-        return Timeout()
-    }
+
     /**
      * The Function is clone
      *
@@ -280,7 +266,7 @@ public class RealCall<: Call {
  * @author guo_tingtingtekla,luoyukai4
  * @since 0.29.3
  */
-public class AsyncCall {
+class AsyncCall {
      /** var member callsPerHost type is AtomicInt64 */
      public var callsPerHost: AtomicInt64 = AtomicInt64(0)
      /* let member responseCallback type is Callback */
@@ -363,6 +349,10 @@ public class AsyncCall {
             let response: Response = realCall.getResponseWithInterceptorChain()
             signalledCallback = true
             responseCallback.onResponse(realCall, response)
+        } catch(e : HttpException) {
+            if (!signalledCallback) {
+                responseCallback.onFailure(realCall, e)
+            }
         } catch(e : Exception) {
             cancel()
             if (!signalledCallback) {
@@ -372,13 +362,4 @@ public class AsyncCall {
            realCall.client.getDispatcher().finished(this)
         }
      }
-}
-
-/**
- * The class is Timeout
- * @author guo_tingtingtekla,luoyukai4
- * @since 0.29.3
- */
-public class Timeout{
-
 }
