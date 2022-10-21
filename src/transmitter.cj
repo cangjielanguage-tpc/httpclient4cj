@@ -81,7 +81,8 @@ public class Transmitter {
             }
         }
         match(exchangeToCancel) {
-            case Some(cancelEx) => cancelEx.cancel()
+            case Some(cancelEx) =>
+                cancelEx.cancel()
             case None =>
                 match (connectionToCancel) {
                     case Some(cancelConn) => cancelConn.cancel()

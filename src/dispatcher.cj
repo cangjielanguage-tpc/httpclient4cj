@@ -22,11 +22,11 @@ public class Dispatcher {
     /* var member maxRequestsPerHost type is Int64 */
     private var maxRequestsPerHost: Int64 = 5
     /* var member readyAsyncCalls type is ConcurrentQueue<AsyncCall> */
-    private var readyAsyncCalls: ConcurrentQueue<AsyncCall>  =  ConcurrentQueue<AsyncCall>()
+    private var readyAsyncCalls: ConcurrentQueue<AsyncCall>  =  ConcurrentQueue<AsyncCall>(mutex)
     /* var member runningAsyncCalls type is ConcurrentQueue<AsyncCall> */
-    private var runningAsyncCalls: ConcurrentQueue<AsyncCall>  =  ConcurrentQueue<AsyncCall>()
+    private var runningAsyncCalls: ConcurrentQueue<AsyncCall>  =  ConcurrentQueue<AsyncCall>(mutex)
     /* var member runningSyncCalls type is ConcurrentQueue<RealCall> */
-    private var runningSyncCalls: ConcurrentQueue<RealCall>  =  ConcurrentQueue<RealCall>()
+    private var runningSyncCalls: ConcurrentQueue<RealCall>  =  ConcurrentQueue<RealCall>(mutex)
 
     private var idleCallback: Option<()-> Unit>  = Option.None
 
@@ -131,6 +131,7 @@ public class Dispatcher {
             for (index in 0..calls.size()) {
                 if (refEq(call, calls.get(index))) {
                     calls.remove(index)
+                    break
                 }
             }
             idleCallback  = this.idleCallback
@@ -150,11 +151,12 @@ public class Dispatcher {
     }
 
     private func finished(calls: ConcurrentQueue<AsyncCall>, call: AsyncCall): Unit {
-        var idleCallback: Option<()-> Unit>;
+        var idleCallback: Option<()-> Unit>
         synchronized (mutex) {
             for (index in 0..calls.size()) {
                 if (refEq(call, calls.get(index))) {
                     calls.remove(index)
+                    break
                 }
             }
             idleCallback  = this.idleCallback
@@ -246,12 +248,10 @@ public class Dispatcher {
                 let asyncCall: AsyncCall = readyAsyncCalls.get(index)
                 asyncCall.get().cancel()
             }
-
             for (index in (0..runningAsyncCalls.size())) {
                 let asyncCall: AsyncCall = runningAsyncCalls.get(index)
                 asyncCall.get().cancel()
             }
-
             for (index in (0..runningSyncCalls.size())) {
                 let call: RealCall = runningSyncCalls.get(index)
                 call.cancel()

@@ -75,7 +75,7 @@ public class Util {
             case "DELETE" => DELETE
             case "CONNECT" => CONNECT
             case "OPTIONS" => OPTIONS
-            case _ => throw Exception("no such method")
+            case _ => throw IllegalArgumentException("no such method")
         }
 
     }
@@ -124,7 +124,6 @@ public class Util {
     }
 
     public static func verifyAsIpAddress(host: String): Bool {
-
         match(Regex(VERIFY_AS_IP_ADDRESS).matches(host)) {
             case Some(v) => return true
             case None => return false
@@ -170,22 +169,6 @@ func equalsIgnoreCase(left: String, right: String): Bool {
     return left.toUpper() == right.toUpper()
 }
 
-/**
- * The Function is toArray
- *
- * @param a of ArrayList<String>
- *
- * @return Type of Array<String>
- * @since 0.29.3
- */
-public func toArray(a: Array<UInt8>) : Array<Char> {
-    var buf2 = Array<Char>(a.size, item: '0')
-
-    for (i in 0..buf2.size) {
-        buf2[i] = Char(UInt32(a[i]))
-    }
-    return buf2
-}
 
 func UInt64ToHexString(n: UInt64): Array<Byte> {
     var num: UInt64 = n

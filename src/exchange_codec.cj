@@ -200,7 +200,7 @@ public class Http1ExchangeCodec <: ExchangeCodec{
      */
     public func readResponseHeaders(expectContinue: Bool): Option<ResponseBuilder> {
         if (state != STATE_OPEN_REQUEST_BODY && state != STATE_READ_RESPONSE_HEADERS) {
-            throw Exception("state: ${state}")
+            throw IllegalStateException("state: ${state}")
         }
 
         let responseBuilder: ResponseBuilder = Response.builder()

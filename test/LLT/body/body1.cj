@@ -10,13 +10,19 @@ main() {
             .add("password", "123456")
             .add("host","%6D")
             .build()
-    let input = formBody.get()
-    let arr = Array<Byte>(input.length, item:0)
-    input.read(arr)
-    if(String.fromUtf8(arr) == "username=admin&password=123456&host=%6D") {
-        return 0
-    } else {
+    let client: OkHttpClient= OkHttpClient.builder().build()
+    let request: okhttp.Request = okhttp.Request.builder()
+                                    .url("http://www.baidu.com")
+                                    .method("POST", body: formBody)
+                                    .build()
+    let response: okhttp.Response = client.newCall(request).execute()
+
+    if(response.getBody()?.isClosed() ?? true) {
         return 1
+    } else {
+        response.getBody()?.close()
+         return 0
+
     }
 }
 

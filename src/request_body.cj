@@ -26,9 +26,9 @@ public interface RequestBody {
  * @author guo_tingtingtekla,luoyukai4
  * @since 0.29.3
  */
-public class RealRequestBody <: RequestBody{
-    /* var member content type is String */
-    private let buffer: ByteArrayStream = ByteArrayStream()
+public class RealRequestBody <: RequestBody {
+    /* var member content type is Array<Byte>*/
+    private let bytes: Array<Byte>
     /* var member MediaType type is String */
     private var mediaType: String
     private let contentLength: Int64
@@ -41,7 +41,7 @@ public class RealRequestBody <: RequestBody{
      */
     init(mediaType: String, bytes: Array<Byte>) {
         contentLength = bytes.size
-        this.buffer.write(bytes)
+        this.bytes = bytes
         this.mediaType = mediaType
     }
 
@@ -68,7 +68,7 @@ public class RealRequestBody <: RequestBody{
     }
 
     public func writeTo(sink: Sink): Unit {
-       sink.write(buffer.readToEnd())
+       sink.write(bytes)
     }
 
     /**
@@ -78,7 +78,9 @@ public class RealRequestBody <: RequestBody{
      * @since 0.29.3
      */
     public func get(): InputStream {
-        return buffer
+        let arr = ByteArrayStream()
+        arr.write(bytes)
+        return arr
     }
 
     public static func create(contentType: String, content: String): RequestBody {

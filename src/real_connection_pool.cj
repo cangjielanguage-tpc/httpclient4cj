@@ -14,10 +14,11 @@ package okhttp
  * @since 0.29.3
  */
 public class ConnectionPool {
-    /* var member connections type is ConcurrentQueue<Connection> */
-    private var connections: ConcurrentQueue<Connection> = ConcurrentQueue()
+
     /** var member mutex type is Monitor */
     public  var mutex: Monitor = Monitor()
+    /* var member connections type is ConcurrentQueue<Connection> */
+    private var connections: ConcurrentQueue<Connection> = ConcurrentQueue(mutex)
     /** var member maxIdleConnections type is Int64 */
     public  var maxIdleConnections: Int64
     var cleanupRunning: Bool = false

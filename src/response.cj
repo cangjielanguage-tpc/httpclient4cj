@@ -164,7 +164,7 @@ public class Response {
       public func close() {
          match (body) {
             case Some(v) => v.close()
-            case None => throw Exception("response is not eligible for a body and must not be closed")
+            case None => throw IllegalStateException("response is not eligible for a body and must not be closed")
          }
       }
 

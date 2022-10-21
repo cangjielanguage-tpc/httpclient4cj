@@ -17,12 +17,12 @@ from std import collection.ArrayList
  * The class is ConcurrentQueue<T>
  * @since
  */
-public class ConcurrentQueue<T> <:  Iterable<T> {
+class ConcurrentQueue<T> <: Iterable<T> {
     private let maxQueueMemory: Int64
 
     private var list: ArrayList<T> = ArrayList<T>(32)
 
-    private let m: ReentrantMutex = ReentrantMutex()
+    private let m: Monitor
 
     /**
      * The Function is init constructor
@@ -31,7 +31,8 @@ public class ConcurrentQueue<T> <:  Iterable<T> {
      *
      * @since
      */
-    public init(size: Int64) {
+    public init(mutex: Monitor, size: Int64) {
+        this.m = mutex
         this.maxQueueMemory = size
     }
 
@@ -41,7 +42,8 @@ public class ConcurrentQueue<T> <:  Iterable<T> {
      *
      * @since
      */
-    public init() {
+    public init(mutex: Monitor) {
+        this.m = mutex
         this.maxQueueMemory = 1024
     }
 
@@ -66,11 +68,15 @@ public class ConcurrentQueue<T> <:  Iterable<T> {
     }
 
    public func get(index: Int64): T {
-        return list[index]
+        synchronized (m) {
+            return list[index]
+        }
    }
 
    public func remove(index: Int64 ) {
-        list.remove(index)
+        synchronized (m) {
+            list.remove(index)
+        }
    }
 
    public func removeIf(predicate: (T) -> Bool) {
@@ -78,7 +84,9 @@ public class ConcurrentQueue<T> <:  Iterable<T> {
    }
 
    public func size(): Int64  {
-        list.size
+        synchronized (m) {
+            list.size
+        }
    }
 
     /**
@@ -125,6 +133,8 @@ public class ConcurrentQueue<T> <:  Iterable<T> {
     }
 
     public func toArrayList(): ArrayList<T> {
-        return list
+        synchronized (m) {
+            return list
+        }
     }
 }
