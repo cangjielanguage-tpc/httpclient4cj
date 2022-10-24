@@ -22,7 +22,7 @@ public class OkGzipSource <: Source {
     }
 
     public func read(bytes: ByteArrayStream, byteCount: Int64): Int64 {
-        if(isClosed()) {
+        if (isClosed()) {
             return -1
         }
 
@@ -43,6 +43,9 @@ public class OkGzipSource <: Source {
     }
 
     public func close(): Unit {
+        if (isClosed()) {
+            return
+        }
         source.close
     }
 

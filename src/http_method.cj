@@ -10,12 +10,9 @@ public func permitsRequestBody(method: String): Bool {
 
 public func requiresRequestBody(method: String): Bool {
     return method.equals("POST") || method.equals("PUT") || method.equals("PATCH") || method.equals("PROPPATCH")
+         || method.equals("REPORT")
 }
 
-public func redirectsWithBody(method: String): Bool {
-    // (WebDAV) redirects should also maintain the request body
-    return method.equals("PROPFIND")
-}
 
 public func redirectsToGet(method: String): Bool {
       // All requests but PROPFIND should redirect to a GET request.

@@ -63,7 +63,7 @@ public class Chain {
      * @since 0.29.3
      */
     public init(interceptors: ArrayList<Interceptor>, transmitter: Transmitter , index:Int64, request: Request,
-        call: Call, exchange: Option<Exchange>, connectTimeout:Option<Duration>, readTimeout:Option<Duration>,
+            call: Call, exchange: Option<Exchange>, connectTimeout:Option<Duration>, readTimeout:Option<Duration>,
             writeTimeout: Option<Duration>) {
         this.transmitter = transmitter
         this.index = index

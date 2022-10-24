@@ -22,6 +22,9 @@ main (){
 class MyInterceptor<: Interceptor {
      public func intercept(chain: Chain): okhttp.Response {
         let request = chain.getRequest()
+        let conn = chain.getConnection()
+        conn?.getSocket()
+        let call = chain.getCall()
         return chain.proceed(request)
     }
 }

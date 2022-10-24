@@ -28,7 +28,9 @@ main() {
 
     let response: okhttp.Response = call.execute()
     match (response.getBody()) {
-        case Some(b) => return 0
+        case Some(b) =>
+            b.getContentType()
+            return 0
         case None => return -1
     }
 }

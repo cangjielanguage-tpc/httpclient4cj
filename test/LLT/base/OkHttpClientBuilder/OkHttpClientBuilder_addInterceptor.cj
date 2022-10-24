@@ -24,6 +24,8 @@ class MyInterceptor<: Interceptor {
         let conn = chain.getConnection().getOrThrow()
         println(conn.getProtocol().toString())
         println(conn.getTransmitters().size)
+        chain.getTransmitter().hasExchangeFinder()
+        chain.getTransmitter().canRetry()
         conn.getRoute()
         let add = Address(URL.parse("http://36.152.44.95/index.html"),
                             ArrayList<String>([Protocol.get("H2_PRIOR_KNOWLEDGE").toString()]),
