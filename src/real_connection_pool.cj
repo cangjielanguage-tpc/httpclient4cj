@@ -81,7 +81,9 @@ public class ConnectionPool {
      * @return Type of Bool
      * @since 0.29.3
      */
-    func transmitterAcquirePooledConnection(address: Address, transmitter: Transmitter, routeSelector: Option<RouteSelector>, requireMultiplexed!: Bool = false): Bool {
+    func transmitterAcquirePooledConnection(address: Address, transmitter: Transmitter,
+        routeSelector: Option<RouteSelector>, requireMultiplexed!: Bool = false): Bool {
+
         for (conn in connections) {
              if (requireMultiplexed && !conn.isMultiplexed()) {
                 continue

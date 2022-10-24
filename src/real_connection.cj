@@ -297,9 +297,10 @@ public class Connection {
         var client = TlsSocket(TCP, socketAddress.hostAddress, socketAddress.port, cfg)
         let aplnSelected: String = client.getAlpnSelected()
         Util.closeQuietly(rawSocket)
-        socket = OKSocket(TlsC(client), readTimeout, writeTimeout)
-        sink = BufferedOutputStream(client)
-        source = OkBuffer(client)
+        let realSocket = OKSocket(TlsC(client), readTimeout, writeTimeout)
+        socket = realSocket
+        sink = BufferedOutputStream(realSocket)
+        source = OkBuffer(realSocket)
         if (aplnSelected != "") {
             protocol = Protocol.get(aplnSelected)
         }

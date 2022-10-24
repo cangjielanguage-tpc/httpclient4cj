@@ -72,9 +72,9 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
 
             match(priorResponse) {
                 case Some(resp) => response = response.newBuilder()
-                .prevResponse(Option<Response>.Some(resp.newBuilder()
-                    .body(Option<ResponseBody>.None)
-                    .build()))
+                    .prevResponse(Option<Response>.Some(resp.newBuilder()
+                        .body(Option<ResponseBody>.None)
+                        .build()))
                     .build()
                 case _ => ()
             }
@@ -162,16 +162,11 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
                    return Option<Request>.None
                 }
 
-                match (response.getRequest().getBody()) {
-                    case Some(body) => ()
-                    case None => return Option<Request>.None
-                }
                 match (response.getPrevResponse()) {
                     case Some(resp) =>
                         if (resp.getCode() == HttpStatusCode.STATUS_REQUEST_TIMEOUT) {
                             return Option<Request>.None
                         }
-                        ()
                     case _ => ()
                 }
 
@@ -183,14 +178,13 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
             case 503 =>
                 match (response.getPrevResponse()) {
                     case Some(resp) =>
-                        if (resp.getCode() == HttpStatusCode.STATUS_GATEWAY_TIMEOUT) {
+                        if (resp.getCode() == HttpStatusCode.STATUS_SERVICE_UNAVAILABLE) {
                             return Option<Request>.None
                         }
-                        ()
                     case _ => ()
                 }
 
-                if (retryAfter(response, 1) == 0) {
+                if (retryAfter(response, Int64.Max) == 0) {
                     return response.getRequest()
                 }
 
@@ -230,11 +224,11 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
         if (permitsRequestBody(method)) {
             if (redirectsToGet(method)) {
                 requestBuilder.method("GET")
-            } else {
-                requestBuilder.method(method, body: response.getRequest().getBody())
                 requestBuilder.removeHeader("Transfer-Encoding")
                 requestBuilder.removeHeader("Content-Length")
                 requestBuilder.removeHeader("Content-Type")
+            } else {
+                requestBuilder.method(method, body: response.getRequest().getBody())
             }
         }
         // When redirecting across hosts, drop all authentication headers. This
@@ -259,12 +253,12 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
         let header: String = userResponse.getHeader("Retry-After", "")
 
         if (header == "") {
-          return defaultDelay;
+          return defaultDelay
         }
         // currently ignores a HTTP-date, and assumes any non int 0 is a delay
         match (parseInt64(header)) {
             case Some(delay) => return delay
-            case None => return Int64(Int32.Max)
+            case None => return Int64.Max
         }
     }
 }

@@ -10,13 +10,13 @@ from net import tls.*
 from std import core.*
 from std import collection.*
 
-
+var port: UInt16 = 0
 main(){
   spawn {
     serve()
   }
   sleep(1000*1000*1000*2)
- let mUrl = "http://0.0.0.0:7692/1241"
+ let mUrl = "http://0.0.0.0:${port}/1241"
  var jsonStr = ##"{"name":"Tom","age":"18","version":"0.1.1"}"##
  let requestBody:Option<RequestBody> = Option<RequestBody>.Some(RealRequestBody.create("json",jsonStr.toUtf8Array()))
  var proArray = ArrayList<String>()
@@ -39,7 +39,7 @@ main(){
 }
 
  public func serve(){
-    var port: UInt16 = 7692
+
     let hd = http.Route()
     hd.handle("/1241", { rws: http.ResponseWriteStream, req: http.Request =>
       let resp = "Hello from /red".toUtf8Array()

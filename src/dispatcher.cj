@@ -110,7 +110,7 @@ public class Dispatcher {
      * @return Type of Unit
      * @since 0.29.3
      */
-    func executed( call: RealCall): Unit{
+    func executed( call: RealCall): Unit {
         synchronized (mutex) {
             runningSyncCalls.add(call)
         }
@@ -200,7 +200,7 @@ public class Dispatcher {
      * @return Type of Unit
      * @since 0.29.3
      */
-    func enqueue( call: AsyncCall): Unit{
+    func enqueue( call: AsyncCall): Unit {
         synchronized (mutex) {
             readyAsyncCalls.add(call)
             if (!call.get().forWebSocket) {
@@ -246,11 +246,11 @@ public class Dispatcher {
         synchronized (mutex) {
             for (index in (0..readyAsyncCalls.size())) {
                 let asyncCall: AsyncCall = readyAsyncCalls.get(index)
-                asyncCall.get().cancel()
+                asyncCall.cancel()
             }
             for (index in (0..runningAsyncCalls.size())) {
                 let asyncCall: AsyncCall = runningAsyncCalls.get(index)
-                asyncCall.get().cancel()
+                asyncCall.cancel()
             }
             for (index in (0..runningSyncCalls.size())) {
                 let call: RealCall = runningSyncCalls.get(index)

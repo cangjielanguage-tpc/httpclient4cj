@@ -350,7 +350,7 @@ public class Exchange {
         codec.finishRequest()
     }
 
-    func bodyComplete(responseDone: Bool, requestDone: Bool, exception: Option<NetException>): Unit{
+    func bodyComplete(responseDone: Bool, requestDone: Bool, exception: Option<NetException>): Unit {
         match(exception) {
             case Some(e) => trackFailure(e)
             case None => ()
@@ -358,7 +358,7 @@ public class Exchange {
         transmitter.exchangeMessageDone(this, requestDone, responseDone)
     }
 
-    func trackFailure(exception: NetException): Unit{
+    func trackFailure(exception: NetException): Unit {
         finder.trackFailure()
         codec.getConnection().trackFailure(exception)
     }

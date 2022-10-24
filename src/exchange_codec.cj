@@ -235,8 +235,7 @@ public class Http1ExchangeCodec <: ExchangeCodec{
                 break
             }
             match (line.indexOf(":", 1)) {
-                case Some(index) =>
-                header.add(line.substring(0, index), line.substring(index + 1).trim())
+                case Some(index) => header.add(line.substring(0, index), line.substring(index + 1).trim())
                 case None =>
                     if (!line.startsWith(":")) {
                         header.add("", line)

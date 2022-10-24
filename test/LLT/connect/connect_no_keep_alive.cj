@@ -25,6 +25,7 @@ main() {
     let call = client.newCall(request)
     try{
         let response: okhttp.Response = call.execute()
+        response.newBuilder().header("add","test").addHeader("add","test1").removeHeader("add")
     }catch (e: Exception) {
         return 1
     }

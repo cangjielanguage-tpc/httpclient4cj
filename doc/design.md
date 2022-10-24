@@ -1065,3 +1065,77 @@ public class MyCallbacks <: Callback {
 ```cangjie
 success
 ```
+
+
+### chunked分块传输请求
+```
+
+from okhttp import okhttp.*
+from std import collection.*
+from net import http.*
+from std import io.*
+from std import socket.*
+
+var port: UInt16 = 0
+main() {
+    spawn {
+        serve()
+    }
+    sleep(1000*1000*1000)
+    let client: OkHttpClient= OkHttpClient.builder().build()
+    let request: okhttp.Request = okhttp.Request.builder()
+                                    .url("http://127.0.0.1:${port}/1234")
+                                    .method("POST", body: MyRequestBody())
+                                    .build()
+    let response: okhttp.Response = client.newCall(request).execute()
+    println(response.toString())
+    if(response.getBody()?.isClosed() ?? true) {
+        return 1
+    } else {
+        response.getBody()?.close()
+        return 0
+    }
+}
+
+func serve(){
+    let hd = http.Route()
+    hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
+        println(String.fromUtf8(req.readToEnd()))
+        return
+    })
+    let server = http.Server(hd)
+    let socket = socket.SocketServer(SocketNet.TCP, "0.0.0.0", port)
+    port = socket.port
+    server.serve(socket)
+}
+
+
+class MyRequestBody <:RequestBody {
+    public func contentType(): String {
+        return "application/json"
+    }
+    
+    //声明的getContentLength -1，客户端拦截器默认添加"Transfer-Encoding", "chunked"头,使用ChunkedSink读取body
+    public func getContentLength(): Int64 {
+        return -1
+    }
+    
+    public func writeTo(sink: Sink): Unit {
+        //每次调用write都会产生一个传输块
+        sink.write("hello".toUtf8Array())
+        sink.write("world".toUtf8Array())
+    }
+
+    public func get(): InputStream {
+        return ByteArrayStream()
+
+    }
+
+}
+```
+
+运行结果
+```
+helloworld
+Response{protocol=http/1.1, code=200, message=OK, url=http://127.0.0.1:38621/1234}
+```

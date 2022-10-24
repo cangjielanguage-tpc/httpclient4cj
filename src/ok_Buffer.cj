@@ -34,6 +34,10 @@ public class OkBuffer <: Source {
     }
 
     public func read(bytes: ByteArrayStream, byteCount: Int64): Int64 {
+        if (closed) {
+            throw IllegalStateException("closed")
+        }
+
         if (buffer.length == 0) {
            let arr = Array<Byte>(4096, item: 0)
            let read = read(arr)
@@ -115,8 +119,11 @@ public class OkBuffer <: Source {
         if (closed) {
             return
         }
-
-        closed = true
+        buffer.clear()
+        match (source) {
+            case r: Resource => r.close()
+            case _ => ()
+        }
     }
 
     public func isClosed(): Bool {

@@ -8,7 +8,7 @@ from std import io.*
 from std import time.*
 from std import socket.*
 
-var port: UInt16 = 8888
+var port: UInt16 = 0
 main() {
     spawn {
         serve()
