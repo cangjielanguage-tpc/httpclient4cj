@@ -60,7 +60,7 @@ public class StatusLine {
            throw ProtocolException("Unexpected status line: ${statusLine}")
         }
 
-        let statusCode = match (parseInt64(statusLine.substring(9, 3))) {
+        let statusCode = match (Int64.tryParse(statusLine.substring(9, 3))) {
             case Some (x) => x
             case None => throw ProtocolException("Unexpected status line: ${statusLine}")
         }

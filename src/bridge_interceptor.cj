@@ -4,7 +4,7 @@
 
 /**
  * @file
- * The file declars the BridgeInterceptor class.
+ * The file declares the BridgeInterceptor class.
  */
 package okhttp
 
@@ -134,7 +134,7 @@ public func hasBody(response: Response): Bool {
         return true
     }
     let contentLength = response.getHeader("Content-Length", "")
-    if (contentLength != "" && ((parseInt64(contentLength) ?? -1) != -1) ||
+    if (contentLength != "" && ((Int64.tryParse(contentLength) ?? -1) != -1) ||
      "chunked".equals(response.getHeader("Transfer-Encoding", ""))) {
         return true
      }
@@ -146,5 +146,5 @@ public func contentLength(response: Response): Int64 {
 }
 
 public func contentLength(headers: Header): Int64 {
-    return parseInt64(headers.get("Content-Length") ?? "") ?? -1
+    return Int64.tryParse(headers.get("Content-Length") ?? "") ?? -1
 }

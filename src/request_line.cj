@@ -12,7 +12,7 @@ package okhttp
 public class RequestLine {
 
     public static func get(request: Request): String {
-        let result: StringBuilder = StringBuilder(512)
+        let result: StringBuilder = StringBuilder()
         result.append(request.getMethod()).append(' ')
         result.appendFromUtf8(request.getUrl().requestURI().toUtf8Array())
         result.append(" HTTP/1.1")

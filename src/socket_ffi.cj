@@ -13,6 +13,7 @@ foreign {
 }
 
 func resolveDomain(net: SocketNet, domain: String, index: UInt64): Option<(SocketAddressKind, Array<UInt8>)> {
+
     var protocol = match (net) {
         case TCP => AI_IPPROTO_TCP
         case UDP => AI_IPPROTO_UDP

@@ -110,7 +110,7 @@ public class Util {
 
     public static func parseSeconds(value: String, defaultValue: Int32): Int32 {
         try {
-            let seconds: Int32 = parseInt32(value).getOrThrow()
+            let seconds: Int32 = Int32.parse(value)
             if (seconds > Int32.Max) {
                 return Int32.Max
             } else if (seconds < 0) {

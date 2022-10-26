@@ -108,7 +108,7 @@ class ExchangeFinder {
      */
     private func findConnection(connectTimeout:Option<Duration>, readTimeout: Option<Duration>,
         writeTimeout: Option<Duration>, connectionRetryEnabled: Bool): Connection {
-        let tuple: (Option<OKSocket>,Option<Connection>,Option<Route>) = firstGetConn();
+        let tuple: (Option<OKSocket>,Option<Connection>,Option<Route>) = firstGetConn()
         var toClose: Option<OKSocket> = tuple[0]
         var result: Option<Connection> = tuple[1]
         var selectedRoute: Option<Route> = tuple[2]
@@ -117,16 +117,15 @@ class ExchangeFinder {
             case Some(r) => return r
             case None => ()
         }
-        let newRouteSelection: Bool = match (selectedRoute) {
-            case Some(route) =>  false
-            case None =>  true
-        }
+
+        let newRouteSelection: Bool = !has(selectedRoute)
+
         synchronized (connectionPool.mutex) {
             if (transmitter.isCanceled()) {
                 throw HttpException("Canceled")
             }
             if (newRouteSelection) {
-                if (routeSelector.hasNext() && connectionPool.transmitterAcquirePooledConnection(
+                if (connectionPool.transmitterAcquirePooledConnection(
                     address, transmitter, routeSelector, requireMultiplexed: false)) {
                     result = transmitter.connection
                     return result.getOrThrow()

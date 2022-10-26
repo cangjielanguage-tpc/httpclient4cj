@@ -1,9 +1,9 @@
 {
-  "cjc_version": "0.30.4",
+  "cjc_version": "0.34.3",
   "organization": "cangjie",
   "name": "okhttp",
   "description": "nothing here",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "requires": {
   },
   "package_requires": {

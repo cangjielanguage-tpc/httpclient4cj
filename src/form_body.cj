@@ -14,7 +14,7 @@ package okhttp
  * @author luoyukai4
  * @since 0.33.3
  */
-public open class FormBody <: RequestBody {
+public class FormBody <: RequestBody {
     private static let CONTENT_TYPE: String = "application/x-www-form-urlencoded"
     private let form: Form
 

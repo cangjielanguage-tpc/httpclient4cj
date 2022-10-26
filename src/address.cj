@@ -4,7 +4,7 @@
 
 /**
  * @file
- * The file declars the Address class.
+ * The file declares the Address class.
  */
 package okhttp
 from std import socket.*

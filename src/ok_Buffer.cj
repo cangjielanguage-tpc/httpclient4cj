@@ -4,7 +4,7 @@
 
 /**
  * @file
- * The file declars the OkBuffer class.
+ * The file declares the OkBuffer class.
  */
 package okhttp
 
@@ -61,18 +61,19 @@ public class OkBuffer <: Source {
         if (start >= 0 && end >= start) {
            var offSet = start
            if (end < buffer.length) {
-               for(i in offSet..end) {
+               for (i in offSet..end) {
                    if (buffer.bytes()[i] == b) {
                        return i
                    }
                }
            } else {
               while (offSet < end) {
-                  for(i in offSet..buffer.length) {
+                 for (i in offSet..buffer.length) {
                      if (buffer.bytes()[i] == b) {
                        return i
                      }
                  }
+                 offSet = buffer.length
                  if (read(Array<Byte>(4096, item: 0)) == -1) {
                      return -1
                  }
