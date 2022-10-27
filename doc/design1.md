@@ -242,7 +242,7 @@ Call的工厂类，可用于发送 HTTP 请求并读取其响应，外观形式�
 | header       | header: Header               | ResponseBuilder | 配置响应头                                                                    |
 
 | 静态函数 | 入参 |     返回值      |        作用描述        |
-| -------- | ---- | -------------- | -------------------- |
+| -------- | ---- | -------------- | --------------------|
 | builder  | 无   | ResponseBuilder | 创建 Response 的Builder |
 
 #### interface Source <: Resource
@@ -253,13 +253,22 @@ Call的工厂类，可用于发送 HTTP 请求并读取其响应，外观形式�
 | close      | 无                                        | Unit            | 关闭source    |
 | isClosed     | 无                                        | Unit | source是否已关闭 |
 
+#### class OkGzipSource <: Source
+
+解压缩gzip数据源
+
+|   成员函数   | 入参                                       | 返回值             | 作用描述        |
+| ----------- |------------------------------------------|-----------------|-------------|
+| init  | source: Source | 无      | source： 数据源 |
+
+
 #### interface Sink
 
-| 成员函数  | 入参                                       | 返回值  | 作用描述            |
-|-------|------------------------------------------|------|-----------------|
-| write | bytes: Array<Byte> | Unit | 将buffer写入到sink中 |
-| flush | 无                                        | Unit | 将数据从缓存中刷入流中     |
-| close | 无                                        | Unit | 关闭sink          |
+| 成员函数  | 入参                       | 返回值  | 作用描述                                 |
+|-------|--------------------------|------|--------------------------------------|
+| write | bytes: Array<Byte>       | Unit | 将buffer写入到sink中                      |
+| flush | 无                        | Unit | 将数据从缓存中刷入流中                          |
+| close | 无                        | Unit | 关闭sink                               |
 
 
 ####  class Chain
