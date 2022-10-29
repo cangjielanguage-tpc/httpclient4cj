@@ -30,7 +30,7 @@ public class OkGzipSource <: Source {
             hasMoreGzip = false
             while(true) {
                 let read = source.read(base, byteCount)
-                if (read < 0) {
+                if (read <= 0) {
                     break
                 }
             }
