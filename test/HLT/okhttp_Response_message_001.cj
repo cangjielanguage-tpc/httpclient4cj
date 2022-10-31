@@ -16,7 +16,7 @@ from std import core.*
 @Test
 public class okhttp_Response_message_001{
 
-    var port: UInt16 = 8888
+    var port: UInt16 = 1116
     func serve(){
         let hd = http.Route()
         hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
@@ -41,12 +41,11 @@ public class okhttp_Response_message_001{
                                 .maxAge(Duration.second(1000))
                                 .build()
     let client: OkHttpClient= OkHttpClient.builder().build()
-    let body: okhttp.RequestBody = okhttp.RequestBody("Media-Type", "text/html")
+    // let body: okhttp.RequestBody = okhttp.RequestBody("Media-Type", "text/html")
     let request: okhttp.Request = okhttp.Request.builder()
                                     .url("http://127.0.0.1:${port}/1234")
                                     .method("GET")
                                     .cacheControl(cache)
-                                    .body(body)
                                     .build()
     var call = client.newCall(request)
     var response: okhttp.Response = call.execute()

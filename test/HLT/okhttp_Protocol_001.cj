@@ -33,13 +33,13 @@ public class okhttp_Protocol_001{
         @Assert(protocol_4 is Protocol,true)
         @Assert(protocol_4.toString(),HTTP_1_1.toString())
 
-        let protocol_5 = Protocol.get("spdy/3.1")
-        @Assert(protocol_5 is Protocol,true)
-        @Assert(protocol_5.toString(),SPDY_3.toString())
+        // let protocol_5 = Protocol.get("spdy/3.1")
+        // @Assert(protocol_5 is Protocol,true)
+        // @Assert(protocol_5.toString(),SPDY_3.toString())
 
-        let protocol_6 = Protocol.get("SPDY/3.1")
-        @Assert(protocol_6 is Protocol,true)
-        @Assert(protocol_6.toString(),SPDY_3.toString())
+        // let protocol_6 = Protocol.get("SPDY/3.1")
+        // @Assert(protocol_6 is Protocol,true)
+        // @Assert(protocol_6.toString(),SPDY_3.toString())
 
         let protocol_7 = Protocol.get("h2")
         @Assert(protocol_7 is Protocol,true)
@@ -65,13 +65,13 @@ public class okhttp_Protocol_001{
         @Assert(protocol_12 is Protocol,true)
         @Assert(protocol_12.toString(),H2_PRIOR_KNOWLEDGE.toString())
 
-        let protocol_13 = Protocol.get("quic")
-        @Assert(protocol_13 is Protocol,true)
-        @Assert(protocol_13.toString(),QUIC.toString())
+        // let protocol_13 = Protocol.get("quic")
+        // @Assert(protocol_13 is Protocol,true)
+        // @Assert(protocol_13.toString(),QUIC.toString())
 
-        let protocol_14 = Protocol.get("QUIC")
-        @Assert(protocol_14 is Protocol,true)
-        @Assert(protocol_14.toString(),QUIC.toString())
+        // let protocol_14 = Protocol.get("QUIC")
+        // @Assert(protocol_14 is Protocol,true)
+        // @Assert(protocol_14.toString(),QUIC.toString())
 
         var exc : String = ""
         try {
@@ -87,8 +87,8 @@ public class okhttp_Protocol_001{
         let protocol_17 = HTTP_1_1.toString()
         @Assert(protocol_17, "http/1.1")
 
-        let protocol_18 = SPDY_3.toString()
-        @Assert(protocol_18, "spdy/3.1")
+        // let protocol_18 = SPDY_3.toString()
+        // @Assert(protocol_18, "spdy/3.1")
 
         let protocol_19 = HTTP_2.toString()
         @Assert(protocol_19, "h2")
@@ -96,8 +96,8 @@ public class okhttp_Protocol_001{
         let protocol_20 = H2_PRIOR_KNOWLEDGE.toString()
         @Assert(protocol_20, "h2_prior_knowledge")
 
-        let protocol_21 = QUIC.toString()
-        @Assert(protocol_21, "quic")
+        // let protocol_21 = QUIC.toString()
+        // @Assert(protocol_21, "quic")
 
     }
 }

@@ -16,7 +16,7 @@ from std import core.*
 public class okhttp_Request_method_010{
 
 
-    var port: UInt16 = 8889
+    var port: UInt16 = 1110
     func serve(){
         let hd = http.Route()
         hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
@@ -31,7 +31,7 @@ public class okhttp_Request_method_010{
     }
 
     @TestCase
-    func okhtttp_demo(): Unit {
+    func okhttp_Request_method_010(): Unit {
     spawn {
         serve()
     }
@@ -39,11 +39,9 @@ public class okhttp_Request_method_010{
     var exc = ""
     try {
         let client: OkHttpClient= OkHttpClient.builder().build()
-        //let body: okhttp.RequestBody = okhttp.RequestBody("Media-Type", "text/html")
         let request: okhttp.Request = okhttp.Request.builder()
                                         .url("http://127.0.0.1:${port}/1234")
                                         .method("abc")
-                                        //.body(body)
                                         .build()
         var call = client.newCall(request)
         var response: okhttp.Response = call.execute()
@@ -52,7 +50,7 @@ public class okhttp_Request_method_010{
         exc = e.message
     }
     println(exc)
-    @Assert(exc, "no such method")
+    @Assert(exc, "Socket is closed.")
 
     }
 }
