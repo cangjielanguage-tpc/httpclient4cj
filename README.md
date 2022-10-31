@@ -165,4 +165,4 @@ no-cache, no-store, max-age=0, s-maxage=0, private, public, must-revalidate, max
 
 主要写参与贡献的人以及个人主页链接
 
-[@guo_tingtingtekla](https://gitee.com/guo_tingtingtekla)[@luoyukai4](https://gitee.com/luoyukai4)
+欢迎给我们提交PR，欢迎给我们提交Issue，欢迎参与任何形式的贡献。
