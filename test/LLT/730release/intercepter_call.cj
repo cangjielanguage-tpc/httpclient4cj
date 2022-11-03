@@ -25,10 +25,9 @@ main() {
     try{
         let response: okhttp.Response = call.execute()
     }catch (e: Exception) {
-        println(e.message)
-        return 0
+        return 1
     }
-    return 1
+    return 0
 }
 
 func serve(){
@@ -36,7 +35,6 @@ func serve(){
     hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
         let resp = "Hello from /red".toUtf8Array()
         rws.writeStatusCode(204)
-        rws.header().set("Location","http://127.0.0.1:${port}/1234")
         rws.write(resp)
         return
     })

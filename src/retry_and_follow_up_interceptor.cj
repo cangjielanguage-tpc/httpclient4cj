@@ -114,6 +114,10 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
             return false
         }
 
+        if (requestSendStarted) {
+            return false
+        }
+
         if (isRecoverable(e, requestSendStarted)) {
             return false
         }
@@ -256,7 +260,7 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
           return defaultDelay
         }
         // currently ignores a HTTP-date, and assumes any non int 0 is a delay
-        match (parseInt64(header)) {
+        match (Int64.tryParse(header)) {
             case Some(delay) => return delay
             case None => return Int64.Max
         }

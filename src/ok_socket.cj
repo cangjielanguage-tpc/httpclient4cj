@@ -69,7 +69,7 @@ public enum SocketClient <: Resource{
     public func read(buffer: Array<Byte>, timeout: Duration): Int64 {
         return match(this) {
             case SocketC(conn) => conn.read(buffer, timeout)
-            case TlsC(conn) => conn.read(buffer)
+            case TlsC(conn) => conn.read(buffer, timeout)
         }
     }
 
@@ -83,7 +83,7 @@ public enum SocketClient <: Resource{
     public func write(buffer: Array<Byte>, timeout: Duration): Unit {
         match(this) {
             case SocketC(conn) => conn.write(buffer, timeout)
-            case TlsC(conn) => conn.write(buffer)
+            case TlsC(conn) => conn.write(buffer, timeout)
         }
     }
 

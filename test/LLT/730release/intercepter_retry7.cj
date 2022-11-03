@@ -19,7 +19,6 @@ main() {
     let url: URL = URL.parse("http://127.0.0.1:${port}/1234")
     let client: OkHttpClient= OkHttpClient.builder().build()
     let request: okhttp.Request = okhttp.Request.builder()
-                                    .method("PROPFIND")
                                     .url(url)
                                     .build()
     let call = client.newCall(request)

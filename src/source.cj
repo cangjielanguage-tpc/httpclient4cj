@@ -223,7 +223,6 @@ class ResponseBodySource <:Source {
         this.source = source
         this.exchange = exchange
         this.contentLength = contentLength
-
         if (contentLength == 0) {
             complete(Option<NetException>.None)
         }

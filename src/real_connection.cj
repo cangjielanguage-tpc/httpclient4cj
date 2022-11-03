@@ -21,7 +21,7 @@ public class Connection {
     private let connectionPool: ConnectionPool
     /* var member transmitters type is ArrayList<Transmitter> */
     var transmitters: ArrayList<Transmitter> = ArrayList<Transmitter>()
-    var rawSocket : Option<SocketClient> = Option<SocketClient>.None
+    private var rawSocket : Option<SocketClient> = Option<SocketClient>.None
     /* var member socket type is Option<SocketClient> */
     var socket: Option<OKSocket> = Option<OKSocket>.None
     /* var member route type is Route */
@@ -186,11 +186,14 @@ public class Connection {
      */
     public func connect(connectTimeout: Option<Duration>, readTimeout: Option<Duration>,
         writeTimeout: Option<Duration>, connectionRetryEnabled: Bool) {
+                        let time1 = Time.now()
+
+
         checkSslSocket()
         while (true) {
             try {
                 connectSocket(connectTimeout)
-                establishProtocol(readTimeout, writeTimeout)
+                establishProtocol(connectTimeout, readTimeout, writeTimeout)
                 break
             } catch(e : ConnectException) {
                 Util.closeQuietly(rawSocket)
@@ -244,7 +247,7 @@ public class Connection {
             let s = Socket(TCP, socketAddress.hostAddress, socketAddress.port)
             match (connectTimeout) {
                 case Some(time) =>
-                s.connect(time)
+                    s.connect(time)
                 case None => s.connect()
             }
             rawSocket = SocketC(s)
@@ -257,7 +260,9 @@ public class Connection {
         }
     }
 
-    private func establishProtocol(readTimeout: Option<Duration>, writeTimeout: Option<Duration>) {
+    private func establishProtocol(connectTimeout: Option<Duration>,
+        readTimeout: Option<Duration>, writeTimeout: Option<Duration>) {
+
         match (route.getAddress().getTlsConfig()) {
             case None =>
                 let client = OKSocket(rawSocket.getOrThrow(), readTimeout, writeTimeout)
@@ -270,7 +275,7 @@ public class Connection {
                 }
             case Some(tls)=>
                 //ALPN
-                connectTls(readTimeout, writeTimeout)
+                connectTls(connectTimeout, readTimeout, writeTimeout)
                 if (protocol.toString() == "h2") {
                     startHttp2()
                 }
@@ -289,15 +294,23 @@ public class Connection {
         }
     }
 
-    private func connectTls(readTimeout: Option<Duration>, writeTimeout: Option<Duration>) {
+    private func connectTls(connectTimeout: Option<Duration>,
+            readTimeout: Option<Duration>, writeTimeout: Option<Duration>) {
+
         let address = route.getAddress()
         var cfg = route.getAddress().getTlsConfig().getOrThrow()
         cfg.alpnList = collectArray(address.getProtocols().iterator())
         let socketAddress: SocketAddress = route.inetSocketAddress
         var client = TlsSocket(TCP, socketAddress.hostAddress, socketAddress.port, cfg)
+        match (connectTimeout) {
+            case Some(time) =>
+                client.connect(time)
+            case None => client.connect()
+        }
+        let realSocket = OKSocket(TlsC(client), readTimeout, writeTimeout)
         let aplnSelected: String = client.getAlpnSelected()
         Util.closeQuietly(rawSocket)
-        let realSocket = OKSocket(TlsC(client), readTimeout, writeTimeout)
+
         socket = realSocket
         sink = BufferedOutputStream(realSocket)
         source = OkBuffer(realSocket)

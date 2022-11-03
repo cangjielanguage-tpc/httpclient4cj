@@ -174,11 +174,11 @@ public class Http1ExchangeCodec <: ExchangeCodec{
             throw IllegalStateException("state: ${state}")
         }
 
-        var buffer: StringBuilder = StringBuilder(512)
+        var buffer: StringBuilder = StringBuilder()
         buffer.append(requestLine).append(CRLF)
 
         for ((ks,v) in headers) {
-            var k = HeaderDfaUtil.CanonicalHeaderKey(ks)
+            var k = HeaderDfaUtil.canonicalHeaderKey(ks)
             buffer.append(k).append(": ")
             for ( i in v ) {
                 buffer.append(i).append(';')
@@ -282,7 +282,7 @@ public class Http1ExchangeCodec <: ExchangeCodec{
 
         match (response.getHeader("Content-Length")) {
             case Some(s) =>
-            match (parseInt64(s)) {
+            match (Int64.tryParse(s)) {
                 case Some(n) => return n
                 case None => return -1
             }
@@ -374,7 +374,7 @@ public class Http2ExchangeCodec{
     public func reportedContentLength(): Int64{
         match (this.respHead.get("Content-Length")) {
             case Some(s) =>
-            match (parseInt64(s)) {
+            match (Int64.tryParse(s)) {
                 case Some(n) => return n
                 case None => throw HttpException("Content-Length is invalid: ${s}.")
             }

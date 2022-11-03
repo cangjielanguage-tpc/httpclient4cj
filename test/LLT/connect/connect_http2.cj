@@ -5,7 +5,7 @@ from std import io.*
 from okhttp import okhttp.*
 from std import time.*
 from http2 import proto.*
-from http2 import http.*
+from http2 import http.* as http2.*
 from std import socket.*
 from net import http.* as h1.*
 

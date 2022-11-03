@@ -197,6 +197,7 @@ public class Transmitter {
      * @since 0.29.3
      */
      func newExchange(chain: Chain, doExtensiveHealthChecks: Bool): Exchange {
+        let time1 = Time.now()
         let finder: ExchangeFinder = exchangeFinder.getOrThrow()
         let exchangeCodec: ExchangeCodec = finder.find(client, chain, doExtensiveHealthChecks)
         let result: Exchange = Exchange(this, call, finder, exchangeCodec)
@@ -205,6 +206,7 @@ public class Transmitter {
             this.exchangeRequestDone = false
             this.exchangeResponseDone = false
         }
+        let time2 = Time.now()
         return result
     }
 

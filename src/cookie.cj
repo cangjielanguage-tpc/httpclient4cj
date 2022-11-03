@@ -241,15 +241,15 @@ public class CookieUtil {
             if (hour == -1 && matchTime(offString)) {
                 match (timeMatcher.matches(offString)) {
                     case Some(data) =>
-                        hour = parseInt64(data.matchStr(1)).getOrThrow()
-                        minute = parseInt64(data.matchStr(2)).getOrThrow()
-                        second = parseInt64(data.matchStr(3)).getOrThrow()
+                        hour = Int64.parse(data.matchStr(1))
+                        minute = Int64.parse(data.matchStr(2))
+                        second = Int64.parse(data.matchStr(3))
                     case None => ()
                 }
             } else if (dayOfMonth == -1 && matchDOM(offString)) {
                 match (domMatcher.matches(s[pos..end])) {
                     case Some(data) =>
-                        dayOfMonth = parseInt64(data.matchStr(1)).getOrThrow()
+                        dayOfMonth = Int64.parse(data.matchStr(1))
                     case None => ()
                 }
             } else if (month == -1 && matchMonth(offString)) {
@@ -262,7 +262,7 @@ public class CookieUtil {
             } else if (year == -1 && matchYear(offString)) {
                 match (yearMatcher.matches(s[pos..end])) {
                     case Some(data) =>
-                        year = parseInt64(data.matchStr(1)).getOrThrow()
+                        year = Int64.parse(data.matchStr(1))
                     case None => ()
                 }
             }
@@ -353,11 +353,6 @@ public class CookieUtil {
         return time
     }
 
-    private static func getTimeStamp(time: Time): Int64 {
-        let standardTime = Time(1970,Month.of(1),1,loc: Location.load("UTC"))
-        return (time - standardTime).milliseconds()
-    }
-
     private static func getTime(time: Int64): Time {
         let standardTime = Time(1970,Month.of(1),1,loc: Location.load("UTC"))
         return standardTime + Duration.millisecond(time)
@@ -396,13 +391,13 @@ public class CookieUtil {
 
     private static func parseMaxAge(s: String) : Int64 {
         try {
-            let parsed = parseInt64(s).getOrThrow()
+            let parsed = Int64.parse(s)
             if (parsed < 0) {
                 return Int64.Max
             } else {
                 return parsed
             }
-        } catch (e: NoneValueException) {
+        } catch (e: ConvertException | IllegalArgumentException) {
             match (Regex("-?\\d+").matches(s)) {
                 case Some(data) =>
                     if (s.startsWith("-")) {
@@ -592,4 +587,9 @@ public class CookieUtil {
 
         return num
     }
+}
+
+func getTimeStamp(time: Time): Int64 {
+    let standardTime = Time(1970,Month.of(1),1,loc: Location.load("UTC"))
+    return (time - standardTime).milliseconds()
 }

@@ -8,6 +8,8 @@
  */
 package okhttp
 
+let routeCache: HashMap<Address, ArrayList<Route>> =  HashMap<Address, ArrayList<Route>>()
+
 /**
  * The class is RouteSelector
  * @author guo_tingtingtekla,luoyukai4
@@ -23,6 +25,8 @@ class RouteSelector {
 
     private let allRoutes: ArrayList<Route> = ArrayList<Route>()
 
+    private var hasAll: Bool = false
+
     /**
      * The Function is init constructor
      *
@@ -30,7 +34,7 @@ class RouteSelector {
      * @param call of Call
      * @since 0.29.3
      */
-    init(address: Address, routeDatabase: RouteDatabase) {
+    public init(address: Address, routeDatabase: RouteDatabase) {
         this.address = address
         this.routeDatabase = routeDatabase
     }
@@ -42,48 +46,49 @@ class RouteSelector {
      * @since 0.29.3
      */
     public func next(): Option<Route> {
-        match (resolveDomain(TCP, address.getUrl().hostname(), index)) {
-            case Some(route) =>
-                index++
-                let url = address.getUrl()
-                let port:UInt16 = match(parseUInt16(url.port())) {
-                    case Some(v) =>  v
-                    case None =>
-                        if (url.toString().startsWith("https")) {
-                            443
-                        } else {
-                            80
-                        }
-                }
-                let nextRoute =  Route(address, SocketAddress(route[0], route[1], port))
-                if (!routeDatabase.shouldPostpone(nextRoute)) {
-                    return nextRoute
-                } else {
-                    return next()
-                }
-            case None => return None
+        if (!hasNext()) {
+            throw IndexOutOfBoundsException()
+        }
+        let route = allRoutes[Int64(index)]
+        index++
+        return hasPost(route)
+    }
+
+
+    private func hasPost(route: Route):  Option<Route> {
+        if (!routeDatabase.shouldPostpone(route)) {
+            return route
+        } else {
+            return next()
         }
     }
 
+
     public func hasNext(): Bool {
-        match (resolveDomain(TCP, address.getUrl().hostname(), index)) {
-            case Some(r) =>
-                return true
-            case None => return false
+        if (!hasAll) {
+            getAll()
         }
+        return index < UInt64(allRoutes.size)
     }
 
     public func getAll(): ArrayList<Route> {
+        hasAll = true
+        if (routeCache.contains(address)) {
+            allRoutes.appendAll(routeCache[address])
+            return allRoutes
+        }
+
         if (!allRoutes.isEmpty()) {
             return allRoutes
         }
-        let routes: ArrayList<Route> = ArrayList<Route>()
-        var index: UInt64 =0
+
+        var pos: UInt64 =0
         while (true) {
-            match (resolveDomain(TCP, address.getUrl().hostname(), index)) {
+            match (resolveDomain(TCP, address.getUrl().hostname(), pos)) {
                 case Some(route) =>
+                    pos++
                     let url = address.getUrl()
-                    let port:UInt16 = match(parseUInt16(url.port())) {
+                    let port:UInt16 = match(UInt16.tryParse(url.port())) {
                         case Some(v) => v
                         case None =>
                             if (url.toString().startsWith("https")) {
@@ -92,12 +97,11 @@ class RouteSelector {
                                 80
                             }
                     }
-                    routes.append(Route(address, SocketAddress(route[0], route[1], port)))
+                    allRoutes.append(Route(address, SocketAddress(route[0], route[1], port)))
                 case None => break
             }
-            index++
         }
-        allRoutes.appendAll(routes)
-        return routes
+        routeCache.put(address, allRoutes)
+        return allRoutes
     }
 }

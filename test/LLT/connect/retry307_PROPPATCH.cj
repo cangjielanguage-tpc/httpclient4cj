@@ -28,12 +28,8 @@ main() {
                                     .method("PROPPATCH", body: formBody)
                                     .build()
     let call = client.newCall(request)
-    try{
-        let response: okhttp.Response = call.execute()
-    }catch (e: Exception) {
-        return 0
-    }
-    return 1
+    let response: okhttp.Response = call.execute()
+    return 0
 }
 
 func serve(){
