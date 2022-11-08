@@ -6,6 +6,7 @@ from std import socket.*
 from okhttp import okhttp.*
 from std import io.*
 from std import time.*
+from okhttp import h2.*
 
 main() {
     let time = Duration.millisecond(100)

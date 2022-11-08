@@ -8,7 +8,7 @@
  */
 package okhttp
 
-from http2 import proto.*
+import h2.*
 from net import tls.*
 
 /**

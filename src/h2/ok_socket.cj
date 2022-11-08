@@ -6,7 +6,10 @@
  * @file
  * The file declars the OKSocket class.
  */
-package okhttp
+package h2
+
+from std import time.*
+from encoding import url.*
 
 public class OKSocket <: Resource & InputStream & OutputStream {
     public let client: SocketClient
@@ -41,7 +44,7 @@ public class OKSocket <: Resource & InputStream & OutputStream {
     }
 }
 
-public enum SocketClient <: Resource{
+public enum SocketClient <: Resource {
     | SocketC(Socket)
     | TlsC(TlsSocket)
 
