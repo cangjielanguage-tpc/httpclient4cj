@@ -33,6 +33,21 @@ public class OkBuffer <: Source {
         return read
     }
 
+    public func readByte(): Byte {
+
+        let arr = Array<Byte>(1, item: 0)
+
+        if (buffer.length > 0) {
+            buffer.read(arr)
+        } else {
+            let arr2 = Array<Byte>(4096, item: 0)
+            read(arr2)
+            buffer.read(arr)
+        }
+        return arr[0]
+    }
+
+
     public func read(bytes: ByteArrayStream, byteCount: Int64): Int64 {
         if (closed) {
             throw IllegalStateException("closed")
@@ -52,9 +67,23 @@ public class OkBuffer <: Source {
         return read
     }
 
-    func skipBuffer(limit: Int64): Unit {
+    public func skipBuffer(limit: Int64): Unit {
+
+       if (limit < 0) {
+           throw IllegalArgumentException("limit = ${limit} < 0")
+       } else if (limit == 0) {
+           return
+       }
+
        let bytes = Array<Byte>(limit, item: 0)
-       buffer.read(bytes)
+       if (buffer.length >= limit) {
+           buffer.read(bytes)
+       } else {
+           let arr2 = Array<Byte>(4096, item: 0)
+           read(arr2)
+           buffer.read(bytes)
+       }
+
     }
 
     public func indexOf(b: Byte, start: Int64, end: Int64): Int64 {

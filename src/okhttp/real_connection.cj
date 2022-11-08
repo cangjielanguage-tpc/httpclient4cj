@@ -8,7 +8,6 @@
  */
 package okhttp
 
-import h2.*
 from net import tls.*
 
 /**
@@ -33,7 +32,7 @@ public class Connection {
 
     private var protocol: Protocol = HTTP_1_1
 
-    private var h2conn: Option<H2ClientConn> = None
+    private var h2conn: Option<H2Connection> = None
 
     var idleAtNanos: Time = Time(0, 0x7fffffffffffffff)
 
@@ -150,8 +149,7 @@ public class Connection {
             return false
         }
         match (h2conn) {
-            case Some(h2con) =>
-                return h2con.connState.value() == 0x3
+            case Some(h2con) => return h2con.isHealthy(Time.now())
             case None => ()
         }
         return true
@@ -210,10 +208,14 @@ public class Connection {
         }
         match(h2conn) {
             case Some(h2) =>
-               synchronized (connectionPool.mutex) {
-                  allocationLimit = Int64(Int32.Max)
-               }
+                onSettings(h2)
             case None => ()
+        }
+    }
+
+    public func onSettings(h2: H2Connection) {
+        synchronized (connectionPool.mutex) {
+            allocationLimit = h2.getMaxConcurrentStreams()
         }
     }
 
@@ -285,11 +287,9 @@ public class Connection {
     private func startHttp2() {
         match (socket) {
             case Some(s) =>
-                match (s.client)  {
-                    case SocketC(ss) => h2conn = H2ClientConn.createClientConn(H2Transport(), ss)
-                    case TlsC(ss) =>   throw RouteException("h2 cannot be used with TLS now",
-                                                 HttpException("h2 cannot be used with TLS now"))
-                }
+                 let cc = H2Connection(s.client, sink.getOrThrow(), source.getOrThrow(), this)
+                 cc.start()
+                 h2conn = cc
             case None => ()
         }
     }
@@ -331,7 +331,7 @@ public class Connection {
     func newCodec(client: OkHttpClient, chain: Chain): ExchangeCodec {
         match (h2conn) {
             case None => Http1ExchangeCodec(client, this, this.source.getOrThrow(), this.sink.getOrThrow())
-            case Some(conn) => throw Exception("not support http2 now")
+            case Some(conn) => Http2ExchangeCodec(client, this, h2conn.getOrThrow())
        }
     }
 

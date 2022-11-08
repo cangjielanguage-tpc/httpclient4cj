@@ -10,17 +10,6 @@ package okhttp
 
 from std import fs.*
 
-public interface RequestBody {
-
-    func contentType(): String
-
-    func getContentLength(): Int64
-
-    func writeTo(sink: Sink): Unit
-
-    func get(): InputStream
-}
-
 /**
  * The class is RealRequestBody
  * @author guo_tingtingtekla,luoyukai4

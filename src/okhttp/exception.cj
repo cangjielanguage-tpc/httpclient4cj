@@ -78,15 +78,26 @@ public class H2ConnectionException <: HttpException {
     }
 }
 
-public class IllegalStateException <: Exception{
-    public init(message: String) {
-        super(message)
-    }
-}
 
 
 public class NetException <: Exception {
     public init(message: String) {
         super(message)
     }
+}
+
+public class IllegalStateException <: Exception{
+    public init(message: String) {
+        super(message)
+    }
+}
+
+public class StreamResetException <: Exception{
+    public let errorCode: ErrorCode
+
+    public init(errorCode: ErrorCode) {
+        super("stream was reset: ${errorCode.toString()}")
+        this.errorCode = errorCode
+    }
+
 }

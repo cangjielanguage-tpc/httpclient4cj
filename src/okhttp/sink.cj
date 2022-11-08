@@ -130,7 +130,7 @@ class RequestBodySink<: Sink {
 
         closed = true
         if (contentLength != -1 && bytesReceived != contentLength) {
-            throw ProtocolException("unexpected end of stream");
+            throw ProtocolException("unexpected end of stream")
         }
 
         try {
@@ -150,4 +150,136 @@ class RequestBodySink<: Sink {
         completed = true
         exchange.bodyComplete(false, true, e)
     }
+}
+
+class RealBufferSink <: Sink {
+    var closed: Bool = false
+    let sink: Sink
+    private var buffer: ByteArrayStream = ByteArrayStream()
+
+    init(sink: Sink) {
+        this.sink = sink
+
+    }
+    public func write(bytes: Array<Byte>): Unit {
+        if (closed) {
+             throw IllegalStateException("closed");
+        } else {
+             buffer.write(bytes)
+        }
+    }
+
+    public func flush(): Unit {
+        if (closed) {
+            throw IllegalStateException("closed");
+        } else {
+            if (this.buffer.length > 0) {
+                this.sink.write(this.buffer.readToEnd());
+            }
+            this.sink.flush()
+        }
+    }
+
+    public func close(): Unit {
+        if (!closed) {
+            print("buffer.length = ${buffer.length }")
+            if (buffer.length > 0) {
+                this.sink.write(this.buffer.readToEnd())
+            }
+            sink.close()
+            closed = true
+        }
+    }
+}
+
+class FramingSink <: Sink {
+    private static let EMIT_BUFFER_SIZE = 16384
+    private let sendBuffer: ByteArrayStream = ByteArrayStream()
+    var stream: Option<H2Stream> = Option<H2Stream>.None
+    var trailers: Option<Header> = Option<Header>.None
+    var closed: Bool = false
+    var finished: Bool = false
+
+    public prop var http2Stream: H2Stream {
+        get() {return stream.getOrThrow()}
+        set(value) {this.stream = value}
+    }
+
+    init(outFinished: Bool) {
+        this.finished = outFinished
+    }
+
+    public func write(bytes: Array<Byte>): Unit {
+        sendBuffer.write(bytes)
+        while (sendBuffer.length >= EMIT_BUFFER_SIZE) {
+            emitFrame(false)
+        }
+    }
+
+    private func emitFrame(outFinishedOnLastFrame: Bool): Unit {
+        let toWrite: Int64
+        synchronized(http2Stream.mutex) {
+            while(http2Stream.bytesLeftInWriteWindow <=0 &&
+                !finished && !closed && !has(http2Stream.errorCode)) {
+                http2Stream.mutex.wait()
+            }
+
+            http2Stream.checkOutNotClosed()
+            toWrite = min(http2Stream.bytesLeftInWriteWindow, sendBuffer.length)
+            http2Stream.bytesLeftInWriteWindow -= toWrite
+        }
+
+        let outFinished: Bool = outFinishedOnLastFrame && toWrite == sendBuffer.length
+        http2Stream.cc.writeData(http2Stream.id, outFinished, sendBuffer, toWrite)
+
+    }
+
+    public func flush(): Unit {
+        synchronized(http2Stream.mutex) {
+            http2Stream.checkOutNotClosed()
+        }
+
+        while(sendBuffer.length > 0) {
+            emitFrame(true)
+            http2Stream.cc.flush()
+        }
+    }
+
+    public func close(): Unit {
+        synchronized(http2Stream.mutex) {
+            if (closed) {
+                return
+            }
+        }
+
+        if (!finished) {
+            let hasData: Bool = sendBuffer.length > 0
+            let hasTrailers: Bool = has(trailers)
+            if (hasTrailers) {
+                while (sendBuffer.length > 0) {
+                    emitFrame(true)
+                }
+                let result: ArrayList<HeaderField> = ArrayList<HeaderField>()
+                for ((k,v) in trailers.getOrThrow()) {
+                    result.append(HeaderField(k, v[0]))
+                }
+                http2Stream.cc.writeHeaders(http2Stream.id, true, result)
+            } else if (hasData) {
+                while (sendBuffer.length > 0) {
+                    emitFrame(true);
+                }
+            } else {
+                 http2Stream.cc.writeData(http2Stream.id, true, ByteArrayStream(), 0);
+            }
+
+        }
+
+        synchronized(http2Stream.mutex) {
+           closed = true
+        }
+
+        http2Stream.cc.flush()
+        http2Stream.cancelStreamIfNecessary()
+    }
+
 }

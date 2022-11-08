@@ -327,6 +327,10 @@ public class Exchange {
         transmitter.exchangeMessageDone(this, true, false);
     }
 
+    public func getTrailers() {
+        return codec.getTrailers()
+    }
+
     public func createRequestBody(request: Request): Sink{
         let contentLength = request.getBody().getOrThrow().getContentLength()
         let rawRequestBody: Sink = codec.createRequestBody(request)

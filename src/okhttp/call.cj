@@ -11,68 +11,6 @@ package okhttp
 from std import sync.*
 
 /**
- * The interface is Call
- * @author guo_tingtingtekla,luoyukai4
- * @since 0.29.3
- */
-public interface Call {
-    /*
-     * The Function is getRequest
-     *
-     * @return Type of Request
-     * @since 0.29.3
-     */
-    func getRequest(): Request
-    /*
-     * The Function is execute
-     *
-     * @return Type of Response
-     * @since 0.29.3
-     */
-    func execute(): Response
-    /*
-     * The Function is enqueue
-     *
-     * @param responseCallback of Callback
-     *
-     * @return Type of Unit
-     * @since 0.29.3
-     */
-    func enqueue(responseCallback: Callback):Unit
-    /*
-     * The Function is cancel
-     *
-     * @return Type of Unit
-     * @since 0.29.3
-     */
-    func cancel(): Unit
-    /*
-     * The Function is isExecuted
-     *
-     * @return Type of Bool
-     * @since 0.29.3
-     */
-    func isExecuted(): Bool
-    /*
-     * The Function is isCanceled
-     *
-     * @return Type of Bool
-     * @since 0.29.3
-     */
-    func isCanceled(): Bool
-
-    /*
-     * The Function is clone
-     *
-     * @return Type of Call
-     * @since 0.29.3
-     */
-    func clone(): Call
-}
-
-
-
-/**
  * The class is RealCall inherited from Call
  * @author guo_tingtingtekla,luoyukai4
  * @since 0.29.3

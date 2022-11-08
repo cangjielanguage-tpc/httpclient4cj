@@ -6,7 +6,7 @@
  * @file
  * The file declars the OKSocket class.
  */
-package h2
+package okhttp
 
 from std import time.*
 from encoding import url.*

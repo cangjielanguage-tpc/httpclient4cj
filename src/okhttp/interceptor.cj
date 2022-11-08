@@ -10,22 +10,7 @@ package okhttp
 
 from std import  collection.*
 
-/**
- * The interface is Interceptor
- * @author guo_tingtingtekla,luoyukai4
- * @since 0.29.3
- */
-public interface Interceptor {
-   /*
-    * The Function is intercept
-    *
-    * @param chain of Chain
-    *
-    * @return Type of Response
-    * @since 0.29.3
-    */
-   func intercept(chain: Chain): Response
-}
+
 
 /**
  * The class is Chain
