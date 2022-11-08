@@ -13,31 +13,7 @@ from http2 import http.*
 from std import io.*
 
 
-/**
- * The interface is ExchangeCodec
- * @author luoyukai4
- * @since 0.29.3
- */
-public interface ExchangeCodec {
 
-    func readResponseHeaders(expectContinue: Bool): Option<ResponseBuilder>
-
-    func reportedContentLength(response: Response): Int64
-
-    func openResponseBodySource(response: Response): Source
-
-    func getConnection(): Connection
-
-    func cancel(): Unit
-
-    func createRequestBody(request: Request): Sink
-
-    func writeRequestHeaders(request: Request): Unit
-
-    func flushRequest(): Unit
-
-    func finishRequest(): Unit
-}
 
 /* let member CRLF_CRLF type is Array<Byte> */
 let CRLF_CRLF: Array<Byte> = b"\r\n\r\n"
@@ -56,7 +32,7 @@ let UInt64ToHex: Utf8View = "0123456789abcdef".utf8View
  * @author guo_tingtingtekla,luoyukai4
  * @since 0.29.3
  */
-public class Http1ExchangeCodec <: ExchangeCodec{
+public class Http1ExchangeCodec <: ExchangeCodec {
     public static let CRLF: String = "\r\n";
 
     /* let member STATE_IDLE type is Int64 */
@@ -338,118 +314,5 @@ public class Http1ExchangeCodec <: ExchangeCodec{
      */
     public func cancel(): Unit {
         this.realConnection.cancel()
-    }
-}
-
-/**
- * The class is Http2ExchangeCodec inherited from ExchangeCodec
- * @author luoyukai4
- * @since 0.29.3
- */
-public class Http2ExchangeCodec{
-    private var connection: Connection
-    private var realConnection: H2ClientConn
-    private var respHead: Header = Header()
-    private var response: ?H2Response = None
-
-    /*
-     * The Function is init constructor
-     *
-     * @param connection of Connection
-     * @param realConnection of H2ClientConn
-     * @since 0.30.4
-     */
-    init(connection: Connection, realConnection: H2ClientConn) {
-        this.connection = connection
-        this.realConnection = realConnection
-    }
-
-
-    /**
-     * The Function is reportedContentLength
-     *
-     * @return Type of Int64
-     * @since 0.30.4
-     */
-    public func reportedContentLength(): Int64{
-        match (this.respHead.get("Content-Length")) {
-            case Some(s) =>
-            match (Int64.tryParse(s)) {
-                case Some(n) => return n
-                case None => throw HttpException("Content-Length is invalid: ${s}.")
-            }
-            case None => return response.getOrThrow().contentLength
-        }
-    }
-
-    /**
-     * The Function is write
-     *
-     * @param request of Request
-     *
-     * @return Type of Unit
-     * @since 0.30.4
-     */
-    public func write(request: Request): Unit {
-        let req4cj = request.toHttpRequest()
-        let res: H2Response = realConnection.doRequest(H2Request(req4cj))
-        respHead = res.header
-        response = res
-    }
-
-
-    /**
-     * The Function is readResponseHeaders
-     *
-     * @return Type of ResponseBuilder
-     * @since 0.30.4
-     */
-    public func readResponseHeaders(): ResponseBuilder {
-        match(response) {
-            case Some(h2resp) =>
-                return Response.builder().protocol(Protocol.get(h2resp.proto)).code(h2resp.statusCode)
-                    .header(h2resp.header.clone())
-            case None =>
-                throw Exception("invoke write first")
-        }
-    }
-
-    /**
-     * The Function is openResponseBody
-     *
-     * @return Type of Option<ResponseBody>
-     * @since 0.30.4
-     */
-    public func openResponseBody(): Option<ResponseBody> {
-        match(response) {
-            case Some(h2resp) =>
-                let contentLength =  reportedContentLength()
-                if ( contentLength == 0) {
-                    return None
-                }
-                return ResponseBody(h2resp.header.get("Content-Type") ?? "", contentLength,
-                    OkBuffer((h2resp.body as ByteArrayStream).getOrThrow()))
-            case None => throw Exception("invoke write first")
-        }
-    }
-
-    /**
-     * The Function is getConnection
-     *
-     * @return Type of Connection
-     * @since 0.30.4
-     */
-    public func getConnection(): Connection {
-        return this.connection
-    }
-
-    /**
-     * The Function is cancel
-     *
-     * @return Type of Unit
-     * @since 0.30.4
-     */
-    public func cancel(): Unit {
-        this.realConnection.connState = ConnectionState.CLOSE
     }
 }

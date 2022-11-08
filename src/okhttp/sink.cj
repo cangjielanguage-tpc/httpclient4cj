@@ -8,11 +8,6 @@
  */
 package okhttp
 
-public interface Sink {
-    func write(bytes: Array<Byte>): Unit
-    func flush(): Unit
-    func close(): Unit
-}
 
 class KnownLengthSink<: Sink {
     private var closed: Bool = false

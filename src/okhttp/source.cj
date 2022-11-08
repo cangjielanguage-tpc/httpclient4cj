@@ -9,12 +9,6 @@
 package okhttp
 from std import math.*
 
-public interface Source <: Resource {
-    func read(bytes: ByteArrayStream, byteCount: Int64): Int64
-    func close(): Unit
-    func isClosed(): Bool
-}
-
 abstract class AbstractSource <: Source {
     protected var closed: Bool = false
     protected let exchangeCode: Http1ExchangeCodec
