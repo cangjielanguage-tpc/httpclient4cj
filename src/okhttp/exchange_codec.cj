@@ -4,15 +4,12 @@
 
 /**
  * @file
- * The file declars the ExchangeCodec class.
+ * The file declares the ExchangeCodec class.
  */
 package okhttp
 
 
-from http2 import http.*
 from std import io.*
-
-
 
 
 /* let member CRLF_CRLF type is Array<Byte> */
@@ -28,7 +25,7 @@ let CHAR_ZERO: UInt32 = 48
 let UInt64ToHex: Utf8View = "0123456789abcdef".utf8View
 
 /**
- * The class is ExchangeCodec
+ * The class is Http1ExchangeCodec
  * @author guo_tingtingtekla,luoyukai4
  * @since 0.29.3
  */
@@ -138,6 +135,13 @@ public class Http1ExchangeCodec <: ExchangeCodec {
              realConnection.noExchanges()
              throw e
         }
+    }
+
+    public func getTrailers() {
+        if (state != STATE_CLOSED) {
+            throw IllegalStateException("too early; can't read the trailers yet")
+        }
+        return trailers
     }
 
     public func writeRequestHeaders(request: Request): Unit {

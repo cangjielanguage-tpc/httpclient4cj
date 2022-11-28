@@ -1,0 +1,29 @@
+// DEPENDENCE: ./body.text
+// EXEC: cjc %import-path %L %l %f
+// EXEC: ./main
+
+from okhttp import okhttp.*
+from net import http.*
+from std import collection.*
+from encoding import url.*
+from net import tls.*
+from std import fs.*
+
+main (){
+    let body = RealRequestBody.create("text/json",File("./body.text",OpenOption.Open(true,false)))
+    let mu = MultipartBody.builder().
+    addFormDataPart("name", "lyk").
+    addFormDataPart("age", "18").
+    addFormDataPart("file1", "body.text", body).build()
+    let client = OkHttpClient.builder()
+    .protocols(ArrayList<String>([Protocol.get("H2_PRIOR_KNOWLEDGE").toString()])).build()
+    let request: okhttp.Request = okhttp.Request.builder().url("http://127.0.0.1:50066/cangjie_test-1.0-SNAPSHOT/post")
+    .method("POST", body: mu)
+    .header(Header())
+    .header("User-Agent", "OkHttp-Example")
+    .build()
+    let response: okhttp.Response = client.newCall(request).execute()
+    println("execute========================")
+    println(response.getBody().getOrThrow().getString())
+    return 0
+}

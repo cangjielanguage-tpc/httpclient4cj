@@ -49,7 +49,7 @@ public class CallServerInterceptor<: Interceptor {
             }
             match (responseBuilder) {
                 case None =>
-                    let bufferedRequestBody = exchange.createRequestBody(request)
+                    let bufferedRequestBody = RealBufferSink(exchange.createRequestBody(request))
                     body.writeTo(bufferedRequestBody)
                     bufferedRequestBody.close()
                 case Some(res) =>

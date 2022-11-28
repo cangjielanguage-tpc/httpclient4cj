@@ -7,11 +7,7 @@
   "requires": {
   },
   "package_requires": {
-    "http2/http2_buffer": "./ci_lib/http2/buffer.cjo",
-    "http2/http2_exceptions": "./ci_lib/http2/exceptions.cjo",
-    "http2/http2_frame": "./ci_lib/http2/frame.cjo",
-    "http2/http2_hpack": "./ci_lib/http2/hpack.cjo",
-    "http2/http2_http": "./ci_lib/http2/http.cjo"
+    "http2/http2_hpack": "./ci_lib/http2/hpack.cjo"
   },
   "foreign_requires": {
     "dns": {
@@ -20,5 +16,5 @@
     }
   },
   "output_type": "dynamic",
-  "command_option": ""
+  "command_option": "-O2"
 }

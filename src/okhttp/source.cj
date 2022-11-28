@@ -274,3 +274,127 @@ class ResponseBodySource <:Source {
         exchange.bodyComplete(true, false, e)
    }
 }
+
+
+class FramingSource <: Source {
+    var finished: Bool = false
+    var trailers: Option<Header> = Option<Header>.None
+    var stream: Option<H2Stream> = Option<H2Stream>.None
+    var maxByteCount: Int64
+    let readBuffer = ByteArrayStream()
+    let receiveBuffer = ByteArrayStream()
+    var closed = false
+
+    public init(maxByteCount: Int64) {
+         this.maxByteCount = maxByteCount
+    }
+
+    public func read(bytes: ByteArrayStream, byteCount: Int64): Int64 {
+        let h2Stream = stream.getOrThrow()
+
+        if (byteCount < 0) {
+            throw IllegalArgumentException("byteCount = ${byteCount} < 0")
+        }
+
+        while (true) {
+            var readBytesDelivered = -1
+            var errorExceptionToDeliver: Bool = false
+            synchronized(h2Stream.mutex) {
+                if (has(h2Stream.errorCode)) {
+                    errorExceptionToDeliver = true
+                }
+
+                if (closed) {
+                    throw IOException("stream closed")
+                } else if (readBuffer.length > 0) {
+                   let arr = Array<Byte>(min(byteCount, readBuffer.length), item:0)
+                   readBytesDelivered =  readBuffer.read(arr)
+                   bytes.write(arr)
+                   h2Stream.unacknowledgedBytesRead += readBytesDelivered
+                   if (!errorExceptionToDeliver && h2Stream.unacknowledgedBytesRead >=
+                         h2Stream.cc.okHttpSettings.getInitialWindowSize() / 2) {
+                         h2Stream.cc.writeWindowUpdateLater(h2Stream.id, h2Stream.unacknowledgedBytesRead)
+                         h2Stream.unacknowledgedBytesRead = 0
+                   }
+                } else if (!finished && !errorExceptionToDeliver) {
+                    h2Stream.mutex.wait()
+                    continue
+                }
+            }
+
+            if (readBytesDelivered != -1) {
+                h2Stream.updateConnectionFlowControl(readBytesDelivered)
+                return readBytesDelivered
+            }
+
+            if (errorExceptionToDeliver) {
+                if (h2Stream.errorException == "") {
+                    throw StreamResetException(h2Stream.errorCode.getOrThrow())
+                } else {
+                    throw IOException("errorException")
+                }
+            }
+            return -1
+        }
+        return -1
+    }
+
+    func receive(source: OkBuffer, length: Int64) {
+        var byteCount = length
+        while(byteCount > 0) {
+            var finished: Bool
+            var flowControlError: Bool
+            synchronized (stream.getOrThrow().mutex) {
+                finished = this.finished
+                flowControlError =  byteCount + readBuffer.length > maxByteCount
+            }
+
+            if (flowControlError) {
+                source.skipBuffer(byteCount)
+                stream.getOrThrow().closeLater(ErrorCode.FLOW_CONTROL_ERROR)
+                return
+            }
+
+            if (finished) {
+                source.skipBuffer(byteCount)
+                return
+            }
+
+            let read = source.read(receiveBuffer, byteCount)
+
+            if (read == -1) {
+                throw IOException("EOF")
+            }
+
+            byteCount -= read
+            var bytesDiscarded = 0
+            synchronized(stream.getOrThrow().mutex) {
+                if (closed) {
+                    bytesDiscarded = receiveBuffer.length
+                    receiveBuffer.clear()
+                } else {
+                    let  wasEmpty = readBuffer.length == 0
+                    readBuffer.write(receiveBuffer.readToEnd())
+                    if (wasEmpty) {
+                        let mu = stream.getOrThrow().mutex
+                        mu.notifyAll()
+                    }
+
+                }
+
+            }
+
+            if (bytesDiscarded > 0) {
+                stream.getOrThrow().updateConnectionFlowControl(bytesDiscarded);
+            }
+        }
+    }
+
+    public func close(): Unit {
+
+
+    }
+    public func isClosed(): Bool {
+        return closed
+    }
+}

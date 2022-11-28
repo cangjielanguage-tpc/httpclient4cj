@@ -9,7 +9,6 @@
 
 package okhttp
 
-from std import time.*
 from std import math.*
 
 /**

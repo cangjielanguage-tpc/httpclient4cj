@@ -6,7 +6,7 @@ from net import tls.*
 from std import socket.*
 from okhttp import okhttp.*
 from std import io.*
-from okhttp import h2.*
+
 main() {
     let socket = Socket(TCP,"www.baidu.com", 80)
     let socketC = SocketC(socket)
