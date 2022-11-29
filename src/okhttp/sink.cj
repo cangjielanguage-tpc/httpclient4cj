@@ -110,7 +110,7 @@ class RequestBodySink<: Sink {
         try {
             sink.write(bytes)
             this.bytesReceived += byteCount
-        }catch (e: IOException) {
+        } catch (e: IOException) {
             complete(NetException(e.message))
             throw e
         }
@@ -152,20 +152,21 @@ class RequestBodySink<: Sink {
     }
 }
 
-class RealBufferSink <: Sink {
+public class RealBufferSink <: Sink {
     var closed: Bool = false
     let sink: Sink
     private var buffer: ByteArrayStream = ByteArrayStream()
 
-    init(sink: Sink) {
+    public init(sink: Sink) {
         this.sink = sink
 
     }
+
     public func write(bytes: Array<Byte>): Unit {
         if (closed) {
-             throw IllegalStateException("closed");
+            throw IllegalStateException("closed")
         } else {
-             buffer.write(bytes)
+            buffer.write(bytes)
         }
     }
 
@@ -174,7 +175,7 @@ class RealBufferSink <: Sink {
             throw IllegalStateException("closed");
         } else {
             if (this.buffer.length > 0) {
-                this.sink.write(this.buffer.readToEnd());
+                this.sink.write(this.buffer.readToEnd())
             }
             this.sink.flush()
         }
@@ -228,7 +229,6 @@ class FramingSink <: Sink {
             toWrite = min(http2Stream.bytesLeftInWriteWindow, sendBuffer.length)
             http2Stream.bytesLeftInWriteWindow -= toWrite
         }
-
         let outFinished: Bool = outFinishedOnLastFrame && toWrite == sendBuffer.length
         http2Stream.cc.writeData(http2Stream.id, outFinished, sendBuffer, toWrite)
 
@@ -263,13 +263,14 @@ class FramingSink <: Sink {
                 for ((k,v) in trailers.getOrThrow()) {
                     result.append(HeaderField(k, v[0]))
                 }
+                trailers = Option<Header>.None
                 http2Stream.cc.writeHeaders(http2Stream.id, true, result)
             } else if (hasData) {
                 while (sendBuffer.length > 0) {
-                    emitFrame(true);
+                    emitFrame(true)
                 }
             } else {
-                 http2Stream.cc.writeData(http2Stream.id, true, ByteArrayStream(), 0);
+                 http2Stream.cc.writeData(http2Stream.id, true, ByteArrayStream(), 0)
             }
 
         }

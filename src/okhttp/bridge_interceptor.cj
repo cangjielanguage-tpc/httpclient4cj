@@ -75,7 +75,9 @@ public class BridgeInterceptor<: Interceptor {
            requestBuilder.header("Cookie", cookieHeader(cookies))
         }
 
-
+        if (request.getHeader("User-Agent", "") == "") {
+            requestBuilder.header("User-Agent", "okhttp4cj");
+        }
 
         var response: Response = chain.proceed(requestBuilder.build())
         let responseHeader: Header = response.getHeaders()
@@ -91,9 +93,7 @@ public class BridgeInterceptor<: Interceptor {
             responseBuilder.body(ResponseBody(contentType, -1,
                 OkGzipSource(response.getBody().getOrThrow().getSource())))
         }
-        if (request.getHeader("User-Agent", "") == "") {
-            requestBuilder.header("User-Agent", "okhttp4cj");
-        }
+
         return responseBuilder.build()
     }
 

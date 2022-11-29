@@ -50,15 +50,15 @@ public enum ErrorCode {
         match(errorCodeInt) {
             case 0 => return NO_ERROR
             case 1 => return PROTOCOL_ERROR
-            case 2 => return NO_ERROR
-            case 3 => return NO_ERROR
-            case 7 => return NO_ERROR
-            case 8 => return NO_ERROR
-            case 9 => return NO_ERROR
-            case 0xa => return NO_ERROR
-            case 0xb => return NO_ERROR
-            case 0xc => return NO_ERROR
-            case 0xd => return NO_ERROR
+            case 2 => return INTERNAL_ERROR
+            case 3 => return FLOW_CONTROL_ERROR
+            case 7 => return REFUSED_STREAM
+            case 8 => return CANCEL
+            case 9 => return COMPRESSION_ERROR
+            case 0xa => return CONNECT_ERROR
+            case 0xb => return ENHANCE_YOUR_CALM
+            case 0xc => return INADEQUATE_SECURITY
+            case 0xd => return HTTP_1_1_REQUIRED
             case _ =>  return Option<ErrorCode>.None
         }
      }

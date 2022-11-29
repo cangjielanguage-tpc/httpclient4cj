@@ -13,4 +13,13 @@
 - 支持tls的连接
 - 修改requestBody 以及 ResponseBody 使用okio风格的source 以及 sink接口
 - 添加客户端鉴权接口
-- 提供更细粒度的请求接口
+## 0.0.5
+- 适配cjc34.3版本
+- 支持http2协议,与http2库强依赖解耦
+- 提供http2相关接口 用于单独调用
+- 支持cookie解析 和 cookiejar的用户自定义使用
+- 提供更简单的请求方式接口
+- 支持multiPartBody
+- 支持formBody
+- 支持chunked传输
+- 添加dns解析的缓存

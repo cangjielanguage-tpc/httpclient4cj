@@ -126,6 +126,16 @@ public class RequestBuilder <: Builder<Request> {
     }
 
     /**
+     * The Function is put
+     *
+     * @return Type of Request
+     * @since 0.33.3
+     */
+    public func post(body: RequestBody): RequestBuilder {
+        return method("POST", body: body)
+    }
+
+    /**
      * The Function is patch
      *
      * @return Type of Request

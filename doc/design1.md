@@ -8,7 +8,7 @@
 
 1. 支持步和异步请求，支持自定义调度器维护请求
 2. 支持全局配置，例如连接超时，请求方式，使用链式调用来配置对象
-3. 支持http1.1 和 http2 协议(由于 http2暂不支持 tls 1030 release 中 okhttp 暂不支持 http2)
+3. 支持http1.1 和 http2 协议
 4. 支持 tls， 对于https协议默认开启tls
 5. 支持自定义拦截器
 6. 支持创建文件, multipart, 表单等多种请求体
@@ -26,7 +26,7 @@ apache 2.0 License
 ## 4 依赖分析
 
 依赖仓颉标准库 time， collection， http， socket， tls， io， fs， regex， sync， math， convert
-三方库 http2
+三方库 http2.hpack
 
 
 ## 5 接口设计
@@ -159,21 +159,21 @@ Call的工厂类，可用于发送 HTTP 请求并读取其响应，外观形式�
 
 用于创建Request，用户通过链式调用配置其属性
 
-| 成员函数         | 入参                                                                  |     返回值     | 作用描述              |
-|--------------|---------------------------------------------------------------------| ------------- |-------------------|
-| url          | url: String                                                         | RequestBuilder | 根据字符串配置URL        |
-| url          | url: URL                                                            | RequestBuilder | 重载根据URL配置         |
-| header       | name: String, value: String                                         | RequestBuilder | 添加请求头key-value键值对 |
-| method       | method: String, body!: Option<RequestBody> = Option<RequestBody>.None | RequestBuilder | 配置请求方法 和请求体       |
-| put          | body: RequestBody                                                   | RequestBuilder | 配置PUT请求方法 和请求体    |
-| patch        | body: RequestBody                                                   | RequestBuilder | 配置PATCH请求方法 和请求体  |
-| delete       | body: Option\<RequestBody\>                                         | RequestBuilder | 配置DELETE请求方法 和请求体 |
-| get          |                                                    | RequestBuilder | 配置GET请求方法         |
-| head         |                                                    | RequestBuilder | 配置HEAD请求方法        |
-| build        | Request                                                             | RequestBuilder | 创建Request         |
-| removeHeader | name: String                                                        | RequestBuilder | 移除请求头key对应的value  |
-| header       | header: Header                                                      | RequestBuilder | 配置请求头             |
-| cacheControl | cacheControl: CacheControl                                          | RequestBuilder | 配置请求中缓存控制头        |
+| 成员函数         | 入参                                                                        |     返回值     | 作用描述              |
+|--------------|---------------------------------------------------------------------------| ------------- |-------------------|
+| url          | url: String                                                               | RequestBuilder | 根据字符串配置URL        |
+| url          | url: URL                                                                  | RequestBuilder | 重载根据URL配置         |
+| header       | name: String, value: String                                               | RequestBuilder | 添加请求头key-value键值对 |
+| method       | method: String, body!: Option\<RequestBody\> = Option\<RequestBody\>.None | RequestBuilder | 配置请求方法 和请求体       |
+| put          | body: RequestBody                                                         | RequestBuilder | 配置PUT请求方法 和请求体    |
+| patch        | body: RequestBody                                                         | RequestBuilder | 配置PATCH请求方法 和请求体  |
+| delete       | body: Option\<RequestBody\>                                               | RequestBuilder | 配置DELETE请求方法 和请求体 |
+| get          |                                                                           | RequestBuilder | 配置GET请求方法         |
+| head         |                                                                           | RequestBuilder | 配置HEAD请求方法        |
+| build        | Request                                                                   | RequestBuilder | 创建Request         |
+| removeHeader | name: String                                                              | RequestBuilder | 移除请求头key对应的value  |
+| header       | header: Header                                                            | RequestBuilder | 配置请求头             |
+| cacheControl | cacheControl: CacheControl                                                | RequestBuilder | 配置请求中缓存控制头        |
 
 #### interface RequestBody
 
@@ -329,6 +329,15 @@ form表单格式的请求体
 | close | 无                        | Unit | 关闭sink                               |
 
 
+#### RealBufferSink <: Sink
+
+缓存流，将write数据缓存, 调用flush时刷入, 如果没有显式调用flush，则在close时刷入数据
+
+| 成员函数 | 入参         | 返回值 | 作用描述 |
+|------|------------|-----|------|
+| init | sink: Sink | 无   | 构造器  |
+
+
 ####  class Chain
 
 拦截器链
@@ -369,11 +378,11 @@ form表单格式的请求体
 
 包含服务器地址和连接协议的对象
 
-|   成员函数   |                入参                | 返回值                 |              作用描述               |
-| ----------- | ---------------------------------- |---------------------| --------------------------------- |
-| init        | url: URL, protocols: ArrayList<String> | 无                   | url  服务器URL资源， protocols 请求协议 |
-| getUrl       | 无                                 | URL                 | 获取 URL 对象                       |
-| getProtocols | 无                                 | ArrayList\<String\> | 获取协议                            |
+|   成员函数   | 入参                                       | 返回值                 |              作用描述               |
+| ----------- |------------------------------------------|---------------------| --------------------------------- |
+| init        | url: URL, protocols: ArrayList\<String\> | 无                   | url  服务器URL资源， protocols 请求协议 |
+| getUrl       | 无                                        | URL                 | 获取 URL 对象                       |
+| getProtocols | 无                                        | ArrayList\<String\> | 获取协议                            |
 
 
 #### enum protocol
@@ -393,34 +402,35 @@ form表单格式的请求体
 
 TCP协议中应用层和传输层的连接流的抽象
 
-|         成员函数          |             入参              | 返回值 | 作用描述                               |
-| ----------------------- | ---------------------------- | ----- |------------------------------------|
-| init                     | client: OkHttpClient, call: Call | 无     | client 客户端配置对象, call 请求的增强         |
-| cancel                   | 无                            | Unit   | 关闭socket                           |
-| isCanceled                   | 无                            | Unit   | 是否已经关闭                             |
-| prepareToConnect          | request: Request               | Unit   | 进行准备连接前必要的初始化 如果已经进行过连接，可以复用则不再初始化 |
-| hasConnection             | 无                            | Bool   | 是否已经建立连接                           |
-| hasExchange               | 无                            | Bool   | 是否已经建立传输通道                         |
-| exchangeDoneDueToException | 无                            | Unit   | 关闭传输通道                             |
-| noMoreExchanges | 无                            | Unit   | 由于异常关闭传输通道并取消连接                    |
-| canRetry                 | 无                            | Bool   | 是否可以重试                             |
+| 成员函数                       | 入参                                 | 返回值    | 作用描述                               |
+|----------------------------|------------------------------------|--------|------------------------------------|
+| init                       | client: OkHttpClient, call: Call   | 无      | client 客户端配置对象, call 请求的增强         |
+| cancel                     | 无                                  | Unit   | 关闭socket                           |
+| isCanceled                 | 无                                  | Unit   | 是否已经关闭                             |
+| prepareToConnect           | request: Request                   | Unit   | 进行准备连接前必要的初始化 如果已经进行过连接，可以复用则不再初始化 |
+| hasConnection              | 无                                  | Bool   | 是否已经建立连接                           |
+| hasExchange                | 无                                  | Bool   | 是否已经建立传输通道                         |
+| exchangeDoneDueToException | 无                                  | Unit   | 关闭传输通道                             |
+| noMoreExchanges            | 无                                  | Unit   | 由于异常关闭传输通道并取消连接                    |
+| canRetry                   | 无                                  | Bool   | 是否可以重试                             |
 
 
 #### interface ExchangeCodec
 
 对不同协议解析逻辑的封装
 
-|       成员函数       |      入参       | 返回值                       | 作用描述                         |
-| ------------------- | ---------------- |---------------------------|------------------------------|
-| readResponseHeaders   | expectContinue: Bool               | Option\<ResponseBuilder\> | 读取请求头                        |
-| reportedContentLength | response: Response              | Int64                     | 解析请求体长度                      |
-| openResponseBodySource      | response: Response                | Source      | 创建用于输出响应体的source对象           |
-| getConnection        | 无               | Connection                | 获取连接对象                       |
-| writeRequestHeaders   | request: Request               | Unit           | 写入请求头报文                      |
-| finishRequest | 无              | Int64                     | 将请求从缓存中刷入套接字并且结束请求标记不再进行新的传输 |
-| createRequestBody      | request: Request               | Sink      | 创建写入请求体的sink                 |
-| flushRequest        | 无               | Unit                | 将请求从缓存中刷入套接字                 |
-| cancel               | 无               | Unit                      | 关闭socket                     |
+| 成员函数                   | 入参                   | 返回值                       | 作用描述                         |
+|------------------------|----------------------|---------------------------|------------------------------|
+| readResponseHeaders    | expectContinue: Bool | Option\<ResponseBuilder\> | 读取请求头                        |
+| reportedContentLength  | response: Response   | Int64                     | 解析请求体长度                      |
+| openResponseBodySource | response: Response   | Source                    | 创建用于输出响应体的source对象           |
+| getConnection          | 无                    | Connection                | 获取连接对象                       |
+| writeRequestHeaders    | request: Request     | Unit                      | 写入请求头报文                      |
+| finishRequest          | 无                    | Int64                     | 将请求从缓存中刷入套接字并且结束请求标记不再进行新的传输 |
+| createRequestBody      | request: Request     | Sink                      | 创建写入请求体的sink                 |
+| flushRequest           | 无                    | Unit                      | 将请求从缓存中刷入套接字                 |
+| getTrailers            | 无                    | Header                    | 关闭socket                     |
+| cancel                 | 无                    | Unit                      | 关闭socket                     |
 
 
 
@@ -428,32 +438,45 @@ TCP协议中应用层和传输层的连接流的抽象
 
 一次完整的http请求的 网络io通道的抽象
 
-|         成员函数          |                                   入参                            |       返回值    | 作用描述       |
-| ----------------------- | --------------------------------------------------------------- | ------------ |------------|
-| init                     | transmitter: Transmitter, call: Call, finder: ExchangeFinder, codec: ExchangeCodec | 无            | 构造器        |
-| readResponseHeaders        | 无                                                               |  Option<ResponseBuilder>         | 读取请求头      |
-| openResponseBody          | 无                                                               | ResponseBody | 解析并创建响应体   |
-| getConnection             | 无                                                               | Connection   | 获取连接       |
-| cancel                   | 无                                                               | Bool         | 关闭通道       |
-| detachWithViolence        | 无                                                               | Unit         | 暴力关闭       |
-| noNewExchangesOnConnection | 无                                                               | Bool         | 标记为此通道不再可用 |
-| noRequestBody        | 无                                                               | Unit         | 标记无请求体     |
-| createRequestBody        | request: Request                                                | Sink| 创建写入请求体的sink         |
-| writeRequestHeaders        | request: Request                                                | Unit| 写入请求头报文         |
-| flushRequest        | 无                                               | Unit| 将请求从缓存中刷入套接字         |
-| finishRequest        | 无                                               | Unit| 将请求从缓存中刷入套接字并且结束请求标记不再进行新的传输         |
+| 成员函数                       |                                   入参                            | 返回值                       | 作用描述       |
+|----------------------------| --------------------------------------------------------------- |---------------------------|------------|
+| init                       | transmitter: Transmitter, call: Call, finder: ExchangeFinder, codec: ExchangeCodec | 无                         | 构造器        |
+| readResponseHeaders        | 无                                                               | Option\<ResponseBuilder\> | 读取请求头      |
+| openResponseBody           | 无                                                               | ResponseBody              | 解析并创建响应体   |
+| getConnection              | 无                                                               | Connection                | 获取连接       |
+| cancel                     | 无                                                               | Bool                      | 关闭通道       |
+| detachWithViolence         | 无                                                               | Unit                      | 暴力关闭       |
+| noNewExchangesOnConnection | 无                                                               | Bool                      | 标记为此通道不再可用 |
+| noRequestBody              | 无                                                               | Unit                      | 标记无请求体     |
+| createRequestBody          | request: Request                                                | Sink                      | 创建写入请求体的sink         |
+| writeRequestHeaders        | request: Request                                                | Unit                      | 写入请求头报文         |
+| flushRequest               | 无                                               | Unit                      | 将请求从缓存中刷入套接字         |
+| finishRequest              | 无                                               | Unit                      | 将请求从缓存中刷入套接字并且结束请求标记不再进行新的传输         |
 
 #### class Http1ExchangeCodec <: ExchangeCodec
 
 处理Http1协议解析逻辑
 
-| 成员函数                   | 入参                                                                                              | 返回值       | 作用描述               |
-|------------------------|-------------------------------------------------------------------------------------------------|-----------|--------------------|
-| init                   | client: OkHttpClient, realConnection: Connection, source: OkBuffer, sink: BufferedOutputStream  | 无         | 构造器              |
+| 成员函数    | 入参                                                                                              | 返回值       | 作用描述                |
+|---------|-------------------------------------------------------------------------------------------------|-----------|---------------------|
+| init    | client: OkHttpClient, realConnection: Connection, source: OkBuffer, sink: BufferedOutputStream  | 无         | 构造器                 |
+
+#### class Http2ExchangeCodec <: ExchangeCodec
+
+处理Http2协议解析逻辑
+
+| 成员函数 | 入参                                                                                 | 返回值         | 作用描述                |
+|------|------------------------------------------------------------------------------------|-------------|---------------------|
+| init | client: OkHttpClient, realConnection: Connection, http2Connection: H2Connection    | 无           | 构造器                 |
+
+
+| 静态函数                 | 入参                                      | 返回值              | 作用描述                                            |
+|----------------------|-----------------------------------------|------------------|-------------------------------------------------|
+| readHttp2HeadersList | headerBlock: Header, protocol: Protocol | ResponseBuilder  | Http2 的 Header 转换为标准Header并以ResponseBuilder形式返回 |
 
 #### class Connection
 
-包含socket和流的http1.1 ，http2连接
+socket 以及 http1连接
  
 |    成员函数     | 入参                                                               | 返回值                      | 作用描述                                  |
 | -------------- |------------------------------------------------------------------|--------------------------|---------------------------------------|
@@ -468,6 +491,62 @@ TCP协议中应用层和传输层的连接流的抽象
 | connect        | connectTimeout: Option\<Duration\>, connectionRetryEnabled: Bool | Unit                     | 开始连接                                  |
 | cancel         | 无                                                                | Unit                     | 关闭socket                              |
 
+#### class H2Connection
+
+http2连接
+
+| 成员函数                    | 入参                                                                                                                                | 返回值  | 作用描述                                     |
+|-------------------------|-----------------------------------------------------------------------------------------------------------------------------------|------|------------------------------------------|
+| init                    | socket: SocketClient, sink: BufferedOutputStream, source: OkBuffer,  listener !: Option\<Connection\> = Option\<Connection\>.None | 无    | 构造器  connectionPool 连接池对象， route 路由对象    |
+| start                   | 无                                                                                                                                 | Unit | 对象创建后优先调用的函数，作用为启动连接,初始化设置,发送初始帧并开启读取子线程 |
+| openStreamCount         | 无                                                                                                                                 | Int64 | 获取在该连接开启的的可用Stream流数量                    |
+| close                   | 无                                                                                                                                 | Unit | 关闭连接,并移除stream                           |
+| writeData               | streamId: UInt32, outFinished: Bool, buffer: ByteArrayStream, length: Int64                                                       | Unit | 发送 data 帧                                |
+| isHealthy               | time: Time                                                                                                                        | Bool | 在该时间连接是否健康                               |
+| shutdownConn            | statusCode: ErrorCode                                                                                                             | Unit | 发送GOAway帧,准备关闭连接                         |
+| newStream               | request: Request                                                                                                                  | H2Stream | 创建H2Stream对象                             |
+| getMaxConcurrentStreams | 无                                                                                                                                 | Int64 | 可创建Stream数最大值                            |
+| flush                   | 无                                                                                                                                 | Int64 | 刷新writer的缓存                              |
+
+#### class Settings
+
+http2 连接 settings帧 配置项
+id对象配置项常量为
+HEADER_TABLE_SIZE = 1 (报头表的最大字节数)
+ENABLE_PUSH = 2 (服务器推送)
+MAX_CONCURRENT_STREAMS = 4 (最大创建流数)
+MAX_FRAME_SIZE = 5 (单帧负载最大字节值)
+MAX_HEADER_LIST_SIZE = 6 (报头集合的最大字节数)
+INITIAL_WINDOW_SIZE = 7 (连接初始的流量窗口字节数)
+
+| 成员函数                    | 入参                      | 返回值   | 作用描述              |
+|-------------------------|-------------------------|-------|-------------------|
+| setting                 | id: Int64, value: Int64 | Unit  | 设置配置项参数           |
+| isSet                   | id: Int64               | Bool  | 该id是否进行了配置        |
+| get                     | id: Int64               | Int64 | 获取该id配置的值         |
+| size                    | 无                       | Int64 | 已配置项参数的数量         |
+| getHeaderTableSize      | 无                       | Int64 | 获取id为1的配置参数       |
+| getMaxConcurrentStreams | 无                       | Int64 | 获取id为4的配置参数       |
+| getMaxFrameSize         | 无                       | Int64 | 获取id为5的配置参数       |
+| getInitialWindowSize    | 无                       | Int64 | 获取id为7的配置参数       |
+| merge                   | other: Settings         | Unit  | 用新的settings对象覆盖自身 |
+
+
+#### class H2Stream
+
+http2流
+
+| 成员函数             | 入参                                               | 返回值              | 作用描述                              |
+|------------------|--------------------------------------------------|------------------|-----------------------------------|
+| getSink          | 无                                                | Sink             | 获取关联sink                          |
+| getSource        | 无                                                | Source           | 获取关联Source                        |
+| close            | rstStatusCode: ErrorCode, errorException: String | Unit             | 发送Reset_Stream帧并从连接中移除stream      |
+| closeLater       | rstStatusCode: ErrorCode                         | Bool             | 开启子线程发送Reset_Stream帧并从连接中移除stream |
+| getConnection    | 无                                                | H2Connection     | 获取H2连接对象                          |
+| takeHeaders      | 无                                                | Header           | 阻塞获取响应的Header                     |
+| enqueueTrailers  | trailers: Header                                 | Unit             | Data帧中添加尾部的Header                 |
+| getTrailers      | 无                                                | Option\<Header\> | 获取响应的尾部Header                     |
+| isOpen           | 无                                                | Bool             | stream是否开启中                       |
 
 #### class OKSocket
 
