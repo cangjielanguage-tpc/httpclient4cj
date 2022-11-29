@@ -32,7 +32,9 @@ public class Util {
         match(socket) {
             case Some(s) =>
                 try {
-                    s.close()
+                    if (!s.isClosed()) {
+                        s.close()
+                    }
                 } catch (ignored: Exception) {
                     throw ignored
                 }

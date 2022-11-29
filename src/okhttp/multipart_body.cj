@@ -11,7 +11,7 @@ package okhttp
 from std import random.*
 
 /**
- * The class is FormBody
+ * The class is MultipartBody
  * @author luoyukai4
  * @since 0.33.3
  */

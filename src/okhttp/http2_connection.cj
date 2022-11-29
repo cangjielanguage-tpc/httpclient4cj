@@ -47,11 +47,12 @@ public class H2Connection {
     static let DEGRADED_PING = 2
     static let AWAIT_PING = 3
     private var shutdown: Bool = false
-    let listener: Connection
+    let listener: Option<Connection>
     var degradedPongDeadline: Time = Time.now()
     var unacknowledgedBytesRead = 0
 
-    public init(socket: SocketClient, sink: BufferedOutputStream, source: OkBuffer, listener: Connection) {
+    public init(socket: SocketClient, sink: BufferedOutputStream, source: OkBuffer,
+        listener !: Option<Connection> = Option<Connection>.None) {
         this.socket = socket
         this.listener = listener
         okHttpSettings.setting(Settings.INITIAL_WINDOW_SIZE, OKHTTP_CLIENT_WINDOW_SIZE)
@@ -183,9 +184,9 @@ public class H2Connection {
             var toWrite: Int64
             synchronized (muLock) {
                 while (bytesLeftInWriteWindow <= 0) {
-                   if (!streamMap.contains(streamId)) {
-                       throw IOException("stream closed")
-                   }
+                    if (!streamMap.contains(streamId)) {
+                        throw IOException("stream closed")
+                    }
                     muLock.wait()
                 }
 
@@ -203,6 +204,18 @@ public class H2Connection {
         synchronized(muLock) {
             let stream = streamMap[streamId]
             stream.receiveHeaders(toHeaders(headerBlock), inFinished)
+        }
+    }
+
+    public func setSettings(settings: Settings) {
+        synchronized (writer.mutex) {
+            synchronized (muLock) {
+                if (shutdown) {
+                    throw IOException("connection shutdown")
+                }
+                okHttpSettings.merge(settings)
+            }
+            writer.settings(settings)
         }
     }
 
@@ -317,14 +330,14 @@ public class H2Connection {
         }
     }
 
-    public func rstStream(streamId: UInt32, errorCode: ErrorCode) {
+    func rstStream(streamId: UInt32, errorCode: ErrorCode) {
         match (removeStream(streamId)) {
             case Some(stream)  =>  stream.receiveRstStream(errorCode)
             case None => ()
         }
     }
 
-    public func ping(reply: Bool, payload1: Int64, payload2: Int64) {
+    func ping(reply: Bool, payload1: Int64, payload2: Int64) {
         if (reply) {
             if (payload1 == INTERVAL_PING) {
                 intervalPongsReceived++;
@@ -365,16 +378,19 @@ public class H2Connection {
                 close(ErrorCode.PROTOCOL_ERROR, ErrorCode.PROTOCOL_ERROR, e.message)
             }
         }
-
-        for ((k,v) in streamMap) {
-            synchronized(v.mutex) {
-                v.addBytesToWriteWindow(delta)
+        synchronized(writer.mutex) {
+            for ((k,v) in streamMap) {
+                synchronized(v.mutex) {
+                    v.addBytesToWriteWindow(delta)
+                }
             }
-
         }
 
         spawn {
-            listener.onSettings(this)
+            match (listener) {
+                case Some(conn) => conn.onSettings(this)
+                case None => ()
+            }
         }
 
     }
@@ -388,10 +404,9 @@ public class H2Connection {
      * @return Type of H2Stream
      * @since 0.34.3
      */
-    public func newStream(requestHeaders: ArrayList<HeaderField>, out: Bool): H2Stream {
+    public func newStream(request: Request): H2Stream {
         let h2Stream: H2Stream
-        let outFinished: Bool = !out
-        let inFinished: Bool = false
+        let outFinished: Bool = !has(request.getBody())
         var flushHeaders: Bool = false
         var streamId: UInt32 = 0
         synchronized (writer.mutex) {
@@ -404,13 +419,13 @@ public class H2Connection {
                 }
                 streamId = nextStreamID
                 nextStreamID += 2
-                flushHeaders = !out || bytesLeftInWriteWindow == 0
-                h2Stream  = H2Stream(streamId, this, outFinished, inFinished)
+                flushHeaders = outFinished || bytesLeftInWriteWindow == 0
+                h2Stream  = H2Stream(streamId, this, outFinished)
                 h2Stream.start()
                 if (h2Stream.isOpen()) {
                     streamMap.put(streamId, h2Stream)
                 }
-
+                let requestHeaders: ArrayList<HeaderField> = Http2ExchangeCodec.http2HeadersList(request)
                 writer.headers(outFinished, streamId, requestHeaders)
 
             }

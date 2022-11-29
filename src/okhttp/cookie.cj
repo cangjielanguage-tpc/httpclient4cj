@@ -53,7 +53,7 @@ public class CookieUtil {
         return cookies
     }
 
-    static func parse(url: URL, setCookie: String): Option<Cookie> {
+    public static func parse(url: URL, setCookie: String): Option<Cookie> {
         var pos = 0
         let limit = setCookie.size
         let cookiePairEnd = delimiterOffset(setCookie, pos, limit, ';')
@@ -144,7 +144,7 @@ public class CookieUtil {
                     rawExpires: rawExpires, maxAge: deltaSeconds, secure: secureOnly, httpOnly: httpOnly)
     }
 
-    public static func trimSubstring(str: String, pos: Int64, limit: Int64): String{
+    public static func trimSubstring(str: String, pos: Int64, limit: Int64): String {
         return str.substring(pos, limit - pos).trim()
     }
 
@@ -211,10 +211,13 @@ public class CookieUtil {
     }
 
     private static func canonicalizeHost(s: String): String {
+
         if (s.contains(':')) {
+
             let (arr, zone, err) = parseIPv6Zone(s)
+
             if (!err) {
-                return String.fromUtf8(arr)
+                return s
             } else {
                 throw IllegalArgumentException()
             }
@@ -457,7 +460,7 @@ public class CookieUtil {
         return (arr, zone, false)
     }
 
-
+    @overflowWrapping
     static func parseIPv6(str: String): (Array<UInt8>, Bool) {
         var s = str
         var ip = Array<UInt8>(SOCK_ADDR_IPV6_LEN, item: 0)
@@ -478,6 +481,7 @@ public class CookieUtil {
             if (!ok || n > 0xFFFF) {
                 return (pk, true)
             }
+
             if (c < s.size && s.charAt(c) == '.') {
                 if (ellipsis < 0 && i != (SOCK_ADDR_IPV6_LEN - SOCK_ADDR_IPV4_LEN)) {
                     return (pk, true)
@@ -513,17 +517,15 @@ public class CookieUtil {
                     return (pk, true)
                 }
                 ellipsis = i
-                s.substring(1)
+                s = s.substring(1)
                 if (s.size == 0) {
                     break
                 }
             }
         }
-
         if (s.size != 0) {
             return (pk, true)
         }
-
         if (i < SOCK_ADDR_IPV6_LEN) {
             if (ellipsis < 0) {
                 return (pk, true)
@@ -538,9 +540,9 @@ public class CookieUtil {
         } else if (ellipsis >= 0) {
             return (pk, true)
         }
-
         return (ip, false)
     }
+
 
     static func xtoi(s: String): (Int64, Int64, Bool) {
         var n = 0

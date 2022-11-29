@@ -188,7 +188,6 @@ class Http2Writer {
             if (closed) {
                 throw IOException("closed")
             }
-
             let length = 8 + debugData.size
             let frameType = TYPE_GOAWAY
             let flags = FLAG_NONE
@@ -196,6 +195,10 @@ class Http2Writer {
             frameHeader(streamId, length, frameType, flags)
             writeUInt32(sink, Int64(lastGoodStreamId))
             writeUInt32(sink, errorCode.getCode())
+            if (debugData.size > 0) {
+                sink.write(debugData)
+            }
+            sink.flush()
         }
     }
 

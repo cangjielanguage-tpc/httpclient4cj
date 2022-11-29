@@ -287,7 +287,7 @@ public class Connection {
     private func startHttp2() {
         match (socket) {
             case Some(s) =>
-                 let cc = H2Connection(s.client, sink.getOrThrow(), source.getOrThrow(), this)
+                 let cc = H2Connection(s.client, sink.getOrThrow(), source.getOrThrow(), listener: this)
                  cc.start()
                  h2conn = cc
             case None => ()

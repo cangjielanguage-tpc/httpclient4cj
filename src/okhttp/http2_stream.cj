@@ -43,7 +43,7 @@ public class H2Stream {
      * @param reqBody of ByteArrayStream
      * @since 0.29.3
      */
-    public init (ids: UInt32, cc: H2Connection,outFinished: Bool, inFinished: Bool) {
+    init (ids: UInt32, cc: H2Connection, outFinished: Bool) {
 
         this.id = ids
         this.cc = cc
@@ -75,7 +75,12 @@ public class H2Stream {
         }
     }
 
-    public func start() {
+    /**
+     * The Function is start
+     *
+     * @since 0.34.3
+     */
+    func start() {
         sink.http2Stream = this
         source.stream = this
     }
@@ -126,7 +131,7 @@ public class H2Stream {
         cc.writeSynResetLater(id, rstStatusCode)
     }
 
-    public func updateConnectionFlowControl(read: Int64) {
+    func updateConnectionFlowControl(read: Int64) {
         cc.updateConnectionFlowControl(read)
     }
 
@@ -144,7 +149,7 @@ public class H2Stream {
      *
      * @since 0.34.3
      */
-    public func takeHeaders() {
+    public func takeHeaders(): Header {
         synchronized (mutex) {
             while(headersQueue.size == 0 && !has(errorCode)) {
                 mutex.wait()
@@ -203,7 +208,7 @@ public class H2Stream {
         return true
     }
 
-    public func checkOutNotClosed() {
+    func checkOutNotClosed() {
         if (sink.closed) {
             throw IOException("stream closed")
         } else if (sink.finished) {
@@ -220,7 +225,7 @@ public class H2Stream {
      * @since 0.34.3
      */
     public func getTrailers(): Header {
-        if (!has(errorCode)) {
+        if (has(errorCode)) {
             throwErrorException()
         }
 
@@ -228,7 +233,10 @@ public class H2Stream {
             throw  IllegalStateException("too early; can't read the trailers yet")
         }
 
-        return source.trailers.getOrThrow()
+        match(source.trailers) {
+            case Some(v) => return v
+            case None => return Header()
+        }
     }
 
     func receiveHeaders(headers: Header, inFinished: Bool) {
@@ -252,7 +260,7 @@ public class H2Stream {
     }
 
 
-    public func receiveRstStream(errorCode: ErrorCode) {
+    func receiveRstStream(errorCode: ErrorCode) {
         synchronized(mutex) {
             if (!has(this.errorCode)) {
                 this.errorCode = errorCode

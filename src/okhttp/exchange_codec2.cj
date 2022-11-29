@@ -129,9 +129,9 @@ public class Http2ExchangeCodec <: ExchangeCodec {
         if (has(stream)) {
             return
         }
-        let hasRequestBody = has(request.getBody())
-        let requestHeaders: ArrayList<HeaderField> = http2HeadersList(request)
-        stream = http2Connection.newStream(requestHeaders, hasRequestBody)
+
+        stream = http2Connection.newStream(request)
+
         if (canceled) {
             stream.getOrThrow().closeLater(ErrorCode.CANCEL)
             throw IOException("Canceled")
@@ -139,7 +139,7 @@ public class Http2ExchangeCodec <: ExchangeCodec {
 
     }
 
-    public static func http2HeadersList(request: Request): ArrayList<HeaderField> {
+    static func http2HeadersList(request: Request): ArrayList<HeaderField> {
         let result: ArrayList<HeaderField> = ArrayList<HeaderField>()
         result.append(HeaderField(TARGET_METHOD, request.getMethod()));
         result.append(HeaderField(TARGET_PATH, request.getUrl().requestURI()))
