@@ -19,7 +19,7 @@ let METHOD_GET = "GET"
  * @author guo_tingtingtekla,luoyukai4
  * @since 0.29.3
  */
-public class Util {
+class Util {
     private static let VERIFY_AS_IP_ADDRESS = "([0-9a-fA-F]*:[0-9a-fA-F:.]*)|([\\d.]+)"
 
     /**

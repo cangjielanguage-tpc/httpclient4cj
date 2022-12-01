@@ -183,7 +183,6 @@ public class RealBufferSink <: Sink {
 
     public func close(): Unit {
         if (!closed) {
-            print("buffer.length = ${buffer.length }")
             if (buffer.length > 0) {
                 this.sink.write(this.buffer.readToEnd())
             }

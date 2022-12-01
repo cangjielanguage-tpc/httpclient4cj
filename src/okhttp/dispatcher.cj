@@ -188,8 +188,10 @@ public class Dispatcher {
     }
 
     func finished(call: AsyncCall) {
-        call.getCallsPerHost().fetchSub(1);
-        finished(runningAsyncCalls, call);
+        synchronized (mutex) {
+            call.getCallsPerHost().fetchSub(1)
+            finished(runningAsyncCalls, call)
+        }
     }
 
     /**
@@ -205,7 +207,7 @@ public class Dispatcher {
             readyAsyncCalls.add(call)
             if (!call.get().forWebSocket) {
                 match (findExistingCallWithHost(call.host())) {
-                    case Some(existingCall) => call.reuseCallsPerHostFrom(existingCall);
+                    case Some(existingCall) => call.reuseCallsPerHostFrom(existingCall)
                     case None => ()
                 }
             }
@@ -269,7 +271,8 @@ public class Dispatcher {
         let executableCalls: ArrayList<AsyncCall> = ArrayList<AsyncCall>()
         var isRunning: Bool
         synchronized (mutex) {
-             for (index in (0..readyAsyncCalls.size())) {
+             let arr = ArrayList<Int64>()
+             for (index in 0..readyAsyncCalls.size()) {
                 let asyncCall: AsyncCall = readyAsyncCalls.get(index)
                 if (runningAsyncCalls.toArrayList().size >= maxRequests) {
                     break; // Max capacity.
@@ -278,11 +281,16 @@ public class Dispatcher {
                 if (asyncCall.callsPerHost.load() >= maxRequestsPerHost) {
                     continue; // Host max capacity.
                 }
-                readyAsyncCalls.toArrayList().remove(index)
+                arr.append(index)
                 asyncCall.callsPerHost.fetchAdd(1)
                 executableCalls.append(asyncCall)
                 runningAsyncCalls.add(asyncCall)
              }
+
+             for(index in arr) {
+                readyAsyncCalls.remove(index)
+             }
+
              isRunning = runningAsyncCalls.toArrayList().size + runningSyncCalls.toArrayList().size > 0
         }
 

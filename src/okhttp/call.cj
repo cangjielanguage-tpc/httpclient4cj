@@ -206,7 +206,7 @@ class RealCall<: Call {
  */
 class AsyncCall {
      /** var member callsPerHost type is AtomicInt64 */
-     public var callsPerHost: AtomicInt64 = AtomicInt64(0)
+     public var callsPerHost: AtomicInt64Class = AtomicInt64Class()
      /* let member responseCallback type is Callback */
      private let  responseCallback: Callback
      /* let member realCall type is RealCall */
@@ -224,7 +224,7 @@ class AsyncCall {
         this.realCall = realCall
      }
 
-     func getCallsPerHost(): AtomicInt64 {
+     func getCallsPerHost(): AtomicInt64Class {
         return callsPerHost
      }
 
@@ -237,7 +237,7 @@ class AsyncCall {
       * @since 0.29.3
       */
      func reuseCallsPerHostFrom( other: AsyncCall): Unit {
-         this.callsPerHost = other.callsPerHost;
+         this.callsPerHost = other.callsPerHost
      }
 
      /*
@@ -300,4 +300,20 @@ class AsyncCall {
            realCall.client.getDispatcher().finished(this)
         }
      }
+}
+
+class AtomicInt64Class {
+    var atom: AtomicInt64 = AtomicInt64(0)
+
+    func load(): Int64 {
+        return atom.load()
+    }
+
+    func fetchAdd(val: Int64): Int64 {
+        return atom.fetchAdd(val)
+    }
+
+    func fetchSub(val: Int64): Int64 {
+        return atom.fetchSub(val)
+    }
 }
