@@ -184,10 +184,9 @@ public class Connection {
      */
     public func connect(connectTimeout: Option<Duration>, readTimeout: Option<Duration>,
         writeTimeout: Option<Duration>, connectionRetryEnabled: Bool) {
-                        let time1 = Time.now()
-
 
         checkSslSocket()
+
         while (true) {
             try {
                 connectSocket(connectTimeout)

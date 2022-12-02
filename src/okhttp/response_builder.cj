@@ -172,9 +172,9 @@ public open class ResponseBuilder <: Builder<Response> {
      * @return Type of ResponseBuilder
      * @since 0.29.3
      */
-    public open func body(body: Option<ResponseBody>): ResponseBuilder {
-      this.bodyBuild = body
-      return this
+    public func body(body: Option<ResponseBody>): ResponseBuilder {
+        this.bodyBuild = body
+        return this
     }
 
     /**

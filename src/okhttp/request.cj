@@ -125,21 +125,6 @@ public class Request {
          return header.get(name) ?? defaultValue
      }
 
-     /**
-      * The Function is toHttpRequest
-      *
-      * @return Type of h1.Request
-      * @since 0.29.3
-      */
-     public func toHttpRequest() {
-         let method = Util.getRequestMethod(method)
-         let req = match (body) {
-             case Some(v) =>  h1.Request(method, url.toString(), v.get())
-             case _ =>  h1.Request(method, url.toString())
-         }
-         req.header = header.clone()
-         return req
-    }
 
 
     /**
