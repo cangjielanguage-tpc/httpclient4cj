@@ -35,7 +35,7 @@ public open class HttpException <: Exception {
     }
 }
 
-public class RouteException <: HttpException {
+public class RouteException <: Exception {
     private let firstException: HttpException
     private var lastException: HttpException
 
@@ -72,27 +72,19 @@ public class ProtocolException <: HttpException {
     }
 }
 
-public class H2ConnectionException <: HttpException {
+public class ConnectionShutdownException <: HttpException {
     public init(message: String) {
         super(message)
     }
 }
 
-
-
-public class NetException <: Exception {
+public class IllegalStateException <: Exception {
     public init(message: String) {
         super(message)
     }
 }
 
-public class IllegalStateException <: Exception{
-    public init(message: String) {
-        super(message)
-    }
-}
-
-public class StreamResetException <: Exception{
+public class StreamResetException <: HttpException {
     public let errorCode: ErrorCode
 
     public init(errorCode: ErrorCode) {

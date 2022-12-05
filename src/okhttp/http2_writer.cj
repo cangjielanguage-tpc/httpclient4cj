@@ -62,7 +62,7 @@ class Http2Writer {
         synchronized(mutex) {
 
             if (closed) {
-                throw IOException("closed")
+                throw HttpException("closed")
             }
 
             sink.write(PREFACE.toUtf8Array())
@@ -74,7 +74,7 @@ class Http2Writer {
         synchronized(mutex) {
 
             if (closed) {
-                throw IOException("closed")
+                throw HttpException("closed")
             }
 
             let length = settings.size() * 6
@@ -106,7 +106,7 @@ class Http2Writer {
     func flush() {
          synchronized(mutex) {
             if (closed) {
-                throw IOException("closed")
+                throw HttpException("closed")
             }
             sink.flush()
          }
@@ -115,7 +115,7 @@ class Http2Writer {
     func windowUpdate(streamId: UInt32, windowSizeIncrement: Int64) {
          synchronized(mutex) {
              if (closed) {
-                 throw IOException("closed")
+                 throw HttpException("closed")
              }
 
              if (windowSizeIncrement == 0 || windowSizeIncrement > 0x7fffffff) {
@@ -172,7 +172,7 @@ class Http2Writer {
 
     func rstStream(streamId: UInt32, errorCode: ErrorCode) {
         if (closed) {
-            throw IOException("closed")
+            throw HttpException("closed")
         }
 
         let length = 4
@@ -186,7 +186,7 @@ class Http2Writer {
     func goAway(lastGoodStreamId: UInt32, errorCode: ErrorCode, debugData: Array<Byte>) {
         synchronized(mutex) {
             if (closed) {
-                throw IOException("closed")
+                throw HttpException("closed")
             }
             let length = 8 + debugData.size
             let frameType = TYPE_GOAWAY
@@ -205,7 +205,7 @@ class Http2Writer {
     func headers(outFinished: Bool, streamId: UInt32, headerBlock: ArrayList<HeaderField>) {
         synchronized(mutex) {
             if (closed) {
-                throw IOException("closed")
+                throw HttpException("closed")
             }
             let hpackBuffer: Array<UInt8> = encoder.encode(headerBlock)
             let byteCount = hpackBuffer.size
@@ -250,7 +250,7 @@ class Http2Writer {
     func applyAndAckSettings(peerSettings: Settings){
         synchronized(mutex) {
             if (closed) {
-                throw IOException("closed")
+                throw HttpException("closed")
             }
 
             this.maxFrameSize = peerSettings.getMaxFrameSize(maxFrameSize)
@@ -271,7 +271,7 @@ class Http2Writer {
     func ping(reply: Bool, payload1: Int64, payload2: Int64) {
         synchronized(mutex) {
             if (closed) {
-                throw IOException("closed")
+                throw HttpException("closed")
             }
 
             let length = 8
@@ -292,7 +292,7 @@ class Http2Writer {
 
     func data(outFinished: Bool, streamId: UInt32, source: ByteArrayStream, byteCount: Int64) {
         if (closed) {
-            throw IOException("closed")
+            throw HttpException("closed")
         }
         var flags: Byte = FLAG_NONE
 

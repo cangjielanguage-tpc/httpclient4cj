@@ -134,7 +134,7 @@ public class Http2ExchangeCodec <: ExchangeCodec {
 
         if (canceled) {
             stream.getOrThrow().closeLater(ErrorCode.CANCEL)
-            throw IOException("Canceled")
+            throw HttpException("Canceled")
         }
 
     }

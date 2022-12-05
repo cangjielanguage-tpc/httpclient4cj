@@ -167,7 +167,7 @@ public class H2Stream {
          if (errorException == "") {
              throw StreamResetException(errorCode.getOrThrow())
          } else {
-             throw IOException("errorException")
+             throw HttpException("errorException")
          }
     }
 
@@ -210,9 +210,9 @@ public class H2Stream {
 
     func checkOutNotClosed() {
         if (sink.closed) {
-            throw IOException("stream closed")
+            throw HttpException("stream closed")
         } else if (sink.finished) {
-            throw IOException("stream finished")
+            throw HttpException("stream finished")
         } else if (has(errorCode)) {
            throwErrorException()
         }

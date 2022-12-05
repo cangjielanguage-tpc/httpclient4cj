@@ -44,6 +44,7 @@ public class Connection {
 
     private var source: Option<OkBuffer> = Option<OkBuffer>.None
 
+    private var refusedStreamCount: Int64 = 0
     /**
      * The Function is init constructor
      *
@@ -187,24 +188,22 @@ public class Connection {
 
         checkSslSocket()
 
-        while (true) {
-            try {
-                connectSocket(connectTimeout)
-                establishProtocol(connectTimeout, readTimeout, writeTimeout)
-                break
-            } catch(e : ConnectException) {
-                Util.closeQuietly(rawSocket)
-                Util.closeQuietly(socket)
-                socket = None
-                h2conn = None
-                sink = None
-                source = None
-                if (!connectionRetryEnabled || !connectionFailed(e)) {
-                    throw RouteException("${e.message}", e)
-                }
-            }
+        try {
+            establishProtocol(connectTimeout, readTimeout, writeTimeout)
+        } catch(e : HttpException) {
+            Util.closeQuietly(rawSocket)
+            Util.closeQuietly(socket)
+            socket = None
+            h2conn = None
+            sink = None
+            source = None
+            h2conn = None
+            protocol = HTTP_1_1
+
+            throw RouteException("${e.message}", e)
 
         }
+
         match(h2conn) {
             case Some(h2) =>
                 onSettings(h2)
@@ -230,13 +229,6 @@ public class Connection {
 
     }
 
-    func connectionFailed(e: ConnectException): Bool {
-        match (e.contain) {
-            case timeout: SocketTimeoutException => return false
-            case _ => return e is TlsException
-        }
-    }
-
     /*
      * The Function is connectSocket
      *
@@ -254,10 +246,8 @@ public class Connection {
             rawSocket = SocketC(s)
         } catch (e1: SocketException) {
             throw ConnectException("Failed to connect to ${socketAddress}", e1)
-        } catch (e2: TlsException) {
-            throw ConnectException("{e2.getMessage()}", e2)
-        } catch (e3: SocketTimeoutException) {
-            throw ConnectException("connect to ${socketAddress} time out", e3)
+        } catch (e2: SocketTimeoutException) {
+            throw ConnectException("connect to ${socketAddress} time out", e2)
         }
     }
 
@@ -266,6 +256,7 @@ public class Connection {
 
         match (route.getAddress().getTlsConfig()) {
             case None =>
+                connectSocket(connectTimeout)
                 let client = OKSocket(rawSocket.getOrThrow(), readTimeout, writeTimeout)
                 socket = client
                 sink = BufferedOutputStream(client)
@@ -300,21 +291,26 @@ public class Connection {
         var cfg = route.getAddress().getTlsConfig().getOrThrow()
         cfg.alpnList = collectArray(address.getProtocols().iterator())
         let socketAddress: SocketAddress = route.inetSocketAddress
-        var client = TlsSocket(TCP, socketAddress.hostAddress, socketAddress.port, cfg)
-        match (connectTimeout) {
-            case Some(time) =>
-                client.connect(time)
-            case None => client.connect()
-        }
-        let realSocket = OKSocket(TlsC(client), readTimeout, writeTimeout)
-        let aplnSelected: String = client.getAlpnSelected()
-        Util.closeQuietly(rawSocket)
-
-        socket = realSocket
-        sink = BufferedOutputStream(realSocket)
-        source = OkBuffer(realSocket)
-        if (aplnSelected != "") {
-            protocol = Protocol.get(aplnSelected)
+        try {
+            var client = TlsSocket(TCP, socketAddress.hostAddress, socketAddress.port, cfg)
+            match (connectTimeout) {
+                case Some(time) =>
+                    client.connect(time)
+                case None =>
+                    client.connect()
+            }
+            let realSocket = OKSocket(TlsC(client), readTimeout, writeTimeout)
+            let aplnSelected: String = client.getAlpnSelected()
+            socket = realSocket
+            sink = BufferedOutputStream(realSocket)
+            source = OkBuffer(realSocket)
+            if (aplnSelected != "") {
+                protocol = Protocol.get(aplnSelected)
+            }
+        } catch (e: TlsException) {
+            throw ConnectException("{e.getMessage()}", e)
+        } catch (e2: TlsTimeoutException) {
+            throw ConnectException("{e2.getMessage()}", e2)
         }
     }
 
@@ -329,8 +325,10 @@ public class Connection {
      */
     func newCodec(client: OkHttpClient, chain: Chain): ExchangeCodec {
         match (h2conn) {
-            case None => Http1ExchangeCodec(client, this, this.source.getOrThrow(), this.sink.getOrThrow())
-            case Some(conn) => Http2ExchangeCodec(client, this, h2conn.getOrThrow())
+            case None =>
+                Http1ExchangeCodec(client, this, this.source.getOrThrow(), this.sink.getOrThrow())
+            case Some(conn) =>
+                Http2ExchangeCodec(client, this, h2conn.getOrThrow())
        }
     }
 
@@ -344,10 +342,22 @@ public class Connection {
         Util.closeQuietly(socket)
     }
 
-    func trackFailure(e: NetException): Unit {
+    func trackFailure(e: HttpException): Unit {
         synchronized (connectionPool.mutex) {
-            //TODO HTTP2Stream
-            if (!isMultiplexed()) {
+            if (e is StreamResetException) {
+                let errorCode = (e as StreamResetException).getOrThrow().errorCode
+                if (errorCode.getCode() == REFUSED_STREAM.getCode()) {
+                    //  Stop using this connection on the 2nd REFUSED_STREAM error.
+                    refusedStreamCount++
+                    if (refusedStreamCount > 1) {
+                        noNewExchanges = true
+                        routeFailureCount++
+                    }
+                } else if (errorCode.getCode() != CANCEL.getCode()) {
+                    noNewExchanges = true
+                    routeFailureCount++
+                }
+            } else if (!isMultiplexed() || e is ConnectionShutdownException) {
                 noNewExchanges = true
                 if (successCount == 0) {
                     connectionPool.connectFailed(route)

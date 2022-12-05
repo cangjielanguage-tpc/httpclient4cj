@@ -69,7 +69,7 @@ class ExchangeFinder {
         } catch (e: RouteException) {
             trackFailure()
             throw e
-        } catch(e1: ConnectException) {
+        } catch(e1: HttpException) {
             trackFailure()
             throw RouteException(e1.message, e1)
         }
@@ -132,7 +132,11 @@ class ExchangeFinder {
                 }
             }
         }
-        selectedRoute = routeSelector.next()
+
+        if (!has(selectedRoute)) {
+            selectedRoute = routeSelector.next()
+        }
+
         result = Connection(connectionPool, selectedRoute.getOrThrow())
         connectingConnection = result
         var conn: Connection = result.getOrThrow()
@@ -281,12 +285,17 @@ public class Exchange {
      * @since 0.29.3
      */
     public func readResponseHeaders(expectContinue: Bool): Option<ResponseBuilder> {
-        let result: Option<ResponseBuilder> = codec.readResponseHeaders(expectContinue)
-        match (result) {
-            case Some(r) => initExchange(r, this)
-            case None => ()
-        }
-        return result
+         try {
+            let result: Option<ResponseBuilder> = codec.readResponseHeaders(expectContinue)
+            match (result) {
+                case Some(r) => initExchange(r, this)
+                case None => ()
+            }
+            return result
+         } catch (e: HttpException) {
+            trackFailure(e)
+            throw e
+         }
     }
 
     private func initExchange(respb: ResponseBuilder, exchange: Exchange): Unit {
@@ -300,10 +309,15 @@ public class Exchange {
      * @since 0.29.3
      */
     public func openResponseBody(response: Response): ResponseBody {
-         let contentType: String = response.getHeader("Content-Type","")
-         let contentLength: Int64 = codec.reportedContentLength(response)
-         let source = codec.openResponseBodySource(response)
-         return ResponseBody(contentType, contentLength, ResponseBodySource(source, this, contentLength))
+        try {
+            let contentType: String = response.getHeader("Content-Type","")
+            let contentLength: Int64 = codec.reportedContentLength(response)
+            let source = codec.openResponseBodySource(response)
+            return ResponseBody(contentType, contentLength, ResponseBodySource(source, this, contentLength))
+        } catch (e: HttpException) {
+            trackFailure(e)
+            throw e
+        }
     }
 
     public func getConnection(): Connection {
@@ -340,20 +354,31 @@ public class Exchange {
     public func writeRequestHeaders(request: Request): Unit {
         try {
             codec.writeRequestHeaders(request)
-        } catch (e: IOException) {
-             throw e
+        } catch (e: HttpException) {
+            trackFailure(e)
+            throw e
         }
     }
 
     public func flushRequest(): Unit {
-        codec.flushRequest()
+        try {
+            codec.flushRequest()
+        } catch (e: HttpException) {
+            trackFailure(e)
+            throw e
+        }
     }
 
     public func finishRequest(): Unit {
-        codec.finishRequest()
+        try {
+            codec.finishRequest()
+        } catch (e: HttpException) {
+            trackFailure(e)
+            throw e
+        }
     }
 
-    func bodyComplete(responseDone: Bool, requestDone: Bool, exception: Option<NetException>): Unit {
+    func bodyComplete(responseDone: Bool, requestDone: Bool, exception: Option<HttpException>): Unit {
         match(exception) {
             case Some(e) => trackFailure(e)
             case None => ()
@@ -361,7 +386,7 @@ public class Exchange {
         transmitter.exchangeMessageDone(this, requestDone, responseDone)
     }
 
-    func trackFailure(exception: NetException): Unit {
+    func trackFailure(exception: HttpException): Unit {
         finder.trackFailure()
         codec.getConnection().trackFailure(exception)
     }

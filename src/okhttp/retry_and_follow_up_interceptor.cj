@@ -59,15 +59,20 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
                response = chain.proceed(request, transmitter, Option<Exchange>.None)
                success = true
             } catch (e1: RouteException) {
-                if (!recover(e1.getLastConnectException(), transmitter, false, request)) {
+                if (!recover(e1.getLastConnectException(), transmitter, false)) {
                     throw e1.getFirstConnectException()
                 }
                 continue
-            } catch (e1: IOException) {
-                if (!recover(e1, transmitter, !(e1 is H2ConnectionException), request)) {throw e1}
+            } catch (e1: HttpException) {
+                if (!recover(e1, transmitter, !(e1 is ConnectionShutdownException))) {
+                    throw e1
+                }
                 continue
             } finally {
-                if (!success) { transmitter.exchangeDoneDueToException() }
+                if (!success) {
+                    transmitter.exchangeDoneDueToException()
+                }
+
             }
 
             match(priorResponse) {
@@ -109,31 +114,35 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
         return Response.builder().build()
     }
 
-    private func recover(e: Exception, transmitter: Transmitter, requestSendStarted: Bool, userRequest: Request) {
+    private func recover(e: HttpException, transmitter: Transmitter, requestSendStarted: Bool) {
         if (!client.getRetryOnConnectionFailure()) {
             return false
         }
 
-        if (requestSendStarted) {
-            return false
-        }
-
-        if (isRecoverable(e, requestSendStarted)) {
+        if (!isRecoverable(e, requestSendStarted)) {
             return false
         }
 
         if (!transmitter.canRetry()) {
             return false
         }
+
         return true
     }
 
-    private func isRecoverable(e: Exception, requestSendStarted: Bool): Bool {
+    private func isRecoverable(e: HttpException, requestSendStarted: Bool): Bool {
         match (e) {
-            case p: ProtocolException => return false
-            case timeOut: SocketTimeoutException => return !requestSendStarted
-            case tls: TlsException => return false
-            case _  => return true
+            case p: ProtocolException =>
+                return false
+            case conn: ConnectException =>
+                let contain = conn.contain
+                if (contain is SocketTimeoutException || contain is TlsTimeoutException) {
+                    return !requestSendStarted
+                } else {
+                    return false
+                }
+            case _  =>
+                return true
         }
     }
 

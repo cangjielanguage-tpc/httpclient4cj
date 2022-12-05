@@ -171,7 +171,7 @@ class RealCall<: Call {
                 }
            }
            return response
-       } catch(e: NetException) {
+       } catch(e: HttpException) {
             calledNoMoreExchanges = true
             getTransmitter().noMoreExchanges()
             throw e

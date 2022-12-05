@@ -218,7 +218,7 @@ class ResponseBodySource <:Source {
         this.exchange = exchange
         this.contentLength = contentLength
         if (contentLength == 0) {
-            complete(Option<NetException>.None)
+            complete(Option<HttpException>.None)
         }
    }
 
@@ -230,7 +230,7 @@ class ResponseBodySource <:Source {
         try{
             let read = source.read(bytes, byteCount)
             if (read == -1) {
-                complete(Option<NetException>.None)
+                complete(Option<HttpException>.None)
                 return -1
             }
             let newBytesReceived = bytesReceived + read
@@ -239,11 +239,11 @@ class ResponseBodySource <:Source {
             }
             bytesReceived = newBytesReceived
             if (newBytesReceived == contentLength) {
-                complete(Option<NetException>.None)
+                complete(Option<HttpException>.None)
             }
             return read
-        } catch (e: IOException) {
-            complete(NetException(e.message))
+        } catch (e: HttpException) {
+            complete(HttpException(e.message))
             throw e
         }
    }
@@ -255,9 +255,9 @@ class ResponseBodySource <:Source {
        closed = true
        try {
            source.close()
-           complete(Option<NetException>.None);
-       } catch (e: IOException) {
-           complete(NetException(e.message))
+           complete(Option<HttpException>.None)
+       } catch (e: HttpException) {
+           complete(HttpException(e.message))
            throw e
        }
    }
@@ -265,7 +265,7 @@ class ResponseBodySource <:Source {
        return closed
    }
 
-   private func complete(e: Option<NetException>): Unit {
+   private func complete(e: Option<HttpException>): Unit {
         if (completed) {
             return
         }
@@ -305,7 +305,7 @@ class FramingSource <: Source {
                 }
 
                 if (closed) {
-                    throw IOException("stream closed")
+                    throw HttpException("stream closed")
                 } else if (readBuffer.length > 0) {
                    let arr = Array<Byte>(min(byteCount, readBuffer.length), item:0)
                    readBytesDelivered =  readBuffer.read(arr)
@@ -331,7 +331,7 @@ class FramingSource <: Source {
                 if (h2Stream.errorException == "") {
                     throw StreamResetException(h2Stream.errorCode.getOrThrow())
                 } else {
-                    throw IOException("errorException")
+                    throw HttpException("errorException")
                 }
             }
             return -1
@@ -363,7 +363,7 @@ class FramingSource <: Source {
             let read = source.read(receiveBuffer, byteCount)
 
             if (read == -1) {
-                throw IOException("EOF")
+                throw HttpException("EOF")
             }
 
             byteCount -= read
