@@ -110,16 +110,16 @@ class RequestBodySink<: Sink {
         try {
             sink.write(bytes)
             this.bytesReceived += byteCount
-        } catch (e: IOException) {
-            complete(NetException(e.message))
+        } catch (e: HttpException) {
+            complete(HttpException(e.message))
             throw e
         }
     }
     public func flush(): Unit {
          try {
             sink.flush()
-         } catch (e: IOException) {
-            complete(NetException(e.message))
+         } catch (e: HttpException) {
+            complete(HttpException(e.message))
             throw e
          }
     }
@@ -135,14 +135,14 @@ class RequestBodySink<: Sink {
 
         try {
            sink.close()
-           complete(Option<NetException>.None)
-        } catch (e: IOException) {
-           complete(NetException(e.message))
+           complete(Option<HttpException>.None)
+        } catch (e: HttpException) {
+           complete(HttpException(e.message))
            throw e
         }
     }
 
-    private func complete(e: Option<NetException>): Unit {
+    private func complete(e: Option<HttpException>): Unit {
         if (completed) {
             return
         }

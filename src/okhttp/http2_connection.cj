@@ -74,6 +74,7 @@ public class H2Connection {
      * @since 0.34.3
      */
     public func start(): Unit {
+
         writer.connectionPreface()
         writer.settings(okHttpSettings)
         let windowSize = okHttpSettings.getInitialWindowSize()
@@ -89,7 +90,7 @@ public class H2Connection {
                 while (reader.nextFrame(false, this)) {}
                 connectionErrorCode = ErrorCode.NO_ERROR
                 streamErrorCode = ErrorCode.CANCEL
-            } catch (e: IOException) {
+            } catch (e: HttpException) {
                 errorException = e.message
                 connectionErrorCode = ErrorCode.PROTOCOL_ERROR
                 streamErrorCode = ErrorCode.PROTOCOL_ERROR
@@ -185,7 +186,7 @@ public class H2Connection {
             synchronized (muLock) {
                 while (bytesLeftInWriteWindow <= 0) {
                     if (!streamMap.contains(streamId)) {
-                        throw IOException("stream closed")
+                        throw HttpException("stream closed")
                     }
                     muLock.wait()
                 }
@@ -211,7 +212,7 @@ public class H2Connection {
         synchronized (writer.mutex) {
             synchronized (muLock) {
                 if (shutdown) {
-                    throw IOException("connection shutdown")
+                    throw HttpException("connection shutdown")
                 }
                 okHttpSettings.merge(settings)
             }
@@ -243,7 +244,7 @@ public class H2Connection {
         spawn {
             try {
                 writer.rstStream(streamId, statusCode)
-            } catch (e: IOException | SocketException) {
+            } catch (e: HttpException | SocketException) {
                 close(ErrorCode.PROTOCOL_ERROR, ErrorCode.PROTOCOL_ERROR, e.message)
             }
         }
@@ -262,7 +263,7 @@ public class H2Connection {
         spawn {
             try {
                 writer.windowUpdate(streamId, unacknowledgedBytesRead)
-            } catch (e: IOException | SocketException) {
+            } catch (e: HttpException | SocketException) {
                  close(ErrorCode.PROTOCOL_ERROR, ErrorCode.PROTOCOL_ERROR, e.message)
             }
         }
@@ -374,7 +375,7 @@ public class H2Connection {
 
             try {
                 writer.applyAndAckSettings(peerSettings)
-            } catch (e: IOException | SocketException) {
+            } catch (e: HttpException | SocketException) {
                 close(ErrorCode.PROTOCOL_ERROR, ErrorCode.PROTOCOL_ERROR, e.message)
             }
         }
@@ -415,7 +416,7 @@ public class H2Connection {
                     shutdownConn(REFUSED_STREAM)
                 }
                 if (shutdown) {
-                   throw IOException("connection shutdown")
+                   throw HttpException("connection shutdown")
                 }
                 streamId = nextStreamID
                 nextStreamID += 2

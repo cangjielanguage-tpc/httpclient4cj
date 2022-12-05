@@ -20,7 +20,7 @@ class Http2Reader {
 
     func readConnectionPreface(handler: H2Connection) {
         if (!nextFrame(true, handler)) {
-            throw IOException("Required SETTINGS preface not received")
+            throw HttpException("Required SETTINGS preface not received")
         }
     }
 
@@ -28,12 +28,12 @@ class Http2Reader {
         try {
             let length = readMedium(source)
             if (length < 0 || length > INITIAL_MAX_FRAME_SIZE) {
-                throw IOException("FRAME_SIZE_ERROR: ${length}")
+                throw HttpException("FRAME_SIZE_ERROR: ${length}")
             }
             let frameType: Byte = source.readByte()
 
             if (requireSettings && frameType != TYPE_SETTINGS) {
-                throw IOException("Expected a SETTINGS frame but was ${frameType}")
+                throw HttpException("Expected a SETTINGS frame but was ${frameType}")
             }
 
             let flags: Byte = source.readByte()
@@ -57,9 +57,9 @@ class Http2Reader {
             }
             return true
         } catch (e: SocketTimeoutException) {
-            throw IOException("EOF")
+            throw HttpException("EOF")
         } catch (e: SocketException) {
-            throw IOException("SocketException")
+            throw HttpException("SocketException")
         }
     }
 
@@ -87,7 +87,7 @@ class Http2Reader {
         }
 
         if (padding > length) {
-            throw IOException("PROTOCOL_ERROR padding ${padding} > remaining length ${length}")
+            throw HttpException("PROTOCOL_ERROR padding ${padding} > remaining length ${length}")
         }
 
         return length - padding
@@ -100,13 +100,13 @@ class Http2Reader {
 
     private func readWindowUpdate(handler: H2Connection, length: Int64, flags: Byte, streamId: UInt32) {
         if (length != 4) {
-            throw IOException("TYPE_WINDOW_UPDATE length !=4: ${length}")
+            throw HttpException("TYPE_WINDOW_UPDATE length !=4: ${length}")
         }
 
         let increment =  readInt32(source) & 0x7fffffff
 
         if (increment == 0) {
-            throw IOException("windowSizeIncrement was 0")
+            throw HttpException("windowSizeIncrement was 0")
         }
 
         handler.windowUpdate(streamId, increment)
@@ -114,28 +114,28 @@ class Http2Reader {
 
     private func readRstStream(handler: H2Connection, length: Int64, flags: Byte, streamId: UInt32) {
         if (length != 4) {
-            throw IOException("TYPE_RST_STREAM length !=4: ${length}")
+            throw HttpException("TYPE_RST_STREAM length !=4: ${length}")
         }
 
         if (streamId == 0) {
-            throw IOException("TYPE_RST_STREAM streamId == 0")
+            throw HttpException("TYPE_RST_STREAM streamId == 0")
         }
 
         let errorCodeInt = readInt32(source)
         let errorCode = ErrorCode.fromHttp2(errorCodeInt)
         if (!has(errorCode)) {
-            throw IOException("TYPE_RST_STREAM unexpected error code: ${errorCodeInt}")
+            throw HttpException("TYPE_RST_STREAM unexpected error code: ${errorCodeInt}")
         }
         handler.rstStream(streamId, errorCode.getOrThrow())
     }
 
     private func readGoAway(handler: H2Connection, length: Int64, flags: Byte, streamId: UInt32) {
         if (length < 8) {
-            throw IOException("TYPE_GOAWAY length < 8: ${length}")
+            throw HttpException("TYPE_GOAWAY length < 8: ${length}")
         }
 
         if (streamId != 0) {
-            throw IOException("TYPE_GOAWAY streamId != 0")
+            throw HttpException("TYPE_GOAWAY streamId != 0")
         }
 
         let lastStreamId = readInt32(source)
@@ -144,7 +144,7 @@ class Http2Reader {
         let errorCode = ErrorCode.fromHttp2(errorCodeInt)
 
         if (!has(errorCode)) {
-            throw IOException("TYPE_GOAWAY unexpected error code: ${errorCodeInt}")
+            throw HttpException("TYPE_GOAWAY unexpected error code: ${errorCodeInt}")
         }
 
         if (opaqueDataLength > 0) {
@@ -158,7 +158,7 @@ class Http2Reader {
 
     private func readHeaders(handler: H2Connection, len: Int64, flags: Byte, streamId: UInt32) {
         if (streamId == 0) {
-            throw IOException("TYPE_HEADERS streamId == 0")
+            throw HttpException("TYPE_HEADERS streamId == 0")
         }
 
         var length = len
@@ -194,11 +194,11 @@ class Http2Reader {
         let streamId: UInt32 = UInt32(readInt32(source) & 0x7fffffff)
 
         if (frameType != TYPE_CONTINUATION) {
-            throw IOException("${frameType} != TYPE_CONTINUATION")
+            throw HttpException("${frameType} != TYPE_CONTINUATION")
         }
 
         if (previousStreamId != streamId) {
-            throw IOException("TYPE_CONTINUATION streamId changed")
+            throw HttpException("TYPE_CONTINUATION streamId changed")
         }
 
         source.read(arr, length)
@@ -207,14 +207,14 @@ class Http2Reader {
 
     private func readData(handler: H2Connection, len: Int64, flags: Byte, streamId: UInt32) {
          if (streamId == 0) {
-            throw IOException("TYPE_DATA streamId == 0");
+            throw HttpException("TYPE_DATA streamId == 0");
          }
 
          let inFinished: Bool = (flags & FLAG_END_STREAM) != 0
          let gzipped: Bool = (flags & FLAG_COMPRESSED) != 0
 
          if (gzipped) {
-             throw IOException("PROTOCOL_ERROR: FLAG_COMPRESSED without SETTINGS_COMPRESS_DATA");
+             throw HttpException("PROTOCOL_ERROR: FLAG_COMPRESSED without SETTINGS_COMPRESS_DATA");
          }
 
          var padding  = 0
@@ -230,11 +230,11 @@ class Http2Reader {
 
     private func readPing(handler: H2Connection, length: Int64, flags: Byte, streamId: UInt32) {
          if (length != 8) {
-            throw IOException("TYPE_PING length != 8: ${length}")
+            throw HttpException("TYPE_PING length != 8: ${length}")
          }
 
          if (streamId != 0) {
-            throw IOException("TYPE_PING streamId != 0");
+            throw HttpException("TYPE_PING streamId != 0");
          }
 
          let payload1 = readInt32(source)
@@ -245,18 +245,18 @@ class Http2Reader {
 
     private func readSettings(handler: H2Connection, length: Int64, flags: Byte, streamId: UInt32) {
         if (streamId != 0) {
-            throw IOException("TYPE_SETTINGS streamId != 0")
+            throw HttpException("TYPE_SETTINGS streamId != 0")
         }
 
         if ((flags & FLAG_ACK) != 0) {
             if (length != 0) {
-                throw IOException("FRAME_SIZE_ERROR ack frame should be empty!")
+                throw HttpException("FRAME_SIZE_ERROR ack frame should be empty!")
             }
             return
         }
 
         if (length % 6 != 0) {
-            throw IOException("TYPE_SETTINGS length %% 6 != 0: ${length}")
+            throw HttpException("TYPE_SETTINGS length %% 6 != 0: ${length}")
         }
 
         let settings: Settings =  Settings()
@@ -271,7 +271,7 @@ class Http2Reader {
                 case 2 =>
                     // SETTINGS_ENABLE_PUSH
                     if (value != 0 && value != 1) {
-                        throw IOException("PROTOCOL_ERROR SETTINGS_ENABLE_PUSH != 0 or 1")
+                        throw HttpException("PROTOCOL_ERROR SETTINGS_ENABLE_PUSH != 0 or 1")
                     }
                 case 3 =>
                     // SETTINGS_MAX_CONCURRENT_STREAMS
@@ -280,11 +280,11 @@ class Http2Reader {
                     // SETTINGS_INITIAL_WINDOW_SIZE
                     id = 7 // Renumbered in draft 10
                     if (value < 0) {
-                        throw IOException("PROTOCOL_ERROR SETTINGS_INITIAL_WINDOW_SIZE should < 2^31 - 1")
+                        throw HttpException("PROTOCOL_ERROR SETTINGS_INITIAL_WINDOW_SIZE should < 2^31 - 1")
                     }
                 case 5 =>
                     if (Int64(value) < INITIAL_MAX_FRAME_SIZE || value > 16777215) {
-                        throw IOException("PROTOCOL_ERROR SETTINGS_MAX_FRAME_SIZE: ${value}");
+                        throw HttpException("PROTOCOL_ERROR SETTINGS_MAX_FRAME_SIZE: ${value}");
                     }
                 case 6 =>
                     // SETTINGS_MAX_HEADER_LIST_SIZE

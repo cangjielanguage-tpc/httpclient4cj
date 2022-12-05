@@ -163,7 +163,7 @@ public class Transmitter {
         match (this.request) {
             case Some(r) =>
                 if (Util.sameConnection(r.getUrl(), request.getUrl()) && exchangeFinder.getOrThrow().hasRouteToTry()) {
-                    return ()
+                    return
                 }
                 if (hasExchange()) {
                     throw IllegalStateException("hasExchange")
