@@ -29,6 +29,8 @@ public open class ResponseBuilder <: Builder<Response> {
     /* var member prevResponseBuild type is Option<Response> */
     var prevResponseBuild: Option<Response> =  Option<Response>.None
     var exchange: Option<Exchange> = None
+    var sentRequestAtMillisBuild = 0
+    var receivedResponseAtMillisBuild = 0
 
     /**
      * The Function is init constructor
@@ -200,6 +202,14 @@ public open class ResponseBuilder <: Builder<Response> {
 
     func initExchange(deferredTrailers: Exchange): Unit {
          this.exchange = Option<Exchange>.Some(deferredTrailers)
+    }
+
+    public func sentRequestAtMillis(sentRequestAtMillis: Int64): {
+        this.sentRequestAtMillisBuild = sentRequestAtMillis
+    }
+
+    public func receivedResponseAtMillis(receivedResponseAtMillis: Int64): {
+        this.receivedResponseAtMillisBuild = receivedResponseAtMillis
     }
 }
 

@@ -225,7 +225,7 @@ public class CookieUtil {
         return s
     }
 
-    private static func parseExpires(s: String, start: Int64, limit: Int64): Time {
+    static func parseExpires(s: String, start: Int64, limit: Int64): Time {
         var pos = dateCharacterOffset(s, start, limit, false)
         var hour = -1
         var minute = -1

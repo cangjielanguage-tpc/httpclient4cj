@@ -15,22 +15,24 @@ package okhttp
  */
 public class Response <: ToString {
       /* var member request type is Request */
-      var request: Request
+      let request: Request
       /* var member protocol type is Protocol */
-      var protocol: Protocol
+      let protocol: Protocol
       /* var member code type is Int64 */
-      var code: Int64
+      let code: Int64
       /* var member message type is String */
-      var message: String
+      let message: String
       /* var member header type is Header */
-      var header: Header
+      let header: Header
       /* var member body type is Option<ResponseBody> */
-      var body: Option<ResponseBody>
+      let body: Option<ResponseBody>
       /* var member prevResponse type is Option<Response> */
-      var prevResponse: Option<Response>
+      let prevResponse: Option<Response>
 
-      private var cacheControl: Option<CacheControl> = Option<CacheControl>.None
-      var exchange: Option<Exchange>
+      private let cacheControl: Option<CacheControl> = Option<CacheControl>.None
+      let exchange: Option<Exchange>
+      let sentRequestAtMillis: Int64
+      let receivedResponseAtMillis: Int64
 
 
       /**
@@ -48,6 +50,8 @@ public class Response <: ToString {
          this.body = builder.bodyBuild
          this.prevResponse = builder.prevResponseBuild
          this.exchange = builder.exchange
+         this.sentRequestAtMillis = builder.sentRequestAtMillisBuild
+         this.receivedResponseAtMillis = builder.receivedResponseAtMillisBuild
       }
 
       /**
@@ -223,6 +227,14 @@ public class Response <: ToString {
                   cacheControl = CacheControl.parse(header)
                   return cacheControl
          }     
+      }
+
+      public func sentRequestAtMillis(): Int64 {
+         return sentRequestAtMillis
+      }
+
+      public func sentRequestAtMillis(): Int64 {
+         return receivedResponseAtMillis
       }
 }
 
