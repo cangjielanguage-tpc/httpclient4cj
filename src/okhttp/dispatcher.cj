@@ -4,7 +4,7 @@
 
 /**
  * @file
- * The file declars the Dispatcher class.
+ * The file declares the Dispatcher class.
  */
 package okhttp
 

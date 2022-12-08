@@ -7,7 +7,7 @@ from std import time.*
 main() {
     try {
     let request: okhttp.Request = okhttp.Request.builder()
-        .method("GET", body: RealRequestBody.create("text/json", "123")).build()
+        .method("GET", body: RealRequestBody.create(MediaType.get("application/json"), "123")).build()
     }catch(e :Exception) {
         return 0
     }

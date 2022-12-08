@@ -4,7 +4,7 @@
 
 /**
  * @file
- * The file declars the ResponseBuilder class.
+ * The file declares the ResponseBuilder class.
  */
 package okhttp
 

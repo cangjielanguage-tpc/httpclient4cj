@@ -16,26 +16,26 @@ from std import random.*
  * @since 0.33.3
  */
 public class MultipartBody <: RequestBody {
-    public static let MIXED: String = "multipart/mixed"
-    public static let ALTERNATIVE: String = "multipart/alternative"
-    public static let DIGEST: String = "multipart/digest"
-    public static let PARALLEL: String = "multipart/parallel"
-    public static let FORM: String = "multipart/form-data"
+    public static let MIXED: MediaType = MediaType.get("multipart/mixed")
+    public static let ALTERNATIVE: MediaType = MediaType.get("multipart/alternative")
+    public static let DIGEST: MediaType = MediaType.get("multipart/digest")
+    public static let PARALLEL: MediaType = MediaType.get("multipart/parallel")
+    public static let FORM: MediaType = MediaType.get("multipart/form-data")
 
     private static let DASHDASH: Array<Byte> = b"--"
     private static let COLONSPACE: Array<Byte> = b": "
 
     private let boundary: String
-    private let originalType: String
-    private let realType: String
+    private let originalType: MediaType
+    private let realType: MediaType
     private let parts: ArrayList<Part>
     private var contentLength: Int64 = -1
 
-    init (boundary: String, originalType: String, parts: ArrayList<Part>) {
+    init (boundary: String, originalType: MediaType, parts: ArrayList<Part>) {
         this.boundary = boundary
         this.originalType = originalType
         this.parts = parts
-        this.realType = originalType + "; boundary=${boundary}"
+        this.realType = MediaType.get("${originalType}; boundary=${boundary}")
     }
 
     public func get(): InputStream {
@@ -45,13 +45,13 @@ public class MultipartBody <: RequestBody {
     public func getContentLength(): Int64 {
         if (contentLength != -1) {
             return contentLength
-        }  else {
+        } else {
             contentLength = writeOrCountBytes()
             return contentLength
         }
     }
 
-    public func getType(): String {
+    public func getType(): MediaType {
         return originalType
     }
 
@@ -63,7 +63,7 @@ public class MultipartBody <: RequestBody {
         return parts
     }
 
-    public func contentType(): String {
+    public func contentType(): Option<MediaType> {
         return realType
 
     }
@@ -96,12 +96,14 @@ public class MultipartBody <: RequestBody {
                 case None => ()
             }
 
-            let contentType: String = body.contentType()
+            let mediaType: Option<MediaType> = body.contentType()
 
-            if (!contentType.isEmpty()) {
-                arr.write("Content-Type: ".toUtf8Array())
-                arr.write(contentType.toUtf8Array())
-                arr.write(CRLF)
+            match (mediaType) {
+                case Some(contentType) =>
+                    arr.write("Content-Type: ".toUtf8Array())
+                    arr.write("${contentType}".toUtf8Array())
+                    arr.write(CRLF)
+                case None => ()
             }
 
             let contentLength = body.getContentLength()
@@ -149,12 +151,14 @@ public class MultipartBody <: RequestBody {
                 case None => ()
             }
 
-            let contentType: String = body.contentType()
+            let mediaType: Option<MediaType> = body.contentType()
 
-            if (!contentType.isEmpty()) {
-                sink.write("Content-Type: ".toUtf8Array())
-                sink.write(contentType.toUtf8Array())
-                sink.write(CRLF)
+            match (mediaType) {
+                case Some(contentType) =>
+                    sink.write("Content-Type: ".toUtf8Array())
+                    sink.write("${contentType}".toUtf8Array())
+                    sink.write(CRLF)
+                case None => ()
             }
 
             let contentLength =  body.getContentLength()
@@ -181,7 +185,7 @@ public class MultipartBody <: RequestBody {
 }
 
 public class MultipartBodyBuilder <: Builder<MultipartBody> {
-    private var contentType = MultipartBody.MIXED
+    private var contentType: MediaType = MultipartBody.MIXED
     private let parts: ArrayList<Part> = ArrayList<Part>()
     private let boundary: String
 
@@ -189,7 +193,11 @@ public class MultipartBodyBuilder <: Builder<MultipartBody> {
        this.boundary = randomBoundary()
     }
 
-    public func setType(contentType: String): MultipartBodyBuilder {
+    public func setType(contentType: MediaType): MultipartBodyBuilder {
+        if (contentType.getType() != "multipart") {
+            throw IllegalArgumentException("multipart != ${contentType.getType()}")
+        }
+
         this.contentType = contentType
         return this
     }
@@ -237,7 +245,7 @@ public class Part {
     }
 
     public static func createFormData(name: String, value: String): Part {
-        return createFormData(name, "", RealRequestBody.create("", value))
+        return createFormData(name, "", RealRequestBody.create(Option<MediaType>.None, value))
     }
 
     public static func create(headers: Option<Header>, body: RequestBody): Part {

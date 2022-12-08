@@ -4,7 +4,7 @@
 
 /**
  * @file
- * The file declars the RequestLine class.
+ * The file declares the RequestLine class.
  */
 package okhttp
 

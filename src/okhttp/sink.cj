@@ -4,7 +4,7 @@
 
 /**
  * @file
- * The file declars the Sink class.
+ * The file declares the Sink impls.
  */
 package okhttp
 

@@ -4,7 +4,7 @@
  */
 
 /**
- * @file The file declars the ConcurrentQueue class.
+ * @file The file declares the ConcurrentQueue class.
  */
 
 package okhttp

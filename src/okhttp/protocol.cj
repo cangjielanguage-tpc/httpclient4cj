@@ -4,7 +4,7 @@
 
 /**
  * @file
- * The file declars the Protocol enum.
+ * The file declares the Protocol enum.
  */
 
 package okhttp

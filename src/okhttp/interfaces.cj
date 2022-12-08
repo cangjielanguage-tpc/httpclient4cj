@@ -173,7 +173,7 @@ public interface CookieJar {
 
 public interface RequestBody {
 
-    func contentType(): String
+    func contentType(): Option<MediaType>
 
     func getContentLength(): Int64
 

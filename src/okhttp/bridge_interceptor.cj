@@ -40,8 +40,11 @@ public class BridgeInterceptor<: Interceptor {
         let request: Request = chain.getRequest()
         let requestBuilder: RequestBuilder  = request.newBuilder()
         match(request.getBody()) {
-            case Some(b) =>  
-                requestBuilder.header("Content-Type", b.contentType())
+            case Some(b) =>
+                if (has(b.contentType())) {
+                    requestBuilder.header("Content-Type", "${b.contentType().getOrThrow()}")
+                }
+
                 if (b.getContentLength() != -1) {
                     requestBuilder.header("Content-Length", "${b.getContentLength()}")
                     requestBuilder.removeHeader("Transfer-Encoding")

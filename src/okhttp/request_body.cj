@@ -19,7 +19,7 @@ public class RealRequestBody <: RequestBody {
     /* var member content type is Array<Byte>*/
     private let bytes: Array<Byte>
     /* var member MediaType type is String */
-    private var mediaType: String
+    private var mediaType: Option<MediaType>
     private let contentLength: Int64
     /*
      * The Function is init constructor
@@ -28,7 +28,7 @@ public class RealRequestBody <: RequestBody {
      * @param content of String
      * @since 0.29.3
      */
-    init(mediaType: String, bytes: Array<Byte>) {
+    init(mediaType: Option<MediaType>, bytes: Array<Byte>) {
         contentLength = bytes.size
         this.bytes = bytes
         this.mediaType = mediaType
@@ -40,7 +40,7 @@ public class RealRequestBody <: RequestBody {
      * @return Type of String
      * @since 0.29.3
      */
-    public func contentType(): String {
+    public func contentType(): Option<MediaType> {
         return mediaType
 
     }
@@ -72,15 +72,15 @@ public class RealRequestBody <: RequestBody {
         return arr
     }
 
-    public static func create(contentType: String, content: String): RequestBody {
+    public static func create(contentType: Option<MediaType>, content: String): RequestBody {
         return create(contentType, content.toUtf8Array())
     }
 
-    public static func create(contentType: String, bytes: Array<Byte>): RequestBody {
+    public static func create(contentType: Option<MediaType>, bytes: Array<Byte>): RequestBody {
         return RealRequestBody(contentType, bytes)
     }
 
-    public static func create(contentType: String, file: File): RequestBody {
+    public static func create(contentType: Option<MediaType>, file: File): RequestBody {
         return create(contentType, file.readToEnd())
     }
 }

@@ -4,7 +4,7 @@
 
 /**
  * @file
- * The file declars the Call interface.
+ * The file declares the Call interface.
  */
 package okhttp
 

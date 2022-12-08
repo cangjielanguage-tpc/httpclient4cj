@@ -4,7 +4,7 @@
 
 /**
  * @file
- * The file declars the Response class.
+ * The file declares the Response class.
  */
 package okhttp
 

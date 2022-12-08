@@ -43,8 +43,8 @@ func serve(){
 
 
 class MyRequestBody <:RequestBody {
-    public func contentType(): String {
-        return "application/json"
+    public func contentType(): Option<MediaType> {
+        return MediaType.parse("application/json")
     }
 
     public func getContentLength(): Int64 {

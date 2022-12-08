@@ -4,7 +4,7 @@
 
 /**
  * @file
- * The file declars the CacheControlBuilder class.
+ * The file declares the CacheControlBuilder class.
  */
 
 package okhttp

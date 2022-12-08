@@ -9,9 +9,16 @@ package okhttp
  */
 
 
+/*
+ * The class is Http2Reader
+ * Reads HTTP/2 transport frames
+ *
+ * @author luoyukai4
+ * @since 0.34.3
+ */
 class Http2Reader {
     let source: OkBuffer
-    let framedecode = Decoder.newDecode()
+    let frameDecode = Decoder.newDecode()
 
     init(source: OkBuffer) {
         this.source = source
@@ -183,7 +190,7 @@ class Http2Reader {
             endStream = readContinuationHeader(arr, streamId)
         }
 
-        let headerBlock: Array<HeaderField> = framedecode.decode(arr.readToEnd())
+        let headerBlock: Array<HeaderField> = frameDecode.decode(arr.readToEnd())
         handler.headers(endStream, streamId, -1, headerBlock)
     }
 
