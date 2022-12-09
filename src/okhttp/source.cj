@@ -247,12 +247,15 @@ class ResponseBodySource <:Source {
             throw e
         }
    }
+
    public func close(): Unit {
+
        if (closed) {
            return
        }
 
        closed = true
+
        try {
            source.close()
            complete(Option<HttpException>.None)
@@ -341,7 +344,7 @@ class FramingSource <: Source {
 
     func receive(source: OkBuffer, length: Int64) {
         var byteCount = length
-        while(byteCount > 0) {
+        while (byteCount > 0) {
             var finished: Bool
             var flowControlError: Bool
             synchronized (stream.getOrThrow().mutex) {
@@ -373,7 +376,7 @@ class FramingSource <: Source {
                     bytesDiscarded = receiveBuffer.length
                     receiveBuffer.clear()
                 } else {
-                    let  wasEmpty = readBuffer.length == 0
+                    let wasEmpty = readBuffer.length == 0
                     readBuffer.write(receiveBuffer.readToEnd())
                     if (wasEmpty) {
                         let mu = stream.getOrThrow().mutex
@@ -391,9 +394,21 @@ class FramingSource <: Source {
     }
 
     public func close(): Unit {
+        let bytesDiscarded: Int64
+        synchronized(stream.getOrThrow().mutex) {
+            closed = true
+            bytesDiscarded = readBuffer.length
+            readBuffer.clear()
+            stream.getOrThrow().mutex.notifyAll()
+        }
 
+        if (bytesDiscarded > 0) {
+             stream.getOrThrow().updateConnectionFlowControl(bytesDiscarded)
+        }
 
+         stream.getOrThrow().cancelStreamIfNecessary()
     }
+
     public func isClosed(): Bool {
         return closed
     }

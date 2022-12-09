@@ -15,7 +15,7 @@ from net import http.* as h1.*
  * @author guo_tingtingtekla,luoyukai4
  * @since 0.29.3
  */
-public class Request {
+public class Request <: ToString {
     /* var member url type is URL */
     var url: URL
     /* var member header type is Header */
@@ -125,7 +125,9 @@ public class Request {
          return header.get(name) ?? defaultValue
      }
 
-
+     public func toString(): String {
+        return "Request{method= ${method}, url= ${url.toString()}"
+     }
 
     /**
      * Returns the cache control directives for this response. This is never null, even if this

@@ -153,7 +153,7 @@ public class H2Stream {
      */
     public func takeHeaders(): Header {
         synchronized (mutex) {
-            while(headersQueue.size == 0 && !has(errorCode)) {
+            while (headersQueue.size == 0 && !has(errorCode)) {
                 mutex.wait()
             }
         }

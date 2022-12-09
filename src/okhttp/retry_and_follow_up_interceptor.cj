@@ -87,16 +87,20 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
                 case Some(ex) => ex.getConnection().getRoute()
                 case None => Option<Route>.None
             }
+
             let followUp = followUpRequest(response, route)
+
             let exchange: Option<Exchange> = response.exchange
             let followUpBody: Option<RequestBody> = match (followUp) {
                 case Some(r)  => r.getBody()
                 case _ => return response
             }
+
             match (followUpBody) {
                 case Some(b) => return response
                 case None => ()
             }
+
             Util.closeQuietly(response.getBody())
 
             if (transmitter.hasExchange()) {

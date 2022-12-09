@@ -28,7 +28,8 @@ class Util {
      * @param socket of Option<Socket>
      * @since 0.29.3
      */
-    public static func closeQuietly <T> (socket: Option<T>): Unit where T<: Resource{
+    public static func closeQuietly <T> (socket: Option<T>): Unit where T<: Resource {
+
         match(socket) {
             case Some(s) =>
                 try {

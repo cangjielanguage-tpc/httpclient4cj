@@ -117,6 +117,7 @@ public class Connection {
      * @since 0.29.3
      */
     func isEligible(address: Address, routeSelector: Option<RouteSelector>): Bool {
+
         if (transmitters.size >= allocationLimit || noNewExchanges) {
             return false
         }

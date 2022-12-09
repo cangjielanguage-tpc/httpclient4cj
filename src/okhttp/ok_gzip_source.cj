@@ -28,7 +28,7 @@ public class OkGzipSource <: Source {
 
         if (hasMoreGzip) {
             hasMoreGzip = false
-            while(true) {
+            while (true) {
                 let read = source.read(base, byteCount)
                 if (read <= 0) {
                     break
@@ -43,10 +43,12 @@ public class OkGzipSource <: Source {
     }
 
     public func close(): Unit {
+
         if (isClosed()) {
             return
         }
-        source.close
+
+        source.close()
     }
 
     public func isClosed(): Bool{

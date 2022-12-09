@@ -219,7 +219,7 @@ class FramingSink <: Sink {
     private func emitFrame(outFinishedOnLastFrame: Bool): Unit {
         let toWrite: Int64
         synchronized(http2Stream.mutex) {
-            while(http2Stream.bytesLeftInWriteWindow <=0 &&
+            while (http2Stream.bytesLeftInWriteWindow <=0 &&
                 !finished && !closed && !has(http2Stream.errorCode)) {
                 http2Stream.mutex.wait()
             }
@@ -238,7 +238,7 @@ class FramingSink <: Sink {
             http2Stream.checkOutNotClosed()
         }
 
-        while(sendBuffer.length > 0) {
+        while (sendBuffer.length > 0) {
             emitFrame(true)
             http2Stream.cc.flush()
         }
