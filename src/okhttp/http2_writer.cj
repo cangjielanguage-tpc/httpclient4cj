@@ -231,7 +231,7 @@ class Http2Writer {
 
     private func writeContinuationFrames(streamId: UInt32, continueCount: Int64, hpackBuffer: Array<UInt8>) {
         var byteCount = continueCount
-        while(byteCount > 0) {
+        while (byteCount > 0) {
             let length = min(maxFrameSize, byteCount)
             byteCount -= length
             var flags: Byte = 0x0
@@ -247,7 +247,7 @@ class Http2Writer {
         return maxFrameSize
     }
 
-    func applyAndAckSettings(peerSettings: Settings){
+    func applyAndAckSettings(peerSettings: Settings) {
         synchronized(mutex) {
             if (closed) {
                 throw HttpException("closed")

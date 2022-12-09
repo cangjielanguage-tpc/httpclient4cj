@@ -99,7 +99,6 @@ public class CallServerInterceptor<: Interceptor {
                 case None => ()
            }
         }
-
         return response
     }
 }

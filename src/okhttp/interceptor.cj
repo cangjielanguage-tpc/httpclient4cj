@@ -109,7 +109,7 @@ public class Chain {
         calls++
         var next: Chain =  Chain(interceptors,transmitter, index + 1, request, call, exchange, connectTimeout,
          readTimeout, writeTimeout )
-        let interceptor: Interceptor = interceptors.get(index).getOrThrow();
+        let interceptor: Interceptor = interceptors.get(index).getOrThrow()
         let response: Response  = interceptor.intercept(next)
         return response
     }

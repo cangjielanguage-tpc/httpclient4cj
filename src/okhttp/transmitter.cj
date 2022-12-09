@@ -162,16 +162,20 @@ public class Transmitter {
     public func prepareToConnect(request: Request): Unit {
         match (this.request) {
             case Some(r) =>
+
                 if (Util.sameConnection(r.getUrl(), request.getUrl()) && exchangeFinder.getOrThrow().hasRouteToTry()) {
                     return
                 }
+
                 if (hasExchange()) {
                     throw IllegalStateException("hasExchange")
                 }
+
                 if (hasExchangeFinder()) {
                     maybeReleaseConnection(true)
                     exchangeFinder = None
                 }
+
             case None => ()
         }
         this.request = request
@@ -223,6 +227,7 @@ public class Transmitter {
             if (force && hasExchange()) {
                 throw IllegalStateException("cannot release connection while it is in use")
             }
+
             if (hasConnection() && !hasExchange() && (force || noExchanges)) {
                 socket = releaseConnectionNoEvents()
             } else {
@@ -263,19 +268,23 @@ public class Transmitter {
                 // from detached violently
                 return
             }
+
             var changed = false
+
             if (requestDone) {
                 if (!exchangeRequestDone) {
                     changed = true
                 }
                 this.exchangeRequestDone =true
             }
+
             if (responseDone) {
                 if (!exchangeResponseDone) {
                     changed = true
                 }
                 this.exchangeResponseDone = true
             }
+
             if (exchangeRequestDone && exchangeResponseDone && changed) {
                 exchangeDone = true
                 this.exchange.getOrThrow().getConnection().successCount++

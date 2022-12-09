@@ -13,7 +13,7 @@ package okhttp
  * @author guo_tingtingtekla,luoyukai4
  * @since 0.29.3
  */
-public class Response {
+public class Response <: ToString {
       /* var member request type is Request */
       var request: Request
       /* var member protocol type is Protocol */
