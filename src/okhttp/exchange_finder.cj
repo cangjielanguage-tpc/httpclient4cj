@@ -4,7 +4,7 @@
 
 /**
  * @file
- * The file declars the ExchangeFinder class.
+ * The file declares the ExchangeFinder class.
  */
 package okhttp
 
@@ -310,10 +310,10 @@ public class Exchange {
      */
     public func openResponseBody(response: Response): ResponseBody {
         try {
-            let contentType: String = response.getHeader("Content-Type","")
+            let contentTypeString: String = response.getHeader("Content-Type","")
             let contentLength: Int64 = codec.reportedContentLength(response)
             let source = codec.openResponseBodySource(response)
-            return ResponseBody(contentType, contentLength, ResponseBodySource(source, this, contentLength))
+            return ResponseBody(contentTypeString, contentLength, ResponseBodySource(source, this, contentLength))
         } catch (e: HttpException) {
             trackFailure(e)
             throw e

@@ -4,7 +4,7 @@
 
 /**
  * @file
- * The file declars the ConnectInterceptor class.
+ * The file declares the ConnectInterceptor class.
  */
 package okhttp
 

@@ -2,8 +2,10 @@
  * Copyright (c) Cangjie Library Team 2022-2022. All rights reserved.
  * Description:
  */
+
+
 /**
- * @file The file declars the xxxx class.
+ * @file The file declares the H2Stream class.
  */
 
 package okhttp

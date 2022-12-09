@@ -338,14 +338,14 @@ public class H2Connection {
         }
     }
 
-    func ping(reply: Bool, payload1: Int64, payload2: Int64) {
+    func ping(reply: Bool, payload: Int64, payload2: Int64) {
         if (reply) {
-            if (payload1 == INTERVAL_PING) {
-                intervalPongsReceived++;
-            } else if (payload1 == DEGRADED_PING) {
-                degradedPongsReceived++;
-            } else if (payload1 == AWAIT_PING) {
-                awaitPongsReceived++;
+            if  (payload == DEGRADED_PING) {
+                degradedPongsReceived++
+            } else if (payload == INTERVAL_PING) {
+                intervalPongsReceived++
+            } else if (payload == AWAIT_PING) {
+                awaitPongsReceived++
                 muLock.notifyAll()
             }
         }

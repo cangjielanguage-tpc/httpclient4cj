@@ -4,7 +4,7 @@
 
 /**
  * @file
- * The file declars the OkGzipSource class.
+ * The file declares the OkGzipSource class.
  */
 package okhttp
 

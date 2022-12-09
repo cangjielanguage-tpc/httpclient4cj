@@ -4,7 +4,7 @@
 
 /**
  * @file
- * The file declars the Cookie class.
+ * The file declares the Cookie class.
  */
 package okhttp
 

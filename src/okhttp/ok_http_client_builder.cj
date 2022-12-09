@@ -4,7 +4,7 @@
 
 /**
  * @file
- * The file declars the OkHttpClientBuilder class.
+ * The file declares the OkHttpClientBuilder class.
  */
 package okhttp
 

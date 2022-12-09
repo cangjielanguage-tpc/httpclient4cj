@@ -17,7 +17,7 @@ from std import fs.*
 main (){
      var arr: Array<Byte> = Array<Byte>(81000, {i => UInt8(i % 256)})
      File.writeTo("./window.text", arr, openOption: Create(false))
-     let body = RealRequestBody.create("text/json",File("./window.text",OpenOption.Open(true,false)))
+     let body = RealRequestBody.create(MediaType.get("application/json"),File("./window.text",OpenOption.Open(true,false)))
      let mu = MultipartBody.builder().
      addFormDataPart("name", "lyk").
      addFormDataPart("age", "18").
@@ -25,7 +25,7 @@ main (){
      let request: okhttp.Request = okhttp.Request.builder().url("http://127.0.0.1:50066/cangjie_test-1.0-SNAPSHOT/post")
     //.header("User-Agent", "OkHttp-Example")
     //未使用拦截器手动添加请求头
-    .header("content-type",mu.contentType())
+    .header("content-type",mu.contentType().getOrThrow().toString())
     .header("Host","127.0.0.1:50066")
     .header("content-length",mu.getContentLength().toString())
     .post(mu)

@@ -20,7 +20,7 @@ main (){
     .build()
      let request: okhttp.Request = okhttp.Request.builder().url("http://127.0.0.1:50066/cangjie_test-1.0-SNAPSHOT/put")
     .header("User-Agent", "OkHttp-Example").put(formBody)
-    .header("content-type",formBody.contentType())
+    .header("content-type",formBody.contentType().getOrThrow().toString())
     .build()
     let soc = Socket(TCP,"127.0.0.1", 50066)
     soc.connect()

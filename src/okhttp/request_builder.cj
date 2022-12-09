@@ -4,7 +4,7 @@
 
 /**
  * @file
- * The file declars the RequestBuilder class.
+ * The file declares the RequestBuilder class.
  */
 package okhttp
 

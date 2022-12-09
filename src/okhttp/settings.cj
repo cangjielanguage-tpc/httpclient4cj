@@ -3,7 +3,7 @@
  * Description:
  */
 /**
- * @file The file declars the Settings class.
+ * @file The file declares the Settings class.
  */
 
 package okhttp

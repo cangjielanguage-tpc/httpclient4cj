@@ -4,7 +4,7 @@
 
 /**
  * @file
- * The file declars the CallServerInterceptor class.
+ * The file declares the CallServerInterceptor class.
  */
 package okhttp
 

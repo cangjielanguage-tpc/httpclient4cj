@@ -4,7 +4,7 @@
 
 /**
  * @file
- * The file declars the FormBody class.
+ * The file declares the FormBody class.
  */
 package okhttp
 
@@ -15,7 +15,7 @@ package okhttp
  * @since 0.33.3
  */
 public class FormBody <: RequestBody {
-    private static let CONTENT_TYPE: String = "application/x-www-form-urlencoded"
+    private static let CONTENT_TYPE: MediaType = MediaType.get("application/x-www-form-urlencoded")
     private let form: Form
 
 
@@ -23,7 +23,7 @@ public class FormBody <: RequestBody {
         this.form = form
     }
 
-    public func contentType(): String {
+    public func contentType(): Option<MediaType> {
         return CONTENT_TYPE
 
     }

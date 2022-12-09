@@ -4,7 +4,7 @@
 
 /**
  * @file
- * The file declars the Util class.
+ * The file declares the Util class.
  */
 package okhttp
 

@@ -16,8 +16,8 @@ main() {
         serve()
     }
     sleep(1000*1000*1000)
-    let body = RealRequestBody.create("text/json",File("./body.text",OpenOption.Open(true,false)))
-    let body2 = RealRequestBody.create("text/json",File("./body2.text",OpenOption.Open(true,false)))
+    let body = RealRequestBody.create(MediaType.get("application/json"),File("./body.text",OpenOption.Open(true,false)))
+    let body2 = RealRequestBody.create(MediaType.get("application/json"),File("./body2.text",OpenOption.Open(true,false)))
     let mu = MultipartBody.builder().
     addFormDataPart("name", "lyk").
     addFormDataPart("age", "18").

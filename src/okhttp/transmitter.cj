@@ -4,7 +4,7 @@
 
 /**
  * @file
- * The file declars the Transmitter class.
+ * The file declares the Transmitter class.
  */
 package okhttp
 

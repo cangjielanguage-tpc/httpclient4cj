@@ -11,7 +11,7 @@ main() {
     let request: okhttp.Request = okhttp.Request.builder()
                                     .url("http://www.baidu.com")
                                     .header("Expect", "100-continue")
-                                    .method("POST", body: RealRequestBody.create("text/json", "123"))
+                                    .method("POST", body: RealRequestBody.create(MediaType.get("application/json"), "123"))
                                     .build()
     let response: okhttp.Response = client.newCall(request).execute()
     println(response.getBody()?.getString()??"")

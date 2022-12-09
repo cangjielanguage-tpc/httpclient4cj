@@ -4,7 +4,7 @@
 
 /**
  * @file
- * The file declars the Address class.
+ * The file declares the RouteSelector class.
  */
 package okhttp
 

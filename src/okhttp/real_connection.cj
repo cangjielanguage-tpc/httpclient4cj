@@ -4,7 +4,7 @@
 
 /**
  * @file
- * The file declars the Connection class.
+ * The file declares the Connection class.
  */
 package okhttp
 

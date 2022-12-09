@@ -4,7 +4,7 @@
 
 /**
  * @file
- * The file declars the StatusLine class.
+ * The file declares the StatusLine class.
  */
 package okhttp
 

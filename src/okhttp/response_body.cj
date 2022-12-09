@@ -18,7 +18,7 @@ public class ResponseBody <: Resource {
     /* var member source type is StringStream */
     var source: Source
     /* var member contentType type is String */
-    var contentType: String
+    var contentTypeString: String
     /* var member contentLength type is Int64 */
     var contentLength: Int64 = 0
 
@@ -33,7 +33,7 @@ public class ResponseBody <: Resource {
      */
     public init(contentType: String, contentLength: Int64, source: Source) {
         this.source = source
-        this.contentType = contentType
+        this.contentTypeString = contentType
         this.contentLength = contentLength
     }
 
@@ -47,8 +47,12 @@ public class ResponseBody <: Resource {
         return source
     }
 
-    public func getContentType(): String {
-        return contentType
+    public func getContentType(): Option<MediaType> {
+        if (contentTypeString == "") {
+            return Option<MediaType>.None
+        } else {
+            return MediaType.parse(contentTypeString)
+        }
     }
 
     /**
