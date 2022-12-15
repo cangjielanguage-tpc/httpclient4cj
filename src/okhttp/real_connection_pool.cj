@@ -16,11 +16,11 @@ package okhttp
 public class ConnectionPool {
 
     /** var member mutex type is Monitor */
-    public  var mutex: Monitor = Monitor()
+    public let mutex: Monitor = Monitor()
     /* var member connections type is ConcurrentQueue<Connection> */
     private var connections: ConcurrentQueue<Connection> = ConcurrentQueue(mutex)
     /** var member maxIdleConnections type is Int64 */
-    public  var maxIdleConnections: Int64
+    private let maxIdleConnections: Int64
     var cleanupRunning: Bool = false
     private let keepAliveDurationNs: Duration
     let routeDatabase: RouteDatabase = RouteDatabase()
@@ -31,7 +31,7 @@ public class ConnectionPool {
      * @param maxIdleConnections of Int64
      * @since 0.29.3
      */
-    public init(maxIdleConnections!: Int64 = 5, keepAliveDurationNs!: Duration = Duration.minute(5)) {
+    public init(maxIdleConnections!: Int64 = 5, keepAliveDurationNs!: Duration = Duration.second(5)) {
         this.maxIdleConnections = maxIdleConnections
         this.keepAliveDurationNs = keepAliveDurationNs
     }
@@ -163,7 +163,7 @@ public class ConnectionPool {
     func spawnCleanup() {
         spawn {
            while (true) {
-                let waitNanos = cleanup()
+                let waitNanos = cleanup(Time.now())
                 if (waitNanos == -1) {
                     return
                 }
@@ -176,45 +176,75 @@ public class ConnectionPool {
         }
     }
 
-    func cleanup(): Int64{
+    func cleanup(now: Time): Int64{
         var longestIdleDurationNs: Duration = Duration.nanosecond(0)
         var idleConnectionCount = 0
+        var inUseConnectionCount = 0
         var longestIdleConnection: Option<Connection> = None
+        var remove = 0
         synchronized (this.mutex) {
             let it = connections.iterator()
             var index = 0
             while (true) {
                 match (it.next()) {
                     case Some(conn) =>
-                        let idleDurationNs: Duration = Time.now() - conn.idleAtNanos
+                        if (pruneAndGetAllocationCount(conn, now) > 0) {
+                            inUseConnectionCount++
+                            index++
+                            continue
+                        }
+                        let idleDurationNs: Duration = now - conn.idleAtNanos
                         idleConnectionCount++
                         if (idleDurationNs > longestIdleDurationNs) {
                             longestIdleDurationNs = idleDurationNs
                             longestIdleConnection = conn
+                            remove = index
                         }
-                        // weather the connection is ready to be evicted
-                        if (longestIdleDurationNs >= keepAliveDurationNs ||
-                            idleConnectionCount > this.maxIdleConnections) {
-                            connections.remove(index)
-                        } else if (idleConnectionCount > 0) {
-                             // wait for next time
-                             return (keepAliveDurationNs - longestIdleDurationNs).nanoseconds()
-                        } else {
-                            cleanupRunning = false
-                            return -1
-                        }
+
                     case None => break
                 }
-                index++;
+                index++
+            }
+            // weather the connection is ready to be evicted
+            if (longestIdleDurationNs >= keepAliveDurationNs ||
+                idleConnectionCount > this.maxIdleConnections) {
+                connections.remove(remove)
+            } else if (idleConnectionCount > 0) {
+                 // wait for next time
+                 return (keepAliveDurationNs - longestIdleDurationNs).nanoseconds()
+            } else if (inUseConnectionCount > 0) {
+                return keepAliveDurationNs.nanoseconds()
+            } else {
+                cleanupRunning = false
+                return -1
             }
         }
+
         match (longestIdleConnection) {
             case Some(conn) =>
                 Util.closeQuietly(conn.getSocket())
-                ()
             case None => ()
         }
         return 0
+    }
+
+    private func pruneAndGetAllocationCount(connection: Connection, now: Time): Int64 {
+        let transmitters = connection.transmitters
+        let indexArray = ArrayList<Int64>()
+
+        for (i in 0..transmitters.size) {
+            let transmitter = transmitters[i]
+            if (transmitter.ref == false) {
+                indexArray.append(i)
+            }
+        }
+
+        for (i in 0..indexArray.size) {
+            transmitters.remove(indexArray[i])
+            connection.noNewExchanges = true
+        }
+
+        return transmitters.size
     }
 
     public func connectFailed(failedRoute: Route): Unit {

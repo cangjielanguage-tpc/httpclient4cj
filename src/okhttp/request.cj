@@ -27,6 +27,8 @@ public class Request <: ToString {
 
     private var cacheControl: Option<CacheControl> = Option<CacheControl>.None
 
+    let tags: HashMap<String, Tag>
+
     /**
      * The Function is init constructor
      *
@@ -38,6 +40,7 @@ public class Request <: ToString {
         this.header = builder.headerBuild
         this.method = builder.methodBuild
         this.body = builder.bodyBuild
+        this.tags = builder.tagsBuild
     }
     /**
      * The Function is getUrl
@@ -142,5 +145,26 @@ public class Request <: ToString {
                 cacheControl = CacheControl.parse(header)
                 return cacheControl
         }     
+    }
+
+    public func getTag(s: String): Tag {
+        if (tags.contains(s)) {
+            return tags[s]
+        } else {
+            return Tag("")
+        }
+    }
+
+
+    public func removeTag(s: String): Unit {
+        this.tags.remove(s)
+    }
+}
+
+public class Tag {
+    public var tag: String
+
+    public init(tag: String) {
+        this.tag = tag
     }
 }

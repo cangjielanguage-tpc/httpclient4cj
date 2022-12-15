@@ -39,6 +39,7 @@ public class Transmitter {
     private var noExchanges: Bool = false
     private var exchangeRequestDone: Bool = false
     private var exchangeResponseDone: Bool = false
+    var ref: Bool = true
 
     /**
      * The Function is init constructor

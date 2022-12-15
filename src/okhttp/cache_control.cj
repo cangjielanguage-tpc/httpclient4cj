@@ -288,7 +288,8 @@ public class CacheControl {
 
     private static func parseNameValues(header: Header, map: HashMap<String,String>): String {
         let headers: ArrayList<String> = makeNameValues(header)
-        var headerValue: String = ""; var canUseHeaderValue: Bool = true
+        var headerValue: String = ""
+        var canUseHeaderValue: Bool = true
         var index: Int64 = 0
 
         for(i in 0..headers.size/2) {
