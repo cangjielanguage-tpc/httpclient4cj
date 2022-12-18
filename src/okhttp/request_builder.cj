@@ -17,15 +17,15 @@ from encoding import url.*
  */
 public class RequestBuilder <: Builder<Request> {
     /** var member urlBuild type is URL */
-    public var urlBuild: URL = URL.parse("")
+    var urlBuild: URL = URL.parse("")
     /** var member headerBuild type is Header */
-    public var headerBuild: Header = Header()
+    var headerBuild: Header = Header()
     /** var member methodBuild type is String */
-    public var methodBuild: String = "GET"
+    var methodBuild: String = "GET"
     /** var member bodyBuild type is Option<RequestBody> */
-    public var bodyBuild:  Option<RequestBody> = Option<RequestBody>.None
+    var bodyBuild:  Option<RequestBody> = Option<RequestBody>.None
+    var tagsBuild: HashMap<String, Tag> = HashMap<String, Tag>()
 
-    // TODO TAGS
     /**
      * The Function is init constructor
      *
@@ -37,7 +37,7 @@ public class RequestBuilder <: Builder<Request> {
         this.methodBuild = request.getMethod()
         this.bodyBuild = request.getBody()
         this.headerBuild = request.getHeaders().clone()
-
+        this.tagsBuild = HashMap<String, Tag>(request.tags)
     }
 
     /**
@@ -45,7 +45,7 @@ public class RequestBuilder <: Builder<Request> {
      *
      * @since 0.29.3
      */
-    public init() {}
+     init() {}
 
     /**
      * The Function is url
@@ -227,5 +227,10 @@ public class RequestBuilder <: Builder<Request> {
         }
 
         return header("Cache-Control", value) 
+    }
+
+    public func tag(s: String): RequestBuilder {
+        this.tagsBuild.put(s, Tag(s))
+        return this
     }
 }

@@ -94,7 +94,7 @@ class ConcurrentQueue<T> <: Iterable<T> {
 
     public func toArrayList(): ArrayList<T> {
         synchronized (m) {
-            return list
+            return ArrayList<T>(list)
         }
     }
 }

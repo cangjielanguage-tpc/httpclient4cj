@@ -73,7 +73,7 @@ class RealCall<: Call {
          if (executed) {
             throw HttpException("Already Executed")
          }
-         executed = true;
+         executed = true
        }
        try {
            client.getDispatcher().executed(this)
@@ -96,7 +96,7 @@ class RealCall<: Call {
                 throw HttpException("Already Executed")
             }
         }
-        executed = true;
+        executed = true
         client.getDispatcher().enqueue(AsyncCall(responseCallback, this))
     }
 
@@ -176,6 +176,13 @@ class RealCall<: Call {
             getTransmitter().noMoreExchanges()
             throw e
        } finally {
+           let transmitter = getTransmitter()
+           transmitter.ref = false
+
+           if (has(transmitter.connection)) {
+               transmitter.connection.getOrThrow().idleAtNanos = Time.now()
+           }
+
            if (!calledNoMoreExchanges) {
               getTransmitter().noMoreExchanges()
            }

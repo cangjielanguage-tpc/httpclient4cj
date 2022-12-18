@@ -16,7 +16,7 @@ package okhttp
  */
 public class Dispatcher {
     /** var member mutex type is Monitor */
-    public  var mutex: Monitor = Monitor()
+    let mutex: Monitor = Monitor()
     /* var member maxRequests type is Int64 */
     private var maxRequests: Int64 = 64
     /* var member maxRequestsPerHost type is Int64 */
@@ -310,6 +310,51 @@ public class Dispatcher {
             return readyAsyncCalls.size()
         }
     }
+
+    /**
+     * The Function is queuedCalls
+     *
+     * @return Type of ArrayList<Call>
+     * @since 0.34.3
+     */
+    public func queuedCalls(): ArrayList<Call> {
+        let list = readyAsyncCalls.toArrayList()
+        let result = ArrayList<Call>()
+
+        synchronized (mutex) {
+            for (i in 0..list.size) {
+                result.append(list[i].get())
+            }
+        }
+
+        return result
+    }
+
+    /**
+     * The Function is runningCalls
+     *
+     * @return Type of ArrayList<Call>
+     * @since 0.34.3
+     */
+    public func runningCalls(): ArrayList<Call> {
+
+        let syncList: ArrayList<RealCall> = runningSyncCalls.toArrayList()
+        let asyncList: ArrayList<AsyncCall> = runningAsyncCalls.toArrayList()
+        let result = ArrayList<Call>()
+
+        synchronized (mutex) {
+            for (i in 0..asyncList.size) {
+                syncList.append(asyncList[i].get())
+            }
+        }
+
+        for (i in 0..syncList.size) {
+            result.append(syncList[i])
+        }
+
+        return result
+    }
+
 
     /**
      * The Function is runningCallsCount
