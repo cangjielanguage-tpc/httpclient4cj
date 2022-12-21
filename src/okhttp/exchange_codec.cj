@@ -9,9 +9,6 @@
 package okhttp
 
 
-from std import io.*
-
-
 /* let member CRLF_CRLF type is Array<Byte> */
 let CRLF_CRLF: Array<Byte> = b"\r\n\r\n"
 /* let member CRLF type is Array<Byte> */

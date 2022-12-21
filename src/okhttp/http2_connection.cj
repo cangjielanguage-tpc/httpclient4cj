@@ -27,7 +27,7 @@ public class H2Connection {
     protected var streams: HashMap<UInt32, H2Stream> = HashMap<UInt32, H2Stream>()
     var muLock: Monitor = Monitor()
 
-    protected let hpackEncode: Encoder = Encoder.newEncoder()
+    let hpackEncode: Encoder = Encoder.newEncoder()
 
     public prop let streamMap: HashMap<UInt32, H2Stream>  { get() {return streams }}
 

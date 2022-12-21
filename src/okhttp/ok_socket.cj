@@ -9,7 +9,6 @@
 package okhttp
 
 from std import time.*
-from encoding import url.*
 
 public class OKSocket <: Resource & InputStream & OutputStream {
     public let client: SocketClient

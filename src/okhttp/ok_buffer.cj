@@ -8,8 +8,6 @@
  */
 package okhttp
 
-from std import io.*
-
 
 public class OkBuffer <: Source {
     private var source: InputStream

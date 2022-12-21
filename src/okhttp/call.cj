@@ -8,7 +8,6 @@
  */
 package okhttp
 
-from std import sync.*
 
 /**
  * The class is RealCall inherited from Call

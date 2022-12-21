@@ -9,8 +9,6 @@
 
 package okhttp
 
-from std import math.*
-
 /**
  * Builds a CacheControl request header.
  * @author guo_tingtingtekla

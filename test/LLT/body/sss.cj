@@ -10,6 +10,8 @@ from std import socket.*
 from std import io.*
 from std import sync.*
 var port: UInt16 = 0
+var num = Int64(0)
+
 main() {
     spawn {
         serve()
@@ -44,4 +46,4 @@ func serve(){
 }
 
 
-var num = Int64(0)
+
