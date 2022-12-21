@@ -9,8 +9,6 @@
 package okhttp
 
 from std import convert.*
-from std import math.*
-
 
 let METHOD_GET = "GET"
 

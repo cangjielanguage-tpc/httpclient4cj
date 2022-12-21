@@ -8,13 +8,7 @@ package okhttp
  * @file The file manage Http2Writer.
  */
 
-from http2 import hpack.*
-from std import math.*
-
-
 from std import sync.*
-
-
 
 let INITIAL_MAX_FRAME_SIZE = 0x4000 //16384
 let TYPE_DATA: Byte = 0x0

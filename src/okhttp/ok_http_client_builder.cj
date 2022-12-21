@@ -8,8 +8,6 @@
  */
 package okhttp
 
-from net import tls.*
-
 /**
  * The class is OkHttpClientBuilder inherited from Builder<OkHttpClient>
  * @author guo_tingtingtekla,luoyukai4

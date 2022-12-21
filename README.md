@@ -5,7 +5,7 @@
 <p align="center">
 <img alt="" src="https://img.shields.io/badge/release-v0.0.5-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjc-v0.34.3-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjc-v0.35.6-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-85.0%25-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
@@ -51,7 +51,7 @@ OkHttp 是一个高效的 HTTP 客户端, 代码参考: https://github.com/squar
 ├── lib
 │   └── libdns.so
 ├── src
-│   ├── okhttp
+│   └── okhttp
 │      ├── address.cj
 │      ├── bridge_interceptor.cj
 │      ├── cache_control.cj
@@ -69,11 +69,17 @@ OkHttp 是一个高效的 HTTP 客户端, 代码参考: https://github.com/squar
 │      ├── exchange_codec2.cj
 │      ├── exchange_finder.cj
 │      ├── form_body.cj
+│      ├── HpackConfig.cj
+│      ├── HpackDecoder.cj
+│      ├── HpackEncoder.cj
+│      ├── HpackTables.cj
 │      ├── http2_connection.cj
 │      ├── http2_stream.cj
 │      ├── http2_writer.cj
 │      ├── http2_reader.cj
 │      ├── http_method.cj
+│      ├── Huffman.cj
+│      ├── HuffmanUtil.cj
 │      ├── chain.cj
 │      ├── interfaces.cj
 │      ├── multipart_body.cj

@@ -1,13 +1,10 @@
 {
-  "cjc_version": "0.34.3",
+  "cjc_version": "0.35.6",
   "organization": "cangjie",
   "name": "okhttp",
   "description": "nothing here",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "requires": {
-  },
-  "package_requires": {
-    "http2/http2_hpack": "./ci_lib/http2/hpack.cjo"
   },
   "foreign_requires": {
     "dns": {

@@ -8,7 +8,6 @@
  */
 package okhttp
 
-from std import sync.*
 from std import math.*
 
 /**

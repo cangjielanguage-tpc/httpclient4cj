@@ -8,8 +8,6 @@
  */
 package okhttp
 
-from encoding import url.*
-
 /**
  * The class is RequestBuilder inherited from Builder<Request>
  * @author guo_tingtingtekla,luoyukai4

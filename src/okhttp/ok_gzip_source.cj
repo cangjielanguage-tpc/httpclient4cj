@@ -8,7 +8,6 @@
  */
 package okhttp
 
-from std import io.*
 from compress import zlib.*
 
 public class OkGzipSource <: Source {

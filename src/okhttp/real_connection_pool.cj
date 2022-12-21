@@ -31,7 +31,7 @@ public class ConnectionPool {
      * @param maxIdleConnections of Int64
      * @since 0.29.3
      */
-    public init(maxIdleConnections!: Int64 = 5, keepAliveDurationNs!: Duration = Duration.second(5)) {
+    public init(maxIdleConnections!: Int64 = 5, keepAliveDurationNs!: Duration = Duration.minute(5)) {
         this.maxIdleConnections = maxIdleConnections
         this.keepAliveDurationNs = keepAliveDurationNs
     }

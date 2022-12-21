@@ -8,7 +8,7 @@
  */
 package okhttp
 
-from net import http.* as h1.*
+from net import http.*
 
 /**
  * The class is Request

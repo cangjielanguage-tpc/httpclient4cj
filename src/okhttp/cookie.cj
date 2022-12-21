@@ -75,7 +75,7 @@ public class CookieUtil {
             return None
         }
 
-        var expiresAt: Time = Time(9999, Month.of(12), 31, hour: 23,
+        var expiresAt: Time = Time(2260, Month.of(12), 31, hour: 23,
             min: 59, sec: 59, loc: Location.load("GMT"))
         var deltaSeconds = -1
         var domain = ""

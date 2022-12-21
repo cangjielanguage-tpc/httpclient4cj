@@ -10,11 +10,6 @@
 
 package okhttp
 
-
-from http2 import hpack.*
-
-
-
 /**
  * The class is H2Stream
  * @author luoyukai4

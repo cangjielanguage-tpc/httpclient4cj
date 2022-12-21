@@ -7,7 +7,6 @@
  * The file declares the Source impls.
  */
 package okhttp
-from std import math.*
 
 abstract class AbstractSource <: Source {
     protected var closed: Bool = false

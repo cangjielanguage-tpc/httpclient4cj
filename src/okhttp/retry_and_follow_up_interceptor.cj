@@ -9,7 +9,6 @@
 package okhttp
 
 from encoding import url.*
-from std import convert.*
 
 /**
  * The class is RetryAndFollowUpInterceptor inherited from Interceptor

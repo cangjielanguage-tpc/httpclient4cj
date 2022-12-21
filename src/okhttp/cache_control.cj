@@ -4,13 +4,10 @@
 
 /**
  * @file
- * The file declars the CacheControl class.
+ * The file declares the CacheControl class.
  */
 
 package okhttp
-from std import math.*
-from std import collection.*
-from std import convert.*
 from std import unicode.*
 
 /**
