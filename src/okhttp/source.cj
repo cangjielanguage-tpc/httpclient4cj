@@ -273,7 +273,7 @@ class ResponseBodySource <:Source {
         }
 
         completed = true
-        exchange.bodyComplete(true, false, e)
+        exchange.bodyComplete(bytesReceived, true, false, e)
    }
 }
 

@@ -27,6 +27,10 @@ class RouteSelector {
 
     private var hasAll: Bool = false
 
+    private let call: Call
+
+    private let eventListener: EventListener
+
     /**
      * The Function is init constructor
      *
@@ -34,9 +38,11 @@ class RouteSelector {
      * @param call of Call
      * @since 0.29.3
      */
-    public init(address: Address, routeDatabase: RouteDatabase) {
+    public init(address: Address, routeDatabase: RouteDatabase, call: Call, eventListener: EventListener) {
         this.address = address
         this.routeDatabase = routeDatabase
+        this.call = call
+        this.eventListener = eventListener
     }
 
     /**
@@ -83,8 +89,11 @@ class RouteSelector {
         }
 
         var pos: UInt64 =0
+
+        var socketHost = address.getUrl().hostname()
+        eventListener.dnsStart(call, socketHost)
         while (true) {
-            match (resolveDomain(TCP, address.getUrl().hostname(), pos)) {
+            match (resolveDomain(TCP, socketHost, pos)) {
                 case Some(route) =>
                     pos++
                     let url = address.getUrl()
@@ -101,6 +110,7 @@ class RouteSelector {
                 case None => break
             }
         }
+        eventListener.dnsEnd(call, socketHost, allRoutes)
         routeCache.put(address, allRoutes)
         return allRoutes
     }

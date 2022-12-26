@@ -181,3 +181,44 @@ public interface RequestBody {
 
     func get(): InputStream
 }
+
+public interface EventListener {
+
+    func callStart(call: Call): Unit
+    
+    func callEnd(call: Call): Unit
+
+    func dnsStart(call: Call, domainName: String): Unit
+
+    func dnsEnd(call: Call, domainName: String, allRoutes: ArrayList<Route>): Unit
+
+    func connectStart(call: Call, socketAddress: SocketAddress): Unit
+
+    func connectEnd(call: Call, socketAddress: SocketAddress, protocol: Protocol): Unit
+
+    func secureConnectStart(call: Call): Unit
+
+    func secureConnectEnd(call: Call, tlsConfig: TlsClientConfig): Unit
+
+    func connectFailed(call: Call, socketAddress: SocketAddress, protocol: Protocol, e: HttpException ): Unit
+
+    func requestHeadersStart(call: Call): Unit
+
+    func requestHeadersEnd(call: Call): Unit
+
+    func requestBodyStart(call: Call): Unit
+
+    func requestBodyEnd(call: Call, byteCount: Int64): Unit
+
+    func requestFailed(call: Call, e: HttpException): Unit
+
+    func responseHeadersStart(call: Call): Unit
+
+    func responseHeadersEnd(call: Call, response: Response): Unit
+
+    func responseBodyStart(call: Call): Unit
+
+    func responseBodyEnd(call: Call, byteCount: Int64): Unit
+
+    func responseFailed(call: Call, e: HttpException): Unit
+}

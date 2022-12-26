@@ -148,7 +148,7 @@ class RequestBodySink<: Sink {
         }
 
         completed = true
-        exchange.bodyComplete(false, true, e)
+        exchange.bodyComplete(bytesReceived, false, true, e)
     }
 }
 

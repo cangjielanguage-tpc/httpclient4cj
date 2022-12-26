@@ -185,12 +185,12 @@ public class Connection {
      * @since 0.29.3
      */
     public func connect(connectTimeout: Option<Duration>, readTimeout: Option<Duration>,
-        writeTimeout: Option<Duration>, connectionRetryEnabled: Bool) {
+        writeTimeout: Option<Duration>, connectionRetryEnabled: Bool, eventListener: EventListener, call: Call) {
 
         checkSslSocket()
 
         try {
-            establishProtocol(connectTimeout, readTimeout, writeTimeout)
+            establishProtocol(connectTimeout, readTimeout, writeTimeout, eventListener, call)
         } catch(e : HttpException) {
             Util.closeQuietly(rawSocket)
             Util.closeQuietly(socket)
@@ -200,7 +200,7 @@ public class Connection {
             source = None
             h2conn = None
             protocol = HTTP_1_1
-
+            eventListener.connectFailed(call, route.inetSocketAddress, protocol, e)
             throw RouteException("${e.message}", e)
 
         }
@@ -252,11 +252,12 @@ public class Connection {
         }
     }
 
-    private func establishProtocol(connectTimeout: Option<Duration>,
-        readTimeout: Option<Duration>, writeTimeout: Option<Duration>) {
+    private func establishProtocol(connectTimeout: Option<Duration>, readTimeout: Option<Duration>,
+        writeTimeout: Option<Duration>, eventListener: EventListener, call: Call) {
 
         match (route.getAddress().getTlsConfig()) {
             case None =>
+                eventListener.connectStart(call, route.inetSocketAddress)
                 connectSocket(connectTimeout)
                 let client = OKSocket(rawSocket.getOrThrow(), readTimeout, writeTimeout)
                 socket = client
@@ -266,9 +267,12 @@ public class Connection {
                     this.protocol = H2_PRIOR_KNOWLEDGE
                     startHttp2()
                 }
+                eventListener.connectEnd(call, route.inetSocketAddress, protocol)
             case Some(tls)=>
                 //ALPN
+                eventListener.secureConnectStart(call)
                 connectTls(connectTimeout, readTimeout, writeTimeout)
+                eventListener.secureConnectEnd(call, tls)
                 if (protocol.toString() == "h2") {
                     startHttp2()
                 }
