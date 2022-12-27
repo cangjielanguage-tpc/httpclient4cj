@@ -147,7 +147,7 @@ public class ConnectionPool {
                 }
             )
         }
-        for(connection in evictedConnections) {
+        for (connection in evictedConnections) {
             Util.closeQuietly(connection.getSocket())
         }
     }

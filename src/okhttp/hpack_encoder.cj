@@ -170,7 +170,7 @@ class Encoder <: ToString {
      *  +-------------------------------+
      *
      */
-    func addNewField(f: HeaderField, indexing: Bool){
+    func addNewField(f: HeaderField, indexing: Bool) {
         myBuffer.append(encodeTypeByte(indexing, f.sensitive))
         addHPackString(f.name)
         addHPackString(f.value)

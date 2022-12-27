@@ -14,8 +14,9 @@
 6. 支持创建文件, multipart, 表单等多种请求体
 7. 支持连接复用
 8. 支持cookie的管理使用
-9. 使用连接池减少请求延迟
-10. 默认开启gzip压缩，
+9. 使用连接池减少请求延迟，处理过时连接
+10. 默认开启gzip压缩
+11. 支持事件监听
 
 
 ## 3 License分析
@@ -25,9 +26,7 @@ apache 2.0 License
 
 ## 4 依赖分析
 
-依赖仓颉标准库 time， collection， http， socket， tls， io， fs， regex， sync， math， convert
-三方库 http2.hpack
-
+依赖仓颉标准库 time， collection， http， socket， tls， io， fs， regex， sync， math， convert等
 
 ## 5 接口设计
 
@@ -60,9 +59,10 @@ Call的工厂类，可用于发送 HTTP 请求并读取其响应，外观形式�
 | getReadTimeout              | 无                | Option\<Duration\>                              | 获取读取连接超时时间     |
 | getWriteTimeout             | 无                | Option\<Duration\>                              | 获取写连接超时时间      |
 | getProtocols                | 无                | ArrayList\<String\>                             | 获取使用的http协议    |
-| getTlsConfig                | 无                | Option\<TlsClientConfig\>                       | 获取tls的CA证书路径   |
+| getTlsConfig                | 无                | Option\<TlsClientConfig\>                       | 获取tls的CA证书     |
 | getAuthenticator            | 无                | (Option\<Route\>, Response)-> Option\<Request\> | 获取鉴权配置         |
 | getFollowSslRedirects       | 无                | Bool                                            | 获取是否允许跨协议进行重定向 |
+| getEventListener            | 无                | EventListener                                   | 获取事件监听器        |
 
 | 静态函数      | 入参   | 返回值                  | 作用描述                      |
 |-----------|------|----------------------|---------------------------|
@@ -89,8 +89,9 @@ Call的工厂类，可用于发送 HTTP 请求并读取其响应，外观形式�
 | writeTimeout             | writeTimeout: Duration                                          | OkHttpClientBuilder | 配置读取连接超时时间                                                                                |
 | protocols                | protocols: ArrayList\<String\>                                  | OkHttpClientBuilder | 参数 protocols 使用协议的集合, 目前版本只支持 http/1.1, 强制使用http1.1 以及 h2_prior_knowledge, 强制使用http2      |
 | tlsConfig                | path: String                                                    | OkHttpClientBuilder | 开启tls, 配置tls 的 CA证书路径                                                                     |
-| authenticator            | authenticator: (Option\<Route\>, Response) -> Option\<Request\> | OkHttpClientBuilder | 开启鉴权配置 (如果 code 返回 401 则需要鉴权配置), 如果lamda返回None则不再进行重试, 否则进行鉴权配置后重试请求                      |
+| authenticator            | authenticator: (Option\<Route\>, Response) -> Option\<Request\> | OkHttpClientBuilder | 开启鉴权配置 (如果 code 返回 401 则需要鉴权配置), 如果lambda返回None则不再进行重试, 否则进行鉴权配置后重试请求                     |
 | followSslRedirects       | followSslRedirects: Bool                                        | OkHttpClientBuilder | 配置是否允许跨协议进行重定向                                                                            |
+| eventListener            | listener: EventListener                                         | OkHttpClientBuilder | 配置自定义事件监听器                                                                                |
 
 
 #### interface Call
@@ -133,22 +134,48 @@ Call的工厂类，可用于发送 HTTP 请求并读取其响应，外观形式�
 | queuedCallsCount       | 无                                 | Int64    | 获取等待运行的Call数量                                                                   |
 | runningCallsCount      | 无                                 | Int64    | 获取正在运行中的Call数量                                                                  |
 
+#### interface EventListener
 
-#### class Request
+事件监听器
+
+| 成员函数                 | 入参                                                                             | 返回值      | 作用描述             |
+|----------------------|--------------------------------------------------------------------------------|----------|------------------|
+| callStart            | call: Call                                                                     | Unit     | 监听处理调用Call前      |
+| callEnd              | call: Call                                                                     | Unit     | 监听处理调用Call后      |
+| dnsStart             | call: Call, domainName: String                                                 | Unit     | 监听处理调用dns解析前     |
+| dnsEnd               | call: Call, domainName: String, allRoutes: ArrayList<Route>                    | Unit     | 监听处理调用dns解析后     |
+| connectStart         | call: Call, socketAddress: SocketAddress                                       | Unit     | 监听处理socket连接前    |
+| connectEnd           | call: Call, socketAddress: SocketAddress, protocol: Protocol                   | Unit     | 监听处理socket连接后    |
+| secureConnectStart   | call: Call                                                                     | Unit     | 监听处理tlsSocket连接前 |
+| secureConnectEnd     | call: Call, tlsConfig: TlsClientConfig                                         | Unit     | 监听处理tlsSocket连接后 |
+| connectFailed        | call: Call, socketAddress: SocketAddress, protocol: Protocol, e: HttpException | Unit     | 监听处理连接失败         |
+| requestHeadersStart  | call: Call                                                                     | Unit     | 监听处理发送请求头前       |
+| requestHeadersEnd    | call: Call                                                                     | Unit     | 监听处理发送请求头后       |
+| requestBodyStart     | call: Call                                                                     | Unit     | 监听处理发送请求体前       |
+| requestBodyEnd       | call: Call, byteCount: Int64                                                   | Unit     | 监听处理发送请求体后       |
+| requestFailed        | call: Call, e: HttpException                                                   | Unit     | 监听处理请求失败         |
+| responseHeadersStart | call: Call                                                                     | Unit     | 监听处理接受响应头前       |
+| responseHeadersEnd   | call: Call                                                                     | Unit     | 监听处理接受响应头后       |
+| responseBodyStart    | call: Call                                                                     | Unit     | 监听处理接受响应体前       |
+| responseBodyEnd      | call: Call, byteCount: Int64                                                   | Unit     | 监听处理接受响应体后       |
+| responseFailed       | call: Call, e: HttpException                                                   | Unit     | 监听处理响应失败         |
+
+#### class Request <: ToString
 
 请求对象
 
-| 成员函数            | 入参   | 返回值                                | 作用描述                           |
-|-----------------|------|------------------------------------|--------------------------------|
-| getUrl          | 无    | URL                                | 获取URL对象                        |
-| getMethod       | 无    | String                             | 获取请求方法                         |
-| getBody         | 无    | Option\<RequestBody\>              | 获取请求体                          |
-| newBuilder      | 无    | RequestBuilder                     | 根据自身配置创建Builder                |
-| getHeaders      | 无    | Header                             | 获取整个Header头对象                  |
-| getHeader       | 无    | name: String                       | 获取Header中key对应的 Option<String> |
-| getHeader       | 无    | name: String, defaultValue: String | 获取Header中key对应的value,如果没有返回默认值 |
-| getCacheControl | 无    | Option\<CacheControl\>             | 获取请求中缓存控制对象                    |
-
+| 成员函数            | 入参                          | 返回值                                | 作用描述                           |
+|-----------------|-----------------------------|------------------------------------|--------------------------------|
+| getUrl          | 无                           | URL                                | 获取URL对象                        |
+| getMethod       | 无                           | String                             | 获取请求方法                         |
+| getBody         | 无                           | Option\<RequestBody\>              | 获取请求体                          |
+| newBuilder      | 无                           | RequestBuilder                     | 根据自身配置创建Builder                |
+| getHeaders      | 无                           | Header                             | 获取整个Header头对象                  |
+| getHeader       | 无                           | name: String                       | 获取Header中key对应的 Option<String> |
+| getHeader       | 无                           | name: String, defaultValue: String | 获取Header中key对应的value,如果没有返回默认值 |
+| getCacheControl | 无                           | Option\<CacheControl\>             | 获取请求中缓存控制对象                    |
+| getTag          | s: String                   | Tag                                | 获取标签                           |
+| removeTag       | s: String                   | Unit                               | 移除标签                           |
 
 | 静态函数      | 入参    | 返回值              | 作用描述                  |
 |-----------|-------|------------------|-----------------------|
@@ -174,25 +201,52 @@ Call的工厂类，可用于发送 HTTP 请求并读取其响应，外观形式�
 | removeHeader | name: String                                                              | RequestBuilder  | 移除请求头key对应的value  |
 | header       | header: Header                                                            | RequestBuilder  | 配置请求头             |
 | cacheControl | cacheControl: CacheControl                                                | RequestBuilder  | 配置请求中缓存控制头        |
+| tag          | s: String                                                                 | RequestBuilder  | 设置标签              |
+
+
+#### class Tag
+
+标签
+
+| 成员函数        | 入参                | 返回值 | 作用描述 |
+|-------------|-------------------|-----|------|
+| init        | tag：String        | 无   | 构造器  |
+
+
+#### class MediaType <: ToString
+
+媒体类型
+
+| 成员函数         | 入参                       | 返回值       | 作用描述   |
+|--------------|--------------------------|-----------|--------|
+| getType      | 无                        | String    | 获取主类型  |
+| getSubtype   | 无                        | String    | 获取子类型  |
+| getCharset   | 无                        | String    | 获取字符集  |
+
+
+| 静态函数  | 入参               | 返回值                 | 作用描述                         |
+|-------|------------------|---------------------|------------------------------|
+| get   | string: String   | MediaType           | 解析字符串为MediaType对象，解析失败抛出异常   |
+| parse | string: String   | Option\<MediaType\> | 解析字符串为MediaType对象，解析失败返回NONE |
 
 #### interface RequestBody
 
 请求体对象
 
-| 成员函数             | 入参                              | 返回值         | 作用描述                             |
-|------------------|---------------------------------|-------------|----------------------------------|
-| contentType      | 无                               | String      | 获取请求体的请求体数据类型                    |
-| getContentLength | 无                               | Int64       | 获取请求体的长度                         |
-| writeTo          | sink: Sink                      | Unit        | 将请求体内容写入到sink对象中                 |
-| get              | 无                               | InputStream | 获取请求体的输出流                        |
+| 成员函数             | 入参                              | 返回值                 | 作用描述                             |
+|------------------|---------------------------------|---------------------|----------------------------------|
+| contentType      | 无                               | Option\<MediaType\> | 获取请求体的请求体数据类型                    |
+| getContentLength | 无                               | Int64               | 获取请求体的长度                         |
+| writeTo          | sink: Sink                      | Unit                | 将请求体内容写入到sink对象中                 |
+| get              | 无                               | InputStream         | 获取请求体的输出流                        |
 
 #### class RealRequestBody <: RequestBody
 
-| 静态函数     | 入参                                          | 返回值          | 作用描述                      |
-|----------|---------------------------------------------|--------------|---------------------------|
-| create   | contentType: String, content: String        | RequestBody  | 创建请求内容为字符串的RequestBody    |
-| create   | contentType: String, bytes: Array\<Byte\>   | RequestBody  | 创建请求内容为Byte数组的RequestBody |
-| create   | contentType: String, file: File             | RequestBody  | 创建请求内容为文件的RequestBody     |
+| 静态函数     | 入参                                                     | 返回值          | 作用描述                      |
+|----------|--------------------------------------------------------|--------------|---------------------------|
+| create   | contentType: Option\<MediaType\>, content: String      | RequestBody  | 创建请求内容为字符串的RequestBody    |
+| create   | contentType: Option\<MediaType\>, bytes: Array\<Byte\> | RequestBody  | 创建请求内容为Byte数组的RequestBody |
+| create   | contentType: Option\<MediaType\>, file: File           | RequestBody  | 创建请求内容为文件的RequestBody     |
 
 
 #### class FormBody <: RequestBody 
@@ -203,7 +257,7 @@ form表单格式的请求体
 |-----------|------|------------------|------------------------|
 | builder   | 无    | FormBodyBuilder  | 创建 FormBody 的Builder   |
 
-#### class FormBodyBuilder <: Builder<FormBody> 
+#### class FormBodyBuilder <: Builder\<FormBody\> 
 
 | 成员函数  | 入参                           | 返回值             | 作用描述            |
 |-------|------------------------------|-----------------|-----------------|
@@ -219,14 +273,14 @@ form表单格式的请求体
 | builder     | 无    | MultipartBodyBuilder | 创建 MultipartBody 的Builder |
 | getBoundary | 无    | String               | 获取boundary随机值             |
 | getParts    | 无    | ArrayList\<Part\>    | 获取所有添加的Part               |
-| getType     | 无    | String               | 获取原始类型                    |
+| getType     | 无    | MediaType            | 获取原始类型                    |
 
-#### class MultipartBodyBuilder <: Builder<MultipartBody>
+#### class MultipartBodyBuilder <: Builder\<MultipartBody\>
 
 | 成员函数            | 入参                                                | 返回值                  | 作用描述                                                               |
 |-----------------|---------------------------------------------------|----------------------|--------------------------------------------------------------------|
 | build           | 无                                                 | FormBody             | 返回构建的MultipartBody对象                                               |
-| setType         | contentType: String                               | MultipartBodyBuilder | 设置多请求类型，默认为multipart/mixed                                         |
+| setType         | contentType: MediaType                            | MultipartBodyBuilder | 设置多请求类型，默认为multipart/mixed                                         |
 | addPart         | part: Part                                        | MultipartBodyBuilder | 添加一个part                                                           |
 | addPart         | body: RequestBody                                 | MultipartBodyBuilder | 根据body创建part对象并添加                                                  |
 | addPart         | headers: Header, body: RequestBody                | MultipartBodyBuilder | 根据header, body创建part对象并添加，header不允许使用 Content-Type以及Content-Length |
@@ -242,7 +296,7 @@ form表单格式的请求体
 | createFormData  | name: String, value: String                        | Part   | 创建表单类型的part            |
 | addFormDataPart | name: String, filename: String, body: RequestBody  | Part   | 创建带文件的表单类型的part        |
 
-#### class Response
+#### class Response <: ToString
 
 请求的响应
 
@@ -272,15 +326,15 @@ form表单格式的请求体
 
 响应体
 
-| 成员函数             | 入参                                                        | 返回值     | 作用描述        |
-|------------------|-----------------------------------------------------------|---------|-------------|
-| init             | contentType: String, contentLength: Int64, source: Source | 无       | 构造器         |
-| getSource        | 无                                                         | Source  | 获取响应体source |
-| close            | 无                                                         | Unit    | 关闭响应体资源     |
-| isClosed         | 无                                                         | Unit    | 响应体资源是否已关闭  |
-| getContentLength | 无                                                         | Int64   | 获取响应体长度     |
-| getContentType   | 无                                                         | String  | 获取响应体类型     |
-| getString        | 无                                                         | String  | 解析响应体为字符串   |
+| 成员函数             | 入参                                                        | 返回值                 | 作用描述        |
+|------------------|-----------------------------------------------------------|---------------------|-------------|
+| init             | contentType: String, contentLength: Int64, source: Source | 无                   | 构造器         |
+| getSource        | 无                                                         | Source              | 获取响应体source |
+| close            | 无                                                         | Unit                | 关闭响应体资源     |
+| isClosed         | 无                                                         | Unit                | 响应体资源是否已关闭  |
+| getContentLength | 无                                                         | Int64               | 获取响应体长度     |
+| getContentType   | 无                                                         | Option\<MediaType\> | 获取响应体类型     |
+| getString        | 无                                                         | String              | 解析响应体为字符串   |
 
 #### class ResponseBuilder
 
@@ -319,11 +373,11 @@ form表单格式的请求体
 
 #### interface Sink
 
-| 成员函数  | 入参                       | 返回值  | 作用描述                                 |
-|-------|--------------------------|------|--------------------------------------|
-| write | bytes: Array<Byte>       | Unit | 将buffer写入到sink中                      |
-| flush | 无                        | Unit | 将数据从缓存中刷入流中                          |
-| close | 无                        | Unit | 关闭sink                               |
+| 成员函数  | 入参                   | 返回值  | 作用描述                                 |
+|-------|----------------------|------|--------------------------------------|
+| write | bytes: Array\<Byte\> | Unit | 将buffer写入到sink中                      |
+| flush | 无                    | Unit | 将数据从缓存中刷入流中                          |
+| close | 无                    | Unit | 关闭sink                               |
 
 
 #### RealBufferSink <: Sink
@@ -362,7 +416,7 @@ form表单格式的请求体
 |--------------|------------------|-----------|--------|
 | intercept    | chain: Chain     | Response  | 拦截处理请求 |
 
-#### class Route <: Hashable & Equatable<Route>
+#### class Route <: Hashable & Equatable\<Route\>
 
 连接服务器的路由
 
@@ -372,7 +426,7 @@ form表单格式的请求体
 | getAddress    | 无                                                   | Address | 获取 Address 对象                                                            |
 
 
-#### class Address <: Hashable & Equatable<Route>
+#### class Address <: Hashable & Equatable\<Route\>
 
 包含服务器地址和连接协议的对象
 
@@ -475,19 +529,19 @@ form表单格式的请求体
 
 socket 以及 http1连接
  
-| 成员函数            | 入参                                                               | 返回值                      | 作用描述                                  |
-|-----------------|------------------------------------------------------------------|--------------------------|---------------------------------------|
-| init            | connectionPool: ConnectionPool, route: Route                     | 无                        | 构造器  connectionPool 连接池对象， route 路由对象 |
-| getProtocol     | 无                                                                | Protocol                 | 获取协议                                  |
-| getTransmitters | 无                                                                | ArrayList\<Transmitter\> | 获取该连接关联的所有Transmitter实例               |
-| noExchanges     | 无                                                                | Unit                     | 标记该连接上不再创建新的传输                        |
-| getSocket       | 无                                                                | Option\<OKSocket\>       | 获取socket                              |
-| getRoute        | 无                                                                | Route                    | 获取路由对象                                |
-| isHealthy       | 无                                                                | Bool                     | 连接是否健康可用                              |
-| isMultiplexed   | 无                                                                | Bool                     | 连接是否支持多路复用                            |
-| onSettings      | h2: H2Connection                                                 | Bool                     | 设置h2连接创建最大的流                          |
-| connect         | connectTimeout: Option\<Duration\>, connectionRetryEnabled: Bool | Unit                     | 开始连接                                  |
-| cancel          | 无                                                                | Unit                     | 关闭socket                              |
+| 成员函数            | 入参                                                                                                                                                                             | 返回值                      | 作用描述                                  |
+|-----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------|---------------------------------------|
+| init            | connectionPool: ConnectionPool, route: Route                                                                                                                                   | 无                        | 构造器  connectionPool 连接池对象， route 路由对象 |
+| getProtocol     | 无                                                                                                                                                                              | Protocol                 | 获取协议                                  |
+| getTransmitters | 无                                                                                                                                                                              | ArrayList\<Transmitter\> | 获取该连接关联的所有Transmitter实例               |
+| noExchanges     | 无                                                                                                                                                                              | Unit                     | 标记该连接上不再创建新的传输                        |
+| getSocket       | 无                                                                                                                                                                              | Option\<OKSocket\>       | 获取socket                              |
+| getRoute        | 无                                                                                                                                                                              | Route                    | 获取路由对象                                |
+| isHealthy       | 无                                                                                                                                                                              | Bool                     | 连接是否健康可用                              |
+| isMultiplexed   | 无                                                                                                                                                                              | Bool                     | 连接是否支持多路复用                            |
+| onSettings      | h2: H2Connection                                                                                                                                                               | Bool                     | 设置h2连接创建最大的流                          |
+| connect         | connectTimeout: Option\<Duration\>, readTimeout: Option\<Duration\>, writeTimeout: Option\<Duration\>, connectionRetryEnabled: Bool, eventListener: EventListener, call: Call) | Unit                     | 开始连接                                  |
+| cancel          | 无                                                                                                                                                                              | Unit                     | 关闭socket                              |
 
 #### class H2Connection
 

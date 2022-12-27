@@ -76,7 +76,7 @@ public class MultipartBody <: RequestBody {
         var byteCount = 0
         let arr = ByteArrayStream()
 
-        for(p in 0..parts.size) {
+        for (p in 0..parts.size) {
             let part: Part = parts[p]
             let headers = part.headers
             let body = part.body
@@ -85,7 +85,7 @@ public class MultipartBody <: RequestBody {
             arr.write(CRLF)
             match (headers) {
                 case Some(h) =>
-                    for((k,v) in h) {
+                    for ((k,v) in h) {
                         for (e in v) {
                             arr.write(k.toUtf8Array())
                             arr.write(COLONSPACE)
@@ -131,7 +131,7 @@ public class MultipartBody <: RequestBody {
 
     private func writeOrCountBytes(sink: Sink): Unit {
 
-        for(p in 0..parts.size) {
+        for (p in 0..parts.size) {
             let part: Part = parts[p]
             let headers = part.headers
             let body = part.body
@@ -140,7 +140,7 @@ public class MultipartBody <: RequestBody {
             sink.write(CRLF)
             match (headers) {
                 case Some(h) =>
-                    for((k,v) in h) {
+                    for ((k,v) in h) {
                         for (e in v) {
                             sink.write(k.toUtf8Array())
                             sink.write(COLONSPACE)
@@ -287,7 +287,7 @@ public class Part {
     }
 
     private static func checkName(name: String) {
-        for(c in name.toCharArray()) {
+        for (c in name.toCharArray()) {
             if (c <=  '\u{0020}' || c>= '\u{007f}') {
                 throw IllegalArgumentException( "Unexpected char in header name: ${name}")
             }

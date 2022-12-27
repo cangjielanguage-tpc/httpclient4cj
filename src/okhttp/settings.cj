@@ -120,7 +120,7 @@ public class Settings {
      * @since 0.34.3
      */
     public func merge(other: Settings) {
-        for(i in 0..COUNT) {
+        for (i in 0..COUNT) {
             if (!other.isSet(i)) {
                 continue
             }

@@ -287,7 +287,7 @@ public class Dispatcher {
                 runningAsyncCalls.add(asyncCall)
              }
 
-             for(index in arr) {
+             for (index in arr) {
                 readyAsyncCalls.remove(index)
              }
 

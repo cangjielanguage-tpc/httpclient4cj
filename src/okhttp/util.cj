@@ -142,7 +142,7 @@ class Util {
  * @return Type of Unit
  * @since 0.29.3
  */
-public func receiveHeaders(cookieJar: CookieJar, url: URL, headers: Header): Unit {
+func receiveHeaders(cookieJar: CookieJar, url: URL, headers: Header): Unit {
     match(cookieJar) {
         case noCookie: NoCookieJar => return ()
         case _ => ()
@@ -156,7 +156,7 @@ public func receiveHeaders(cookieJar: CookieJar, url: URL, headers: Header): Uni
     cookieJar.saveFromResponse(url, cookies.toArray())
 }
 
-public func disCard(source: Source): Bool {
+func disCard(source: Source): Bool {
     try{
         let arr = ByteArrayStream()
         while (source.read(arr, 4096) != -1) {}

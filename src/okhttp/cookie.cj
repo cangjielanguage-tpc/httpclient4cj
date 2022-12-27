@@ -18,7 +18,6 @@ public class CookieUtil {
     private static let DAY_OF_MONTH_PATTERN = "(\\d{1,2})[^\\d]*"
     private static let MONTH_PATTERN = "(?i)(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec).*"
     private static let YEAR_PATTERN = "(\\d{2,4})[^\\d]*"
-    //public static let MAX_DATE = 253402300799999;
 
 
     public static func delimiterOffset(input: String, pos: Int64, limit: Int64, delimiter: Char): Int64 {
@@ -42,7 +41,7 @@ public class CookieUtil {
 
         let cookies = ArrayList<Cookie>()
 
-        for(cookieStrings in values) {
+        for (cookieStrings in values) {
             let cookie = parse(url, cookieStrings)
             match (cookie) {
                 case None => continue
@@ -137,7 +136,7 @@ public class CookieUtil {
         if (path == "" || !path.startsWith("/")) {
             let encodedPath = url.escapedPath()
             let lastSlash = encodedPath.lastIndexOf('/') ?? 0
-            path = if(lastSlash != 0) {encodedPath.substring(0, lastSlash)} else {"/"}
+            path = if (lastSlash != 0) {encodedPath.substring(0, lastSlash)} else {"/"}
         }
 
         return  Cookie(cookieName, cookieValue, path: path, domain: domain, expires: expiresAt,
@@ -380,7 +379,7 @@ public class CookieUtil {
     }
 
     private static func dateCharacterOffset(input: String, pos: Int64, limit: Int64, invert: Bool) {
-        for(i in pos..limit) {
+        for (i in pos..limit) {
             let c = input[i]
             let dateCharacter: Bool = (c < ' ' && c != '\t') || (c >= '\u{007f}') ||  (c >= '0' && c <= '9')
                 || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == ':')
@@ -417,7 +416,7 @@ public class CookieUtil {
         var it = address.lazySplit('.')
         var ip = Array<UInt8>(SOCK_ADDR_IPV4_LEN, item: 0)
 
-        for(i in 0..SOCK_ADDR_IPV4_LEN) {
+        for (i in 0..SOCK_ADDR_IPV4_LEN) {
             match (it.next()) {
                 case Some(v) =>
                     if (v.size == 0) {
