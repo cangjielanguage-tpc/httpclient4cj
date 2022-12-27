@@ -240,13 +240,13 @@ public class CacheControl {
         let nvSize = nameAndValue.size
         var head: ArrayList<String> = ArrayList<String>()
 
-        for(i in 0..nvSize-1) {
+        for (i in 0..nvSize-1) {
             head.append(nameAndValue[i])
         }
 
         let headers: ArrayList<String> = ArrayList<String>()
 
-        for(i in head) {
+        for (i in head) {
             let c: Array<String> = i.split(":")
             headers.appendAll(c)
         }
@@ -289,7 +289,7 @@ public class CacheControl {
         var canUseHeaderValue: Bool = true
         var index: Int64 = 0
 
-        for(i in 0..headers.size/2) {
+        for (i in 0..headers.size/2) {
             index++
             let name: String = headers[i * 2]
             let value: String = headers[i * 2 + 1]

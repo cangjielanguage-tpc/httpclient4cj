@@ -23,3 +23,7 @@
 - 支持formBody
 - 支持chunked传输
 - 添加dns解析的缓存
+- 适配cjc35.6版本
+- 添加mediaType
+- 添加事件监听器接口
+- 优化性能

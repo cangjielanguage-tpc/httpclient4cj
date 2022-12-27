@@ -390,7 +390,7 @@ class ByteArrayList <: Collection<UInt8>{
     }
 
     func add(b: UInt64) {
-        if(bigEndian) {
+        if (bigEndian) {
             add(UInt32(b >> 32))
             add(UInt32(b & 0xffffffff))
         } else {
@@ -400,7 +400,7 @@ class ByteArrayList <: Collection<UInt8>{
     }
 
     public func add(b: UInt32) {
-        if(bigEndian) {
+        if (bigEndian) {
             add(UInt16(b >> 16))
             add(UInt16(b & 0xffff))
         } else {
@@ -410,7 +410,7 @@ class ByteArrayList <: Collection<UInt8>{
     }
 
     public func add(b: UInt16) {
-        if(bigEndian) {
+        if (bigEndian) {
             add(UInt8(b >> 8))
             add(UInt8(b & 0xff))
         } else {
@@ -427,11 +427,13 @@ class ByteArrayList <: Collection<UInt8>{
     }
 
     public func add(msg: String) {
-        if (msg.size == 0){
+        if (msg.size == 0) {
             return
         }
+
         let arr: Array<UInt8> = msg.toUtf8Array()
-        for (u in arr){
+
+        for (u in arr) {
             add(u)
         }
     }

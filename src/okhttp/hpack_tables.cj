@@ -358,7 +358,7 @@ class DynamicTables {
         let i: Int64 = this.head - 1 - index
         if (i < 0 && dynamicArray[i + dynamicArray.size][0]) {
             return dynamicArray[i + dynamicArray.size][1].getOrThrow()
-        } else if (i >=0 && dynamicArray[i][0]){
+        } else if (i >=0 && dynamicArray[i][0]) {
             return dynamicArray[i][1].getOrThrow()
         }
         throw NoneValueException()
