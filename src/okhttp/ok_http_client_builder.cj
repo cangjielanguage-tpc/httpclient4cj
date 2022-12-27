@@ -36,6 +36,7 @@ public class OkHttpClientBuilder <: Builder<OkHttpClient> {
     var followSslRedirectsBuild: Bool = true
     var authenticatorBuild: (Option<Route>, Response) -> Option<Request> =
         {route: Option<Route>, response: Response => Option<Request>.None}
+    var listenerBuild: EventListener = NoneEventListener()
 
     /**
      * The Function is build
@@ -222,8 +223,13 @@ public class OkHttpClientBuilder <: Builder<OkHttpClient> {
         return this
     }
 
-    public func followSslRedirects(followSslRedirects: Bool): OkHttpClientBuilder{
+    public func followSslRedirects(followSslRedirects: Bool): OkHttpClientBuilder {
         this.followSslRedirectsBuild = followSslRedirects
+        return this
+    }
+
+    public func eventListener(listener: EventListener): OkHttpClientBuilder {
+        this.listenerBuild = listener
         return this
     }
 }

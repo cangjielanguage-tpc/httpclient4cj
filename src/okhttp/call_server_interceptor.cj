@@ -40,11 +40,14 @@ public class CallServerInterceptor<: Interceptor {
         let exchange: Exchange = chain.getExchange()
         exchange.writeRequestHeaders(request)
         var responseBuilder: Option<ResponseBuilder> = None
+        var responseHeadersStarted = false
 
         if (permitsRequestBody(request.getMethod()) && has(request.getBody())) {
             let body = request.getBody().getOrThrow()
             if ("100-continue" == request.getHeader("Expect","").toLower()) {
                 exchange.flushRequest()
+                responseHeadersStarted = true
+                exchange.responseHeadersStart()
                 responseBuilder = exchange.readResponseHeaders(true)
             }
             match (responseBuilder) {
@@ -63,6 +66,10 @@ public class CallServerInterceptor<: Interceptor {
         }
 
         exchange.finishRequest()
+
+        if (!responseHeadersStarted) {
+            exchange.responseHeadersStart()
+        }
 
         if (!has(responseBuilder)) {
             responseBuilder = exchange.readResponseHeaders(false)
@@ -84,6 +91,8 @@ public class CallServerInterceptor<: Interceptor {
         response = response.newBuilder()
                   .body(exchange.openResponseBody(response))
                   .build()
+
+        exchange.responseHeadersEnd(response)
 
         if ("close".equals(response.getRequest().getHeader("Connection","")) ||
             "close".equals(response.getHeader("Connection",""))) {

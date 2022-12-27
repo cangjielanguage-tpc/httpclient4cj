@@ -73,6 +73,7 @@ class RealCall<: Call {
             throw HttpException("Already Executed")
          }
          executed = true
+         client.getEventListener().callStart(this)
        }
        try {
            client.getDispatcher().executed(this)
@@ -96,6 +97,7 @@ class RealCall<: Call {
             }
         }
         executed = true
+        client.getEventListener().callStart(this)
         client.getDispatcher().enqueue(AsyncCall(responseCallback, this))
     }
 

@@ -39,6 +39,7 @@ public class Transmitter {
     private var exchangeRequestDone: Bool = false
     private var exchangeResponseDone: Bool = false
     var ref: Bool = true
+    private let eventListener: EventListener
 
     /**
      * The Function is init constructor
@@ -57,6 +58,7 @@ public class Transmitter {
                 client.connectionPool = pool
         }
         this.connectionPool = client.getConnectionPool() ?? ConnectionPool()
+        this.eventListener = client.getEventListener()
         this.call = call
     }
 
@@ -180,7 +182,8 @@ public class Transmitter {
         }
         this.request = request
         address = createAddress(request.getUrl())
-        this.exchangeFinder = Option<ExchangeFinder>.Some(ExchangeFinder(this, connectionPool, address, call))
+        this.exchangeFinder = Option<ExchangeFinder>.Some(
+            ExchangeFinder(this, connectionPool, address, call, eventListener))
     }
 
     private func createAddress(url: URL): Address {
@@ -204,7 +207,7 @@ public class Transmitter {
         let time1 = Time.now()
         let finder: ExchangeFinder = exchangeFinder.getOrThrow()
         let exchangeCodec: ExchangeCodec = finder.find(client, chain, doExtensiveHealthChecks)
-        let result: Exchange = Exchange(this, call, finder, exchangeCodec)
+        let result: Exchange = Exchange(this, call, finder, exchangeCodec, eventListener)
         synchronized (connectionPool.mutex) {
             this.exchange = Some(result)
             this.exchangeRequestDone = false
@@ -214,15 +217,16 @@ public class Transmitter {
         return result
     }
 
-    public func noMoreExchanges() {
+    public func noMoreExchanges(): Unit {
         synchronized (connectionPool.mutex) {
               noExchanges = true
         }
         maybeReleaseConnection(false)
     }
 
-    private func maybeReleaseConnection(force: Bool) {
+    private func maybeReleaseConnection(force: Bool): Unit {
         var socket: Option<OKSocket>
+        var callEnd: Bool
         synchronized (connectionPool.mutex) {
             if (force && hasExchange()) {
                 throw IllegalStateException("cannot release connection while it is in use")
@@ -233,9 +237,16 @@ public class Transmitter {
             } else {
                 socket = None
             }
-            Util.closeQuietly(socket)
+
+            callEnd = noExchanges && !has(exchange)
+        }
+        Util.closeQuietly(socket)
+
+        if (callEnd) {
+            eventListener.callEnd(call)
         }
     }
+
     public func hasExchangeFinder() {
         return match (this.exchangeFinder) {
            case Some(conn) => true

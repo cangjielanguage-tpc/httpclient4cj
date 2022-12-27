@@ -29,6 +29,7 @@ class ExchangeFinder {
     private var connectingConnection: Option<Connection> = None
     private var hasStreamFailure: Bool = false
     private var nextRouteToTry: Option<Route> = None
+    private let eventListener: EventListener
 
 
     /**
@@ -40,12 +41,14 @@ class ExchangeFinder {
      * @param call of Call
      * @since 0.29.3
      */
-    init (transmitter: Transmitter, connectionPool: ConnectionPool, address: Address, call: Call) {
+    init (transmitter: Transmitter, connectionPool: ConnectionPool, address: Address,
+        call: Call, eventListener: EventListener) {
         this.transmitter = transmitter
         this.connectionPool = connectionPool
+        this.eventListener = eventListener
         this.call = call
         this.address = address
-        this.routeSelector = RouteSelector(address, connectionPool.routeDatabase)
+        this.routeSelector = RouteSelector(address, connectionPool.routeDatabase, call, eventListener)
     }
 
     /**
@@ -140,7 +143,7 @@ class ExchangeFinder {
         result = Connection(connectionPool, selectedRoute.getOrThrow())
         connectingConnection = result
         var conn: Connection = result.getOrThrow()
-        conn.connect(connectTimeout, readTimeout, writeTimeout, connectionRetryEnabled)
+        conn.connect(connectTimeout, readTimeout, writeTimeout, connectionRetryEnabled, eventListener, call)
         connectionPool.routeDatabase.connected(conn.route)
         var socket: Option<OKSocket> = None
         synchronized (connectionPool.mutex) {
@@ -261,6 +264,7 @@ public class Exchange {
     let finder: ExchangeFinder
     /** var member codec type is ExchangeCodec */
     let codec: ExchangeCodec
+    let eventListener: EventListener
 
     /**
      * The Function is init constructor
@@ -271,11 +275,14 @@ public class Exchange {
      * @param codec of ExchangeCodec
      * @since 0.29.3
      */
-     init (transmitter: Transmitter, call: Call, finder: ExchangeFinder, codec: ExchangeCodec) {
+     init (transmitter: Transmitter, call: Call, finder: ExchangeFinder,
+        codec: ExchangeCodec, eventListener: EventListener) {
+
         this.transmitter = transmitter
         this.call = call
         this.finder = finder
         this.codec = codec
+        this.eventListener = eventListener
     }
 
     /**
@@ -293,6 +300,7 @@ public class Exchange {
             }
             return result
          } catch (e: HttpException) {
+            eventListener.responseFailed(call, e)
             trackFailure(e)
             throw e
          }
@@ -310,14 +318,24 @@ public class Exchange {
      */
     public func openResponseBody(response: Response): ResponseBody {
         try {
+            eventListener.responseBodyStart(call)
             let contentTypeString: String = response.getHeader("Content-Type","")
             let contentLength: Int64 = codec.reportedContentLength(response)
             let source = codec.openResponseBodySource(response)
             return ResponseBody(contentTypeString, contentLength, ResponseBodySource(source, this, contentLength))
         } catch (e: HttpException) {
+            eventListener.responseFailed(call, e)
             trackFailure(e)
             throw e
         }
+    }
+
+    func responseHeadersStart(): Unit {
+        eventListener.responseHeadersStart(call)
+    }
+
+    func responseHeadersEnd(response: Response): Unit {
+        eventListener.responseHeadersEnd(call, response)
     }
 
     public func getConnection(): Connection {
@@ -347,14 +365,18 @@ public class Exchange {
 
     public func createRequestBody(request: Request): Sink{
         let contentLength = request.getBody().getOrThrow().getContentLength()
+        eventListener.requestBodyStart(call)
         let rawRequestBody: Sink = codec.createRequestBody(request)
         return RequestBodySink(rawRequestBody, contentLength, this)
     }
 
     public func writeRequestHeaders(request: Request): Unit {
         try {
+            eventListener.requestHeadersStart(call)
             codec.writeRequestHeaders(request)
+            eventListener.requestHeadersEnd(call)
         } catch (e: HttpException) {
+            eventListener.requestFailed(call, e)
             trackFailure(e)
             throw e
         }
@@ -378,11 +400,28 @@ public class Exchange {
         }
     }
 
-    func bodyComplete(responseDone: Bool, requestDone: Bool, exception: Option<HttpException>): Unit {
+    func bodyComplete(bytesRead: Int64, responseDone: Bool, requestDone: Bool, exception: Option<HttpException>): Unit {
         match(exception) {
             case Some(e) => trackFailure(e)
             case None => ()
         }
+
+        if (requestDone) {
+            if (has(exception)) {
+                eventListener.requestFailed(call, exception.getOrThrow())
+            } else {
+                eventListener.requestBodyEnd(call, bytesRead)
+            }
+        }
+
+        if (responseDone) {
+            if (has(exception)) {
+                eventListener.responseFailed(call, exception.getOrThrow())
+            } else {
+                eventListener.responseBodyEnd(call, bytesRead)
+            }
+        }
+
         transmitter.exchangeMessageDone(this, requestDone, responseDone)
     }
 

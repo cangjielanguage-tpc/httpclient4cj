@@ -37,6 +37,7 @@ public class OkHttpClient {
      private var tlsConfig: Option<TlsClientConfig>
      private var authenticator: (Option<Route>, Response) -> Option<Request>
      private var followSslRedirects: Bool
+     private var eventListener: EventListener
 
      /**
       * The Function is init constructor
@@ -59,6 +60,7 @@ public class OkHttpClient {
           this.tlsConfig = builder.tlsConfigBuild
           this.protocols = builder.protocolsBuild
           this.authenticator = builder.authenticatorBuild
+          this.eventListener = builder.listenerBuild
      }
      /**
       * The Function is builder
@@ -176,6 +178,10 @@ public class OkHttpClient {
 
      public func getFollowSslRedirects(): Bool {
         return followSslRedirects
+     }
+
+     public func getEventListener(): EventListener {
+        return eventListener
      }
 }
 
