@@ -25,18 +25,6 @@ class ConcurrentQueue<T> <: Iterable<T> {
     /**
      * The Function is init constructor
      *
-     * @param The param is size of Int64
-     *
-     * @since 29.3
-     */
-    public init(mutex: Monitor, size: Int64) {
-        this.m = mutex
-        this.maxQueueMemory = size
-    }
-
-    /**
-     * The Function is init constructor
-     *
      *
      * @since 29.3
      */

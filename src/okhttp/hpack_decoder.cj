@@ -51,7 +51,7 @@ public enum IndexType {
  * @author liyanqing14
  * @since 0.29.3
  */
-class Decoder <: ToString {
+class Decoder {
     private var dynTab: DynamicTables
     private var maxDynamicTableSizeChangeRequired: Bool = false
     private var saveBuf: ArrayList<UInt8>
@@ -77,11 +77,7 @@ class Decoder <: ToString {
      * @since 0.29.3
      */
     public static func newDecode(): Decoder {
-        return Decoder(DynamicTables(4096))
-    }
-
-    public func toString(): String {
-        return dynTab.toString()
+        return newDecode(4096)
     }
 
     /**
@@ -358,47 +354,6 @@ class ByteArrayList <: Collection<UInt8>{
         this.buf = ArrayList<UInt8>()
     }
 
-    public init(len: Int64) {
-        buf = if (len < 0) {
-            ArrayList<UInt8>()
-        } else {
-            ArrayList<UInt8>(len)
-        }
-        bigEndian = true
-    }
-
-    init (buffs: Collection<UInt8>) {
-        this.buf = ArrayList<UInt8>(buffs.size)
-        for (b in buffs) {
-            this.buf.append(b)
-        }
-        this.bigEndian = true
-    }
-
-    init (buffs: Collection<UInt8>, isBig: Bool) {
-        buf = ArrayList<UInt8>(buffs.size)
-        for (b in buffs) {
-            buf.append(b)
-        }
-        bigEndian = isBig
-
-    }
-
-    init (isBig: Bool) {
-        buf = ArrayList<UInt8>()
-        bigEndian = isBig
-    }
-
-    func add(b: UInt64) {
-        if (bigEndian) {
-            add(UInt32(b >> 32))
-            add(UInt32(b & 0xffffffff))
-        } else {
-            add(UInt32(b & 0xffffffff))
-            add(UInt32(b >> 32))
-        }
-    }
-
     public func add(b: UInt32) {
         if (bigEndian) {
             add(UInt16(b >> 16))
@@ -423,18 +378,6 @@ class ByteArrayList <: Collection<UInt8>{
         buf.append(b)
         if (buf.size == mycapacity) {
             mycapacity = mycapacity << 1
-        }
-    }
-
-    public func add(msg: String) {
-        if (msg.size == 0) {
-            return
-        }
-
-        let arr: Array<UInt8> = msg.toUtf8Array()
-
-        for (u in arr) {
-            add(u)
         }
     }
 

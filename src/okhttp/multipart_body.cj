@@ -39,14 +39,16 @@ public class MultipartBody <: RequestBody {
     }
 
     public func get(): InputStream {
-        return ByteArrayStream()
+        let arr = ByteArrayStream()
+        writeOrCountBytes(arr, true)
+        return arr
     }
 
     public func getContentLength(): Int64 {
         if (contentLength != -1) {
             return contentLength
         } else {
-            contentLength = writeOrCountBytes()
+            contentLength = writeOrCountBytes(ByteArrayStream(), false)
             return contentLength
         }
     }
@@ -72,9 +74,8 @@ public class MultipartBody <: RequestBody {
        writeOrCountBytes(sink)
     }
 
-    private func writeOrCountBytes(): Int64 {
+    private func writeOrCountBytes(arr: ByteArrayStream, write: Bool): Int64 {
         var byteCount = 0
-        let arr = ByteArrayStream()
 
         for (p in 0..parts.size) {
             let part: Part = parts[p]
@@ -113,11 +114,18 @@ public class MultipartBody <: RequestBody {
                 arr.write("${contentLength}".toUtf8Array())
                 arr.write(CRLF)
             } else {
-                arr.clear()
+                if (!write) {
+                    arr.clear()
+                }
                 return -1
             }
             byteCount += contentLength
             arr.write(CRLF)
+            if (write) {
+                let readArr = Array<Byte>(contentLength, item: 0)
+                body.get().read(readArr)
+                arr.write(readArr)
+            }
             arr.write(CRLF)
         }
         arr.write(DASHDASH)
@@ -125,7 +133,9 @@ public class MultipartBody <: RequestBody {
         arr.write(DASHDASH)
         arr.write(CRLF)
         byteCount += arr.length
-        arr.clear()
+        if (!write) {
+            arr.clear()
+        }
         return byteCount
     }
 
