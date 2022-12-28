@@ -50,14 +50,14 @@ public enum SocketClient <: Resource {
     public func connect(): Unit {
         match(this) {
             case SocketC(conn) => conn.connect()
-            case TlsC(conn) => ()
+            case TlsC(conn) => conn.connect()
         }
     }
 
     public func connect(timeout: Duration): Unit {
         match(this) {
             case SocketC(conn) => conn.connect(timeout)
-            case TlsC(conn) => ()
+            case TlsC(conn) => conn.connect(timeout)
         }
     }
 

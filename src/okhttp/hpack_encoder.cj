@@ -14,22 +14,18 @@ package okhttp
  * @author liyanqing14
  * @since 0.29.3
  */
-class Encoder <: ToString {
+class Encoder {
     var dynTab: DynamicTables
     var minSize: Int64
     var myBuffer: ArrayList<UInt8>
     private var tableSizeUpdate: Bool
 
     /* init empty encoder */
-    protected init(dynTab: DynamicTables, minSize: Int64) {
+    init(dynTab: DynamicTables, minSize: Int64) {
         this.minSize = minSize
         this.dynTab = dynTab
         this.tableSizeUpdate = false
         this.myBuffer = ArrayList<UInt8>()
-    }
-
-    init(dynTab: DynamicTables) {
-        this(dynTab, dynTab.capacity())
     }
 
     /**
@@ -39,7 +35,7 @@ class Encoder <: ToString {
      */
     /* init encoder */
     static func newEncoder(): Encoder{
-        return Encoder(DynamicTables(4096), 4096)
+        return newEncoder(4096)
     }
 
     /**
@@ -96,10 +92,6 @@ class Encoder <: ToString {
                 tableSizeUpdate = true
             }
         }
-    }
-
-    public func toString(): String {
-        return dynTab.toString()
     }
 
     /**
@@ -234,7 +226,9 @@ class Encoder <: ToString {
             huff_encode(arr, str.toUtf8Array())
             let huffArr = arr.toArray()
             myBuffer.append(UInt8(huffArr.size | CONST_128_I64))
-            myBuffer.appendAll(arr.toArray())
+            if(!arr.isEmpty()) {
+                myBuffer.appendAll(arr.toArray())
+            }
         } else {
             let arr = str.toUtf8Array()
             myBuffer.append(UInt8(arr.size))

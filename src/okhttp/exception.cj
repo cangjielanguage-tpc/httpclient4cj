@@ -24,15 +24,6 @@ public open class HttpException <: Exception {
     public init(message: String) {
         super(message)
     }
-    /*
-     * The Function is getClassName
-     *
-     * @return Type of String
-     * @since 0.29.3
-     */
-    protected override func getClassName(): String {
-        return "HttpException"
-    }
 }
 
 public class RouteException <: Exception {
@@ -51,10 +42,6 @@ public class RouteException <: Exception {
 
      public func getLastConnectException(): HttpException {
          return lastException
-     }
-
-     func addConnectException(e: HttpException) {
-        lastException = e
      }
 }
 

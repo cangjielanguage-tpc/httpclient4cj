@@ -212,7 +212,7 @@ public class H2Connection {
         synchronized (writer.mutex) {
             synchronized (muLock) {
                 if (shutdown) {
-                    throw HttpException("connection shutdown")
+                    throw ConnectionShutdownException("connection shutdown")
                 }
                 okHttpSettings.merge(settings)
             }
@@ -416,7 +416,7 @@ public class H2Connection {
                     shutdownConn(REFUSED_STREAM)
                 }
                 if (shutdown) {
-                   throw HttpException("connection shutdown")
+                   throw ConnectionShutdownException("connection shutdown")
                 }
                 streamId = nextStreamID
                 nextStreamID += 2

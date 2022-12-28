@@ -49,19 +49,6 @@ struct HeaderField {
      * Instantiates a new Init.
      *
      * @param n of String
-     * @param s of Bool
-     * @since 0.35.6
-     */
-    init(name: String, sensitive: Bool) {
-        this.name = name
-        this.value = ""
-        this.sensitive = sensitive
-    }
-
-    /**
-     * Instantiates a new Init.
-     *
-     * @param n of String
      * @since 0.35.6
      */
     init(name: String) {
@@ -80,10 +67,6 @@ struct HeaderField {
         return this.name.size + this.value.size + CONST_32_I64
     }
 
-    
-    func isPseudo(): Bool {
-        return this.name.size != 0 && this.name[0] == ':'
-    }
 }
 
 /**
@@ -168,19 +151,6 @@ class HeaderStaticTable {
         return staticTable[index - 1]
     }
 
-    /**
-     * Get index name func.
-     *
-     * @return the String
-     */
-    /* return */
-    static func getIndexName(index: Int64): String {
-        if (index <= 0 || index > staticTable.size) {
-            throw IndexOutOfBoundsException()
-        }
-        
-        return staticTable[index - 1].name
-    }
 
     /**
      * Search name func.
@@ -195,24 +165,6 @@ class HeaderStaticTable {
         return -1
     }
 
-    /**
-     * Search func.
-     *
-     * @return the Int64
-     */
-    static func search(f: HeaderField): Int64 {
-        let index: Int64 = searchName(f.name)
-        
-        if (index > capacity || index <= 0) {
-            return -1
-        }
-        
-        for (i in index..=capacity where f.name.equals(staticTable[i - 1].name) && f.value.equals(staticTable[i - 1].value)) {
-            return i
-        }
-        
-        return index
-    }
 
     /**
      * Search full func.
@@ -235,22 +187,6 @@ class HeaderStaticTable {
         }
         
         return (key, value)
-    }
-}
-
-
-/**
- * The extend HeaderField.
- */
-extend HeaderField <: ToString {
-    /**
-     * The Function is toString
-     *
-     * @return Type of String
-     * @since 0.29.3
-     */
-    public func toString(): String {
-        return "${this.name}: ${this.value}"
     }
 }
 
@@ -329,19 +265,19 @@ class DynamicTables {
      * @return the Unit
      */
     public func add(header: HeaderField): Unit {
-        let headerSize: Int64 = header.size();
+        let headerSize: Int64 = header.size()
         if (headerSize > this.myCapacity) {
             this.clear()
             return
         }
-        while (this.myCapacity - this.mySize < headerSize) {
+        while (this.myCapacity - size() < headerSize) {
             this.remove()
         }
-        this.dynamicArray[head] = (true, header);
+        this.dynamicArray[head] = (true, header)
         this.head++
-        this.mySize += headerSize;
+        this.mySize += headerSize
         if (this.head == dynamicArray.size) {
-            this.head = 0;
+            this.head = 0
         }
     }
 
@@ -362,37 +298,6 @@ class DynamicTables {
             return dynamicArray[i][1].getOrThrow()
         }
         throw NoneValueException()
-    }
-
-    /**
-     * Get header func.
-     *
-     * @return the func
-     */
-    public func getHeader(ind: Int64): Option<HeaderField> {
-        let index = ind - 62
-        if (index < 0 || index > length() || this.length() == 0) {
-            throw IndexOutOfBoundsException("index ${index} out of bounds for length ${this.length()}")
-        }
-        let i: Int64 = index + this.tail
-        if (i < 0) {
-            return dynamicArray[i + dynamicArray.size][1]
-        } else {
-            return dynamicArray[i][1]
-        }
-    }
-
-    public  func dynamicArrToString() : String {
-        var str = ""
-        for (item in dynamicArray) {
-            match (item[1]) {
-                case Some(v) =>
-                    str += ", ${item[0]}: ${v}"
-                case None =>
-                    str += ", ${item[0]}: none"
-            }
-        }
-        return str
     }
 
     /**
@@ -517,14 +422,3 @@ class DynamicTables {
     }
 }
 
-extend DynamicTables <: ToString {
-    public func toString(): String {
-        var str = ""
-        var index = 62
-        for (i in head..= this.tail:-1 where this.dynamicArray[i][0]) {
-            str += "${index}=[${this.dynamicArray[i][1].toString()}]\r\n"
-            index ++
-        }
-        return str
-    }
-}
