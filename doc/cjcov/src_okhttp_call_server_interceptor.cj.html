@@ -284,12 +284,12 @@ pre
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2022-11-29 16:13:07</td>
+            <td class="headerValue">2022-12-29 14:38:50</td>
             <td></td>
             <td class="headerName">Lines:</td>
-            <td class="headerTableEntry">37</td>
-            <td class="headerTableEntry">44</td>
-            <td class="headerTableEntry" style="background-color:Yellow">84.1 %</td>
+            <td class="headerTableEntry">43</td>
+            <td class="headerTableEntry">50</td>
+            <td class="headerTableEntry" style="background-color:Yellow">86.0 %</td>
           </tr>
           <tr>
             <td class="headerName">Legend:</td>
@@ -360,7 +360,7 @@ pre
 <td align="right" class="lineno"><pre>7</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre> * The file declars the CallServerInterceptor class.</pre></td>
+<td align="left" class="src "><pre> * The file declares the CallServerInterceptor class.</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>8</pre></td>
@@ -575,377 +575,425 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>43</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        var responseHeadersStarted = false</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>44</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        if (permitsRequestBody(request.getMethod()) &amp;&amp; has(request.getBody())) {</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>45</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            let body = request.getBody().getOrThrow()</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (permitsRequestBody(request.getMethod()) &amp;&amp; has(request.getBody())) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>46</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            if ("100-continue" == request.getHeader("Expect","").toLower()) {</pre></td>
+<td align="left" class="src coveredLine"><pre>            let body = request.getBody().getOrThrow()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>47</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                exchange.flushRequest()</pre></td>
+<td align="left" class="src coveredLine"><pre>            if ("100-continue" == request.getHeader("Expect","").toLower()) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>48</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                responseBuilder = exchange.readResponseHeaders(true)</pre></td>
+<td align="left" class="src coveredLine"><pre>                exchange.flushRequest()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>49</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>            }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                responseHeadersStarted = true</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>50</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            match (responseBuilder) {</pre></td>
+<td align="left" class="src coveredLine"><pre>                exchange.responseHeadersStart()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>51</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                case None =&gt;</pre></td>
+<td align="left" class="src coveredLine"><pre>                responseBuilder = exchange.readResponseHeaders(true)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>52</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                    let bufferedRequestBody = RealBufferSink(exchange.createRequestBody(request))</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>53</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                    body.writeTo(bufferedRequestBody)</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>54</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                    bufferedRequestBody.close()</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>55</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                case Some(res) =&gt;</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>56</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                    exchange.noRequestBody()</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>57</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                    if (!exchange.getConnection().isMultiplexed()) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>58</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                        exchange.noNewExchangesOnConnection()</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>59</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>                    }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>60</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
+<td align="right" class="lineno"><pre>53</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            match (responseBuilder) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>54</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                case None =&gt;</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>55</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                    let bufferedRequestBody = RealBufferSink(exchange.createRequestBody(request))</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>56</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                    body.writeTo(bufferedRequestBody)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>57</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                    bufferedRequestBody.close()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>58</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                case Some(res) =&gt;</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>59</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                    exchange.noRequestBody()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>60</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                    if (!exchange.getConnection().isMultiplexed()) {</pre></td>
+</tr>
+<tr>
 <td align="right" class="lineno"><pre>61</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        } else {</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                        exchange.noNewExchangesOnConnection()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>62</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            exchange.noRequestBody()</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>                    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>63</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
+<td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>64</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="left" class="src "><pre>        } else {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>65</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        exchange.finishRequest()</pre></td>
+<td align="left" class="src coveredLine"><pre>            exchange.noRequestBody()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>66</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>67</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        if (!has(responseBuilder)) {</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>68</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            responseBuilder = exchange.readResponseHeaders(false)</pre></td>
+<td align="left" class="src coveredLine"><pre>        exchange.finishRequest()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>69</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>70</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (!responseHeadersStarted) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>71</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        let response: Response = responseBuilder.getOrThrow().request(request).build()</pre></td>
+<td align="left" class="src coveredLine"><pre>            exchange.responseHeadersStart()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>72</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        return checkResponse(exchange, request, response)</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>73</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>74</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (!has(responseBuilder)) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>75</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            responseBuilder = exchange.readResponseHeaders(false)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>76</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    private func checkResponse( exchange: Exchange, request: Request, checkResponse: Response) : Response {</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>77</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        var response: Response = checkResponse</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>78</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        let code = response.getCode()</pre></td>
+<td align="left" class="src coveredLine"><pre>        let response: Response = responseBuilder.getOrThrow().request(request).build()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>79</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return checkResponse(exchange, request, response)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>80</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        if (code == 100) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>81</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            response = exchange.readResponseHeaders(false).getOrThrow().request(request).build()</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>82</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>83</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>84</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        response = response.newBuilder()</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>85</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                  .body(exchange.openResponseBody(response))</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>86</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>                  .build()</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>87</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>88</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        if ("close".equals(response.getRequest().getHeader("Connection","")) ||</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>89</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            "close".equals(response.getHeader("Connection",""))) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>90</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            exchange.noNewExchangesOnConnection()</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>91</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>92</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>93</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        if (code == 204 || code == 205) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>94</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            match (response.getBody()) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>95</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                case Some(body) =&gt;</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>96</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                   if (body.getContentLength() &gt; 0) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>97</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                      throw ProtocolException("HTTP ${code} had non-zero Content-Length: ${body.getContentLength()}")</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>98</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>                   }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>99</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                case None =&gt; ()</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>100</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>           }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>101</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>102</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>103</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        return response</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>104</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
+<td align="right" class="lineno"><pre>81</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>82</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>83</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    private func checkResponse( exchange: Exchange, request: Request, checkResponse: Response) : Response {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>84</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        var response: Response = checkResponse</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>85</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        let code = response.getCode()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>86</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>87</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (code == 100) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>88</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            response = exchange.readResponseHeaders(false).getOrThrow().request(request).build()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>89</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>90</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>91</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        response = response.newBuilder()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>92</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                  .body(exchange.openResponseBody(response))</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>93</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>                  .build()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>94</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>95</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        exchange.responseHeadersEnd(response)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>96</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>97</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        if ("close".equals(response.getRequest().getHeader("Connection","")) ||</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>98</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            "close".equals(response.getHeader("Connection",""))) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>99</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            exchange.noNewExchangesOnConnection()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>100</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>101</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>102</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (code == 204 || code == 205) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>103</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            match (response.getBody()) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>104</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                case Some(body) =&gt;</pre></td>
+</tr>
+<tr>
 <td align="right" class="lineno"><pre>105</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                   if (body.getContentLength() &gt; 0) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>106</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                      throw ProtocolException("HTTP ${code} had non-zero Content-Length: ${body.getContentLength()}")</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>107</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>                   }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>108</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                case None =&gt; ()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>109</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>           }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>110</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>111</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return response</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>112</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>113</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>}</pre></td>

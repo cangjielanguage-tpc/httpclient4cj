@@ -284,12 +284,12 @@ pre
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2022-11-29 16:13:07</td>
+            <td class="headerValue">2022-12-29 14:38:50</td>
             <td></td>
             <td class="headerName">Lines:</td>
-            <td class="headerTableEntry">71</td>
+            <td class="headerTableEntry">72</td>
             <td class="headerTableEntry">89</td>
-            <td class="headerTableEntry" style="background-color:Yellow">79.8 %</td>
+            <td class="headerTableEntry" style="background-color:Yellow">80.9 %</td>
           </tr>
           <tr>
             <td class="headerName">Legend:</td>
@@ -384,145 +384,145 @@ pre
 <td align="right" class="lineno"><pre>11</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>from std import io.*</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>12</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="left" class="src "><pre>public class OkBuffer &lt;: Source {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>13</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>14</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>public class OkBuffer &lt;: Source {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>15</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    private var source: InputStream</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>16</pre></td>
+<td align="right" class="lineno"><pre>14</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    private var closed: Bool = false</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>17</pre></td>
+<td align="right" class="lineno"><pre>15</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    private var buffer: ByteArrayStream = ByteArrayStream()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>18</pre></td>
+<td align="right" class="lineno"><pre>16</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    public init (inputStream: InputStream) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>19</pre></td>
+<td align="right" class="lineno"><pre>17</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        this.source = inputStream</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>20</pre></td>
+<td align="right" class="lineno"><pre>18</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>21</pre></td>
+<td align="right" class="lineno"><pre>19</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>22</pre></td>
+<td align="right" class="lineno"><pre>20</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    private func read(bytes: Array&lt;Byte&gt;): Int64 {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>23</pre></td>
+<td align="right" class="lineno"><pre>21</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let read = source.read(bytes)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>24</pre></td>
+<td align="right" class="lineno"><pre>22</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>25</pre></td>
+<td align="right" class="lineno"><pre>23</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (read != -1) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>26</pre></td>
+<td align="right" class="lineno"><pre>24</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (read == bytes.size) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>27</pre></td>
+<td align="right" class="lineno"><pre>25</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                buffer.write(bytes)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>28</pre></td>
+<td align="right" class="lineno"><pre>26</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            } else {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>29</pre></td>
+<td align="right" class="lineno"><pre>27</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                buffer.write(bytes.slice(0, read))</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>30</pre></td>
+<td align="right" class="lineno"><pre>28</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>31</pre></td>
+<td align="right" class="lineno"><pre>29</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>32</pre></td>
+<td align="right" class="lineno"><pre>30</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>33</pre></td>
+<td align="right" class="lineno"><pre>31</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return read</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>34</pre></td>
+<td align="right" class="lineno"><pre>32</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>33</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>34</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func readByte(): Byte {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>35</pre></td>
@@ -534,7 +534,7 @@ pre
 <td align="right" class="lineno"><pre>36</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public func readByte(): Byte {</pre></td>
+<td align="left" class="src coveredLine"><pre>        let arr = Array&lt;Byte&gt;(1, item: 0)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>37</pre></td>
@@ -546,187 +546,187 @@ pre
 <td align="right" class="lineno"><pre>38</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        let arr = Array&lt;Byte&gt;(1, item: 0)</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>39</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>40</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (buffer.length &gt; 0) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>41</pre></td>
+<td align="right" class="lineno"><pre>39</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            buffer.read(arr)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>42</pre></td>
+<td align="right" class="lineno"><pre>40</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        } else {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>43</pre></td>
+<td align="right" class="lineno"><pre>41</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            let arr2 = Array&lt;Byte&gt;(4096, item: 0)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>44</pre></td>
+<td align="right" class="lineno"><pre>42</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            read(arr2)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>45</pre></td>
+<td align="right" class="lineno"><pre>43</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            buffer.read(arr)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>46</pre></td>
+<td align="right" class="lineno"><pre>44</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>47</pre></td>
+<td align="right" class="lineno"><pre>45</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return arr[0]</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>48</pre></td>
+<td align="right" class="lineno"><pre>46</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
+<td align="right" class="lineno"><pre>47</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>48</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
 <td align="right" class="lineno"><pre>49</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>50</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>51</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    public func read(bytes: ByteArrayStream, byteCount: Int64): Int64 {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>52</pre></td>
+<td align="right" class="lineno"><pre>50</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (closed) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>53</pre></td>
+<td align="right" class="lineno"><pre>51</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            throw IllegalStateException("closed")</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>54</pre></td>
+<td align="right" class="lineno"><pre>52</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>55</pre></td>
+<td align="right" class="lineno"><pre>53</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>56</pre></td>
+<td align="right" class="lineno"><pre>54</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (buffer.length == 0) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>57</pre></td>
+<td align="right" class="lineno"><pre>55</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>           let arr = Array&lt;Byte&gt;(4096, item: 0)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>58</pre></td>
+<td align="right" class="lineno"><pre>56</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>           let read = read(arr)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>59</pre></td>
+<td align="right" class="lineno"><pre>57</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>           if (read == -1) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>60</pre></td>
+<td align="right" class="lineno"><pre>58</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>               return -1</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>61</pre></td>
+<td align="right" class="lineno"><pre>59</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>           }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>62</pre></td>
+<td align="right" class="lineno"><pre>60</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>63</pre></td>
+<td align="right" class="lineno"><pre>61</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>64</pre></td>
+<td align="right" class="lineno"><pre>62</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let arr = Array&lt;Byte&gt;(min(byteCount, buffer.length), item: 0)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>65</pre></td>
+<td align="right" class="lineno"><pre>63</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let read = buffer.read(arr)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>66</pre></td>
+<td align="right" class="lineno"><pre>64</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        bytes.write(arr)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>67</pre></td>
+<td align="right" class="lineno"><pre>65</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return read</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>68</pre></td>
+<td align="right" class="lineno"><pre>66</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>67</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>68</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func skipBuffer(limit: Int64): Unit {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>69</pre></td>
@@ -738,97 +738,97 @@ pre
 <td align="right" class="lineno"><pre>70</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public func skipBuffer(limit: Int64): Unit {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>71</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>72</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>       if (limit &lt; 0) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>73</pre></td>
+<td align="right" class="lineno"><pre>71</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>           throw IllegalArgumentException("limit = ${limit} &lt; 0")</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>74</pre></td>
+<td align="right" class="lineno"><pre>72</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>       } else if (limit == 0) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>75</pre></td>
+<td align="right" class="lineno"><pre>73</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>           return</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>76</pre></td>
+<td align="right" class="lineno"><pre>74</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>       }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>77</pre></td>
+<td align="right" class="lineno"><pre>75</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>78</pre></td>
+<td align="right" class="lineno"><pre>76</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>       let bytes = Array&lt;Byte&gt;(limit, item: 0)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>79</pre></td>
+<td align="right" class="lineno"><pre>77</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>       if (buffer.length &gt;= limit) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>80</pre></td>
+<td align="right" class="lineno"><pre>78</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>           buffer.read(bytes)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>81</pre></td>
+<td align="right" class="lineno"><pre>79</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>       } else {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>82</pre></td>
+<td align="right" class="lineno"><pre>80</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>           let arr2 = Array&lt;Byte&gt;(4096, item: 0)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>83</pre></td>
+<td align="right" class="lineno"><pre>81</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>           read(arr2)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>84</pre></td>
+<td align="right" class="lineno"><pre>82</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>           buffer.read(bytes)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>85</pre></td>
+<td align="right" class="lineno"><pre>83</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>       }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>84</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>85</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>86</pre></td>
@@ -839,455 +839,443 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>87</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>88</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>89</pre></td>
-<td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    public func indexOf(b: Byte, start: Int64, end: Int64): Int64 {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>90</pre></td>
+<td align="right" class="lineno"><pre>88</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (start &gt;= 0 &amp;&amp; end &gt;= start) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>91</pre></td>
+<td align="right" class="lineno"><pre>89</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>           var offSet = start</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>92</pre></td>
+<td align="right" class="lineno"><pre>90</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>           if (end &lt; buffer.length) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>93</pre></td>
+<td align="right" class="lineno"><pre>91</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>               for (i in offSet..end) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>94</pre></td>
+<td align="right" class="lineno"><pre>92</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                   if (buffer.bytes()[i] == b) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>95</pre></td>
+<td align="right" class="lineno"><pre>93</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                       return i</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>96</pre></td>
+<td align="right" class="lineno"><pre>94</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                   }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>97</pre></td>
+<td align="right" class="lineno"><pre>95</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>               }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>98</pre></td>
+<td align="right" class="lineno"><pre>96</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>           } else {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>99</pre></td>
+<td align="right" class="lineno"><pre>97</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>              while (offSet &lt; end) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>100</pre></td>
+<td align="right" class="lineno"><pre>98</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                 for (i in offSet..buffer.length) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>101</pre></td>
+<td align="right" class="lineno"><pre>99</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                     if (buffer.bytes()[i] == b) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>102</pre></td>
+<td align="right" class="lineno"><pre>100</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                       return i</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>103</pre></td>
+<td align="right" class="lineno"><pre>101</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                     }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>104</pre></td>
+<td align="right" class="lineno"><pre>102</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                 }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>105</pre></td>
+<td align="right" class="lineno"><pre>103</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                 offSet = buffer.length</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>106</pre></td>
+<td align="right" class="lineno"><pre>104</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                 if (read(Array&lt;Byte&gt;(4096, item: 0)) == -1) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>107</pre></td>
+<td align="right" class="lineno"><pre>105</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                     return -1</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>108</pre></td>
+<td align="right" class="lineno"><pre>106</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                 }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>109</pre></td>
+<td align="right" class="lineno"><pre>107</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>              }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>110</pre></td>
+<td align="right" class="lineno"><pre>108</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>           }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>111</pre></td>
+<td align="right" class="lineno"><pre>109</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>           return -1</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>112</pre></td>
+<td align="right" class="lineno"><pre>110</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        } else {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>113</pre></td>
+<td align="right" class="lineno"><pre>111</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>             throw IllegalArgumentException("from=${start} to=${end}")</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>114</pre></td>
+<td align="right" class="lineno"><pre>112</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>115</pre></td>
+<td align="right" class="lineno"><pre>113</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>116</pre></td>
+<td align="right" class="lineno"><pre>114</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>117</pre></td>
+<td align="right" class="lineno"><pre>115</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    public func readUtf8LineStrict(): String {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>118</pre></td>
+<td align="right" class="lineno"><pre>116</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return readUtf8LineStrict(Int64.Max)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>119</pre></td>
+<td align="right" class="lineno"><pre>117</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>120</pre></td>
+<td align="right" class="lineno"><pre>118</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>121</pre></td>
+<td align="right" class="lineno"><pre>119</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    public func readUtf8LineStrict(limit: Int64): String {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>122</pre></td>
+<td align="right" class="lineno"><pre>120</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (limit &lt; 0) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>123</pre></td>
+<td align="right" class="lineno"><pre>121</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            throw  IllegalArgumentException("limit &lt; 0: ${limit}")</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>124</pre></td>
+<td align="right" class="lineno"><pre>122</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>125</pre></td>
+<td align="right" class="lineno"><pre>123</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        var index = 0</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>126</pre></td>
+<td align="right" class="lineno"><pre>124</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        while (true) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>127</pre></td>
+<td align="right" class="lineno"><pre>125</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let indexLF = indexOf(0xAu8, index, limit)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>128</pre></td>
+<td align="right" class="lineno"><pre>126</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (indexLF == -1) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>129</pre></td>
+<td align="right" class="lineno"><pre>127</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                break</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>130</pre></td>
+<td align="right" class="lineno"><pre>128</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>131</pre></td>
+<td align="right" class="lineno"><pre>129</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let indexCR = indexOf(0xDu8, indexLF - 1, indexLF)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>132</pre></td>
+<td align="right" class="lineno"><pre>130</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (indexCR != -1 &amp;&amp; indexCR + 1 == indexLF) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>133</pre></td>
+<td align="right" class="lineno"><pre>131</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                if (indexCR == 0) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>134</pre></td>
+<td align="right" class="lineno"><pre>132</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                    skipBuffer(2)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>135</pre></td>
+<td align="right" class="lineno"><pre>133</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                    return ""</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>136</pre></td>
+<td align="right" class="lineno"><pre>134</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>137</pre></td>
+<td align="right" class="lineno"><pre>135</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                let arr = Array&lt;Byte&gt;(indexCR, item: 0)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>138</pre></td>
+<td align="right" class="lineno"><pre>136</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                buffer.read(arr)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>139</pre></td>
+<td align="right" class="lineno"><pre>137</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                let line = String.fromUtf8(arr)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>140</pre></td>
+<td align="right" class="lineno"><pre>138</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                skipBuffer(2)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>141</pre></td>
+<td align="right" class="lineno"><pre>139</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                return line</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>142</pre></td>
+<td align="right" class="lineno"><pre>140</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>143</pre></td>
+<td align="right" class="lineno"><pre>141</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            index = indexLF</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            index = indexLF</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>144</pre></td>
+<td align="right" class="lineno"><pre>142</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>145</pre></td>
+<td align="right" class="lineno"><pre>143</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>        throw IllegalArgumentException("can't find CRLF line")</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>146</pre></td>
+<td align="right" class="lineno"><pre>144</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>147</pre></td>
+<td align="right" class="lineno"><pre>145</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>148</pre></td>
+<td align="right" class="lineno"><pre>146</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    public func close(): Unit {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>149</pre></td>
+<td align="right" class="lineno"><pre>147</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (closed) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>150</pre></td>
+<td align="right" class="lineno"><pre>148</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            return</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>151</pre></td>
+<td align="right" class="lineno"><pre>149</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>152</pre></td>
+<td align="right" class="lineno"><pre>150</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        buffer.clear()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>153</pre></td>
+<td align="right" class="lineno"><pre>151</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        match (source) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>154</pre></td>
+<td align="right" class="lineno"><pre>152</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case r: Resource =&gt; r.close()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>155</pre></td>
+<td align="right" class="lineno"><pre>153</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            case _ =&gt; ()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>156</pre></td>
+<td align="right" class="lineno"><pre>154</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>157</pre></td>
+<td align="right" class="lineno"><pre>155</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>158</pre></td>
+<td align="right" class="lineno"><pre>156</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>159</pre></td>
+<td align="right" class="lineno"><pre>157</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    public func isClosed(): Bool {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>160</pre></td>
+<td align="right" class="lineno"><pre>158</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return closed</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>161</pre></td>
+<td align="right" class="lineno"><pre>159</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>162</pre></td>
+<td align="right" class="lineno"><pre>160</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>}</pre></td>

@@ -284,12 +284,12 @@ pre
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2022-11-29 16:13:07</td>
+            <td class="headerValue">2022-12-29 14:38:50</td>
             <td></td>
             <td class="headerName">Lines:</td>
-            <td class="headerTableEntry">40</td>
-            <td class="headerTableEntry">43</td>
-            <td class="headerTableEntry" style="background-color:LightGreen">93.0 %</td>
+            <td class="headerTableEntry">45</td>
+            <td class="headerTableEntry">48</td>
+            <td class="headerTableEntry" style="background-color:LightGreen">93.8 %</td>
           </tr>
           <tr>
             <td class="headerName">Legend:</td>
@@ -360,7 +360,7 @@ pre
 <td align="right" class="lineno"><pre>7</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre> * The file declars the Address class.</pre></td>
+<td align="left" class="src "><pre> * The file declares the RouteSelector class.</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>8</pre></td>
@@ -498,466 +498,526 @@ pre
 <td align="right" class="lineno"><pre>30</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    /**</pre></td>
+<td align="left" class="src "><pre>    private let call: Call</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>31</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * The Function is init constructor</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>32</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     *</pre></td>
+<td align="left" class="src "><pre>    private let eventListener: EventListener</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>33</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * @param address of Address</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>34</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * @param call of Call</pre></td>
+<td align="left" class="src "><pre>    /**</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>35</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * @since 0.29.3</pre></td>
+<td align="left" class="src "><pre>     * The Function is init constructor</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>36</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     */</pre></td>
+<td align="left" class="src "><pre>     *</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>37</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public init(address: Address, routeDatabase: RouteDatabase) {</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     * @param address of Address</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>38</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        this.address = address</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     * @param call of Call</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>39</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        this.routeDatabase = routeDatabase</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>40</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>41</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>42</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    /**</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>43</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * The Function is next</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>44</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     *</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>45</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * @return Type of Route</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>46</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @since 0.29.3</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>47</pre></td>
+<td align="right" class="lineno"><pre>40</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>48</pre></td>
+<td align="right" class="lineno"><pre>41</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public func next(): Option&lt;Route&gt; {</pre></td>
+<td align="left" class="src coveredLine"><pre>    public init(address: Address, routeDatabase: RouteDatabase, call: Call, eventListener: EventListener) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>42</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        this.address = address</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>43</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        this.routeDatabase = routeDatabase</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>44</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        this.call = call</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>45</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        this.eventListener = eventListener</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>46</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>47</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>48</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    /**</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>49</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        if (!hasNext()) {</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     * The Function is next</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>50</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            throw IndexOutOfBoundsException()</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     *</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>51</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
+<td align="left" class="src "><pre>     * @return Type of Route</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>52</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        let route = allRoutes[Int64(index)]</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     * @since 0.29.3</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>53</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        index++</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     */</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>54</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        return hasPost(route)</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func next(): Option&lt;Route&gt; {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>55</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (!hasNext()) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>56</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            throw IndexOutOfBoundsException()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>57</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>58</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    private func hasPost(route: Route):  Option&lt;Route&gt; {</pre></td>
+<td align="left" class="src coveredLine"><pre>        let route = allRoutes[Int64(index)]</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>59</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        if (!routeDatabase.shouldPostpone(route)) {</pre></td>
+<td align="left" class="src coveredLine"><pre>        index++</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>60</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            return route</pre></td>
+<td align="left" class="src coveredLine"><pre>        return hasPost(route)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>61</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        } else {</pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>62</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            return next()</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>63</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>64</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    private func hasPost(route: Route):  Option&lt;Route&gt; {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>65</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (!routeDatabase.shouldPostpone(route)) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>66</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            return route</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>67</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public func hasNext(): Bool {</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        } else {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>68</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        if (!hasAll) {</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            return next()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>69</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            getAll()</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>70</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>71</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        return index &lt; UInt64(allRoutes.size)</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>72</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>73</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func hasNext(): Bool {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>74</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public func getAll(): ArrayList&lt;Route&gt; {</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (!hasAll) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>75</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        hasAll = true</pre></td>
+<td align="left" class="src coveredLine"><pre>            getAll()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>76</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        if (routeCache.contains(address)) {</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>77</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            allRoutes.appendAll(routeCache[address])</pre></td>
+<td align="left" class="src coveredLine"><pre>        return index &lt; UInt64(allRoutes.size)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>78</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            return allRoutes</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>79</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>80</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>81</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        if (!allRoutes.isEmpty()) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>82</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            return allRoutes</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>83</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>84</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>85</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        var pos: UInt64 =0</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>86</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        while (true) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>87</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            match (resolveDomain(TCP, address.getUrl().hostname(), pos)) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>88</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                case Some(route) =&gt;</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>89</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                    pos++</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>90</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                    let url = address.getUrl()</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>91</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                    let port:UInt16 = match(UInt16.tryParse(url.port())) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>92</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                        case Some(v) =&gt; v</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>93</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>                        case None =&gt;</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>94</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                            if (url.toString().startsWith("https")) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>95</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                                443</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>96</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>                            } else {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>97</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                                80</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>98</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>                            }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>99</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>                    }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>100</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                    allRoutes.append(Route(address, SocketAddress(route[0], route[1], port)))</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>101</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                case None =&gt; break</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>102</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>            }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>103</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>104</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        routeCache.put(address, allRoutes)</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>105</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        return allRoutes</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>106</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
+<td align="right" class="lineno"><pre>79</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>80</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func getAll(): ArrayList&lt;Route&gt; {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>81</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        hasAll = true</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>82</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (routeCache.contains(address)) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>83</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            allRoutes.appendAll(routeCache[address])</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>84</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            return allRoutes</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>85</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>86</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>87</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (!allRoutes.isEmpty()) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>88</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            return allRoutes</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>89</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>90</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>91</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        var pos: UInt64 =0</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>92</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>93</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        var socketHost = address.getUrl().hostname()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>94</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        eventListener.dnsStart(call, socketHost)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>95</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        while (true) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>96</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            match (resolveDomain(TCP, socketHost, pos)) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>97</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                case Some(route) =&gt;</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>98</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                    pos++</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>99</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                    let url = address.getUrl()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>100</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                    let port:UInt16 = match(UInt16.tryParse(url.port())) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>101</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                        case Some(v) =&gt; v</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>102</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>                        case None =&gt;</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>103</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                            if (url.toString().startsWith("https")) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>104</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                                443</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>105</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>                            } else {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>106</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                                80</pre></td>
+</tr>
+<tr>
 <td align="right" class="lineno"><pre>107</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>                            }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>108</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>                    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>109</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                    allRoutes.append(Route(address, SocketAddress(route[0], route[1], port)))</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>110</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                case None =&gt; break</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>111</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>            }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>112</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>113</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        eventListener.dnsEnd(call, socketHost, allRoutes)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>114</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        routeCache.put(address, allRoutes)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>115</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return allRoutes</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>116</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>117</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>}</pre></td>

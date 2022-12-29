@@ -284,11 +284,11 @@ pre
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2022-11-29 16:13:07</td>
+            <td class="headerValue">2022-12-29 14:38:50</td>
             <td></td>
             <td class="headerName">Lines:</td>
-            <td class="headerTableEntry">109</td>
-            <td class="headerTableEntry">114</td>
+            <td class="headerTableEntry">130</td>
+            <td class="headerTableEntry">136</td>
             <td class="headerTableEntry" style="background-color:LightGreen">95.6 %</td>
           </tr>
           <tr>
@@ -360,7 +360,7 @@ pre
 <td align="right" class="lineno"><pre>7</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre> * The file declars the Dispatcher class.</pre></td>
+<td align="left" class="src "><pre> * The file declares the Dispatcher class.</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>8</pre></td>
@@ -432,7 +432,7 @@ pre
 <td align="right" class="lineno"><pre>19</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public  var mutex: Monitor = Monitor()</pre></td>
+<td align="left" class="src coveredLine"><pre>    let mutex: Monitor = Monitor()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>20</pre></td>
@@ -1187,8 +1187,8 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>145</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>                    cb</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                    cb()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>146</pre></td>
@@ -1464,49 +1464,49 @@ pre
 <td align="right" class="lineno"><pre>191</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        call.getCallsPerHost().fetchSub(1);</pre></td>
+<td align="left" class="src coveredLine"><pre>        synchronized (mutex) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>192</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        finished(runningAsyncCalls, call);</pre></td>
+<td align="left" class="src coveredLine"><pre>            call.getCallsPerHost().fetchSub(1)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>193</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            finished(runningAsyncCalls, call)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>194</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>195</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    /**</pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>196</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * The Function is enqueue</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>197</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     *</pre></td>
+<td align="left" class="src "><pre>    /**</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>198</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * @param call of AsyncCall</pre></td>
+<td align="left" class="src "><pre>     * The Function is enqueue</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>199</pre></td>
@@ -1518,121 +1518,121 @@ pre
 <td align="right" class="lineno"><pre>200</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * @return Type of Unit</pre></td>
+<td align="left" class="src "><pre>     * @param call of AsyncCall</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>201</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * @since 0.29.3</pre></td>
+<td align="left" class="src "><pre>     *</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>202</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     */</pre></td>
+<td align="left" class="src "><pre>     * @return Type of Unit</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>203</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    func enqueue( call: AsyncCall): Unit {</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     * @since 0.29.3</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>204</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        synchronized (mutex) {</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     */</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>205</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            readyAsyncCalls.add(call)</pre></td>
+<td align="left" class="src coveredLine"><pre>    func enqueue( call: AsyncCall): Unit {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>206</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            if (!call.get().forWebSocket) {</pre></td>
+<td align="left" class="src coveredLine"><pre>        synchronized (mutex) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>207</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                match (findExistingCallWithHost(call.host())) {</pre></td>
+<td align="left" class="src coveredLine"><pre>            readyAsyncCalls.add(call)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>208</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                    case Some(existingCall) =&gt; call.reuseCallsPerHostFrom(existingCall);</pre></td>
+<td align="left" class="src coveredLine"><pre>            if (!call.get().forWebSocket) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>209</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                match (findExistingCallWithHost(call.host())) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>210</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                    case Some(existingCall) =&gt; call.reuseCallsPerHostFrom(existingCall)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>211</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                    case None =&gt; ()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>210</pre></td>
+<td align="right" class="lineno"><pre>212</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>211</pre></td>
+<td align="right" class="lineno"><pre>213</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>212</pre></td>
+<td align="right" class="lineno"><pre>214</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>213</pre></td>
+<td align="right" class="lineno"><pre>215</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        promoteAndExecute()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>214</pre></td>
+<td align="right" class="lineno"><pre>216</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>215</pre></td>
+<td align="right" class="lineno"><pre>217</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>216</pre></td>
+<td align="right" class="lineno"><pre>218</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    /*</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>217</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * The Function is findExistingCallWithHost</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>218</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     *</pre></td>
-</tr>
-<tr>
 <td align="right" class="lineno"><pre>219</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * @param host of String</pre></td>
+<td align="left" class="src "><pre>     * The Function is findExistingCallWithHost</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>220</pre></td>
@@ -1644,580 +1644,898 @@ pre
 <td align="right" class="lineno"><pre>221</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * @return Type of Option&lt;AsyncCall&gt;</pre></td>
+<td align="left" class="src "><pre>     * @param host of String</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>222</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * @since 0.29.3</pre></td>
+<td align="left" class="src "><pre>     *</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>223</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     */</pre></td>
+<td align="left" class="src "><pre>     * @return Type of Option&lt;AsyncCall&gt;</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>224</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    private func findExistingCallWithHost(host: String): Option&lt;AsyncCall&gt; {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>225</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        for (existingCall in runningAsyncCalls) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>226</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>          if (existingCall.host().equals(host)) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>227</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>              return (existingCall)</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>228</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>          }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>229</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>230</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>231</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        for (existingCall in readyAsyncCalls) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>232</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>          if (existingCall.host().equals(host)) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>233</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>              return (existingCall)</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>234</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>          }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>235</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>236</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>237</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        return None</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>238</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>239</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>240</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    /**</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>241</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * The Function is cancelAll</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>242</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     *</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>243</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * @since 0.30.4</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>244</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     */</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>245</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public func cancelAll() {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>246</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        synchronized (mutex) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>247</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            for (index in (0..readyAsyncCalls.size())) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>248</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                let asyncCall: AsyncCall = readyAsyncCalls.get(index)</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>249</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                asyncCall.cancel()</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>250</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>            }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>251</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            for (index in (0..runningAsyncCalls.size())) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>252</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                let asyncCall: AsyncCall = runningAsyncCalls.get(index)</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>253</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                asyncCall.cancel()</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>254</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>            }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>255</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            for (index in (0..runningSyncCalls.size())) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>256</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                let call: RealCall = runningSyncCalls.get(index)</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>257</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                call.cancel()</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>258</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>            }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>259</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>260</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>261</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>262</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    /*</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>263</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * The Function is promoteAndExecute</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>264</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     *</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>265</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * @return Type of Bool</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>266</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @since 0.29.3</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>267</pre></td>
+<td align="right" class="lineno"><pre>225</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>268</pre></td>
+<td align="right" class="lineno"><pre>226</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    func promoteAndExecute(): Bool {</pre></td>
+<td align="left" class="src coveredLine"><pre>    private func findExistingCallWithHost(host: String): Option&lt;AsyncCall&gt; {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>269</pre></td>
+<td align="right" class="lineno"><pre>227</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        let executableCalls: ArrayList&lt;AsyncCall&gt; = ArrayList&lt;AsyncCall&gt;()</pre></td>
+<td align="left" class="src coveredLine"><pre>        for (existingCall in runningAsyncCalls) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>270</pre></td>
+<td align="right" class="lineno"><pre>228</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>          if (existingCall.host().equals(host)) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>229</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>              return (existingCall)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>230</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        var isRunning: Bool</pre></td>
+<td align="left" class="src "><pre>          }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>271</pre></td>
+<td align="right" class="lineno"><pre>231</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>232</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>233</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        for (existingCall in readyAsyncCalls) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>234</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>          if (existingCall.host().equals(host)) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>235</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>              return (existingCall)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>236</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>          }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>237</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>238</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>239</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>        return None</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>240</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>241</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>242</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    /**</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>243</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     * The Function is cancelAll</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>244</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     *</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>245</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     * @since 0.30.4</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>246</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     */</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>247</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func cancelAll() {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>248</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        synchronized (mutex) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>272</pre></td>
+<td align="right" class="lineno"><pre>249</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>             for (index in (0..readyAsyncCalls.size())) {</pre></td>
+<td align="left" class="src coveredLine"><pre>            for (index in (0..readyAsyncCalls.size())) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>273</pre></td>
+<td align="right" class="lineno"><pre>250</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                let asyncCall: AsyncCall = readyAsyncCalls.get(index)</pre></td>
 </tr>
 <tr>
+<td align="right" class="lineno"><pre>251</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                asyncCall.cancel()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>252</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>            }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>253</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            for (index in (0..runningAsyncCalls.size())) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>254</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                let asyncCall: AsyncCall = runningAsyncCalls.get(index)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>255</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                asyncCall.cancel()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>256</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>            }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>257</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            for (index in (0..runningSyncCalls.size())) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>258</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                let call: RealCall = runningSyncCalls.get(index)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>259</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                call.cancel()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>260</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>            }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>261</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>262</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>263</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>264</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    /*</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>265</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     * The Function is promoteAndExecute</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>266</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     *</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>267</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     * @return Type of Bool</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>268</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     * @since 0.29.3</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>269</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     */</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>270</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    func promoteAndExecute(): Bool {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>271</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        let executableCalls: ArrayList&lt;AsyncCall&gt; = ArrayList&lt;AsyncCall&gt;()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>272</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        var isRunning: Bool</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>273</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        synchronized (mutex) {</pre></td>
+</tr>
+<tr>
 <td align="right" class="lineno"><pre>274</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>             let arr = ArrayList&lt;Int64&gt;()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>275</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>             for (index in 0..readyAsyncCalls.size()) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>276</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                let asyncCall: AsyncCall = readyAsyncCalls.get(index)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>277</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                if (runningAsyncCalls.toArrayList().size &gt;= maxRequests) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>275</pre></td>
+<td align="right" class="lineno"><pre>278</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                    break; // Max capacity.</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>276</pre></td>
+<td align="right" class="lineno"><pre>279</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>277</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>278</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                if (asyncCall.callsPerHost.load() &gt;= maxRequestsPerHost) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>279</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                    continue; // Host max capacity.</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>280</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>                }</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>281</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                readyAsyncCalls.toArrayList().remove(index)</pre></td>
+<td align="left" class="src coveredLine"><pre>                if (asyncCall.callsPerHost.load() &gt;= maxRequestsPerHost) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>282</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                asyncCall.callsPerHost.fetchAdd(1)</pre></td>
+<td align="left" class="src coveredLine"><pre>                    continue; // Host max capacity.</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>283</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                executableCalls.append(asyncCall)</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>                }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>284</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                runningAsyncCalls.add(asyncCall)</pre></td>
+<td align="left" class="src coveredLine"><pre>                arr.append(index)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>285</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>             }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                asyncCall.callsPerHost.fetchAdd(1)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>286</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>             isRunning = runningAsyncCalls.toArrayList().size + runningSyncCalls.toArrayList().size &gt; 0</pre></td>
+<td align="left" class="src coveredLine"><pre>                executableCalls.append(asyncCall)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>287</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                runningAsyncCalls.add(asyncCall)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>288</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="left" class="src "><pre>             }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>289</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        for (asyncCall in executableCalls) {</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>290</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            asyncCall.executeOn()</pre></td>
+<td align="left" class="src coveredLine"><pre>             for (index in arr) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>291</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                readyAsyncCalls.remove(index)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>292</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="left" class="src "><pre>             }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>293</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        return isRunning</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>294</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>      }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>             isRunning = runningAsyncCalls.toArrayList().size + runningSyncCalls.toArrayList().size &gt; 0</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>295</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    /**</pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>296</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * The Function is queuedCallsCount</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>297</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     *</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        for (asyncCall in executableCalls) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>298</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * @since 0.30.4</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            asyncCall.executeOn()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>299</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     */</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>300</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public func queuedCallsCount(): Int64 {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>301</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        synchronized (mutex) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>302</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            return readyAsyncCalls.size()</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>303</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>304</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>305</pre></td>
+<td align="right" class="lineno"><pre>300</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>306</pre></td>
+<td align="right" class="lineno"><pre>301</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return isRunning</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>302</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>      }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>303</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    /**</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>307</pre></td>
+<td align="right" class="lineno"><pre>304</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * The Function is runningCallsCount</pre></td>
+<td align="left" class="src "><pre>     * The Function is queuedCallsCount</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>308</pre></td>
+<td align="right" class="lineno"><pre>305</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     *</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>309</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * @return Type of Int64</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>310</pre></td>
+<td align="right" class="lineno"><pre>306</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @since 0.30.4</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>311</pre></td>
+<td align="right" class="lineno"><pre>307</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>312</pre></td>
+<td align="right" class="lineno"><pre>308</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public func runningCallsCount(): Int64 {</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func queuedCallsCount(): Int64 {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>313</pre></td>
+<td align="right" class="lineno"><pre>309</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        synchronized (mutex) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>314</pre></td>
+<td align="right" class="lineno"><pre>310</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            return runningAsyncCalls.size() + runningSyncCalls.size();</pre></td>
+<td align="left" class="src coveredLine"><pre>            return readyAsyncCalls.size()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>315</pre></td>
+<td align="right" class="lineno"><pre>311</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>316</pre></td>
+<td align="right" class="lineno"><pre>312</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
+<td align="right" class="lineno"><pre>313</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>314</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    /**</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>315</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     * The Function is queuedCalls</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>316</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     *</pre></td>
+</tr>
+<tr>
 <td align="right" class="lineno"><pre>317</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     * @return Type of ArrayList&lt;Call&gt;</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>318</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     * @since 0.34.3</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>319</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     */</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>320</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func queuedCalls(): ArrayList&lt;Call&gt; {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>321</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        let list = readyAsyncCalls.toArrayList()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>322</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        let result = ArrayList&lt;Call&gt;()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>323</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>324</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        synchronized (mutex) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>325</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            for (i in 0..list.size) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>326</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                result.append(list[i].get())</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>327</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>            }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>328</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>329</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>330</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return result</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>331</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>332</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>333</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    /**</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>334</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     * The Function is runningCalls</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>335</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     *</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>336</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     * @return Type of ArrayList&lt;Call&gt;</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>337</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     * @since 0.34.3</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>338</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     */</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>339</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func runningCalls(): ArrayList&lt;Call&gt; {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>340</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>341</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        let syncList: ArrayList&lt;RealCall&gt; = runningSyncCalls.toArrayList()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>342</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        let asyncList: ArrayList&lt;AsyncCall&gt; = runningAsyncCalls.toArrayList()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>343</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        let result = ArrayList&lt;Call&gt;()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>344</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>345</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        synchronized (mutex) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>346</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            for (i in 0..asyncList.size) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>347</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                syncList.append(asyncList[i].get())</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>348</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>            }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>349</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>350</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>351</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        for (i in 0..syncList.size) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>352</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            result.append(syncList[i])</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>353</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>354</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>355</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return result</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>356</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>357</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>358</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>359</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    /**</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>360</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     * The Function is runningCallsCount</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>361</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     *</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>362</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     * @return Type of Int64</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>363</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     * @since 0.30.4</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>364</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     */</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>365</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func runningCallsCount(): Int64 {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>366</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        synchronized (mutex) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>367</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            return runningAsyncCalls.size() + runningSyncCalls.size();</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>368</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>369</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>370</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>}</pre></td>

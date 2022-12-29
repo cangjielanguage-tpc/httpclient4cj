@@ -284,12 +284,12 @@ pre
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2022-11-29 16:13:07</td>
+            <td class="headerValue">2022-12-29 14:38:50</td>
             <td></td>
             <td class="headerName">Lines:</td>
-            <td class="headerTableEntry">143</td>
-            <td class="headerTableEntry">170</td>
-            <td class="headerTableEntry" style="background-color:Yellow">84.1 %</td>
+            <td class="headerTableEntry">171</td>
+            <td class="headerTableEntry">181</td>
+            <td class="headerTableEntry" style="background-color:LightGreen">94.5 %</td>
           </tr>
           <tr>
             <td class="headerName">Legend:</td>
@@ -432,31 +432,31 @@ pre
 <td align="right" class="lineno"><pre>19</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public static let MIXED: String = "multipart/mixed"</pre></td>
+<td align="left" class="src coveredLine"><pre>    public static let MIXED: MediaType = MediaType.get("multipart/mixed")</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>20</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public static let ALTERNATIVE: String = "multipart/alternative"</pre></td>
+<td align="left" class="src coveredLine"><pre>    public static let ALTERNATIVE: MediaType = MediaType.get("multipart/alternative")</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>21</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public static let DIGEST: String = "multipart/digest"</pre></td>
+<td align="left" class="src coveredLine"><pre>    public static let DIGEST: MediaType = MediaType.get("multipart/digest")</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>22</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public static let PARALLEL: String = "multipart/parallel"</pre></td>
+<td align="left" class="src coveredLine"><pre>    public static let PARALLEL: MediaType = MediaType.get("multipart/parallel")</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>23</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public static let FORM: String = "multipart/form-data"</pre></td>
+<td align="left" class="src coveredLine"><pre>    public static let FORM: MediaType = MediaType.get("multipart/form-data")</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>24</pre></td>
@@ -492,13 +492,13 @@ pre
 <td align="right" class="lineno"><pre>29</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    private let originalType: String</pre></td>
+<td align="left" class="src "><pre>    private let originalType: MediaType</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>30</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    private let realType: String</pre></td>
+<td align="left" class="src "><pre>    private let realType: MediaType</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>31</pre></td>
@@ -522,7 +522,7 @@ pre
 <td align="right" class="lineno"><pre>34</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    init (boundary: String, originalType: String, parts: ArrayList&lt;Part&gt;) {</pre></td>
+<td align="left" class="src coveredLine"><pre>    init (boundary: String, originalType: MediaType, parts: ArrayList&lt;Part&gt;) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>35</pre></td>
@@ -546,7 +546,7 @@ pre
 <td align="right" class="lineno"><pre>38</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        this.realType = originalType + "; boundary=${boundary}"</pre></td>
+<td align="left" class="src coveredLine"><pre>        this.realType = MediaType.get("${originalType}; boundary=${boundary}")</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>39</pre></td>
@@ -563,176 +563,176 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>41</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    public func get(): InputStream {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func get(): InputStream {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>42</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        return ByteArrayStream()</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        let arr = ByteArrayStream()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>43</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        writeOrCountBytes(arr, true)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>44</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return arr</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>45</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>44</pre></td>
+<td align="right" class="lineno"><pre>46</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>45</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public func getContentLength(): Int64 {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>46</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        if (contentLength != -1) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>47</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            return contentLength</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func getContentLength(): Int64 {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>48</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }  else {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (contentLength != -1) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>49</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            contentLength = writeOrCountBytes()</pre></td>
+<td align="left" class="src coveredLine"><pre>            return contentLength</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>50</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        } else {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>51</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            contentLength = writeOrCountBytes(ByteArrayStream(), false)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>52</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            return contentLength</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>51</pre></td>
+<td align="right" class="lineno"><pre>53</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>52</pre></td>
+<td align="right" class="lineno"><pre>54</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>53</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>54</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    public func getType(): String {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>55</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        return originalType</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>56</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func getType(): MediaType {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>57</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return originalType</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>58</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    public func getBoundary(): String {</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>59</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        return boundary</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>60</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func getBoundary(): String {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>61</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return boundary</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>62</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    public func getParts(): ArrayList&lt;Part&gt; {</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>63</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        return parts</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>64</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func getParts(): ArrayList&lt;Part&gt; {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>65</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return parts</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>66</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public func contentType(): String {</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>67</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        return realType</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>68</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
+<td align="right" class="lineno"><pre>68</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func contentType(): Option&lt;MediaType&gt; {</pre></td>
+</tr>
+<tr>
 <td align="right" class="lineno"><pre>69</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return realType</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>70</pre></td>
@@ -743,716 +743,716 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>71</pre></td>
 <td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>72</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>73</pre></td>
+<td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    public func writeTo(sink: Sink): Unit {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>72</pre></td>
+<td align="right" class="lineno"><pre>74</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>       writeOrCountBytes(sink)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>73</pre></td>
+<td align="right" class="lineno"><pre>75</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>74</pre></td>
+<td align="right" class="lineno"><pre>76</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>75</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    private func writeOrCountBytes(): Int64 {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>76</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        var byteCount = 0</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>77</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        let arr = ByteArrayStream()</pre></td>
+<td align="left" class="src coveredLine"><pre>    private func writeOrCountBytes(arr: ByteArrayStream, write: Bool): Int64 {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>78</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        var byteCount = 0</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>79</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        for(p in 0..parts.size) {</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>80</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            let part: Part = parts[p]</pre></td>
+<td align="left" class="src coveredLine"><pre>        for (p in 0..parts.size) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>81</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            let headers = part.headers</pre></td>
+<td align="left" class="src coveredLine"><pre>            let part: Part = parts[p]</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>82</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            let body = part.body</pre></td>
+<td align="left" class="src coveredLine"><pre>            let headers = part.headers</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>83</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            arr.write(DASHDASH)</pre></td>
+<td align="left" class="src coveredLine"><pre>            let body = part.body</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>84</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            arr.write(boundary.toUtf8Array())</pre></td>
+<td align="left" class="src coveredLine"><pre>            arr.write(DASHDASH)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>85</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            arr.write(CRLF)</pre></td>
+<td align="left" class="src coveredLine"><pre>            arr.write(boundary.toUtf8Array())</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>86</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>            match (headers) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            arr.write(CRLF)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>87</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                case Some(h) =&gt;</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>            match (headers) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>88</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                    for((k,v) in h) {</pre></td>
+<td align="left" class="src coveredLine"><pre>                case Some(h) =&gt;</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>89</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                        for (e in v) {</pre></td>
+<td align="left" class="src coveredLine"><pre>                    for ((k,v) in h) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>90</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                            arr.write(k.toUtf8Array())</pre></td>
+<td align="left" class="src coveredLine"><pre>                        for (e in v) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>91</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                            arr.write(COLONSPACE)</pre></td>
+<td align="left" class="src coveredLine"><pre>                            arr.write(k.toUtf8Array())</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>92</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                            arr.write(e.toUtf8Array())</pre></td>
+<td align="left" class="src coveredLine"><pre>                            arr.write(COLONSPACE)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>93</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                            arr.write(CRLF)</pre></td>
+<td align="left" class="src coveredLine"><pre>                            arr.write(e.toUtf8Array())</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>94</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>                        }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                            arr.write(CRLF)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>95</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>                    }</pre></td>
+<td align="left" class="src "><pre>                        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>96</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                case None =&gt; ()</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>                    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>97</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>            }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                case None =&gt; ()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>98</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>99</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            let contentType: String = body.contentType()</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>100</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>101</pre></td>
+<td align="right" class="lineno"><pre>100</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            if (!contentType.isEmpty()) {</pre></td>
+<td align="left" class="src coveredLine"><pre>            let mediaType: Option&lt;MediaType&gt; = body.contentType()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>101</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>102</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                arr.write("Content-Type: ".toUtf8Array())</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>            match (mediaType) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>103</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                arr.write(contentType.toUtf8Array())</pre></td>
+<td align="left" class="src coveredLine"><pre>                case Some(contentType) =&gt;</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>104</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                arr.write(CRLF)</pre></td>
+<td align="left" class="src coveredLine"><pre>                    arr.write("Content-Type: ".toUtf8Array())</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>105</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>            }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                    arr.write("${contentType}".toUtf8Array())</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>106</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                    arr.write(CRLF)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>107</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            let contentLength = body.getContentLength()</pre></td>
+<td align="left" class="src coveredLine"><pre>                case None =&gt; ()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>108</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>109</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            if (contentLength != -1) {</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>110</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                arr.write("Content-Length: ".toUtf8Array())</pre></td>
+<td align="left" class="src coveredLine"><pre>            let contentLength = body.getContentLength()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>111</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                arr.write("${contentLength}".toUtf8Array())</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>112</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                arr.write(CRLF)</pre></td>
+<td align="left" class="src coveredLine"><pre>            if (contentLength != -1) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>113</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>            } else {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                arr.write("Content-Length: ".toUtf8Array())</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>114</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                arr.clear()</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                arr.write("${contentLength}".toUtf8Array())</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>115</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                return -1</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                arr.write(CRLF)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>116</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>            }</pre></td>
+<td align="left" class="src "><pre>            } else {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>117</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            byteCount += contentLength</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                if (!write) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>118</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            arr.write(CRLF)</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                    arr.clear()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>119</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            arr.write(CRLF)</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>                }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>120</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                return -1</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>121</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        arr.write(DASHDASH)</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>122</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        arr.write(boundary.toUtf8Array())</pre></td>
+<td align="left" class="src coveredLine"><pre>            byteCount += contentLength</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>123</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        arr.write(DASHDASH)</pre></td>
+<td align="left" class="src coveredLine"><pre>            arr.write(CRLF)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>124</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        arr.write(CRLF)</pre></td>
+<td align="left" class="src coveredLine"><pre>            if (write) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>125</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        byteCount += arr.length</pre></td>
+<td align="left" class="src coveredLine"><pre>                let readArr = Array&lt;Byte&gt;(contentLength, item: 0)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>126</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        arr.clear()</pre></td>
+<td align="left" class="src coveredLine"><pre>                body.get().read(readArr)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>127</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        return byteCount</pre></td>
+<td align="left" class="src coveredLine"><pre>                arr.write(readArr)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>128</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>129</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            arr.write(CRLF)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>130</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    private func writeOrCountBytes(sink: Sink): Unit {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>131</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>132</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        for(p in 0..parts.size) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>133</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            let part: Part = parts[p]</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>134</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            let headers = part.headers</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>135</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            let body = part.body</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>136</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            sink.write(DASHDASH)</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>137</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            sink.write(boundary.toUtf8Array())</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>138</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            sink.write(CRLF)</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>139</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>            match (headers) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>140</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                case Some(h) =&gt;</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>141</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                    for((k,v) in h) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>142</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                        for (e in v) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>143</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                            sink.write(k.toUtf8Array())</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>144</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                            sink.write(COLONSPACE)</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>145</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                            sink.write(e.toUtf8Array())</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>146</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                            sink.write(CRLF)</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>147</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>                        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>148</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>                    }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>149</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                case None =&gt; ()</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>150</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>            }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>151</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>152</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            let contentType: String = body.contentType()</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>153</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>154</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            if (!contentType.isEmpty()) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>155</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                sink.write("Content-Type: ".toUtf8Array())</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>156</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                sink.write(contentType.toUtf8Array())</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>157</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                sink.write(CRLF)</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>158</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>            }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>159</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>160</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            let contentLength =  body.getContentLength()</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>161</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>162</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            if (contentLength != -1) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>163</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                sink.write("Content-Length: ".toUtf8Array())</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>164</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                sink.write("${contentLength}".toUtf8Array())</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>165</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                sink.write(CRLF)</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>166</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>            }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>167</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>168</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            sink.write(CRLF)</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>169</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            body.writeTo(sink)</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>170</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            sink.write(CRLF)</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>171</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>172</pre></td>
+<td align="right" class="lineno"><pre>131</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        sink.write(DASHDASH)</pre></td>
+<td align="left" class="src coveredLine"><pre>        arr.write(DASHDASH)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>132</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        arr.write(boundary.toUtf8Array())</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>133</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        arr.write(DASHDASH)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>134</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        arr.write(CRLF)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>135</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        byteCount += arr.length</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>136</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (!write) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>137</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            arr.clear()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>138</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>139</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return byteCount</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>140</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>141</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>142</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    private func writeOrCountBytes(sink: Sink): Unit {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>143</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>144</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        for (p in 0..parts.size) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>145</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            let part: Part = parts[p]</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>146</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            let headers = part.headers</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>147</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            let body = part.body</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>148</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            sink.write(DASHDASH)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>149</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            sink.write(boundary.toUtf8Array())</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>150</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            sink.write(CRLF)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>151</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>            match (headers) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>152</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                case Some(h) =&gt;</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>153</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                    for ((k,v) in h) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>154</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                        for (e in v) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>155</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                            sink.write(k.toUtf8Array())</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>156</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                            sink.write(COLONSPACE)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>157</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                            sink.write(e.toUtf8Array())</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>158</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                            sink.write(CRLF)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>159</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>                        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>160</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>                    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>161</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                case None =&gt; ()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>162</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>            }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>163</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>164</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            let mediaType: Option&lt;MediaType&gt; = body.contentType()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>165</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>166</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>            match (mediaType) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>167</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                case Some(contentType) =&gt;</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>168</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                    sink.write("Content-Type: ".toUtf8Array())</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>169</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                    sink.write("${contentType}".toUtf8Array())</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>170</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                    sink.write(CRLF)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>171</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                case None =&gt; ()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>172</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>173</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        sink.write(boundary.toUtf8Array())</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>174</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        sink.write(DASHDASH)</pre></td>
+<td align="left" class="src coveredLine"><pre>            let contentLength =  body.getContentLength()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>175</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        sink.write(CRLF)</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>176</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            if (contentLength != -1) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>177</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                sink.write("Content-Length: ".toUtf8Array())</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>178</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public static func builder(): MultipartBodyBuilder {</pre></td>
+<td align="left" class="src coveredLine"><pre>                sink.write("${contentLength}".toUtf8Array())</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>179</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        return MultipartBodyBuilder()</pre></td>
+<td align="left" class="src coveredLine"><pre>                sink.write(CRLF)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>180</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>181</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>}</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>182</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            sink.write(CRLF)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>183</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>public class MultipartBodyBuilder &lt;: Builder&lt;MultipartBody&gt; {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            body.writeTo(sink)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>184</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    private var contentType = MultipartBody.MIXED</pre></td>
+<td align="left" class="src coveredLine"><pre>            sink.write(CRLF)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>185</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    private let parts: ArrayList&lt;Part&gt; = ArrayList&lt;Part&gt;()</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>186</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    private let boundary: String</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        sink.write(DASHDASH)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>187</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        sink.write(boundary.toUtf8Array())</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>188</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    init() {</pre></td>
+<td align="left" class="src coveredLine"><pre>        sink.write(DASHDASH)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>189</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>       this.boundary = randomBoundary()</pre></td>
+<td align="left" class="src coveredLine"><pre>        sink.write(CRLF)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>190</pre></td>
@@ -1469,26 +1469,26 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>192</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    public func setType(contentType: String): MultipartBodyBuilder {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public static func builder(): MultipartBodyBuilder {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>193</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        this.contentType = contentType</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return MultipartBodyBuilder()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>194</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        return this</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>195</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="left" class="src "><pre>}</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>196</pre></td>
@@ -1499,26 +1499,26 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>197</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public func addPart(part: Part): MultipartBodyBuilder {</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>public class MultipartBodyBuilder &lt;: Builder&lt;MultipartBody&gt; {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>198</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        parts.append(part)</pre></td>
+<td align="left" class="src coveredLine"><pre>    private var contentType: MediaType = MultipartBody.MIXED</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>199</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        return this</pre></td>
+<td align="left" class="src coveredLine"><pre>    private let parts: ArrayList&lt;Part&gt; = ArrayList&lt;Part&gt;()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>200</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="left" class="src "><pre>    private let boundary: String</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>201</pre></td>
@@ -1529,14 +1529,14 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>202</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    public func addPart(body: RequestBody): MultipartBodyBuilder {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    init() {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>203</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        return addPart(Part.create(body))</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>       this.boundary = randomBoundary()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>204</pre></td>
@@ -1553,212 +1553,212 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>206</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    public func addPart(headers: Header, body: RequestBody): MultipartBodyBuilder {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func setType(contentType: MediaType): MultipartBodyBuilder {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>207</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        return addPart(Part.create(headers, body))</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (contentType.getType() != "multipart") {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>208</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            throw IllegalArgumentException("multipart != ${contentType.getType()}")</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>209</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>210</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public func addFormDataPart(name: String, value: String): MultipartBodyBuilder {</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>211</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        return addPart(Part.createFormData(name, value))</pre></td>
+<td align="left" class="src coveredLine"><pre>        this.contentType = contentType</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>212</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return this</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>213</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>214</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public func addFormDataPart(name: String, filename: String, body: RequestBody): MultipartBodyBuilder {</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>215</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        return addPart(Part.createFormData(name, filename, body))</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func addPart(part: Part): MultipartBodyBuilder {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>216</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        parts.append(part)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>217</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return this</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>218</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>217</pre></td>
+<td align="right" class="lineno"><pre>219</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>218</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public func build(): MultipartBody {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>219</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        if (parts.isEmpty()) {</pre></td>
-</tr>
-<tr>
 <td align="right" class="lineno"><pre>220</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            throw IllegalStateException("Multipart body must have at least one part.")</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func addPart(body: RequestBody): MultipartBodyBuilder {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>221</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return addPart(Part.create(body))</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>222</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        return MultipartBody(boundary, contentType, parts)</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>223</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>224</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>}</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func addPart(headers: Header, body: RequestBody): MultipartBodyBuilder {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>225</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return addPart(Part.create(headers, body))</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>226</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>public class Part {</pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>227</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    public let headers: Option&lt;Header&gt;</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>228</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    public let body: RequestBody</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func addFormDataPart(name: String, value: String): MultipartBodyBuilder {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>229</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return addPart(Part.createFormData(name, value))</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>230</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    init(headers:Option&lt;Header&gt;, body: RequestBody) {</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>231</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        this.headers = headers</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>232</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        this.body = body</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func addFormDataPart(name: String, filename: String, body: RequestBody): MultipartBodyBuilder {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>233</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return addPart(Part.createFormData(name, filename, body))</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>234</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>235</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    static func create(body: RequestBody): Part {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>236</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        return create(Option&lt;Header&gt;.None, body)</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>237</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>238</pre></td>
-<td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>239</pre></td>
+<td align="right" class="lineno"><pre>236</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public static func createFormData(name: String, value: String): Part {</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func build(): MultipartBody {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>237</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (parts.isEmpty()) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>238</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            throw IllegalStateException("Multipart body must have at least one part.")</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>239</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>240</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        return createFormData(name, "", RealRequestBody.create("", value))</pre></td>
+<td align="left" class="src coveredLine"><pre>        return MultipartBody(boundary, contentType, parts)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>241</pre></td>
@@ -1770,382 +1770,490 @@ pre
 <td align="right" class="lineno"><pre>242</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="left" class="src "><pre>}</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>243</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public static func create(headers: Option&lt;Header&gt;, body: RequestBody): Part {</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>244</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        match (headers) {</pre></td>
+<td align="left" class="src "><pre>public class Part {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>245</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            case Some(h) =&gt;</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    public let headers: Option&lt;Header&gt;</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>246</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                if (hasHeaderKey(h, "Content-Type")) {</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    public let body: RequestBody</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>247</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                   throw IllegalArgumentException("Unexpected header: Content-Type")</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>248</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>                }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    init(headers:Option&lt;Header&gt;, body: RequestBody) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>249</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        this.headers = headers</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>250</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                if (hasHeaderKey(h, "Content-Length")) {</pre></td>
+<td align="left" class="src coveredLine"><pre>        this.body = body</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>251</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                   throw IllegalArgumentException("Unexpected header: Content-Length")</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>252</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>                }</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>253</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            case None =&gt; ()</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    static func create(body: RequestBody): Part {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>254</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return create(Option&lt;Header&gt;.None, body)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>255</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        return Part(headers, body)</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>256</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>257</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public static func createFormData(name: String, value: String): Part {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>258</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public static func createFormData(name: String, filename: String, body: RequestBody): Part {</pre></td>
+<td align="left" class="src coveredLine"><pre>        return createFormData(name, "", RealRequestBody.create(Option&lt;MediaType&gt;.None, value))</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>259</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        if (name.isEmpty()) {</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>260</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            throw IllegalArgumentException("name is Empty")</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>261</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public static func create(headers: Option&lt;Header&gt;, body: RequestBody): Part {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>262</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        let disposition = StringBuilder("form-data; name=")</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        match (headers) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>263</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        appendQuotedString(disposition, name)</pre></td>
+<td align="left" class="src coveredLine"><pre>            case Some(h) =&gt;</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>264</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        if (!filename.isEmpty()) {</pre></td>
+<td align="left" class="src coveredLine"><pre>                if (hasHeaderKey(h, "Content-Type")) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>265</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            disposition.append("; filename=")</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                   throw IllegalArgumentException("Unexpected header: Content-Type")</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>266</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            appendQuotedString(disposition, filename)</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>                }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>267</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>268</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        checkName(name)</pre></td>
+<td align="left" class="src coveredLine"><pre>                if (hasHeaderKey(h, "Content-Length")) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>269</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        let headers: Header = Header()</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                   throw IllegalArgumentException("Unexpected header: Content-Length")</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>270</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        headers.add("Content-Disposition", "${disposition}")</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>                }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>271</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        return create(headers, body)</pre></td>
+<td align="left" class="src coveredLine"><pre>            case None =&gt; ()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>272</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>273</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return Part(headers, body)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>274</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    private static func hasHeaderKey(header: Header, key: String): Bool {</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>275</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        match (header.get(key)) {</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>276</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            case Some(v) =&gt; return true</pre></td>
+<td align="left" class="src coveredLine"><pre>    public static func createFormData(name: String, filename: String, body: RequestBody): Part {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>277</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            case None =&gt; return false</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (name.isEmpty()) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>278</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            throw IllegalArgumentException("name is Empty")</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>279</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>280</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        let disposition = StringBuilder("form-data; name=")</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>281</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    private static func checkName(name: String) {</pre></td>
+<td align="left" class="src coveredLine"><pre>        appendQuotedString(disposition, name)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>282</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        for(c in name.toCharArray()) {</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (!filename.isEmpty()) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>283</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            if (c &lt;=  '\u{0020}' || c&gt;= '\u{007f}') {</pre></td>
+<td align="left" class="src coveredLine"><pre>            disposition.append("; filename=")</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>284</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                throw IllegalArgumentException( "Unexpected char in header name: ${name}")</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            appendQuotedString(disposition, filename)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>285</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>            }</pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>286</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        checkName(name)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>287</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        let headers: Header = Header()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>288</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        headers.add("Content-Disposition", "${disposition}")</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>289</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return create(headers, body)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>290</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>288</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>}</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>289</pre></td>
+<td align="right" class="lineno"><pre>291</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>290</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>func randomBoundary(): String{</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>291</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    return "${getTimeStamp(Time.now())}"</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>292</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>}</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    private static func hasHeaderKey(header: Header, key: String): Bool {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>293</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        match (header.get(key)) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>294</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>func appendQuotedString(target: StringBuilder, key: String): Unit {</pre></td>
+<td align="left" class="src coveredLine"><pre>            case Some(v) =&gt; return true</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>295</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    target.append('"')</pre></td>
+<td align="left" class="src coveredLine"><pre>            case None =&gt; return false</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>296</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    for (c in key.toCharArray()) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>297</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        match (c) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>298</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            case '\n' =&gt; target.append("%0A")</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>299</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            case '\r' =&gt; target.append("%0D")</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>300</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            case '"' =&gt; target.append("%22")</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>301</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            case _ =&gt;target.append(c)</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>302</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>303</pre></td>
+<td align="right" class="lineno"><pre>297</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
+<td align="right" class="lineno"><pre>298</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>299</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    private static func checkName(name: String) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>300</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        for (c in name.toCharArray()) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>301</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            if (c &lt;=  '\u{0020}' || c&gt;= '\u{007f}') {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>302</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                throw IllegalArgumentException( "Unexpected char in header name: ${name}")</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>303</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>            }</pre></td>
+</tr>
+<tr>
 <td align="right" class="lineno"><pre>304</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>305</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>306</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>}</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>307</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>308</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>func randomBoundary(): String{</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>309</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    return "${getTimeStamp(Time.now())}"</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>310</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>}</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>311</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>312</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>func appendQuotedString(target: StringBuilder, key: String): Unit {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>313</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    target.append('"')</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>305</pre></td>
+<td align="right" class="lineno"><pre>314</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    for (c in key.toCharArray()) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>315</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        match (c) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>316</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            case '\n' =&gt; target.append("%0A")</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>317</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            case '\r' =&gt; target.append("%0D")</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>318</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            case '"' =&gt; target.append("%22")</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>319</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            case _ =&gt;target.append(c)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>320</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>321</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>322</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    target.append('"')</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>323</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>}</pre></td>

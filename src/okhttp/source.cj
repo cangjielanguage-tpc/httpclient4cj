@@ -40,7 +40,7 @@ class FixedLengthSource <: AbstractSource {
     public func read(bytes: ByteArrayStream, count: Int64): Int64 {
         var byteCount = count
 
-        if (closed) {
+        if (isClosed()) {
             throw IllegalStateException("closed")
         }
 
@@ -69,7 +69,7 @@ class FixedLengthSource <: AbstractSource {
     }
 
     public func close(): Unit {
-        if (closed) {
+        if (isClosed()) {
             return
         }
 
@@ -90,7 +90,7 @@ class UnknownLengthSource <: AbstractSource {
     }
 
     public func read(bytes: ByteArrayStream, byteCount: Int64): Int64 {
-        if (closed) {
+        if (isClosed()) {
             throw IllegalStateException("closed")
         }
 
@@ -110,7 +110,7 @@ class UnknownLengthSource <: AbstractSource {
     }
 
     public func close(): Unit {
-        if (closed) {
+        if (isClosed()) {
             return
         }
 
@@ -137,7 +137,7 @@ class ChunkedSource <: Source {
     }
 
     public func read(bytes: ByteArrayStream, byteCount: Int64): Int64 {
-        if (closed) {
+        if (isClosed()) {
             throw IllegalStateException("closed")
         }
 
@@ -189,7 +189,7 @@ class ChunkedSource <: Source {
     }
 
     public func close(): Unit {
-        if (closed) {return}
+        if (isClosed()) {return}
 
         if (hasMoreChunks && !disCard(this)) {
            exchangeCode.getConnection().noExchanges()
@@ -222,7 +222,7 @@ class ResponseBodySource <:Source {
    }
 
    public func read(bytes: ByteArrayStream, byteCount: Int64): Int64 {
-        if (closed) {
+        if (isClosed()) {
             throw IllegalStateException("closed")
         }
 
@@ -249,7 +249,7 @@ class ResponseBodySource <:Source {
 
    public func close(): Unit {
 
-       if (closed) {
+       if (isClosed()) {
            return
        }
 
@@ -306,7 +306,7 @@ class FramingSource <: Source {
                     errorExceptionToDeliver = true
                 }
 
-                if (closed) {
+                if (isClosed()) {
                     throw HttpException("stream closed")
                 } else if (readBuffer.length > 0) {
                    let arr = Array<Byte>(min(byteCount, readBuffer.length), item:0)
@@ -371,7 +371,7 @@ class FramingSource <: Source {
             byteCount -= read
             var bytesDiscarded = 0
             synchronized(stream.getOrThrow().mutex) {
-                if (closed) {
+                if (isClosed()) {
                     bytesDiscarded = receiveBuffer.length
                     receiveBuffer.clear()
                 } else {

@@ -284,12 +284,12 @@ pre
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2022-11-29 16:13:07</td>
+            <td class="headerValue">2022-12-29 14:38:50</td>
             <td></td>
             <td class="headerName">Lines:</td>
-            <td class="headerTableEntry">310</td>
+            <td class="headerTableEntry">308</td>
             <td class="headerTableEntry">362</td>
-            <td class="headerTableEntry" style="background-color:Yellow">85.6 %</td>
+            <td class="headerTableEntry" style="background-color:Yellow">85.1 %</td>
           </tr>
           <tr>
             <td class="headerName">Legend:</td>
@@ -360,7 +360,7 @@ pre
 <td align="right" class="lineno"><pre>7</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre> * The file declars the Cookie class.</pre></td>
+<td align="left" class="src "><pre> * The file declares the Cookie class.</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>8</pre></td>
@@ -444,7 +444,7 @@ pre
 <td align="right" class="lineno"><pre>21</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    //public static let MAX_DATE = 253402300799999;</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>22</pre></td>
@@ -455,908 +455,908 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>23</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public static func delimiterOffset(input: String, pos: Int64, limit: Int64, delimiter: Char): Int64 {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>24</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public static func delimiterOffset(input: String, pos: Int64, limit: Int64, delimiter: Char): Int64 {</pre></td>
+<td align="left" class="src coveredLine"><pre>        for (i in pos..limit) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>25</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        for (i in pos..limit) {</pre></td>
+<td align="left" class="src coveredLine"><pre>            if (input[i] == delimiter) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>26</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            if (input[i] == delimiter) {</pre></td>
+<td align="left" class="src coveredLine"><pre>                return i</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>27</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                return i</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>28</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>            }</pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>29</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>30</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>31</pre></td>
+<td align="right" class="lineno"><pre>30</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return limit</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>32</pre></td>
+<td align="right" class="lineno"><pre>31</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>33</pre></td>
+<td align="right" class="lineno"><pre>32</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>34</pre></td>
+<td align="right" class="lineno"><pre>33</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    public static func parseAll(url: URL, headers: Header): ArrayList&lt;Cookie&gt; {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>35</pre></td>
+<td align="right" class="lineno"><pre>34</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        let values: ArrayList&lt;String&gt;</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>36</pre></td>
+<td align="right" class="lineno"><pre>35</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>37</pre></td>
+<td align="right" class="lineno"><pre>36</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        try {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>38</pre></td>
+<td align="right" class="lineno"><pre>37</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            values = headers.getAll("Set-Cookie")</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>39</pre></td>
+<td align="right" class="lineno"><pre>38</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        } catch (e: NoneValueException) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>40</pre></td>
+<td align="right" class="lineno"><pre>39</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            return  ArrayList&lt;Cookie&gt;()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>41</pre></td>
+<td align="right" class="lineno"><pre>40</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>42</pre></td>
+<td align="right" class="lineno"><pre>41</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>43</pre></td>
+<td align="right" class="lineno"><pre>42</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let cookies = ArrayList&lt;Cookie&gt;()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>44</pre></td>
+<td align="right" class="lineno"><pre>43</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>44</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        for (cookieStrings in values) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>45</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        for(cookieStrings in values) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>46</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let cookie = parse(url, cookieStrings)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>47</pre></td>
+<td align="right" class="lineno"><pre>46</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            match (cookie) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>48</pre></td>
+<td align="right" class="lineno"><pre>47</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                case None =&gt; continue</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>49</pre></td>
+<td align="right" class="lineno"><pre>48</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                case Some(c) =&gt; cookies.append(c)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>50</pre></td>
+<td align="right" class="lineno"><pre>49</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>50</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>51</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>52</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>53</pre></td>
+<td align="right" class="lineno"><pre>52</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return cookies</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>54</pre></td>
+<td align="right" class="lineno"><pre>53</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>55</pre></td>
+<td align="right" class="lineno"><pre>54</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>56</pre></td>
+<td align="right" class="lineno"><pre>55</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    public static func parse(url: URL, setCookie: String): Option&lt;Cookie&gt; {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>57</pre></td>
+<td align="right" class="lineno"><pre>56</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        var pos = 0</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>58</pre></td>
+<td align="right" class="lineno"><pre>57</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let limit = setCookie.size</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>59</pre></td>
+<td align="right" class="lineno"><pre>58</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let cookiePairEnd = delimiterOffset(setCookie, pos, limit, ';')</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>60</pre></td>
+<td align="right" class="lineno"><pre>59</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let pairEqualsSign = delimiterOffset(setCookie, pos, limit, '=')</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>61</pre></td>
+<td align="right" class="lineno"><pre>60</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>62</pre></td>
+<td align="right" class="lineno"><pre>61</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (cookiePairEnd == pairEqualsSign) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>63</pre></td>
+<td align="right" class="lineno"><pre>62</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            return None</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>63</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>64</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>65</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>66</pre></td>
+<td align="right" class="lineno"><pre>65</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let cookieName = trimSubstring(setCookie, pos, pairEqualsSign)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>67</pre></td>
+<td align="right" class="lineno"><pre>66</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>68</pre></td>
+<td align="right" class="lineno"><pre>67</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (cookieName.size == 0 || indexOfControlOrNonAscii(cookieName) != -1) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>69</pre></td>
+<td align="right" class="lineno"><pre>68</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            return None</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>69</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>70</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>71</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>72</pre></td>
+<td align="right" class="lineno"><pre>71</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let cookieValue = trimSubstring(setCookie, pairEqualsSign + 1, cookiePairEnd)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>73</pre></td>
+<td align="right" class="lineno"><pre>72</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>74</pre></td>
+<td align="right" class="lineno"><pre>73</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (indexOfControlOrNonAscii(cookieValue) != -1) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>75</pre></td>
+<td align="right" class="lineno"><pre>74</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            return None</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>76</pre></td>
+<td align="right" class="lineno"><pre>75</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>77</pre></td>
+<td align="right" class="lineno"><pre>76</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>77</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        var expiresAt: Time = Time(2260, Month.of(12), 31, hour: 23,</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>78</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        var expiresAt: Time = Time(9999, Month.of(12), 31, hour: 23,</pre></td>
+<td align="left" class="src coveredLine"><pre>            min: 59, sec: 59, loc: Location.load("GMT"))</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>79</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            min: 59, sec: 59, loc: Location.load("GMT"))</pre></td>
+<td align="left" class="src coveredLine"><pre>        var deltaSeconds = -1</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>80</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        var deltaSeconds = -1</pre></td>
+<td align="left" class="src coveredLine"><pre>        var domain = ""</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>81</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        var domain = ""</pre></td>
+<td align="left" class="src coveredLine"><pre>        var path = ""</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>82</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        var path = ""</pre></td>
+<td align="left" class="src coveredLine"><pre>        var secureOnly = false</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>83</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        var secureOnly = false</pre></td>
+<td align="left" class="src coveredLine"><pre>        var httpOnly = false</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>84</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        var httpOnly = false</pre></td>
+<td align="left" class="src coveredLine"><pre>        var rawExpires = ""</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>85</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        var rawExpires = ""</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>86</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        pos = cookiePairEnd + 1</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>87</pre></td>
+<td align="right" class="lineno"><pre>86</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>88</pre></td>
+<td align="right" class="lineno"><pre>87</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        while (pos &lt; limit) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>89</pre></td>
+<td align="right" class="lineno"><pre>88</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let attributePairEnd = delimiterOffset(setCookie, pos, limit, ';')</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>90</pre></td>
+<td align="right" class="lineno"><pre>89</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let attributeEqualsSign = delimiterOffset(setCookie, pos, attributePairEnd, '=')</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>91</pre></td>
+<td align="right" class="lineno"><pre>90</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let attributeName = trimSubstring(setCookie, pos, attributeEqualsSign)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>92</pre></td>
+<td align="right" class="lineno"><pre>91</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            var attributeValue = ""</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>93</pre></td>
+<td align="right" class="lineno"><pre>92</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (attributeEqualsSign &lt; attributePairEnd) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>94</pre></td>
+<td align="right" class="lineno"><pre>93</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>               attributeValue =  trimSubstring(setCookie, attributeEqualsSign + 1, attributePairEnd)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>95</pre></td>
+<td align="right" class="lineno"><pre>94</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>96</pre></td>
+<td align="right" class="lineno"><pre>95</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (equalsIgnoreCase(attributeName, "expires")) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>97</pre></td>
+<td align="right" class="lineno"><pre>96</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                try {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>98</pre></td>
+<td align="right" class="lineno"><pre>97</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                    rawExpires = attributeValue</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>99</pre></td>
+<td align="right" class="lineno"><pre>98</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                    expiresAt = parseExpires(attributeValue, 0, attributeValue.size)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>100</pre></td>
+<td align="right" class="lineno"><pre>99</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                } catch (e: Exception) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>100</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>                    // Ignore this attribute</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>101</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>                    // Ignore this attribute</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>102</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>103</pre></td>
+<td align="right" class="lineno"><pre>102</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            } else if (equalsIgnoreCase(attributeName, "max-age")) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>104</pre></td>
+<td align="right" class="lineno"><pre>103</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                try {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>105</pre></td>
+<td align="right" class="lineno"><pre>104</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                    deltaSeconds = parseMaxAge(attributeValue)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>106</pre></td>
+<td align="right" class="lineno"><pre>105</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                } catch (e: Exception) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>107</pre></td>
+<td align="right" class="lineno"><pre>106</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                    // Ignore this attribute</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>108</pre></td>
+<td align="right" class="lineno"><pre>107</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>109</pre></td>
+<td align="right" class="lineno"><pre>108</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            } else if (equalsIgnoreCase(attributeName, "domain")) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>110</pre></td>
+<td align="right" class="lineno"><pre>109</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                try {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>111</pre></td>
+<td align="right" class="lineno"><pre>110</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                    domain = parseDomain(attributeValue)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>112</pre></td>
+<td align="right" class="lineno"><pre>111</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                } catch (e: Exception) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>113</pre></td>
+<td align="right" class="lineno"><pre>112</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                  // Ignore this attribute, it isn't recognizable as a domain.</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>114</pre></td>
+<td align="right" class="lineno"><pre>113</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>115</pre></td>
+<td align="right" class="lineno"><pre>114</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            } else if (equalsIgnoreCase(attributeName, "path")) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>116</pre></td>
+<td align="right" class="lineno"><pre>115</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                path = attributeValue</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>117</pre></td>
+<td align="right" class="lineno"><pre>116</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            } else if (equalsIgnoreCase(attributeName, "secure")) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>118</pre></td>
+<td align="right" class="lineno"><pre>117</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                secureOnly = true</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>119</pre></td>
+<td align="right" class="lineno"><pre>118</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            } else if (equalsIgnoreCase(attributeName,"httponly")) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>120</pre></td>
+<td align="right" class="lineno"><pre>119</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                httpOnly = true</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>121</pre></td>
+<td align="right" class="lineno"><pre>120</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>122</pre></td>
+<td align="right" class="lineno"><pre>121</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            pos = attributePairEnd + 1</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>123</pre></td>
+<td align="right" class="lineno"><pre>122</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>124</pre></td>
+<td align="right" class="lineno"><pre>123</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        expiresAt = checkExpiresAt(getTimeStamp(expiresAt), deltaSeconds)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>125</pre></td>
+<td align="right" class="lineno"><pre>124</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (deltaSeconds == -1) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>126</pre></td>
+<td align="right" class="lineno"><pre>125</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            deltaSeconds = 0</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>127</pre></td>
+<td align="right" class="lineno"><pre>126</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>128</pre></td>
+<td align="right" class="lineno"><pre>127</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>129</pre></td>
+<td align="right" class="lineno"><pre>128</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let urlHost = url.hostname()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>130</pre></td>
+<td align="right" class="lineno"><pre>129</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>131</pre></td>
+<td align="right" class="lineno"><pre>130</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (domain == "") {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>132</pre></td>
+<td align="right" class="lineno"><pre>131</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            domain = urlHost</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>133</pre></td>
+<td align="right" class="lineno"><pre>132</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        } else if (!domainMatch(urlHost, domain)) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>134</pre></td>
+<td align="right" class="lineno"><pre>133</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            return None</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>135</pre></td>
+<td align="right" class="lineno"><pre>134</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>136</pre></td>
+<td align="right" class="lineno"><pre>135</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>137</pre></td>
+<td align="right" class="lineno"><pre>136</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (path == "" || !path.startsWith("/")) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>138</pre></td>
+<td align="right" class="lineno"><pre>137</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let encodedPath = url.escapedPath()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>139</pre></td>
+<td align="right" class="lineno"><pre>138</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let lastSlash = encodedPath.lastIndexOf('/') ?? 0</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>140</pre></td>
+<td align="right" class="lineno"><pre>139</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            path = if(lastSlash != 0) {encodedPath.substring(0, lastSlash)} else {"/"}</pre></td>
+<td align="left" class="src coveredLine"><pre>            path = if (lastSlash != 0) {encodedPath.substring(0, lastSlash)} else {"/"}</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>140</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>141</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>142</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>143</pre></td>
+<td align="right" class="lineno"><pre>142</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return  Cookie(cookieName, cookieValue, path: path, domain: domain, expires: expiresAt,</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>144</pre></td>
+<td align="right" class="lineno"><pre>143</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                    rawExpires: rawExpires, maxAge: deltaSeconds, secure: secureOnly, httpOnly: httpOnly)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>145</pre></td>
+<td align="right" class="lineno"><pre>144</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>146</pre></td>
+<td align="right" class="lineno"><pre>145</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>147</pre></td>
+<td align="right" class="lineno"><pre>146</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    public static func trimSubstring(str: String, pos: Int64, limit: Int64): String {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>148</pre></td>
+<td align="right" class="lineno"><pre>147</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return str.substring(pos, limit - pos).trim()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>149</pre></td>
+<td align="right" class="lineno"><pre>148</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>150</pre></td>
+<td align="right" class="lineno"><pre>149</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>151</pre></td>
+<td align="right" class="lineno"><pre>150</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    private static func domainMatch(urlHost: String, domain: String) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>152</pre></td>
+<td align="right" class="lineno"><pre>151</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (urlHost == domain) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>153</pre></td>
+<td align="right" class="lineno"><pre>152</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            return true</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>153</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>154</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>155</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>156</pre></td>
+<td align="right" class="lineno"><pre>155</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (urlHost.endsWith(domain) &amp;&amp; urlHost.charAt(urlHost.size - domain.size - 1) == '.'</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>157</pre></td>
+<td align="right" class="lineno"><pre>156</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            &amp;&amp; !Util.verifyAsIpAddress(urlHost)) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>158</pre></td>
+<td align="right" class="lineno"><pre>157</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            return true</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>159</pre></td>
+<td align="right" class="lineno"><pre>158</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>160</pre></td>
+<td align="right" class="lineno"><pre>159</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>161</pre></td>
+<td align="right" class="lineno"><pre>160</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return false</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>162</pre></td>
+<td align="right" class="lineno"><pre>161</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>163</pre></td>
+<td align="right" class="lineno"><pre>162</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>164</pre></td>
+<td align="right" class="lineno"><pre>163</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>     public static func indexOfControlOrNonAscii(input: String): Int64 {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>165</pre></td>
+<td align="right" class="lineno"><pre>164</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        for (i in 0..input.size) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>166</pre></td>
+<td align="right" class="lineno"><pre>165</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>          let c: Char = input.charAt(i)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>167</pre></td>
+<td align="right" class="lineno"><pre>166</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>          if (c &lt;= '\u{001f}' || c &gt;= '\u{007f}') {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>168</pre></td>
+<td align="right" class="lineno"><pre>167</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>             return i</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>169</pre></td>
+<td align="right" class="lineno"><pre>168</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>          }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>170</pre></td>
+<td align="right" class="lineno"><pre>169</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>171</pre></td>
+<td align="right" class="lineno"><pre>170</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>172</pre></td>
+<td align="right" class="lineno"><pre>171</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return -1</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>173</pre></td>
+<td align="right" class="lineno"><pre>172</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>173</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>174</pre></td>
@@ -1368,103 +1368,103 @@ pre
 <td align="right" class="lineno"><pre>175</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>176</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    @overflowSaturating</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>177</pre></td>
+<td align="right" class="lineno"><pre>176</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    private static func checkExpiresAt(e: Int64, deltaSeconds: Int64): Time {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>178</pre></td>
+<td align="right" class="lineno"><pre>177</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        var expiresAt = e</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>179</pre></td>
+<td align="right" class="lineno"><pre>178</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>180</pre></td>
+<td align="right" class="lineno"><pre>179</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (deltaSeconds == Int64.Min) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>181</pre></td>
+<td align="right" class="lineno"><pre>180</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            expiresAt = Int64.Min</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>182</pre></td>
+<td align="right" class="lineno"><pre>181</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        } else if (deltaSeconds != -1) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>183</pre></td>
+<td align="right" class="lineno"><pre>182</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let deltaMilliseconds =  if (deltaSeconds &lt;= Int64.Max / 1000) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>184</pre></td>
+<td align="right" class="lineno"><pre>183</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                deltaSeconds * 1000</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>185</pre></td>
+<td align="right" class="lineno"><pre>184</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            } else {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>186</pre></td>
+<td align="right" class="lineno"><pre>185</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                Int64.Max</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                Int64.Max</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>187</pre></td>
+<td align="right" class="lineno"><pre>186</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>188</pre></td>
+<td align="right" class="lineno"><pre>187</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            expiresAt = getTimeStamp(Time.now()) + deltaMilliseconds</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>189</pre></td>
+<td align="right" class="lineno"><pre>188</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>190</pre></td>
+<td align="right" class="lineno"><pre>189</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return getTime(expiresAt)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>191</pre></td>
+<td align="right" class="lineno"><pre>190</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>191</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>192</pre></td>
@@ -1475,2114 +1475,2114 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>193</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    private static func parseDomain(input: String): String {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>194</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    private static func parseDomain(input: String): String {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>195</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        var s = input</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>196</pre></td>
+<td align="right" class="lineno"><pre>195</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>197</pre></td>
+<td align="right" class="lineno"><pre>196</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (s.endsWith(".")) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>198</pre></td>
+<td align="right" class="lineno"><pre>197</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            throw IllegalArgumentException()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>198</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>199</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>200</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>201</pre></td>
+<td align="right" class="lineno"><pre>200</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (s.startsWith(".")) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>202</pre></td>
+<td align="right" class="lineno"><pre>201</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            s = s.substring(1)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>202</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>203</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>204</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>205</pre></td>
+<td align="right" class="lineno"><pre>204</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let canonicalDomain = canonicalizeHost(s)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>206</pre></td>
+<td align="right" class="lineno"><pre>205</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (canonicalDomain == "") {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>207</pre></td>
+<td align="right" class="lineno"><pre>206</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>             throw IllegalArgumentException()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>208</pre></td>
+<td align="right" class="lineno"><pre>207</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>209</pre></td>
+<td align="right" class="lineno"><pre>208</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>210</pre></td>
+<td align="right" class="lineno"><pre>209</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return canonicalDomain</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>211</pre></td>
+<td align="right" class="lineno"><pre>210</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>212</pre></td>
+<td align="right" class="lineno"><pre>211</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>213</pre></td>
+<td align="right" class="lineno"><pre>212</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    private static func canonicalizeHost(s: String): String {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>214</pre></td>
+<td align="right" class="lineno"><pre>213</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>215</pre></td>
+<td align="right" class="lineno"><pre>214</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (s.contains(':')) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>216</pre></td>
+<td align="right" class="lineno"><pre>215</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>217</pre></td>
+<td align="right" class="lineno"><pre>216</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let (arr, zone, err) = parseIPv6Zone(s)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>218</pre></td>
+<td align="right" class="lineno"><pre>217</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>219</pre></td>
+<td align="right" class="lineno"><pre>218</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (!err) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>220</pre></td>
+<td align="right" class="lineno"><pre>219</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                return s</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>221</pre></td>
+<td align="right" class="lineno"><pre>220</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            } else {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>222</pre></td>
+<td align="right" class="lineno"><pre>221</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                throw IllegalArgumentException()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>223</pre></td>
+<td align="right" class="lineno"><pre>222</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>223</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>224</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>225</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>226</pre></td>
+<td align="right" class="lineno"><pre>225</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return s</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>227</pre></td>
+<td align="right" class="lineno"><pre>226</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>228</pre></td>
+<td align="right" class="lineno"><pre>227</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>229</pre></td>
+<td align="right" class="lineno"><pre>228</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    private static func parseExpires(s: String, start: Int64, limit: Int64): Time {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>230</pre></td>
+<td align="right" class="lineno"><pre>229</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        var pos = dateCharacterOffset(s, start, limit, false)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>231</pre></td>
+<td align="right" class="lineno"><pre>230</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        var hour = -1</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>232</pre></td>
+<td align="right" class="lineno"><pre>231</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        var minute = -1</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>233</pre></td>
+<td align="right" class="lineno"><pre>232</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        var second = -1</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>234</pre></td>
+<td align="right" class="lineno"><pre>233</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        var dayOfMonth = -1</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>235</pre></td>
+<td align="right" class="lineno"><pre>234</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        var month = -1</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>236</pre></td>
+<td align="right" class="lineno"><pre>235</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        var year = -1</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>237</pre></td>
+<td align="right" class="lineno"><pre>236</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let timeMatcher = Regex(TIME_PATTERN)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>237</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        let domMatcher = Regex(DAY_OF_MONTH_PATTERN)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>238</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        let domMatcher = Regex(DAY_OF_MONTH_PATTERN)</pre></td>
+<td align="left" class="src coveredLine"><pre>        let monthMatcher = Regex(MONTH_PATTERN)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>239</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        let monthMatcher = Regex(MONTH_PATTERN)</pre></td>
+<td align="left" class="src coveredLine"><pre>        let yearMatcher = Regex(YEAR_PATTERN)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>240</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        let yearMatcher = Regex(YEAR_PATTERN)</pre></td>
+<td align="left" class="src coveredLine"><pre>        while (pos &lt; limit) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>241</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        while (pos &lt; limit) {</pre></td>
+<td align="left" class="src coveredLine"><pre>            let end = dateCharacterOffset(s, pos + 1, limit, true)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>242</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            let end = dateCharacterOffset(s, pos + 1, limit, true)</pre></td>
+<td align="left" class="src coveredLine"><pre>            let offString = s[pos..end]</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>243</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            let offString = s[pos..end]</pre></td>
+<td align="left" class="src coveredLine"><pre>            if (hour == -1 &amp;&amp; matchTime(offString)) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>244</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            if (hour == -1 &amp;&amp; matchTime(offString)) {</pre></td>
+<td align="left" class="src coveredLine"><pre>                match (timeMatcher.matches(offString)) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>245</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                match (timeMatcher.matches(offString)) {</pre></td>
+<td align="left" class="src coveredLine"><pre>                    case Some(data) =&gt;</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>246</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                    case Some(data) =&gt;</pre></td>
+<td align="left" class="src coveredLine"><pre>                        hour = Int64.parse(data.matchStr(1))</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>247</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                        hour = Int64.parse(data.matchStr(1))</pre></td>
+<td align="left" class="src coveredLine"><pre>                        minute = Int64.parse(data.matchStr(2))</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>248</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                        minute = Int64.parse(data.matchStr(2))</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>249</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                        second = Int64.parse(data.matchStr(3))</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>250</pre></td>
+<td align="right" class="lineno"><pre>249</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                    case None =&gt; ()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>251</pre></td>
+<td align="right" class="lineno"><pre>250</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>252</pre></td>
+<td align="right" class="lineno"><pre>251</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            } else if (dayOfMonth == -1 &amp;&amp; matchDOM(offString)) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>253</pre></td>
+<td align="right" class="lineno"><pre>252</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                match (domMatcher.matches(s[pos..end])) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>254</pre></td>
+<td align="right" class="lineno"><pre>253</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                    case Some(data) =&gt;</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>255</pre></td>
+<td align="right" class="lineno"><pre>254</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                        dayOfMonth = Int64.parse(data.matchStr(1))</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>256</pre></td>
+<td align="right" class="lineno"><pre>255</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                    case None =&gt; ()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>257</pre></td>
+<td align="right" class="lineno"><pre>256</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>258</pre></td>
+<td align="right" class="lineno"><pre>257</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            } else if (month == -1 &amp;&amp; matchMonth(offString)) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>259</pre></td>
+<td align="right" class="lineno"><pre>258</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                match (monthMatcher.matches(s[pos..end])) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>260</pre></td>
+<td align="right" class="lineno"><pre>259</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                    case Some(data) =&gt;</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>261</pre></td>
+<td align="right" class="lineno"><pre>260</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                        let monthString = data.matchStr(1)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>262</pre></td>
+<td align="right" class="lineno"><pre>261</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                        month = IndexOfMonthDay(monthString)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>263</pre></td>
+<td align="right" class="lineno"><pre>262</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                    case None =&gt; ()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>264</pre></td>
+<td align="right" class="lineno"><pre>263</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>265</pre></td>
+<td align="right" class="lineno"><pre>264</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            } else if (year == -1 &amp;&amp; matchYear(offString)) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>266</pre></td>
+<td align="right" class="lineno"><pre>265</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                match (yearMatcher.matches(s[pos..end])) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>267</pre></td>
+<td align="right" class="lineno"><pre>266</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                    case Some(data) =&gt;</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>268</pre></td>
+<td align="right" class="lineno"><pre>267</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                        year = Int64.parse(data.matchStr(1))</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>269</pre></td>
+<td align="right" class="lineno"><pre>268</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                    case None =&gt; ()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>270</pre></td>
+<td align="right" class="lineno"><pre>269</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>271</pre></td>
+<td align="right" class="lineno"><pre>270</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>272</pre></td>
+<td align="right" class="lineno"><pre>271</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            pos = dateCharacterOffset(s, end + 1, limit, false)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>273</pre></td>
+<td align="right" class="lineno"><pre>272</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>274</pre></td>
+<td align="right" class="lineno"><pre>273</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>275</pre></td>
+<td align="right" class="lineno"><pre>274</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return checkTime(year, month, dayOfMonth, hour, minute, second)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>276</pre></td>
+<td align="right" class="lineno"><pre>275</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>277</pre></td>
+<td align="right" class="lineno"><pre>276</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>278</pre></td>
+<td align="right" class="lineno"><pre>277</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    private static func matchTime(input: String): Bool {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>279</pre></td>
+<td align="right" class="lineno"><pre>278</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let timeMatcher = Regex(TIME_PATTERN)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>280</pre></td>
+<td align="right" class="lineno"><pre>279</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>281</pre></td>
+<td align="right" class="lineno"><pre>280</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        match (timeMatcher.matches(input)) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>282</pre></td>
+<td align="right" class="lineno"><pre>281</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case Some(data) =&gt; return true</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>283</pre></td>
+<td align="right" class="lineno"><pre>282</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case None =&gt; return false</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>283</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>284</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>285</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>286</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>287</pre></td>
+<td align="right" class="lineno"><pre>286</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    private static func matchYear(input: String): Bool {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>288</pre></td>
+<td align="right" class="lineno"><pre>287</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let yearMatcher = Regex(YEAR_PATTERN)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>289</pre></td>
+<td align="right" class="lineno"><pre>288</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>290</pre></td>
+<td align="right" class="lineno"><pre>289</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        match (yearMatcher.matches(input)) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>291</pre></td>
+<td align="right" class="lineno"><pre>290</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case Some(data) =&gt; return true</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>292</pre></td>
+<td align="right" class="lineno"><pre>291</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case None =&gt; return false</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>292</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>293</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>294</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>295</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>296</pre></td>
+<td align="right" class="lineno"><pre>295</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    private static func matchDOM(input: String): Bool {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>297</pre></td>
+<td align="right" class="lineno"><pre>296</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let domMatcher = Regex(DAY_OF_MONTH_PATTERN)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>298</pre></td>
+<td align="right" class="lineno"><pre>297</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>299</pre></td>
+<td align="right" class="lineno"><pre>298</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        match (domMatcher.matches(input)) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>300</pre></td>
+<td align="right" class="lineno"><pre>299</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case Some(data) =&gt; return true</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>301</pre></td>
+<td align="right" class="lineno"><pre>300</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case None =&gt; return false</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>301</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>302</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>303</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>304</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>305</pre></td>
+<td align="right" class="lineno"><pre>304</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    private static func matchMonth(input: String): Bool {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>306</pre></td>
+<td align="right" class="lineno"><pre>305</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let monthMatcher = Regex(MONTH_PATTERN)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>307</pre></td>
+<td align="right" class="lineno"><pre>306</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>308</pre></td>
+<td align="right" class="lineno"><pre>307</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        match (monthMatcher.matches(input)) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>309</pre></td>
+<td align="right" class="lineno"><pre>308</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case Some(data) =&gt; return true</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>310</pre></td>
+<td align="right" class="lineno"><pre>309</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case None =&gt; return false</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>311</pre></td>
+<td align="right" class="lineno"><pre>310</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>311</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>312</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>313</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>314</pre></td>
+<td align="right" class="lineno"><pre>313</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    private static func checkTime(y: Int64, month: Int64, dayOfMonth: Int64,</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>315</pre></td>
+<td align="right" class="lineno"><pre>314</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        hour: Int64, minute: Int64, second: Int64): Time {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>316</pre></td>
+<td align="right" class="lineno"><pre>315</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>317</pre></td>
+<td align="right" class="lineno"><pre>316</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        var year = y</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>318</pre></td>
+<td align="right" class="lineno"><pre>317</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>         // Convert two-digit years into four-digit years. 99 becomes 1999, 15 becomes 2015.</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>319</pre></td>
+<td align="right" class="lineno"><pre>318</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (year &gt;= 70 &amp;&amp; year &lt;= 99) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>320</pre></td>
+<td align="right" class="lineno"><pre>319</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            year += 1900</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>321</pre></td>
+<td align="right" class="lineno"><pre>320</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>322</pre></td>
+<td align="right" class="lineno"><pre>321</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>323</pre></td>
+<td align="right" class="lineno"><pre>322</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (year &gt;= 0 &amp;&amp; year &lt;= 69) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>324</pre></td>
+<td align="right" class="lineno"><pre>323</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            year += 2000</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>325</pre></td>
+<td align="right" class="lineno"><pre>324</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>325</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>326</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="left" class="src "><pre>        // If any partial is omitted or out of range, return -1. The date is impossible. Note that leap</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>327</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        // If any partial is omitted or out of range, return -1. The date is impossible. Note that leap</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>328</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        // seconds are not supported by this syntax.</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>329</pre></td>
+<td align="right" class="lineno"><pre>328</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (year&lt; 1601) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>330</pre></td>
+<td align="right" class="lineno"><pre>329</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            throw IllegalArgumentException()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>330</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>331</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>332</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>333</pre></td>
+<td align="right" class="lineno"><pre>332</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (month == -1) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>334</pre></td>
+<td align="right" class="lineno"><pre>333</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            throw IllegalArgumentException()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>334</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>335</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>336</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>337</pre></td>
+<td align="right" class="lineno"><pre>336</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (dayOfMonth &lt; 1 || dayOfMonth&gt; 31) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>338</pre></td>
+<td align="right" class="lineno"><pre>337</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            throw IllegalArgumentException()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>338</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>339</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>340</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>341</pre></td>
+<td align="right" class="lineno"><pre>340</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (hour &lt; 0 || hour &gt; 23) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>342</pre></td>
+<td align="right" class="lineno"><pre>341</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            throw IllegalArgumentException()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>342</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>343</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>344</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>345</pre></td>
+<td align="right" class="lineno"><pre>344</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (minute &lt; 0 || minute &gt; 59) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>346</pre></td>
+<td align="right" class="lineno"><pre>345</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            throw IllegalArgumentException()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>346</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>347</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>348</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>349</pre></td>
+<td align="right" class="lineno"><pre>348</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (second &lt; 0 || second &gt; 59) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>350</pre></td>
+<td align="right" class="lineno"><pre>349</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            throw IllegalArgumentException()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>351</pre></td>
+<td align="right" class="lineno"><pre>350</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>352</pre></td>
+<td align="right" class="lineno"><pre>351</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>353</pre></td>
+<td align="right" class="lineno"><pre>352</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let time: Time = Time(year, Month.of(month), dayOfMonth, hour: hour,</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>354</pre></td>
+<td align="right" class="lineno"><pre>353</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            min: minute, sec: second, loc: Location.load("UTC"))</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>355</pre></td>
+<td align="right" class="lineno"><pre>354</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>356</pre></td>
+<td align="right" class="lineno"><pre>355</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return time</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>357</pre></td>
+<td align="right" class="lineno"><pre>356</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>358</pre></td>
+<td align="right" class="lineno"><pre>357</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>359</pre></td>
+<td align="right" class="lineno"><pre>358</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    private static func getTime(time: Int64): Time {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>360</pre></td>
+<td align="right" class="lineno"><pre>359</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let standardTime = Time(1970,Month.of(1),1,loc: Location.load("UTC"))</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>361</pre></td>
+<td align="right" class="lineno"><pre>360</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return standardTime + Duration.millisecond(time)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>362</pre></td>
+<td align="right" class="lineno"><pre>361</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>363</pre></td>
+<td align="right" class="lineno"><pre>362</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>364</pre></td>
+<td align="right" class="lineno"><pre>363</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    private static func IndexOfMonthDay(s: String): Int64 {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>365</pre></td>
+<td align="right" class="lineno"><pre>364</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        match (s.toLower()) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>366</pre></td>
+<td align="right" class="lineno"><pre>365</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case "jan" =&gt; return 1</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>367</pre></td>
+<td align="right" class="lineno"><pre>366</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case "feb" =&gt; return 2</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>368</pre></td>
+<td align="right" class="lineno"><pre>367</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case "mar" =&gt; return 3</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>369</pre></td>
+<td align="right" class="lineno"><pre>368</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case "apr" =&gt; return 4</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>370</pre></td>
+<td align="right" class="lineno"><pre>369</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case "may" =&gt; return 5</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>371</pre></td>
+<td align="right" class="lineno"><pre>370</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case "jun" =&gt; return 6</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>372</pre></td>
+<td align="right" class="lineno"><pre>371</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case "jul" =&gt; return 7</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>373</pre></td>
+<td align="right" class="lineno"><pre>372</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case "aug" =&gt; return 8</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>374</pre></td>
+<td align="right" class="lineno"><pre>373</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case "sep" =&gt; return 9</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>375</pre></td>
+<td align="right" class="lineno"><pre>374</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case "oct" =&gt; return 10</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>376</pre></td>
+<td align="right" class="lineno"><pre>375</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case "nov" =&gt; return 11</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>377</pre></td>
+<td align="right" class="lineno"><pre>376</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case "dec" =&gt; return 12</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>378</pre></td>
+<td align="right" class="lineno"><pre>377</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            case _ =&gt; return -1</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>379</pre></td>
+<td align="right" class="lineno"><pre>378</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>379</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>380</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>381</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>382</pre></td>
+<td align="right" class="lineno"><pre>381</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    private static func dateCharacterOffset(input: String, pos: Int64, limit: Int64, invert: Bool) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>383</pre></td>
+<td align="right" class="lineno"><pre>382</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        for(i in pos..limit) {</pre></td>
+<td align="left" class="src coveredLine"><pre>        for (i in pos..limit) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>384</pre></td>
+<td align="right" class="lineno"><pre>383</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let c = input[i]</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>385</pre></td>
+<td align="right" class="lineno"><pre>384</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let dateCharacter: Bool = (c &lt; ' ' &amp;&amp; c != '\t') || (c &gt;= '\u{007f}') ||  (c &gt;= '0' &amp;&amp; c &lt;= '9')</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>386</pre></td>
+<td align="right" class="lineno"><pre>385</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                || (c &gt;= 'a' &amp;&amp; c &lt;= 'z') || (c &gt;= 'A' &amp;&amp; c &lt;= 'Z') || (c == ':')</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>387</pre></td>
+<td align="right" class="lineno"><pre>386</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (dateCharacter == !invert) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>388</pre></td>
+<td align="right" class="lineno"><pre>387</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                return i</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>389</pre></td>
+<td align="right" class="lineno"><pre>388</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>389</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>390</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>391</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>392</pre></td>
+<td align="right" class="lineno"><pre>391</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return limit</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>393</pre></td>
+<td align="right" class="lineno"><pre>392</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>394</pre></td>
+<td align="right" class="lineno"><pre>393</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>395</pre></td>
+<td align="right" class="lineno"><pre>394</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    private static func parseMaxAge(s: String) : Int64 {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>396</pre></td>
+<td align="right" class="lineno"><pre>395</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        try {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>397</pre></td>
+<td align="right" class="lineno"><pre>396</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let parsed = Int64.parse(s)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>398</pre></td>
+<td align="right" class="lineno"><pre>397</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (parsed &lt; 0) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>399</pre></td>
+<td align="right" class="lineno"><pre>398</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                return Int64.Max</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                return Int64.Max</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>400</pre></td>
+<td align="right" class="lineno"><pre>399</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            } else {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>401</pre></td>
+<td align="right" class="lineno"><pre>400</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                return parsed</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>402</pre></td>
+<td align="right" class="lineno"><pre>401</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>403</pre></td>
+<td align="right" class="lineno"><pre>402</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>        } catch (e: ConvertException | IllegalArgumentException) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>404</pre></td>
+<td align="right" class="lineno"><pre>403</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            match (Regex("-?\\d+").matches(s)) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>405</pre></td>
+<td align="right" class="lineno"><pre>404</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                case Some(data) =&gt;</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>406</pre></td>
+<td align="right" class="lineno"><pre>405</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                    if (s.startsWith("-")) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>407</pre></td>
+<td align="right" class="lineno"><pre>406</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                        return Int64.Min</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>408</pre></td>
+<td align="right" class="lineno"><pre>407</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                    } else {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>409</pre></td>
+<td align="right" class="lineno"><pre>408</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                        return Int64.Max</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>410</pre></td>
+<td align="right" class="lineno"><pre>409</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>411</pre></td>
+<td align="right" class="lineno"><pre>410</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                case None =&gt; throw e</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>412</pre></td>
+<td align="right" class="lineno"><pre>411</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>412</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>413</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>414</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>415</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>416</pre></td>
+<td align="right" class="lineno"><pre>415</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    static func parseIPv4(address: String): (Array&lt;UInt8&gt;, Bool) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>417</pre></td>
+<td align="right" class="lineno"><pre>416</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        var it = address.lazySplit('.')</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>418</pre></td>
+<td align="right" class="lineno"><pre>417</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        var ip = Array&lt;UInt8&gt;(SOCK_ADDR_IPV4_LEN, item: 0)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>419</pre></td>
+<td align="right" class="lineno"><pre>418</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>419</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        for (i in 0..SOCK_ADDR_IPV4_LEN) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>420</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        for(i in 0..SOCK_ADDR_IPV4_LEN) {</pre></td>
+<td align="left" class="src coveredLine"><pre>            match (it.next()) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>421</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            match (it.next()) {</pre></td>
+<td align="left" class="src coveredLine"><pre>                case Some(v) =&gt;</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>422</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                case Some(v) =&gt;</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>423</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                    if (v.size == 0) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>424</pre></td>
+<td align="right" class="lineno"><pre>423</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                        return (Array&lt;UInt8&gt;(), true)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>425</pre></td>
+<td align="right" class="lineno"><pre>424</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>426</pre></td>
+<td align="right" class="lineno"><pre>425</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                    var n = stoi(v)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>427</pre></td>
+<td align="right" class="lineno"><pre>426</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                    if (n&lt;0 || n&gt;255) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>428</pre></td>
+<td align="right" class="lineno"><pre>427</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                        return (Array&lt;UInt8&gt;(), true)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>429</pre></td>
+<td align="right" class="lineno"><pre>428</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>430</pre></td>
+<td align="right" class="lineno"><pre>429</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                    ip[i] = UInt8(n)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>431</pre></td>
+<td align="right" class="lineno"><pre>430</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                case None =&gt; return (Array&lt;UInt8&gt;(), true)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>432</pre></td>
+<td align="right" class="lineno"><pre>431</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>432</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>433</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>434</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>435</pre></td>
+<td align="right" class="lineno"><pre>434</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        match (it.next()) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>436</pre></td>
+<td align="right" class="lineno"><pre>435</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case None =&gt; return (ip, false)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>437</pre></td>
+<td align="right" class="lineno"><pre>436</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            case _ =&gt; return (Array&lt;UInt8&gt;(), true)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>438</pre></td>
+<td align="right" class="lineno"><pre>437</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>438</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>439</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>440</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>441</pre></td>
+<td align="right" class="lineno"><pre>440</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    static func parseIPv6Zone(address: String): (Array&lt;UInt8&gt;, String, Bool) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>442</pre></td>
+<td align="right" class="lineno"><pre>441</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        var idx = match (address.lastIndexOf('%')) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>443</pre></td>
+<td align="right" class="lineno"><pre>442</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case Some(v) =&gt; v</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>444</pre></td>
+<td align="right" class="lineno"><pre>443</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case None =&gt; -1</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>445</pre></td>
+<td align="right" class="lineno"><pre>444</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>446</pre></td>
+<td align="right" class="lineno"><pre>445</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>447</pre></td>
+<td align="right" class="lineno"><pre>446</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        var zone = ""</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>448</pre></td>
+<td align="right" class="lineno"><pre>447</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        var ipAddr = address</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>449</pre></td>
+<td align="right" class="lineno"><pre>448</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>450</pre></td>
+<td align="right" class="lineno"><pre>449</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (idx != -1) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>451</pre></td>
+<td align="right" class="lineno"><pre>450</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            zone = address.substring(idx + 1)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>452</pre></td>
+<td align="right" class="lineno"><pre>451</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            ipAddr = address.substring(0, idx)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>453</pre></td>
+<td align="right" class="lineno"><pre>452</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>454</pre></td>
+<td align="right" class="lineno"><pre>453</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>455</pre></td>
+<td align="right" class="lineno"><pre>454</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        var (arr, err) = parseIPv6(ipAddr)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>456</pre></td>
+<td align="right" class="lineno"><pre>455</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (err) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>457</pre></td>
+<td align="right" class="lineno"><pre>456</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            return (Array&lt;UInt8&gt;(), "", true)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>458</pre></td>
+<td align="right" class="lineno"><pre>457</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>459</pre></td>
+<td align="right" class="lineno"><pre>458</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>460</pre></td>
+<td align="right" class="lineno"><pre>459</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return (arr, zone, false)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>461</pre></td>
+<td align="right" class="lineno"><pre>460</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>461</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>462</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>463</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    @overflowWrapping</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>464</pre></td>
+<td align="right" class="lineno"><pre>463</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    static func parseIPv6(str: String): (Array&lt;UInt8&gt;, Bool) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>465</pre></td>
+<td align="right" class="lineno"><pre>464</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        var s = str</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>466</pre></td>
+<td align="right" class="lineno"><pre>465</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        var ip = Array&lt;UInt8&gt;(SOCK_ADDR_IPV6_LEN, item: 0)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>467</pre></td>
+<td align="right" class="lineno"><pre>466</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        var ellipsis = -1</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>468</pre></td>
+<td align="right" class="lineno"><pre>467</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let pk = Array&lt;UInt8&gt;()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>469</pre></td>
+<td align="right" class="lineno"><pre>468</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>470</pre></td>
+<td align="right" class="lineno"><pre>469</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (s.size &gt;= 2 &amp;&amp; s.startsWith("::")) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>471</pre></td>
+<td align="right" class="lineno"><pre>470</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            ellipsis = 0</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>472</pre></td>
+<td align="right" class="lineno"><pre>471</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            s = s.trimLeft("::")</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>473</pre></td>
+<td align="right" class="lineno"><pre>472</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (s.size == 0) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>474</pre></td>
+<td align="right" class="lineno"><pre>473</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                return (ip, true)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>475</pre></td>
+<td align="right" class="lineno"><pre>474</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>475</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>476</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>477</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>478</pre></td>
+<td align="right" class="lineno"><pre>477</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        var i = 0</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>479</pre></td>
+<td align="right" class="lineno"><pre>478</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        while (i &lt; SOCK_ADDR_IPV6_LEN) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>480</pre></td>
+<td align="right" class="lineno"><pre>479</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let (n, c, ok) = xtoi(s)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>481</pre></td>
+<td align="right" class="lineno"><pre>480</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (!ok || n &gt; 0xFFFF) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>482</pre></td>
+<td align="right" class="lineno"><pre>481</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                return (pk, true)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>482</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>483</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>            }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>484</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>485</pre></td>
+<td align="right" class="lineno"><pre>484</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (c &lt; s.size &amp;&amp; s.charAt(c) == '.') {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>486</pre></td>
+<td align="right" class="lineno"><pre>485</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                if (ellipsis &lt; 0 &amp;&amp; i != (SOCK_ADDR_IPV6_LEN - SOCK_ADDR_IPV4_LEN)) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>487</pre></td>
+<td align="right" class="lineno"><pre>486</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                    return (pk, true)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>488</pre></td>
+<td align="right" class="lineno"><pre>487</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>489</pre></td>
+<td align="right" class="lineno"><pre>488</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                if ((i + SOCK_ADDR_IPV4_LEN) &gt; SOCK_ADDR_IPV6_LEN) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>490</pre></td>
+<td align="right" class="lineno"><pre>489</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                    return (pk, true)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>491</pre></td>
+<td align="right" class="lineno"><pre>490</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>492</pre></td>
+<td align="right" class="lineno"><pre>491</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                var (ip4, ip4b) = parseIPv4(s)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>493</pre></td>
+<td align="right" class="lineno"><pre>492</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                if (ip4.isEmpty() || ip4b) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>494</pre></td>
+<td align="right" class="lineno"><pre>493</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                    return (pk, true)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>495</pre></td>
+<td align="right" class="lineno"><pre>494</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>496</pre></td>
+<td align="right" class="lineno"><pre>495</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                ip[i] = ip4[0]</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>497</pre></td>
+<td align="right" class="lineno"><pre>496</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                ip[i+1] = ip4[1]</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>498</pre></td>
+<td align="right" class="lineno"><pre>497</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                ip[i+2] = ip4[2]</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>499</pre></td>
+<td align="right" class="lineno"><pre>498</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                ip[i+3] = ip4[3]</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>500</pre></td>
+<td align="right" class="lineno"><pre>499</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                s = ""</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>501</pre></td>
+<td align="right" class="lineno"><pre>500</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                i += SOCK_ADDR_IPV4_LEN</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>502</pre></td>
+<td align="right" class="lineno"><pre>501</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                break</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>503</pre></td>
+<td align="right" class="lineno"><pre>502</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>504</pre></td>
+<td align="right" class="lineno"><pre>503</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            ip[i] = UInt8(n &gt;&gt; 8)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>505</pre></td>
+<td align="right" class="lineno"><pre>504</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            ip[i+1] = UInt8(n)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>506</pre></td>
+<td align="right" class="lineno"><pre>505</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            i += 2</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>507</pre></td>
+<td align="right" class="lineno"><pre>506</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            s = s.substring(c)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>508</pre></td>
+<td align="right" class="lineno"><pre>507</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (s.size == 0) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>509</pre></td>
+<td align="right" class="lineno"><pre>508</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                break</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>510</pre></td>
+<td align="right" class="lineno"><pre>509</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>511</pre></td>
+<td align="right" class="lineno"><pre>510</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (s.charAt(0) != ':' || s.size == 1) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>512</pre></td>
+<td align="right" class="lineno"><pre>511</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                return (pk, true)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>513</pre></td>
+<td align="right" class="lineno"><pre>512</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>514</pre></td>
+<td align="right" class="lineno"><pre>513</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            s = s.substring(1)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>515</pre></td>
+<td align="right" class="lineno"><pre>514</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (s.charAt(0) == ':') {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>516</pre></td>
+<td align="right" class="lineno"><pre>515</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                if (ellipsis &gt;= 0) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>517</pre></td>
+<td align="right" class="lineno"><pre>516</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                    return (pk, true)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>518</pre></td>
+<td align="right" class="lineno"><pre>517</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>519</pre></td>
+<td align="right" class="lineno"><pre>518</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                ellipsis = i</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>520</pre></td>
+<td align="right" class="lineno"><pre>519</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                s = s.substring(1)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>521</pre></td>
+<td align="right" class="lineno"><pre>520</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                if (s.size == 0) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>522</pre></td>
+<td align="right" class="lineno"><pre>521</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                    break</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>523</pre></td>
+<td align="right" class="lineno"><pre>522</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>524</pre></td>
+<td align="right" class="lineno"><pre>523</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>525</pre></td>
+<td align="right" class="lineno"><pre>524</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>526</pre></td>
+<td align="right" class="lineno"><pre>525</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (s.size != 0) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>527</pre></td>
+<td align="right" class="lineno"><pre>526</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            return (pk, true)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>528</pre></td>
+<td align="right" class="lineno"><pre>527</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>529</pre></td>
+<td align="right" class="lineno"><pre>528</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (i &lt; SOCK_ADDR_IPV6_LEN) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>530</pre></td>
+<td align="right" class="lineno"><pre>529</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (ellipsis &lt; 0) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>531</pre></td>
+<td align="right" class="lineno"><pre>530</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                return (pk, true)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>532</pre></td>
+<td align="right" class="lineno"><pre>531</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>533</pre></td>
+<td align="right" class="lineno"><pre>532</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            var n = SOCK_ADDR_IPV6_LEN -i</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>534</pre></td>
+<td align="right" class="lineno"><pre>533</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            for (j in (i-1)..=ellipsis:-1) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>535</pre></td>
+<td align="right" class="lineno"><pre>534</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                ip[j+n] = ip[j]</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>536</pre></td>
+<td align="right" class="lineno"><pre>535</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>537</pre></td>
+<td align="right" class="lineno"><pre>536</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            for (j in (ellipsis + n - 1)..=ellipsis:-1) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>538</pre></td>
+<td align="right" class="lineno"><pre>537</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                ip[j] = 0</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>539</pre></td>
+<td align="right" class="lineno"><pre>538</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>540</pre></td>
+<td align="right" class="lineno"><pre>539</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>        } else if (ellipsis &gt;= 0) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>541</pre></td>
+<td align="right" class="lineno"><pre>540</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            return (pk, true)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>542</pre></td>
+<td align="right" class="lineno"><pre>541</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>543</pre></td>
+<td align="right" class="lineno"><pre>542</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return (ip, false)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>544</pre></td>
+<td align="right" class="lineno"><pre>543</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>544</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>545</pre></td>
@@ -3593,311 +3593,305 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>546</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    static func xtoi(s: String): (Int64, Int64, Bool) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>547</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    static func xtoi(s: String): (Int64, Int64, Bool) {</pre></td>
+<td align="left" class="src coveredLine"><pre>        var n = 0</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>548</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        var n = 0</pre></td>
+<td align="left" class="src coveredLine"><pre>        var m = 0</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>549</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        var m = 0</pre></td>
+<td align="left" class="src coveredLine"><pre>        var i = 0</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>550</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        var i = 0</pre></td>
+<td align="left" class="src coveredLine"><pre>        for (c in s) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>551</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        for (c in s) {</pre></td>
+<td align="left" class="src coveredLine"><pre>            m = i + 1</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>552</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            m = i + 1</pre></td>
+<td align="left" class="src coveredLine"><pre>            if ('0' &lt;= c &amp;&amp; c &lt;= '9') {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>553</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            if ('0' &lt;= c &amp;&amp; c &lt;= '9') {</pre></td>
+<td align="left" class="src coveredLine"><pre>                n *= 16</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>554</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                n *= 16</pre></td>
+<td align="left" class="src coveredLine"><pre>                n += Int64(UInt32(c)) - Int64(b'0')</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>555</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                n += Int64(UInt32(c)) - Int64(b'0')</pre></td>
+<td align="left" class="src coveredLine"><pre>            } else if ('a' &lt;= c &amp;&amp; c &lt;= 'f') {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>556</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            } else if ('a' &lt;= c &amp;&amp; c &lt;= 'f') {</pre></td>
+<td align="left" class="src coveredLine"><pre>                n *= 16</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>557</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                n *= 16</pre></td>
+<td align="left" class="src coveredLine"><pre>                n += Int64(UInt32(c)) - Int64(b'a') + 10</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>558</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                n += Int64(UInt32(c)) - Int64(b'a') + 10</pre></td>
+<td align="left" class="src coveredLine"><pre>            } else if ('A' &lt;= c &amp;&amp; c &lt;= 'F') {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>559</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            } else if ('A' &lt;= c &amp;&amp; c &lt;= 'F') {</pre></td>
+<td align="left" class="src coveredLine"><pre>                n *= 16</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>560</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                n *= 16</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>561</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                n += Int64(UInt32(c)) - Int64(b'A') + 10</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>562</pre></td>
+<td align="right" class="lineno"><pre>561</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            } else {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>563</pre></td>
+<td align="right" class="lineno"><pre>562</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                m = i</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>564</pre></td>
+<td align="right" class="lineno"><pre>563</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                break</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>565</pre></td>
+<td align="right" class="lineno"><pre>564</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>566</pre></td>
+<td align="right" class="lineno"><pre>565</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (n &gt;= BIG) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>567</pre></td>
+<td align="right" class="lineno"><pre>566</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                return (0, i, false)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>568</pre></td>
+<td align="right" class="lineno"><pre>567</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>569</pre></td>
+<td align="right" class="lineno"><pre>568</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            i++</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>570</pre></td>
+<td align="right" class="lineno"><pre>569</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>571</pre></td>
+<td align="right" class="lineno"><pre>570</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>572</pre></td>
+<td align="right" class="lineno"><pre>571</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (m == 0) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>573</pre></td>
+<td align="right" class="lineno"><pre>572</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            return (0, m, false)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>574</pre></td>
+<td align="right" class="lineno"><pre>573</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>575</pre></td>
+<td align="right" class="lineno"><pre>574</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>576</pre></td>
+<td align="right" class="lineno"><pre>575</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return (n, m, true)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>577</pre></td>
+<td align="right" class="lineno"><pre>576</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>578</pre></td>
+<td align="right" class="lineno"><pre>577</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>579</pre></td>
+<td align="right" class="lineno"><pre>578</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    static func stoi(s: String): Int64 {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>580</pre></td>
+<td align="right" class="lineno"><pre>579</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        var num: Int64 = 0</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>581</pre></td>
+<td align="right" class="lineno"><pre>580</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>582</pre></td>
+<td align="right" class="lineno"><pre>581</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        for (u in s.utf8View) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>583</pre></td>
+<td align="right" class="lineno"><pre>582</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (u &lt; b'0' || u &gt; b'9') {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>584</pre></td>
+<td align="right" class="lineno"><pre>583</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                return -1</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>585</pre></td>
+<td align="right" class="lineno"><pre>584</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>586</pre></td>
+<td align="right" class="lineno"><pre>585</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            var n = u - b'0'</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>587</pre></td>
+<td align="right" class="lineno"><pre>586</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            num = num * 10 + Int64(n)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>588</pre></td>
+<td align="right" class="lineno"><pre>587</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>589</pre></td>
+<td align="right" class="lineno"><pre>588</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>590</pre></td>
+<td align="right" class="lineno"><pre>589</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return num</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>591</pre></td>
+<td align="right" class="lineno"><pre>590</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>592</pre></td>
+<td align="right" class="lineno"><pre>591</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>}</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>593</pre></td>
+<td align="right" class="lineno"><pre>592</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>594</pre></td>
+<td align="right" class="lineno"><pre>593</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>func getTimeStamp(time: Time): Int64 {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>595</pre></td>
+<td align="right" class="lineno"><pre>594</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    let standardTime = Time(1970,Month.of(1),1,loc: Location.load("UTC"))</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>596</pre></td>
+<td align="right" class="lineno"><pre>595</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    return (time - standardTime).milliseconds()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>597</pre></td>
+<td align="right" class="lineno"><pre>596</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>}</pre></td>

@@ -284,12 +284,12 @@ pre
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2022-11-29 16:13:07</td>
+            <td class="headerValue">2022-12-29 14:38:50</td>
             <td></td>
             <td class="headerName">Lines:</td>
-            <td class="headerTableEntry">82</td>
-            <td class="headerTableEntry">101</td>
-            <td class="headerTableEntry" style="background-color:Yellow">81.2 %</td>
+            <td class="headerTableEntry">105</td>
+            <td class="headerTableEntry">120</td>
+            <td class="headerTableEntry" style="background-color:Yellow">87.5 %</td>
           </tr>
           <tr>
             <td class="headerName">Legend:</td>
@@ -360,7 +360,7 @@ pre
 <td align="right" class="lineno"><pre>7</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre> * The file declars the Connection class.</pre></td>
+<td align="left" class="src "><pre> * The file declares the Connection class.</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>8</pre></td>
@@ -432,7 +432,7 @@ pre
 <td align="right" class="lineno"><pre>19</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public  var mutex: Monitor = Monitor()</pre></td>
+<td align="left" class="src coveredLine"><pre>    public let mutex: Monitor = Monitor()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>20</pre></td>
@@ -456,7 +456,7 @@ pre
 <td align="right" class="lineno"><pre>23</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    public  var maxIdleConnections: Int64</pre></td>
+<td align="left" class="src "><pre>    private let maxIdleConnections: Int64</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>24</pre></td>
@@ -1218,7 +1218,7 @@ pre
 <td align="right" class="lineno"><pre>150</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        for(connection in evictedConnections) {</pre></td>
+<td align="left" class="src coveredLine"><pre>        for (connection in evictedConnections) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>151</pre></td>
@@ -1314,7 +1314,7 @@ pre
 <td align="right" class="lineno"><pre>166</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                let waitNanos = cleanup()</pre></td>
+<td align="left" class="src coveredLine"><pre>                let waitNanos = cleanup(Time.now())</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>167</pre></td>
@@ -1392,7 +1392,7 @@ pre
 <td align="right" class="lineno"><pre>179</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    func cleanup(): Int64{</pre></td>
+<td align="left" class="src coveredLine"><pre>    func cleanup(now: Time): Int64{</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>180</pre></td>
@@ -1410,250 +1410,430 @@ pre
 <td align="right" class="lineno"><pre>182</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        var longestIdleConnection: Option&lt;Connection&gt; = None</pre></td>
+<td align="left" class="src coveredLine"><pre>        var inUseConnectionCount = 0</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>183</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        synchronized (this.mutex) {</pre></td>
+<td align="left" class="src coveredLine"><pre>        var longestIdleConnection: Option&lt;Connection&gt; = None</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>184</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            let it = connections.iterator()</pre></td>
+<td align="left" class="src coveredLine"><pre>        var remove = 0</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>185</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            var index = 0</pre></td>
+<td align="left" class="src coveredLine"><pre>        synchronized (this.mutex) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>186</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            while (true) {</pre></td>
+<td align="left" class="src coveredLine"><pre>            let it = connections.iterator()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>187</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                match (it.next()) {</pre></td>
+<td align="left" class="src coveredLine"><pre>            var index = 0</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>188</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                    case Some(conn) =&gt;</pre></td>
+<td align="left" class="src coveredLine"><pre>            while (true) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>189</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                        let idleDurationNs: Duration = Time.now() - conn.idleAtNanos</pre></td>
+<td align="left" class="src coveredLine"><pre>                match (it.next()) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>190</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                        idleConnectionCount++</pre></td>
+<td align="left" class="src coveredLine"><pre>                    case Some(conn) =&gt;</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>191</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                        if (idleDurationNs &gt; longestIdleDurationNs) {</pre></td>
+<td align="left" class="src coveredLine"><pre>                        if (pruneAndGetAllocationCount(conn, now) &gt; 0) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>192</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                            longestIdleDurationNs = idleDurationNs</pre></td>
+<td align="left" class="src coveredLine"><pre>                            inUseConnectionCount++</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>193</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                            longestIdleConnection = conn</pre></td>
+<td align="left" class="src coveredLine"><pre>                            index++</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>194</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>                        }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                            continue</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>195</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>                        // weather the connection is ready to be evicted</pre></td>
+<td align="left" class="src "><pre>                        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>196</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                        if (longestIdleDurationNs &gt;= keepAliveDurationNs ||</pre></td>
+<td align="left" class="src coveredLine"><pre>                        let idleDurationNs: Duration = now - conn.idleAtNanos</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>197</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                            idleConnectionCount &gt; this.maxIdleConnections) {</pre></td>
+<td align="left" class="src coveredLine"><pre>                        idleConnectionCount++</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>198</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                            connections.remove(index)</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                        if (idleDurationNs &gt; longestIdleDurationNs) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>199</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                        } else if (idleConnectionCount &gt; 0) {</pre></td>
+<td align="left" class="src coveredLine"><pre>                            longestIdleDurationNs = idleDurationNs</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>200</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>                             // wait for next time</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                            longestIdleConnection = conn</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>201</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                             return (keepAliveDurationNs - longestIdleDurationNs).nanoseconds()</pre></td>
+<td align="left" class="src coveredLine"><pre>                            remove = index</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>202</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>                        } else {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>203</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                            cleanupRunning = false</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>204</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                            return -1</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>205</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>206</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                    case None =&gt; break</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>207</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>                }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>208</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                index++;</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>209</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>            }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>210</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>211</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        match (longestIdleConnection) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>212</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            case Some(conn) =&gt;</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>213</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                Util.closeQuietly(conn.getSocket())</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>214</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                ()</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>215</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            case None =&gt; ()</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>216</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>217</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        return 0</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>218</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>219</pre></td>
+<td align="right" class="lineno"><pre>203</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>220</pre></td>
+<td align="right" class="lineno"><pre>204</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public func connectFailed(failedRoute: Route): Unit {</pre></td>
+<td align="left" class="src coveredLine"><pre>                    case None =&gt; break</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>205</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>                }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>206</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                index++</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>207</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>            }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>208</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>            // weather the connection is ready to be evicted</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>209</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            if (longestIdleDurationNs &gt;= keepAliveDurationNs ||</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>210</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                idleConnectionCount &gt; this.maxIdleConnections) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>211</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                connections.remove(remove)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>212</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            } else if (idleConnectionCount &gt; 0) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>213</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>                 // wait for next time</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>214</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                 return (keepAliveDurationNs - longestIdleDurationNs).nanoseconds()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>215</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            } else if (inUseConnectionCount &gt; 0) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>216</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                return keepAliveDurationNs.nanoseconds()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>217</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>            } else {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>218</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                cleanupRunning = false</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>219</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                return -1</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>220</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>221</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        routeDatabase.failed(failedRoute)</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>222</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>223</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>        match (longestIdleConnection) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>224</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            case Some(conn) =&gt;</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>225</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                Util.closeQuietly(conn.getSocket())</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>226</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            case None =&gt; ()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>227</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>228</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>        return 0</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>229</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>230</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>231</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    private func pruneAndGetAllocationCount(connection: Connection, now: Time): Int64 {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>232</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        let transmitters = connection.transmitters</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>233</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        let indexArray = ArrayList&lt;Int64&gt;()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>234</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>235</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        for (i in 0..transmitters.size) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>236</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            let transmitter = transmitters[i]</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>237</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            if (transmitter.ref == false) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>238</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                indexArray.append(i)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>239</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>            }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>240</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>241</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>242</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        for (i in 0..indexArray.size) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>243</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            transmitters.remove(indexArray[i])</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>244</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            connection.noNewExchanges = true</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>245</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>246</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>247</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return transmitters.size</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>248</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>249</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>250</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func connectFailed(failedRoute: Route): Unit {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>251</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        routeDatabase.failed(failedRoute)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>252</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>253</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>}</pre></td>
