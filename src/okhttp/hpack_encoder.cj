@@ -53,16 +53,16 @@ class Encoder {
      * @return the Array<UInt8>
      */
     func encode(headers: Collection<HeaderField>): Array<UInt8> {
-        if (myBuffer.size != 0) {
-            myBuffer.clear()
-        }
+        myBuffer = ArrayList<UInt8>()
+
         if (tableSizeUpdate) {
             updateMaxSize(UInt32(minSize))
             addTableSize(UInt32(minSize))
             tableSizeUpdate = true
         }
+
         for (header in headers) {
-            var (keyIndex, keyValueIndex) = searchFull(header)
+            let (keyIndex, keyValueIndex) = doReadAndHandleFull(header)
             if (keyValueIndex > 0) {
                 addIndexed(UInt64(keyValueIndex))
             } else {
@@ -77,7 +77,8 @@ class Encoder {
                 }
             }
         }
-        return myBuffer.toArray()
+
+        return unsafe { this.myBuffer.getRawArray()[0..myBuffer.size] }
     }
 
     /**
@@ -104,18 +105,25 @@ class Encoder {
         return !f.sensitive && boo
     }
 
-    func searchFull(f: HeaderField): (Int64, Int64) {
-        var (keyIndex, kvIndex) = HeaderStaticTable.searchFull(f)
-        var (dykeyIndex, dykvIndex, dyBo) = dynTab.search(f)
+    func doReadAndHandleFull(f: HeaderField): (Int64, Int64) {
+        let (keyIndex, kvIndex) = HeaderStaticTable.searchFull(f)
 
-        match {
-            case kvIndex > 0 && keyIndex > 0 => return (keyIndex, kvIndex)
-            case dykeyIndex > 0 && keyIndex > 0 => return (dykeyIndex, dykvIndex)
-            case dykeyIndex < 0 && keyIndex > 0 => return (keyIndex, kvIndex)
-            case dykvIndex > 0 && keyIndex < 0 => return (dykeyIndex, dykvIndex)
-            case dykeyIndex > 0 && keyIndex < 0 => return (dykeyIndex, dykvIndex)
-            case _ => return (keyIndex, kvIndex)
+        if (keyIndex > 0 && kvIndex > 0) {
+            return (keyIndex, kvIndex)
         }
+
+        let (dykeyIndex, dykvIndex) = dynTab.search(f)
+
+        if (dykeyIndex > 0 && keyIndex > 0) {
+            return (keyIndex, dykvIndex)
+        } else if (dykeyIndex < 0 && keyIndex > 0) {
+            return (keyIndex, kvIndex)
+        } else if (dykvIndex > 0 && keyIndex < 0) {
+            return (dykeyIndex, dykvIndex)
+        } else if (dykeyIndex > 0 && keyIndex < 0) {
+            return (dykeyIndex, dykvIndex)
+        }
+        return (keyIndex, kvIndex)
     }
 
     /**
@@ -218,17 +226,16 @@ class Encoder {
      *     +-------------------------------+
      */
     func addHPackString(str: String) {
-        let len: Int64 = huff_encode_count(myBuffer.clone())
-        let strLen: Int64 = str.utf8View.size
-        if (len < strLen) {
-            let first: Int64 = myBuffer.size
-            let arr = ByteArrayList()
-            huff_encode(arr, str.toUtf8Array())
-            let huffArr = arr.toArray()
-            myBuffer.append(UInt8(huffArr.size | CONST_128_I64))
-            if(!arr.isEmpty()) {
-                myBuffer.appendAll(arr.toArray())
-            }
+        println("=========addHPackString==========")
+        println("str = ${str}")
+        let len: Int64 = huff_encode_count(str.toUtf8Array())
+        println("${len}, ${str.utf8View.size}")
+        if (len < str.utf8View.size) {
+            println("!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            let first: Int64 = this.myBuffer.size
+            addByteInt(7, UInt64(len))
+            huff_encode(this.myBuffer, str.toUtf8Array())
+            myBuffer[first] |= 0x80
         } else {
             let arr = str.toUtf8Array()
             myBuffer.append(UInt8(arr.size))
