@@ -138,7 +138,61 @@ class HeaderStaticTable {
             /* 60 */HeaderField("via"),
             /* 61 */HeaderField("www-authenticate")
         ]
-
+        
+    private static let hashStaticTable: HashMap<String, Array<Int64>> =  HashMap<String, Array<Int64>>(
+            /* 1 */[(":authority", [1]),
+            /* 2 */ (":method", [2, 3]),
+            /* 4 */ (":path", [4, 5]),
+            /* 6 */ (":scheme", [6, 7]),
+            /* 8 */ (":status", [8, 9, 10, 11, 12, 13, 14]),
+            /* 15 */("accept-charset", [15]),
+            /* 16 */("accept-encoding", [16]),
+            /* 17 */("accept-language", [17]),
+            /* 18 */("accept-ranges", [18]),
+            /* 19 */("accept", [19]),
+            /* 20 */("access-control-allow-origin", [20]),
+            /* 21 */("age", [21]),
+            /* 22 */("allow", [22]),
+            /* 23 */("authorization", [23]),
+            /* 24 */("cache-control", [24]),
+            /* 25 */("content-disposition", [25]),
+            /* 26 */("content-encoding", [26]),
+            /* 27 */("content-language", [27]),
+            /* 28 */("content-length", [28]),
+            /* 29 */("content-location", [29]),
+            /* 30 */("content-range", [30]),
+            /* 31 */("content-type", [31]),
+            /* 32 */("cookie", [32]),
+            /* 33 */("date", [33]),
+            /* 34 */("etag", [34]),
+            /* 35 */("expect", [35]),
+            /* 36 */("expires", [36]),
+            /* 37 */("from", [37]),
+            /* 38 */("host", [38]),
+            /* 39 */("if-match", [39]),
+            /* 40 */("if-modified-since", [40]),
+            /* 41 */("if-none-match", [41]),
+            /* 42 */("if-range", [42]),
+            /* 43 */("if-unmodified-since", [43]),
+            /* 44 */("last-modified", [44]),
+            /* 45 */("link", [45]),
+            /* 46 */("location", [46]),
+            /* 47 */("max-forwards", [47]),
+            /* 48 */("proxy-authenticate", [48]),
+            /* 49 */("proxy-authorization", [49]),
+            /* 50 */("range", [50]),
+            /* 51 */("referer", [51]),
+            /* 52 */("refresh", [52]),
+            /* 53 */("retry-after", [53]),
+            /* 54 */("server", [54]),
+            /* 55 */("set-cookie", [55]),
+            /* 56 */("strict-transport-security", [56]),
+            /* 57 */("transfer-encoding", [57]),
+            /* 58 */("user-agent", [58]),
+            /* 59 */("vary", [59]),
+            /* 60 */("via", [60]),
+            /* 61 */("www-authenticate", [61])]
+        )
     /**
      * Get index func.
      *
@@ -151,42 +205,20 @@ class HeaderStaticTable {
         return staticTable[index - 1]
     }
 
-
-    /**
-     * Search name func.
-     *
-     * @return the Int64
-     */
-    private static func searchName(name: String): Int64 {
-        for (i in 0..capacity where name.equals(staticTable[i].name)) {
-            return i + 1
-        }
-        
-        return -1
-    }
-
-
     /**
      * Search full func.
      *
      * @return the Int64 * Int64
      */
      static func searchFull(f: HeaderField): (Int64, Int64) {
-        let index = searchName(f.name)
-        
-        if (index > capacity || index <= 0) {
-            return (-1, -1)
+        match (hashStaticTable.get(f.name)) {
+            case Some(v) =>
+                for (i in v where f.name == (staticTable[i - 1].name) && f.value == (staticTable[i - 1].value)) {
+                    return (i, i)
+                }
+                return (v[0], -1)
+            case None => return (-1, -1)
         }
-        
-        var key = index
-        var value = -1
-        
-        for (i in index..=capacity where f.name.equals(staticTable[i - 1].name) && f.value.equals(staticTable[i - 1].value)) {
-            key = i
-            value = i
-        }
-        
-        return (key, value)
     }
 }
 
@@ -199,11 +231,12 @@ let MIN_INT: Int64 = 0
  * Dynamic table size = (sum of bytes per Header +32) * number of key-value pairs
  */
 class DynamicTables {
-    protected var dynamicArray: Array<(Bool, Option<HeaderField>)>
-    protected static let NULL: (Bool, Option<HeaderField>) = (false, None)
+    protected var dynamicArray: Array<(Option<HeaderField>)>
+    protected static let NULL: Option<HeaderField> = None
     protected var tail: Int64
     protected var head: Int64
     protected var myCapacity: Int64
+    protected var hashDynamicTable: HashMap<String, ArrayList<Int64>> // <name, indexs>
     protected var mySize: Int64
 
     /**
@@ -218,10 +251,11 @@ class DynamicTables {
         if ((bs - CONST_32_I64 * maxEntries) != 0) {
             maxEntries++
         }
-        this.dynamicArray = Array<(Bool, Option<HeaderField>)>(maxEntries, item: NULL)
-        this.head = 0
+        this.dynamicArray = Array<Option<HeaderField>>(maxEntries, item: NULL)
         this.tail = 0
+        this.head = 0
         this.mySize = 0
+        this.hashDynamicTable = HashMap<String, ArrayList<Int64>>()
         this.myCapacity = bs
     }
 
@@ -267,13 +301,20 @@ class DynamicTables {
     public func add(header: HeaderField): Unit {
         let headerSize: Int64 = header.size()
         if (headerSize > this.myCapacity) {
-            this.clear()
+            clear()
             return
         }
         while (this.myCapacity - size() < headerSize) {
-            this.remove()
+            remove()
         }
-        this.dynamicArray[head] = (true, header)
+        this.dynamicArray[head] = header
+        match (this.hashDynamicTable.get(header.name)) {
+            case Some(v) => v.append(head)
+            case None =>
+                let list = ArrayList<Int64>()
+                list.append(head)
+                hashDynamicTable[header.name] = list
+        }
         this.head++
         this.mySize += headerSize
         if (this.head == dynamicArray.size) {
@@ -292,10 +333,10 @@ class DynamicTables {
              throw IndexOutOfBoundsException()
         }
         let i: Int64 = this.head - 1 - index
-        if (i < 0 && dynamicArray[i + dynamicArray.size][0]) {
-            return dynamicArray[i + dynamicArray.size][1].getOrThrow()
-        } else if (i >=0 && dynamicArray[i][0]) {
-            return dynamicArray[i][1].getOrThrow()
+        if (i < 0) {
+            return dynamicArray[i + dynamicArray.size].getOrThrow()
+        } else if (i >= 0) {
+            return dynamicArray[i].getOrThrow()
         }
         throw NoneValueException()
     }
@@ -306,18 +347,30 @@ class DynamicTables {
      * @return the Option<HeaderField>
      */
     public func remove(): Option<HeaderField>{
-        let (isValue, removed): (Bool, Option<HeaderField>) = this.dynamicArray[this.tail];
-        if (!isValue) {
-            return None
+        match (dynamicArray[this.tail]) {
+            case None => return None
+            case Some(v) =>
+                mySize = mySize - v.size()
+                let list = hashDynamicTable[v.name]
+                var index = 0
+                for (ind in list) {
+                    if (ind == index) {
+                        break
+                    }
+                    index ++
+                }
+                if (list.size == 1) {
+                    hashDynamicTable.remove(v.name)
+                } else {
+                    list.remove(index)
+                }
+                dynamicArray[this.tail] = NULL
+                tail++
+                if (tail == this.dynamicArray.size) {
+                    tail = 0
+                }
+                return v
         }
-
-        this.mySize = this.mySize - removed.getOrThrow().size()
-        this.dynamicArray[this.tail] = NULL
-        this.tail++
-        if (this.tail == this.dynamicArray.size) {
-            this.tail = 0
-        }
-        return removed
     }
 
     /**
@@ -336,6 +389,7 @@ class DynamicTables {
         this.head = 0
         this.tail = 0
         this.mySize = 0
+        this.hashDynamicTable = HashMap<String, ArrayList<Int64>>()
     }
 
     /**
@@ -346,16 +400,16 @@ class DynamicTables {
     /* size <= 0xFFFF_FFFF */
     public func setCapacity(s: UInt32): Bool {
         let newSize: Int64 = Int64(s)
-        if (newSize == this.myCapacity) {
+        if (newSize == myCapacity) {
             return false
         }
         this.myCapacity = newSize
         if (newSize == 0) {
-            this.clear()
+            clear()
             return false
         } else {
             while (this.mySize > newSize) {
-                this.remove()
+                remove()
             }
         }
         /* set size*/
@@ -366,18 +420,27 @@ class DynamicTables {
         if (this.dynamicArray.size == maxEntries) {
             return false
         }
-        let newFields: Array<(Bool, Option<HeaderField>)> = Array<(Bool, Option<HeaderField>)>(maxEntries, item: NULL)
-        let len: Int64 = this.length()
-        var cur: Int64 = this.tail
+        let newFields: Array<Option<HeaderField>> = Array<Option<HeaderField>>(maxEntries, item: NULL)
+        hashDynamicTable.clear()
+        let len: Int64 = length()
+        var cur: Int64 = tail
         for (i in 0..len) {
-            newFields[i] = this.dynamicArray[cur]
+            newFields[i] = dynamicArray[cur]
+            let name = dynamicArray[cur].getOrThrow().name
+            match (hashDynamicTable.get(name)) {
+                case Some(v) => v.append(i)
+                case None =>
+                    let list = ArrayList<Int64>()
+                    list.append(i)
+                    hashDynamicTable[name] = list
+            }
             cur++
             if (cur == this.dynamicArray.size) {
                 cur = 0  // ring array set to 0 index
             }
         }
         this.tail = 0
-        this.head = this.tail + len
+        this.head = tail + len
         this.dynamicArray = newFields
         return true
     }
@@ -387,38 +450,23 @@ class DynamicTables {
      *
      * @return the Int64*Int64*Bool
      */
-     func search(f: HeaderField) : (Int64, Int64, Bool) {
-        var index = 0
-        var value: Int64 = -1
-        var key: Int64 = -1
-        var i: Int64 = this.head - 1
-        var bo: Bool = false
-
-        while (i >= this.tail) {
-            if (dynamicArray[i][0]) {
-                match (dynamicArray[i][1]) {
-                    case Some(v) =>
-                        if (v.name == f.name) {
-                            key = index
-                            if (v.value == f.value) {
-                                value = index
-                                dynamicArray[i] = (true, HeaderField(f.name, f.value, f.sensitive))
-                                bo = f.sensitive
-                            }
-                        }
-                    case None => ()
+     func search(f: HeaderField) : (Int64, Int64) {
+        let offset = if (this.tail > head) {
+            dynamicArray.size - tail + head
+        } else {
+            head - tail
+        }
+        match (hashDynamicTable.get(f.name)) {
+            case Some(v) =>
+                for (i in v) {
+                    let field = dynamicArray[i].getOrThrow()
+                    if (f.name.equals(field.name) && f.value.equals(field.value)) {
+                        return (offset - i + 61, offset - i + 61)
+                    }
                 }
-            }
-            i--
-            index++
+                return (offset - v[0] + 61, -1)
+            case None => return (-1, -1)
         }
-
-        if (key < 0) {
-            return (key, value, bo)
-        } else if (value < 0) {
-            return (key + 62, value, bo)
-        }
-        return (value + 62, value + 62, bo)
     }
 }
 

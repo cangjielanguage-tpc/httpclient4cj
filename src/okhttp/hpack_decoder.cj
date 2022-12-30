@@ -54,20 +54,19 @@ public enum IndexType {
 class Decoder {
     private var dynTab: DynamicTables
     private var maxDynamicTableSizeChangeRequired: Bool = false
-    private var saveBuf: ArrayList<UInt8>
+    private var arr = Array<UInt8>(16, item: 0)
     // 0b1000_0000 128 128
     private static let INDEXD: (UInt8, UInt8) = (0b1000_0000, 0b0000_0000)
     // 0b0100_0000 192 64
     private static let LITERAL_WITH_INDEXING: (UInt8, UInt8) = (0b1100_0000, 0b0100_0000)
+    // 0b0000_0000 240 0
+    private static let LITERAL: (UInt8, UInt8) = (0b1111_0000, 0b0000_0000)
     // 0b0010_0000 224 32
     private static let SIZE_UPDATE: (UInt8, UInt8) = (0b1110_0000, 0b0010_0000)
     // 0b0001_0000 240 16
     private static let LITERAL_NEVER_INDEXED: (UInt8, UInt8) = (0b1111_0000, 0b0001_0000)
-    // 0b0000_0000 240 0
-    private static let LITERAL: (UInt8, UInt8) = (0b1111_0000, 0b0000_0000)
     init(dynTab: DynamicTables) {
         this.dynTab = dynTab
-        this.saveBuf = ArrayList<UInt8>()
     }
 
     /**
@@ -152,8 +151,11 @@ class Decoder {
                 i = parseFieldLiteral(src, i, INDEXD_NONE, NONE, headerBuf)
             }
         }
-        return headerBuf.toArray()
+        return unsafe {headerBuf.getRawArray()[0..headerBuf.size]}
     }
+
+    var targetIndex = 0
+
 
     /**
      *   Maximum Dynamic Table Size Change.
@@ -209,12 +211,12 @@ class Decoder {
         var name: String = ""
         if (idx > 0) {
             let ihf: HeaderField = getHeader(idx)
-            name = ihf.name
             newIndex = newIndex
+            name = ihf.name
         } else {
             let (strArr, len) = readString(src, newIndex)
-            newIndex = len
             name = String.fromUtf8(strArr)
+            newIndex = len
         }
         let (valArr, len) = readString(src, newIndex)
         var value: String = String.fromUtf8(valArr)
@@ -256,10 +258,11 @@ class Decoder {
         let strArr = if ((src[i] & CONST_128_U8)== 0) {
             src[index..length]
         } else {  // HUFFMAN
-            let arr = ByteArrayList()
+            if (this.arr.size < (length-idx) * 5) {
+                this.arr = Array<UInt8>((length-idx) * 5, item: 0)
+            }
             let ctx = HuffDecodeContext(HUFF_ACCEPTED)
-            huff_decode(ctx , arr, src[index..length], true)
-            arr.toArray()
+            this.arr[0..huff_decode(ctx , this.arr, src[idx..length], true)]
         }
         return (strArr, length)
     }
@@ -338,66 +341,3 @@ class Decoder {
         return dynTab.getEntry(index)
     }
 }
-
-
-class ByteArrayList <: Collection<UInt8>{
-    protected var buf: ArrayList<UInt8> =ArrayList<UInt8>()
-    protected var offset: Int64 = 0
-    protected var isReadOnly: Bool = false
-
-    protected var mycapacity = 16
-
-    protected var bigEndian: Bool = false
-
-    init () {
-        this.bigEndian = true
-        this.buf = ArrayList<UInt8>()
-    }
-
-    public func add(b: UInt32) {
-        if (bigEndian) {
-            add(UInt16(b >> 16))
-            add(UInt16(b & 0xffff))
-        } else {
-            add(UInt16(b & 0xffff))
-            add(UInt16(b >> 16))
-        }
-    }
-
-    public func add(b: UInt16) {
-        if (bigEndian) {
-            add(UInt8(b >> 8))
-            add(UInt8(b & 0xff))
-        } else {
-            add(UInt8(b & 0xff))
-            add(UInt8(b >> 8))
-        }
-    }
-
-    public func add(b: UInt8) {
-        buf.append(b)
-        if (buf.size == mycapacity) {
-            mycapacity = mycapacity << 1
-        }
-    }
-
-    // huffman
-    public func getCurAvail(): Int64 {
-        return mycapacity - buf.size
-    }
-
-    public func isEmpty(): Bool {
-        return buf.size == 0
-    }
-
-    public func iterator(): Iterator<UInt8> {
-        return buf.iterator()
-    }
-
-    public prop let size: Int64 {
-        get() {
-            return buf.size
-        }
-    }
-}
-
