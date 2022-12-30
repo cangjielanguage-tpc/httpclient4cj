@@ -284,7 +284,7 @@ pre
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2022-11-29 16:13:07</td>
+            <td class="headerValue">2022-12-29 14:38:50</td>
             <td></td>
             <td class="headerName">Lines:</td>
             <td class="headerTableEntry">129</td>
@@ -384,475 +384,475 @@ pre
 <td align="right" class="lineno"><pre>11</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>from http2 import hpack.*</pre></td>
+<td align="left" class="src "><pre>from std import sync.*</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>12</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>from std import math.*</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>13</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="left" class="src "><pre>let INITIAL_MAX_FRAME_SIZE = 0x4000 //16384</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>14</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="left" class="src "><pre>let TYPE_DATA: Byte = 0x0</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>15</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>from std import sync.*</pre></td>
+<td align="left" class="src "><pre>let TYPE_HEADERS: Byte = 0x1</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>16</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="left" class="src "><pre>let TYPE_PRIORITY: Byte = 0x2</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>17</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="left" class="src "><pre>let TYPE_RST_STREAM: Byte = 0x3</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>18</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="left" class="src "><pre>let TYPE_SETTINGS: Byte = 0x4</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>19</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>let INITIAL_MAX_FRAME_SIZE = 0x4000 //16384</pre></td>
+<td align="left" class="src "><pre>let TYPE_PUSH_PROMISE: Byte = 0x5</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>20</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>let TYPE_DATA: Byte = 0x0</pre></td>
+<td align="left" class="src "><pre>let TYPE_PING: Byte = 0x6</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>21</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>let TYPE_HEADERS: Byte = 0x1</pre></td>
+<td align="left" class="src "><pre>let TYPE_GOAWAY: Byte = 0x7</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>22</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>let TYPE_PRIORITY: Byte = 0x2</pre></td>
+<td align="left" class="src "><pre>let TYPE_WINDOW_UPDATE: Byte = 0x8</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>23</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>let TYPE_RST_STREAM: Byte = 0x3</pre></td>
+<td align="left" class="src "><pre>let TYPE_CONTINUATION: Byte = 0x9</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>24</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>let TYPE_SETTINGS: Byte = 0x4</pre></td>
+<td align="left" class="src "><pre>let FLAG_NONE: Byte = 0x0</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>25</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>let TYPE_PUSH_PROMISE: Byte = 0x5</pre></td>
+<td align="left" class="src "><pre>let FLAG_ACK: Byte = 0x1</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>26</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>let TYPE_PING: Byte = 0x6</pre></td>
+<td align="left" class="src "><pre>let FLAG_END_STREAM: Byte = 0x1</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>27</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>let TYPE_GOAWAY: Byte = 0x7</pre></td>
+<td align="left" class="src "><pre>let FLAG_END_HEADERS: Byte = 0x4</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>28</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>let TYPE_WINDOW_UPDATE: Byte = 0x8</pre></td>
+<td align="left" class="src "><pre>let FLAG_END_PUSH_PROMISE: Byte = 0x4</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>29</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>let TYPE_CONTINUATION: Byte = 0x9</pre></td>
+<td align="left" class="src "><pre>let FLAG_PADDED: Byte = 0x8</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>30</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>let FLAG_NONE: Byte = 0x0</pre></td>
+<td align="left" class="src "><pre>let FLAG_PRIORITY: Byte = 0x20</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>31</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>let FLAG_ACK: Byte = 0x1</pre></td>
+<td align="left" class="src "><pre>let FLAG_COMPRESSED: Byte = 0x20</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>32</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>let FLAG_END_STREAM: Byte = 0x1</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>33</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>let FLAG_END_HEADERS: Byte = 0x4</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>34</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>let FLAG_END_PUSH_PROMISE: Byte = 0x4</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>35</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>let FLAG_PADDED: Byte = 0x8</pre></td>
+<td align="left" class="src "><pre>/*</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>36</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>let FLAG_PRIORITY: Byte = 0x20</pre></td>
+<td align="left" class="src "><pre> * The class is Http2Writer</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>37</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>let FLAG_COMPRESSED: Byte = 0x20</pre></td>
+<td align="left" class="src "><pre> *</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>38</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="left" class="src "><pre> * Writes HTTP/2 transport frames</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>39</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="left" class="src "><pre> *</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>40</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="left" class="src "><pre> * @author luoyukai4</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>41</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>/*</pre></td>
+<td align="left" class="src "><pre> * @since 0.34.3</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>42</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre> * The class is Http2Writer</pre></td>
+<td align="left" class="src "><pre> */</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>43</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre> *</pre></td>
+<td align="left" class="src "><pre>class Http2Writer {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>44</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre> * Writes HTTP/2 transport frames</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>45</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre> *</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>46</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre> * @author luoyukai4</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>47</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre> * @since 0.34.3</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>48</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre> */</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>49</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>class Http2Writer {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>50</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    private let sink: BufferedOutputStream</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>51</pre></td>
+<td align="right" class="lineno"><pre>45</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    let mutex: Monitor = Monitor()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>52</pre></td>
+<td align="right" class="lineno"><pre>46</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    private var closed: Bool = false</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>53</pre></td>
+<td align="right" class="lineno"><pre>47</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    private var maxFrameSize  = INITIAL_MAX_FRAME_SIZE</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>54</pre></td>
+<td align="right" class="lineno"><pre>48</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    private let encoder : Encoder</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>55</pre></td>
+<td align="right" class="lineno"><pre>49</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>56</pre></td>
+<td align="right" class="lineno"><pre>50</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    init(sink: BufferedOutputStream, encoder: Encoder) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>57</pre></td>
+<td align="right" class="lineno"><pre>51</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        this.sink = sink</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>58</pre></td>
+<td align="right" class="lineno"><pre>52</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        this.encoder = encoder</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>59</pre></td>
+<td align="right" class="lineno"><pre>53</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>60</pre></td>
+<td align="right" class="lineno"><pre>54</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>61</pre></td>
+<td align="right" class="lineno"><pre>55</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    func connectionPreface(): Unit {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>62</pre></td>
+<td align="right" class="lineno"><pre>56</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        synchronized(mutex) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>63</pre></td>
+<td align="right" class="lineno"><pre>57</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>64</pre></td>
+<td align="right" class="lineno"><pre>58</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (closed) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>65</pre></td>
+<td align="right" class="lineno"><pre>59</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                throw IOException("closed")</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                throw HttpException("closed")</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>66</pre></td>
+<td align="right" class="lineno"><pre>60</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>67</pre></td>
+<td align="right" class="lineno"><pre>61</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>68</pre></td>
+<td align="right" class="lineno"><pre>62</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            sink.write(PREFACE.toUtf8Array())</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>69</pre></td>
+<td align="right" class="lineno"><pre>63</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            sink.flush()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>70</pre></td>
+<td align="right" class="lineno"><pre>64</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>71</pre></td>
+<td align="right" class="lineno"><pre>65</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>72</pre></td>
+<td align="right" class="lineno"><pre>66</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>73</pre></td>
+<td align="right" class="lineno"><pre>67</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    func settings(settings: Settings): Unit {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>74</pre></td>
+<td align="right" class="lineno"><pre>68</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        synchronized(mutex) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>75</pre></td>
+<td align="right" class="lineno"><pre>69</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>76</pre></td>
+<td align="right" class="lineno"><pre>70</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (closed) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>77</pre></td>
+<td align="right" class="lineno"><pre>71</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                throw IOException("closed")</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                throw HttpException("closed")</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>78</pre></td>
+<td align="right" class="lineno"><pre>72</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>79</pre></td>
+<td align="right" class="lineno"><pre>73</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>80</pre></td>
+<td align="right" class="lineno"><pre>74</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let length = settings.size() * 6</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>81</pre></td>
+<td align="right" class="lineno"><pre>75</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let frameType: Byte = TYPE_SETTINGS</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>82</pre></td>
+<td align="right" class="lineno"><pre>76</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let flags: Byte = FLAG_NONE</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>83</pre></td>
+<td align="right" class="lineno"><pre>77</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            var streamId: UInt32 = 0</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>84</pre></td>
+<td align="right" class="lineno"><pre>78</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>85</pre></td>
+<td align="right" class="lineno"><pre>79</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            frameHeader(streamId, length, frameType, flags)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>86</pre></td>
+<td align="right" class="lineno"><pre>80</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>87</pre></td>
+<td align="right" class="lineno"><pre>81</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            for (i in 0..Settings.COUNT) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>88</pre></td>
+<td align="right" class="lineno"><pre>82</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                if (!settings.isSet(i)) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>89</pre></td>
+<td align="right" class="lineno"><pre>83</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                    continue</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>84</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>                }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>85</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                var id = i</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>86</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                if (id == 4) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>87</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                    id = 3 // SETTINGS_MAX_CONCURRENT_STREAMS renumbered.</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>88</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                } else if (id == 7) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>89</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                    id = 4 // SETTINGS_INITIAL_WINDOW_SIZE renumbered.</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>90</pre></td>
@@ -863,140 +863,140 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>91</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                var id = i</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>92</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                if (id == 4) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>93</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                    id = 3 // SETTINGS_MAX_CONCURRENT_STREAMS renumbered.</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>94</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                } else if (id == 7) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>95</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                    id = 4 // SETTINGS_INITIAL_WINDOW_SIZE renumbered.</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>96</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>                }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>97</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>98</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                writeUInt16(sink, id)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>99</pre></td>
+<td align="right" class="lineno"><pre>93</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                writeUInt32(sink, settings.get(i))</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>100</pre></td>
+<td align="right" class="lineno"><pre>94</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>101</pre></td>
+<td align="right" class="lineno"><pre>95</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>102</pre></td>
+<td align="right" class="lineno"><pre>96</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            sink.flush()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>103</pre></td>
+<td align="right" class="lineno"><pre>97</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>104</pre></td>
+<td align="right" class="lineno"><pre>98</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>105</pre></td>
+<td align="right" class="lineno"><pre>99</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>106</pre></td>
+<td align="right" class="lineno"><pre>100</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    func flush() {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>107</pre></td>
+<td align="right" class="lineno"><pre>101</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>         synchronized(mutex) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>108</pre></td>
+<td align="right" class="lineno"><pre>102</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (closed) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>109</pre></td>
+<td align="right" class="lineno"><pre>103</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                throw IOException("closed")</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                throw HttpException("closed")</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>110</pre></td>
+<td align="right" class="lineno"><pre>104</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>111</pre></td>
+<td align="right" class="lineno"><pre>105</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            sink.flush()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>112</pre></td>
+<td align="right" class="lineno"><pre>106</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>         }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>113</pre></td>
+<td align="right" class="lineno"><pre>107</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>108</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>109</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    func windowUpdate(streamId: UInt32, windowSizeIncrement: Int64) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>110</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>         synchronized(mutex) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>111</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>             if (closed) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>112</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                 throw HttpException("closed")</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>113</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>             }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>114</pre></td>
@@ -1008,199 +1008,199 @@ pre
 <td align="right" class="lineno"><pre>115</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    func windowUpdate(streamId: UInt32, windowSizeIncrement: Int64) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>116</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>         synchronized(mutex) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>117</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>             if (closed) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>118</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                 throw IOException("closed")</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>119</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>             }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>120</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>121</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>             if (windowSizeIncrement == 0 || windowSizeIncrement &gt; 0x7fffffff) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>122</pre></td>
+<td align="right" class="lineno"><pre>116</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                 throw IllegalArgumentException("windowSizeIncrement == 0 || windowSizeIncrement &gt; 0x7fffffff: ${windowSizeIncrement}")</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>123</pre></td>
+<td align="right" class="lineno"><pre>117</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>             }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>124</pre></td>
+<td align="right" class="lineno"><pre>118</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>125</pre></td>
+<td align="right" class="lineno"><pre>119</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>             let length = 4</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>126</pre></td>
+<td align="right" class="lineno"><pre>120</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>             let frameType: Byte = TYPE_WINDOW_UPDATE</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>127</pre></td>
+<td align="right" class="lineno"><pre>121</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>             let flags: Byte =  FLAG_NONE</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>128</pre></td>
+<td align="right" class="lineno"><pre>122</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>             frameHeader(streamId, length, frameType, flags)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>129</pre></td>
+<td align="right" class="lineno"><pre>123</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>             writeUInt32(sink, windowSizeIncrement)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>130</pre></td>
+<td align="right" class="lineno"><pre>124</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>             sink.flush()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>131</pre></td>
+<td align="right" class="lineno"><pre>125</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>         }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>132</pre></td>
+<td align="right" class="lineno"><pre>126</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>133</pre></td>
+<td align="right" class="lineno"><pre>127</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>134</pre></td>
+<td align="right" class="lineno"><pre>128</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    func frameHeader(streamId: UInt32, length: Int64, frameType: Byte, flags: Byte): Unit {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>135</pre></td>
+<td align="right" class="lineno"><pre>129</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (length &gt; maxFrameSize) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>136</pre></td>
+<td align="right" class="lineno"><pre>130</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>           throw IllegalArgumentException("FRAME_SIZE_ERROR length ${length} &gt; ${maxFrameSize}")</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>137</pre></td>
+<td align="right" class="lineno"><pre>131</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>138</pre></td>
+<td align="right" class="lineno"><pre>132</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>139</pre></td>
+<td align="right" class="lineno"><pre>133</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if ((streamId &amp; 0x80000000) != 0) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>140</pre></td>
+<td align="right" class="lineno"><pre>134</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>             throw IllegalArgumentException("reserved bit set : ${streamId}")</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>141</pre></td>
+<td align="right" class="lineno"><pre>135</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>142</pre></td>
+<td align="right" class="lineno"><pre>136</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>143</pre></td>
+<td align="right" class="lineno"><pre>137</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        writeMedium(sink, length)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>144</pre></td>
+<td align="right" class="lineno"><pre>138</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        writeByte(sink, frameType &amp; 0xff);</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>145</pre></td>
+<td align="right" class="lineno"><pre>139</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        writeByte(sink, flags &amp; 0xff);</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>146</pre></td>
+<td align="right" class="lineno"><pre>140</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        writeUInt32(sink, Int64(streamId) &amp; 0x7fffffff);</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>147</pre></td>
+<td align="right" class="lineno"><pre>141</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>142</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>143</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>144</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    private func writeMedium(sink: BufferedOutputStream, b: Int64): Unit {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>145</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        let i = UInt32(b)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>146</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        let arr: Array&lt;Byte&gt; = [UInt8((i &gt;&gt; 16) &amp; 0xff), UInt8((i &gt;&gt; 8) &amp; 0xff), UInt8(i &amp; 0xff)]</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>147</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        sink.write(arr)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>148</pre></td>
@@ -1218,85 +1218,85 @@ pre
 <td align="right" class="lineno"><pre>150</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    private func writeMedium(sink: BufferedOutputStream, b: Int64): Unit {</pre></td>
+<td align="left" class="src coveredLine"><pre>    private func writeByte(sink: BufferedOutputStream, b: Byte) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>151</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        let i = UInt32(b)</pre></td>
+<td align="left" class="src coveredLine"><pre>        sink.write([b])</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>152</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        let arr: Array&lt;Byte&gt; = [UInt8((i &gt;&gt; 16) &amp; 0xff), UInt8((i &gt;&gt; 8) &amp; 0xff), UInt8(i &amp; 0xff)]</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>153</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        sink.write(arr)</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>154</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>155</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>156</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    private func writeByte(sink: BufferedOutputStream, b: Byte) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>157</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        sink.write([b])</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>158</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>159</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>160</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    private func writeUInt32(sink: BufferedOutputStream, i: Int64) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>161</pre></td>
+<td align="right" class="lineno"><pre>155</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let b = UInt32(i)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>162</pre></td>
+<td align="right" class="lineno"><pre>156</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let arr: Array&lt;Byte&gt; = [UInt8((b &gt;&gt; 24) &amp; 0xff), UInt8((b &gt;&gt; 16) &amp; 0xff),</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>163</pre></td>
+<td align="right" class="lineno"><pre>157</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            UInt8((b &gt;&gt; 8) &amp; 0xff), UInt8(b &amp; 0xff)]</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>158</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        sink.write(arr)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>159</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>160</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>161</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    private func writeUInt16(sink: BufferedOutputStream, i: Int64) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>162</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        let b = UInt32(i)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>163</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        let arr: Array&lt;Byte&gt; = [UInt8((b &gt;&gt; 8) &amp; 0xff), UInt8(b &amp; 0xff)]</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>164</pre></td>
@@ -1320,349 +1320,349 @@ pre
 <td align="right" class="lineno"><pre>167</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    private func writeUInt16(sink: BufferedOutputStream, i: Int64) {</pre></td>
+<td align="left" class="src coveredLine"><pre>    func rstStream(streamId: UInt32, errorCode: ErrorCode) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>168</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        let b = UInt32(i)</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (closed) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>169</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        let arr: Array&lt;Byte&gt; = [UInt8((b &gt;&gt; 8) &amp; 0xff), UInt8(b &amp; 0xff)]</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            throw HttpException("closed")</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>170</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        sink.write(arr)</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>171</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>172</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>173</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    func rstStream(streamId: UInt32, errorCode: ErrorCode) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>174</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        if (closed) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>175</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            throw IOException("closed")</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>176</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>177</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>178</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let length = 4</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>179</pre></td>
+<td align="right" class="lineno"><pre>173</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let frameType = TYPE_RST_STREAM</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>180</pre></td>
+<td align="right" class="lineno"><pre>174</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let flags = FLAG_NONE</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>181</pre></td>
+<td align="right" class="lineno"><pre>175</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        frameHeader(streamId, length, frameType, flags)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>182</pre></td>
+<td align="right" class="lineno"><pre>176</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        writeUInt32(sink, errorCode.getCode())</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>183</pre></td>
+<td align="right" class="lineno"><pre>177</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        sink.flush()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>184</pre></td>
+<td align="right" class="lineno"><pre>178</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>185</pre></td>
+<td align="right" class="lineno"><pre>179</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>186</pre></td>
+<td align="right" class="lineno"><pre>180</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    func goAway(lastGoodStreamId: UInt32, errorCode: ErrorCode, debugData: Array&lt;Byte&gt;) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>187</pre></td>
+<td align="right" class="lineno"><pre>181</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        synchronized(mutex) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>188</pre></td>
+<td align="right" class="lineno"><pre>182</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (closed) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>189</pre></td>
+<td align="right" class="lineno"><pre>183</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                throw IOException("closed")</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                throw HttpException("closed")</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>190</pre></td>
+<td align="right" class="lineno"><pre>184</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>191</pre></td>
+<td align="right" class="lineno"><pre>185</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let length = 8 + debugData.size</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>192</pre></td>
+<td align="right" class="lineno"><pre>186</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let frameType = TYPE_GOAWAY</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>193</pre></td>
+<td align="right" class="lineno"><pre>187</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let flags = FLAG_NONE</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>194</pre></td>
+<td align="right" class="lineno"><pre>188</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let streamId: UInt32 = 0</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>195</pre></td>
+<td align="right" class="lineno"><pre>189</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            frameHeader(streamId, length, frameType, flags)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>196</pre></td>
+<td align="right" class="lineno"><pre>190</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            writeUInt32(sink, Int64(lastGoodStreamId))</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>197</pre></td>
+<td align="right" class="lineno"><pre>191</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            writeUInt32(sink, errorCode.getCode())</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>198</pre></td>
+<td align="right" class="lineno"><pre>192</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (debugData.size &gt; 0) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>199</pre></td>
+<td align="right" class="lineno"><pre>193</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                sink.write(debugData)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>200</pre></td>
+<td align="right" class="lineno"><pre>194</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>201</pre></td>
+<td align="right" class="lineno"><pre>195</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            sink.flush()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>202</pre></td>
+<td align="right" class="lineno"><pre>196</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>203</pre></td>
+<td align="right" class="lineno"><pre>197</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>204</pre></td>
+<td align="right" class="lineno"><pre>198</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>205</pre></td>
+<td align="right" class="lineno"><pre>199</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    func headers(outFinished: Bool, streamId: UInt32, headerBlock: ArrayList&lt;HeaderField&gt;) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>206</pre></td>
+<td align="right" class="lineno"><pre>200</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        synchronized(mutex) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>207</pre></td>
+<td align="right" class="lineno"><pre>201</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (closed) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>208</pre></td>
+<td align="right" class="lineno"><pre>202</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                throw IOException("closed")</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                throw HttpException("closed")</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>209</pre></td>
+<td align="right" class="lineno"><pre>203</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>210</pre></td>
+<td align="right" class="lineno"><pre>204</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let hpackBuffer: Array&lt;UInt8&gt; = encoder.encode(headerBlock)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>211</pre></td>
+<td align="right" class="lineno"><pre>205</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let byteCount = hpackBuffer.size</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>212</pre></td>
+<td align="right" class="lineno"><pre>206</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let length = min(maxFrameSize, byteCount)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>213</pre></td>
+<td align="right" class="lineno"><pre>207</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let frameType = TYPE_HEADERS</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>214</pre></td>
+<td align="right" class="lineno"><pre>208</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            var flags: Byte = FLAG_NONE</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>215</pre></td>
+<td align="right" class="lineno"><pre>209</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (byteCount == length) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>216</pre></td>
+<td align="right" class="lineno"><pre>210</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                flags = FLAG_END_HEADERS</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>217</pre></td>
+<td align="right" class="lineno"><pre>211</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>218</pre></td>
+<td align="right" class="lineno"><pre>212</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>219</pre></td>
+<td align="right" class="lineno"><pre>213</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (outFinished) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>220</pre></td>
+<td align="right" class="lineno"><pre>214</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                flags |= FLAG_END_STREAM</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>221</pre></td>
+<td align="right" class="lineno"><pre>215</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>222</pre></td>
+<td align="right" class="lineno"><pre>216</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>223</pre></td>
+<td align="right" class="lineno"><pre>217</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            frameHeader(streamId, length, frameType, flags)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>224</pre></td>
+<td align="right" class="lineno"><pre>218</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            sink.write(hpackBuffer[0..length])</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>219</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>220</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            if (byteCount &gt; length) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>221</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                writeContinuationFrames(streamId, byteCount - length, hpackBuffer[length..hpackBuffer.size])</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>222</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>            }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>223</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>224</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>225</pre></td>
@@ -1673,140 +1673,140 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>226</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            if (byteCount &gt; length) {</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>    private func writeContinuationFrames(streamId: UInt32, continueCount: Int64, hpackBuffer: Array&lt;UInt8&gt;) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>227</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                writeContinuationFrames(streamId, byteCount - length, hpackBuffer[length..hpackBuffer.size])</pre></td>
+<td align="left" class="src uncoveredLine"><pre>        var byteCount = continueCount</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>228</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>            }</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>        while (byteCount &gt; 0) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>229</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>230</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>231</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>232</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    private func writeContinuationFrames(streamId: UInt32, continueCount: Int64, hpackBuffer: Array&lt;UInt8&gt;) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>233</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        var byteCount = continueCount</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>234</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        while(byteCount &gt; 0) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>235</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            let length = min(maxFrameSize, byteCount)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>236</pre></td>
+<td align="right" class="lineno"><pre>230</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            byteCount -= length</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>237</pre></td>
+<td align="right" class="lineno"><pre>231</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            var flags: Byte = 0x0</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>238</pre></td>
+<td align="right" class="lineno"><pre>232</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            if (byteCount == 0) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>239</pre></td>
+<td align="right" class="lineno"><pre>233</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                flags = FLAG_END_HEADERS</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>240</pre></td>
+<td align="right" class="lineno"><pre>234</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>241</pre></td>
+<td align="right" class="lineno"><pre>235</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            frameHeader(streamId, length, TYPE_CONTINUATION, flags)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>242</pre></td>
+<td align="right" class="lineno"><pre>236</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            sink.write(hpackBuffer)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>243</pre></td>
+<td align="right" class="lineno"><pre>237</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>244</pre></td>
+<td align="right" class="lineno"><pre>238</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>245</pre></td>
+<td align="right" class="lineno"><pre>239</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>246</pre></td>
+<td align="right" class="lineno"><pre>240</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    func maxDataLength(): Int64 {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>247</pre></td>
+<td align="right" class="lineno"><pre>241</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return maxFrameSize</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>248</pre></td>
+<td align="right" class="lineno"><pre>242</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>243</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>244</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    func applyAndAckSettings(peerSettings: Settings) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>245</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        synchronized(mutex) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>246</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            if (closed) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>247</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                throw HttpException("closed")</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>248</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>249</pre></td>
@@ -1818,25 +1818,25 @@ pre
 <td align="right" class="lineno"><pre>250</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    func applyAndAckSettings(peerSettings: Settings){</pre></td>
+<td align="left" class="src coveredLine"><pre>            this.maxFrameSize = peerSettings.getMaxFrameSize(maxFrameSize)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>251</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        synchronized(mutex) {</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>252</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            if (closed) {</pre></td>
+<td align="left" class="src coveredLine"><pre>            if (peerSettings.getHeaderTableSize() != -1) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>253</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                throw IOException("closed")</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                encoder.updateMaxSize(UInt32(peerSettings.getHeaderTableSize()))</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>254</pre></td>
@@ -1854,85 +1854,85 @@ pre
 <td align="right" class="lineno"><pre>256</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            this.maxFrameSize = peerSettings.getMaxFrameSize(maxFrameSize)</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>257</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>258</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            if (peerSettings.getHeaderTableSize() != -1) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>259</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                encoder.updateMaxSize(UInt32(peerSettings.getHeaderTableSize()))</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>260</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>            }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>261</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>262</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let length = 0</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>263</pre></td>
+<td align="right" class="lineno"><pre>257</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let frameType: Byte = TYPE_SETTINGS</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>264</pre></td>
+<td align="right" class="lineno"><pre>258</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let flags: Byte = FLAG_ACK</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>265</pre></td>
+<td align="right" class="lineno"><pre>259</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let streamId: UInt32 = 0</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>266</pre></td>
+<td align="right" class="lineno"><pre>260</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            frameHeader(streamId, length, frameType, flags)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>267</pre></td>
+<td align="right" class="lineno"><pre>261</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            sink.flush()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>268</pre></td>
+<td align="right" class="lineno"><pre>262</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>269</pre></td>
+<td align="right" class="lineno"><pre>263</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>264</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>265</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>    func ping(reply: Bool, payload1: Int64, payload2: Int64) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>266</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>        synchronized(mutex) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>267</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            if (closed) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>268</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                throw HttpException("closed")</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>269</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>270</pre></td>
@@ -1944,115 +1944,115 @@ pre
 <td align="right" class="lineno"><pre>271</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    func ping(reply: Bool, payload1: Int64, payload2: Int64) {</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            let length = 8</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>272</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        synchronized(mutex) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>273</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            if (closed) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>274</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                throw IOException("closed")</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>275</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>            }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>276</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>277</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            let length = 8</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>278</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            let frameType: Byte = TYPE_PING</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>279</pre></td>
+<td align="right" class="lineno"><pre>273</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            let flags: Byte</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>280</pre></td>
+<td align="right" class="lineno"><pre>274</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            if (reply) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>281</pre></td>
+<td align="right" class="lineno"><pre>275</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                flags = FLAG_ACK</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>282</pre></td>
+<td align="right" class="lineno"><pre>276</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            } else {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>283</pre></td>
+<td align="right" class="lineno"><pre>277</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                flags = FLAG_NONE</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>284</pre></td>
+<td align="right" class="lineno"><pre>278</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>285</pre></td>
+<td align="right" class="lineno"><pre>279</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            let streamId: UInt32 = 0</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>286</pre></td>
+<td align="right" class="lineno"><pre>280</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            frameHeader(streamId, length, frameType, flags)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>287</pre></td>
+<td align="right" class="lineno"><pre>281</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            writeUInt32(sink, payload1)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>288</pre></td>
+<td align="right" class="lineno"><pre>282</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            writeUInt32(sink, payload2)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>289</pre></td>
+<td align="right" class="lineno"><pre>283</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>            sink.flush()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>284</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>285</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>286</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>287</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    func data(outFinished: Bool, streamId: UInt32, source: ByteArrayStream, byteCount: Int64) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>288</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (closed) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>289</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            throw HttpException("closed")</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>290</pre></td>
@@ -2063,8 +2063,8 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>291</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        var flags: Byte = FLAG_NONE</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>292</pre></td>
@@ -2076,31 +2076,31 @@ pre
 <td align="right" class="lineno"><pre>293</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    func data(outFinished: Bool, streamId: UInt32, source: ByteArrayStream, byteCount: Int64) {</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (outFinished) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>294</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        if (closed) {</pre></td>
+<td align="left" class="src coveredLine"><pre>            flags |= FLAG_END_STREAM</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>295</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            throw IOException("closed")</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>296</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>297</pre></td>
+<td align="right" class="lineno"><pre>296</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        var flags: Byte = FLAG_NONE</pre></td>
+<td align="left" class="src coveredLine"><pre>        dataFrame(streamId, flags, source, byteCount)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>297</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>298</pre></td>
@@ -2112,118 +2112,82 @@ pre
 <td align="right" class="lineno"><pre>299</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        if (outFinished) {</pre></td>
+<td align="left" class="src coveredLine"><pre>    func dataFrame(streamId: UInt32, flags: Byte, source: ByteArrayStream, byteCount: Int64) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>300</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            flags |= FLAG_END_STREAM</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>301</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>302</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        dataFrame(streamId, flags, source, byteCount)</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>303</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>304</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>305</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    func dataFrame(streamId: UInt32, flags: Byte, source: ByteArrayStream, byteCount: Int64) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>306</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let frameType = TYPE_DATA</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>307</pre></td>
+<td align="right" class="lineno"><pre>301</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        frameHeader(streamId, byteCount, frameType, flags)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>308</pre></td>
+<td align="right" class="lineno"><pre>302</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (byteCount &gt; 0) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>309</pre></td>
+<td align="right" class="lineno"><pre>303</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let arr = Array&lt;Byte&gt;(byteCount, item: 0)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>310</pre></td>
+<td align="right" class="lineno"><pre>304</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            source.read(arr)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>311</pre></td>
+<td align="right" class="lineno"><pre>305</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            sink.write(arr)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>312</pre></td>
+<td align="right" class="lineno"><pre>306</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>       }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>313</pre></td>
+<td align="right" class="lineno"><pre>307</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>   }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>314</pre></td>
+<td align="right" class="lineno"><pre>308</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>315</pre></td>
+<td align="right" class="lineno"><pre>309</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>   func close() {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>316</pre></td>
+<td align="right" class="lineno"><pre>310</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>       closed = true</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>317</pre></td>
+<td align="right" class="lineno"><pre>311</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>   }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>318</pre></td>
+<td align="right" class="lineno"><pre>312</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>}</pre></td>

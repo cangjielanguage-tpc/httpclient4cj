@@ -284,12 +284,12 @@ pre
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2022-11-29 16:13:07</td>
+            <td class="headerValue">2022-12-29 14:38:50</td>
             <td></td>
             <td class="headerName">Lines:</td>
-            <td class="headerTableEntry">119</td>
-            <td class="headerTableEntry">147</td>
-            <td class="headerTableEntry" style="background-color:Yellow">81.0 %</td>
+            <td class="headerTableEntry">118</td>
+            <td class="headerTableEntry">146</td>
+            <td class="headerTableEntry" style="background-color:Yellow">80.8 %</td>
           </tr>
           <tr>
             <td class="headerName">Legend:</td>
@@ -360,7 +360,7 @@ pre
 <td align="right" class="lineno"><pre>7</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre> * The file declars the Sink class.</pre></td>
+<td align="left" class="src "><pre> * The file declares the Sink impls.</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>8</pre></td>
@@ -996,13 +996,13 @@ pre
 <td align="right" class="lineno"><pre>113</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        } catch (e: IOException) {</pre></td>
+<td align="left" class="src uncoveredLine"><pre>        } catch (e: HttpException) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>114</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            complete(NetException(e.message))</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            complete(HttpException(e.message))</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>115</pre></td>
@@ -1044,13 +1044,13 @@ pre
 <td align="right" class="lineno"><pre>121</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>         } catch (e: IOException) {</pre></td>
+<td align="left" class="src uncoveredLine"><pre>         } catch (e: HttpException) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>122</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            complete(NetException(e.message))</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            complete(HttpException(e.message))</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>123</pre></td>
@@ -1146,19 +1146,19 @@ pre
 <td align="right" class="lineno"><pre>138</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>           complete(Option&lt;NetException&gt;.None)</pre></td>
+<td align="left" class="src coveredLine"><pre>           complete(Option&lt;HttpException&gt;.None)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>139</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        } catch (e: IOException) {</pre></td>
+<td align="left" class="src uncoveredLine"><pre>        } catch (e: HttpException) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>140</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>           complete(NetException(e.message))</pre></td>
+<td align="left" class="src uncoveredLine"><pre>           complete(HttpException(e.message))</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>141</pre></td>
@@ -1188,7 +1188,7 @@ pre
 <td align="right" class="lineno"><pre>145</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    private func complete(e: Option&lt;NetException&gt;): Unit {</pre></td>
+<td align="left" class="src coveredLine"><pre>    private func complete(e: Option&lt;HttpException&gt;): Unit {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>146</pre></td>
@@ -1224,7 +1224,7 @@ pre
 <td align="right" class="lineno"><pre>151</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        exchange.bodyComplete(false, true, e)</pre></td>
+<td align="left" class="src coveredLine"><pre>        exchange.bodyComplete(bytesReceived, false, true, e)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>152</pre></td>
@@ -1434,604 +1434,598 @@ pre
 <td align="right" class="lineno"><pre>186</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            print("buffer.length = ${buffer.length }")</pre></td>
+<td align="left" class="src coveredLine"><pre>            if (buffer.length &gt; 0) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>187</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            if (buffer.length &gt; 0) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>188</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                this.sink.write(this.buffer.readToEnd())</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>189</pre></td>
+<td align="right" class="lineno"><pre>188</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>190</pre></td>
+<td align="right" class="lineno"><pre>189</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            sink.close()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>191</pre></td>
+<td align="right" class="lineno"><pre>190</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            closed = true</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>192</pre></td>
+<td align="right" class="lineno"><pre>191</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>192</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>193</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="left" class="src "><pre>}</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>194</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>}</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>195</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="left" class="src "><pre>class FramingSink &lt;: Sink {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>196</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>class FramingSink &lt;: Sink {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>197</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    private static let EMIT_BUFFER_SIZE = 16384</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>198</pre></td>
+<td align="right" class="lineno"><pre>197</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    private let sendBuffer: ByteArrayStream = ByteArrayStream()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>199</pre></td>
+<td align="right" class="lineno"><pre>198</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    var stream: Option&lt;H2Stream&gt; = Option&lt;H2Stream&gt;.None</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>200</pre></td>
+<td align="right" class="lineno"><pre>199</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    var trailers: Option&lt;Header&gt; = Option&lt;Header&gt;.None</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>201</pre></td>
+<td align="right" class="lineno"><pre>200</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    var closed: Bool = false</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>202</pre></td>
+<td align="right" class="lineno"><pre>201</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    var finished: Bool = false</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>203</pre></td>
+<td align="right" class="lineno"><pre>202</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>204</pre></td>
+<td align="right" class="lineno"><pre>203</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    public prop var http2Stream: H2Stream {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>205</pre></td>
+<td align="right" class="lineno"><pre>204</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        get() {return stream.getOrThrow()}</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>206</pre></td>
+<td align="right" class="lineno"><pre>205</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        set(value) {this.stream = value}</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>207</pre></td>
+<td align="right" class="lineno"><pre>206</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>208</pre></td>
+<td align="right" class="lineno"><pre>207</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>209</pre></td>
+<td align="right" class="lineno"><pre>208</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    init(outFinished: Bool) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>210</pre></td>
+<td align="right" class="lineno"><pre>209</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        this.finished = outFinished</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>211</pre></td>
+<td align="right" class="lineno"><pre>210</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>212</pre></td>
+<td align="right" class="lineno"><pre>211</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>213</pre></td>
+<td align="right" class="lineno"><pre>212</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    public func write(bytes: Array&lt;Byte&gt;): Unit {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>214</pre></td>
+<td align="right" class="lineno"><pre>213</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        sendBuffer.write(bytes)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>215</pre></td>
+<td align="right" class="lineno"><pre>214</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        while (sendBuffer.length &gt;= EMIT_BUFFER_SIZE) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>216</pre></td>
+<td align="right" class="lineno"><pre>215</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            emitFrame(false)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>217</pre></td>
+<td align="right" class="lineno"><pre>216</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>217</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>218</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>219</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>220</pre></td>
+<td align="right" class="lineno"><pre>219</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    private func emitFrame(outFinishedOnLastFrame: Bool): Unit {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>221</pre></td>
+<td align="right" class="lineno"><pre>220</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        let toWrite: Int64</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>222</pre></td>
+<td align="right" class="lineno"><pre>221</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        synchronized(http2Stream.mutex) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>222</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            while (http2Stream.bytesLeftInWriteWindow &lt;=0 &amp;&amp;</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>223</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            while(http2Stream.bytesLeftInWriteWindow &lt;=0 &amp;&amp;</pre></td>
+<td align="left" class="src coveredLine"><pre>                !finished &amp;&amp; !closed &amp;&amp; !has(http2Stream.errorCode)) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>224</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                !finished &amp;&amp; !closed &amp;&amp; !has(http2Stream.errorCode)) {</pre></td>
+<td align="left" class="src coveredLine"><pre>                http2Stream.mutex.wait()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>225</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                http2Stream.mutex.wait()</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>226</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>            }</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>227</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            http2Stream.checkOutNotClosed()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>228</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            http2Stream.checkOutNotClosed()</pre></td>
+<td align="left" class="src coveredLine"><pre>            toWrite = min(http2Stream.bytesLeftInWriteWindow, sendBuffer.length)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>229</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            toWrite = min(http2Stream.bytesLeftInWriteWindow, sendBuffer.length)</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>230</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            http2Stream.bytesLeftInWriteWindow -= toWrite</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>231</pre></td>
+<td align="right" class="lineno"><pre>230</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>232</pre></td>
+<td align="right" class="lineno"><pre>231</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let outFinished: Bool = outFinishedOnLastFrame &amp;&amp; toWrite == sendBuffer.length</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>233</pre></td>
+<td align="right" class="lineno"><pre>232</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        http2Stream.cc.writeData(http2Stream.id, outFinished, sendBuffer, toWrite)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>234</pre></td>
+<td align="right" class="lineno"><pre>233</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>234</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>235</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>236</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>237</pre></td>
+<td align="right" class="lineno"><pre>236</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    public func flush(): Unit {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>238</pre></td>
+<td align="right" class="lineno"><pre>237</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        synchronized(http2Stream.mutex) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>239</pre></td>
+<td align="right" class="lineno"><pre>238</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            http2Stream.checkOutNotClosed()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>240</pre></td>
+<td align="right" class="lineno"><pre>239</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>241</pre></td>
+<td align="right" class="lineno"><pre>240</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>241</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        while (sendBuffer.length &gt; 0) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>242</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        while(sendBuffer.length &gt; 0) {</pre></td>
+<td align="left" class="src coveredLine"><pre>            emitFrame(true)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>243</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            emitFrame(true)</pre></td>
+<td align="left" class="src coveredLine"><pre>            http2Stream.cc.flush()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>244</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            http2Stream.cc.flush()</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>245</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>246</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>247</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>248</pre></td>
+<td align="right" class="lineno"><pre>247</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    public func close(): Unit {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>249</pre></td>
+<td align="right" class="lineno"><pre>248</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        synchronized(http2Stream.mutex) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>250</pre></td>
+<td align="right" class="lineno"><pre>249</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (closed) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>251</pre></td>
+<td align="right" class="lineno"><pre>250</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                return</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>252</pre></td>
+<td align="right" class="lineno"><pre>251</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>252</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>253</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>254</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>255</pre></td>
+<td align="right" class="lineno"><pre>254</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (!finished) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>256</pre></td>
+<td align="right" class="lineno"><pre>255</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let hasData: Bool = sendBuffer.length &gt; 0</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>257</pre></td>
+<td align="right" class="lineno"><pre>256</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            let hasTrailers: Bool = has(trailers)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>258</pre></td>
+<td align="right" class="lineno"><pre>257</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (hasTrailers) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>259</pre></td>
+<td align="right" class="lineno"><pre>258</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                while (sendBuffer.length &gt; 0) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>260</pre></td>
+<td align="right" class="lineno"><pre>259</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                    emitFrame(true)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>261</pre></td>
+<td align="right" class="lineno"><pre>260</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>262</pre></td>
+<td align="right" class="lineno"><pre>261</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                let result: ArrayList&lt;HeaderField&gt; = ArrayList&lt;HeaderField&gt;()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>263</pre></td>
+<td align="right" class="lineno"><pre>262</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                for ((k,v) in trailers.getOrThrow()) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>264</pre></td>
+<td align="right" class="lineno"><pre>263</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                    result.append(HeaderField(k, v[0]))</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>265</pre></td>
+<td align="right" class="lineno"><pre>264</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>266</pre></td>
+<td align="right" class="lineno"><pre>265</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                trailers = Option&lt;Header&gt;.None</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>267</pre></td>
+<td align="right" class="lineno"><pre>266</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                http2Stream.cc.writeHeaders(http2Stream.id, true, result)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>268</pre></td>
+<td align="right" class="lineno"><pre>267</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            } else if (hasData) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>269</pre></td>
+<td align="right" class="lineno"><pre>268</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                while (sendBuffer.length &gt; 0) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>270</pre></td>
+<td align="right" class="lineno"><pre>269</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                    emitFrame(true)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>271</pre></td>
+<td align="right" class="lineno"><pre>270</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>                }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>272</pre></td>
+<td align="right" class="lineno"><pre>271</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            } else {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>273</pre></td>
+<td align="right" class="lineno"><pre>272</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                 http2Stream.cc.writeData(http2Stream.id, true, ByteArrayStream(), 0)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>274</pre></td>
+<td align="right" class="lineno"><pre>273</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>275</pre></td>
+<td align="right" class="lineno"><pre>274</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>275</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>276</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>277</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>278</pre></td>
+<td align="right" class="lineno"><pre>277</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        synchronized(http2Stream.mutex) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>279</pre></td>
+<td align="right" class="lineno"><pre>278</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>           closed = true</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>280</pre></td>
+<td align="right" class="lineno"><pre>279</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>281</pre></td>
+<td align="right" class="lineno"><pre>280</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>282</pre></td>
+<td align="right" class="lineno"><pre>281</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        http2Stream.cc.flush()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>283</pre></td>
+<td align="right" class="lineno"><pre>282</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        http2Stream.cancelStreamIfNecessary()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>284</pre></td>
+<td align="right" class="lineno"><pre>283</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>285</pre></td>
+<td align="right" class="lineno"><pre>284</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>286</pre></td>
+<td align="right" class="lineno"><pre>285</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>}</pre></td>

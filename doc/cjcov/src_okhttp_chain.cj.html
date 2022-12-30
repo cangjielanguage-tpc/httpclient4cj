@@ -275,7 +275,7 @@ pre
         <table cellpadding="1" border="0" width="100%">
           <tr>
             <td class="headerName">File:</td>
-            <td class="headerValue">src/interceptor.cj</td>
+            <td class="headerValue">src/okhttp/chain.cj</td>
             <td width="5%"></td>
             <td width="15%"></td>
             <td width="10%" class="headerValue" style="text-align:right;">Hit</td>
@@ -284,12 +284,12 @@ pre
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2022-09-29 16:50:56</td>
+            <td class="headerValue">2022-12-29 14:38:50</td>
             <td></td>
             <td class="headerName">Lines:</td>
             <td class="headerTableEntry">34</td>
-            <td class="headerTableEntry">36</td>
-            <td class="headerTableEntry" style="background-color:LightGreen">94.4 %</td>
+            <td class="headerTableEntry">35</td>
+            <td class="headerTableEntry" style="background-color:LightGreen">97.1 %</td>
           </tr>
           <tr>
             <td class="headerName">Legend:</td>
@@ -396,571 +396,571 @@ pre
 <td align="right" class="lineno"><pre>13</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>/**</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>14</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre> * The interface is Interceptor</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>15</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre> * @author guo_tingtingtekla,luoyukai4</pre></td>
+<td align="left" class="src "><pre>/**</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>16</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre> * @since 0.29.3</pre></td>
+<td align="left" class="src "><pre> * The class is Chain</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>17</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre> */</pre></td>
+<td align="left" class="src "><pre> * @author guo_tingtingtekla,luoyukai4</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>18</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>public interface Interceptor {</pre></td>
+<td align="left" class="src "><pre> * @since 0.29.3</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>19</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>   /*</pre></td>
+<td align="left" class="src "><pre> */</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>20</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    * The Function is intercept</pre></td>
+<td align="left" class="src "><pre>public class Chain {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>21</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    *</pre></td>
+<td align="left" class="src "><pre>    /* var member interceptors type is ArrayList&lt;Interceptor&gt; */</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>22</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    * @param chain of Chain</pre></td>
+<td align="left" class="src "><pre>    private var interceptors: ArrayList&lt;Interceptor&gt;</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>23</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    *</pre></td>
+<td align="left" class="src "><pre>    /* var member transmitter type is Transmitter */</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>24</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    * @return Type of Response</pre></td>
+<td align="left" class="src "><pre>    private var transmitter: Transmitter</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>25</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    * @since 0.29.3</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>26</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    */</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>27</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>   func intercept(chain: Chain): Response</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>28</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>}</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>29</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>30</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>/**</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>31</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre> * The class is Chain</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>32</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre> * @author guo_tingtingtekla,luoyukai4</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>33</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre> * @since 0.29.3</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>34</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre> */</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>35</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>public class Chain {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>36</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    /* var member interceptors type is ArrayList&lt;Interceptor&gt; */</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>37</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    private var interceptors: ArrayList&lt;Interceptor&gt;</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>38</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    /* var member transmitter type is Transmitter */</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>39</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    private var transmitter: Transmitter</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>40</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    /* var member calls type is Int64 */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>41</pre></td>
+<td align="right" class="lineno"><pre>26</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    private var calls: Int64 = 0</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>42</pre></td>
+<td align="right" class="lineno"><pre>27</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    /* var member index type is Int64 */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>43</pre></td>
+<td align="right" class="lineno"><pre>28</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    private var index: Int64</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>44</pre></td>
+<td align="right" class="lineno"><pre>29</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    /* var member request type is Request */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>45</pre></td>
+<td align="right" class="lineno"><pre>30</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    private var request: Request</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>46</pre></td>
+<td align="right" class="lineno"><pre>31</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    /* var member call type is Call */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>47</pre></td>
+<td align="right" class="lineno"><pre>32</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    private var call: Call</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>48</pre></td>
+<td align="right" class="lineno"><pre>33</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    /* var member exchange type is Option&lt;Exchange&gt; */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>49</pre></td>
+<td align="right" class="lineno"><pre>34</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    private var exchange: Option&lt;Exchange&gt; = None</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>50</pre></td>
+<td align="right" class="lineno"><pre>35</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    private var connectTimeout: Option&lt;Duration&gt;</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>51</pre></td>
+<td align="right" class="lineno"><pre>36</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    private var readTimeout: Option&lt;Duration&gt;</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>52</pre></td>
+<td align="right" class="lineno"><pre>37</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    private var writeTimeout: Option&lt;Duration&gt;</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>53</pre></td>
+<td align="right" class="lineno"><pre>38</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>54</pre></td>
+<td align="right" class="lineno"><pre>39</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    /**</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>55</pre></td>
+<td align="right" class="lineno"><pre>40</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * The Function is init constructor</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>56</pre></td>
+<td align="right" class="lineno"><pre>41</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     *</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>57</pre></td>
+<td align="right" class="lineno"><pre>42</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @param interceptors of ArrayList&lt;Interceptor&gt;</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>58</pre></td>
+<td align="right" class="lineno"><pre>43</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @param transmitter of Transmitter</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>59</pre></td>
+<td align="right" class="lineno"><pre>44</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @param index of Int64</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>60</pre></td>
+<td align="right" class="lineno"><pre>45</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @param request of Request</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>61</pre></td>
+<td align="right" class="lineno"><pre>46</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @param call of Call</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>62</pre></td>
+<td align="right" class="lineno"><pre>47</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @param exchange of Option&lt;Exchange&gt;</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>63</pre></td>
+<td align="right" class="lineno"><pre>48</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @since 0.29.3</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>64</pre></td>
+<td align="right" class="lineno"><pre>49</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>65</pre></td>
+<td align="right" class="lineno"><pre>50</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    public init(interceptors: ArrayList&lt;Interceptor&gt;, transmitter: Transmitter , index:Int64, request: Request,</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>66</pre></td>
+<td align="right" class="lineno"><pre>51</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        call: Call, exchange: Option&lt;Exchange&gt;, connectTimeout:Option&lt;Duration&gt;, readTimeout:Option&lt;Duration&gt;,</pre></td>
+<td align="left" class="src "><pre>            call: Call, exchange: Option&lt;Exchange&gt;, connectTimeout:Option&lt;Duration&gt;, readTimeout:Option&lt;Duration&gt;,</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>67</pre></td>
+<td align="right" class="lineno"><pre>52</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>            writeTimeout: Option&lt;Duration&gt;){</pre></td>
+<td align="left" class="src "><pre>            writeTimeout: Option&lt;Duration&gt;) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>68</pre></td>
+<td align="right" class="lineno"><pre>53</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        this.transmitter = transmitter</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>69</pre></td>
+<td align="right" class="lineno"><pre>54</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        this.index = index</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>70</pre></td>
+<td align="right" class="lineno"><pre>55</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        this.request = request</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>71</pre></td>
+<td align="right" class="lineno"><pre>56</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        this.call = call</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>72</pre></td>
+<td align="right" class="lineno"><pre>57</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        this.interceptors = interceptors</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>73</pre></td>
+<td align="right" class="lineno"><pre>58</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        this.exchange = exchange</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>74</pre></td>
+<td align="right" class="lineno"><pre>59</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        this.connectTimeout = connectTimeout</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>75</pre></td>
+<td align="right" class="lineno"><pre>60</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        this.readTimeout = readTimeout</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>76</pre></td>
+<td align="right" class="lineno"><pre>61</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        this.writeTimeout = writeTimeout</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>77</pre></td>
+<td align="right" class="lineno"><pre>62</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>78</pre></td>
+<td align="right" class="lineno"><pre>63</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>79</pre></td>
+<td align="right" class="lineno"><pre>64</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    /**</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>80</pre></td>
+<td align="right" class="lineno"><pre>65</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * The Function is getTransmitter</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>81</pre></td>
+<td align="right" class="lineno"><pre>66</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     *</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>82</pre></td>
+<td align="right" class="lineno"><pre>67</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @return Type of Transmitter</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>83</pre></td>
+<td align="right" class="lineno"><pre>68</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @since 0.29.3</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>84</pre></td>
+<td align="right" class="lineno"><pre>69</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>85</pre></td>
+<td align="right" class="lineno"><pre>70</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public func getTransmitter(): Transmitter{</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func getTransmitter(): Transmitter {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>86</pre></td>
+<td align="right" class="lineno"><pre>71</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return transmitter</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>87</pre></td>
+<td align="right" class="lineno"><pre>72</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>88</pre></td>
+<td align="right" class="lineno"><pre>73</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>89</pre></td>
+<td align="right" class="lineno"><pre>74</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    /**</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>90</pre></td>
+<td align="right" class="lineno"><pre>75</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * The Function is getRequest</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>91</pre></td>
+<td align="right" class="lineno"><pre>76</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     *</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>92</pre></td>
+<td align="right" class="lineno"><pre>77</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @return Type of Request</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>93</pre></td>
+<td align="right" class="lineno"><pre>78</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @since 0.29.3</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>94</pre></td>
+<td align="right" class="lineno"><pre>79</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>95</pre></td>
+<td align="right" class="lineno"><pre>80</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    public func getRequest(): Request {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>96</pre></td>
+<td align="right" class="lineno"><pre>81</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return request</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>97</pre></td>
+<td align="right" class="lineno"><pre>82</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>98</pre></td>
+<td align="right" class="lineno"><pre>83</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>99</pre></td>
+<td align="right" class="lineno"><pre>84</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    /**</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>100</pre></td>
+<td align="right" class="lineno"><pre>85</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * The Function is getExchange</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>101</pre></td>
+<td align="right" class="lineno"><pre>86</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     *</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>102</pre></td>
+<td align="right" class="lineno"><pre>87</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @return Type of Exchange</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>103</pre></td>
+<td align="right" class="lineno"><pre>88</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @since 0.29.3</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>104</pre></td>
+<td align="right" class="lineno"><pre>89</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>105</pre></td>
+<td align="right" class="lineno"><pre>90</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    public func getExchange(): Exchange {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>106</pre></td>
+<td align="right" class="lineno"><pre>91</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return exchange.getOrThrow()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>107</pre></td>
+<td align="right" class="lineno"><pre>92</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>93</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>94</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    /**</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>95</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     * The Function is proceed</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>96</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     *</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>97</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     * @param request of Request</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>98</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     * @param transmitter of Transmitter</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>99</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     * @param exchange of Option&lt;Exchange&gt;</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>100</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     *</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>101</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     * @return Type of Response</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>102</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     * @since 0.29.3</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>103</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>     */</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>104</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func proceed(request: Request,  transmitter: Transmitter, exchange: Option&lt;Exchange&gt;): Response {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>105</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (index &gt;= interceptors.size) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>106</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            throw Exception("interceptors error")</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>107</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>108</pre></td>
@@ -971,437 +971,293 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>109</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    /**</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>110</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * The Function is proceed</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>111</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     *</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>112</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * @param request of Request</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>113</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * @param transmitter of Transmitter</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>114</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * @param exchange of Option&lt;Exchange&gt;</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>115</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     *</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>116</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * @return Type of Response</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>117</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     * @since 0.29.3</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>118</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>     */</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>119</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public func proceed(request: Request,  transmitter: Transmitter, exchange: Option&lt;Exchange&gt;): Response {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>120</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        if (index &gt;= interceptors.size){</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>121</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            throw Exception("interceptors error")</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>122</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>123</pre></td>
-<td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        calls++</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>124</pre></td>
+<td align="right" class="lineno"><pre>110</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        var next: Chain =  Chain(interceptors,transmitter, index + 1, request, call, exchange, connectTimeout,</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>125</pre></td>
+<td align="right" class="lineno"><pre>111</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>         readTimeout, writeTimeout )</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>126</pre></td>
+<td align="right" class="lineno"><pre>112</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        let interceptor: Interceptor = interceptors.get(index).getOrThrow();</pre></td>
+<td align="left" class="src coveredLine"><pre>        let interceptor: Interceptor = interceptors.get(index).getOrThrow()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>127</pre></td>
+<td align="right" class="lineno"><pre>113</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let response: Response  = interceptor.intercept(next)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>128</pre></td>
+<td align="right" class="lineno"><pre>114</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return response</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>129</pre></td>
+<td align="right" class="lineno"><pre>115</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>130</pre></td>
+<td align="right" class="lineno"><pre>116</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>131</pre></td>
+<td align="right" class="lineno"><pre>117</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    /**</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>132</pre></td>
+<td align="right" class="lineno"><pre>118</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * The Function is proceed</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>133</pre></td>
+<td align="right" class="lineno"><pre>119</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     *</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>134</pre></td>
+<td align="right" class="lineno"><pre>120</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @param request of Request</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>135</pre></td>
+<td align="right" class="lineno"><pre>121</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     *</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>136</pre></td>
+<td align="right" class="lineno"><pre>122</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @return Type of Response</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>137</pre></td>
+<td align="right" class="lineno"><pre>123</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @since 0.29.3</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>138</pre></td>
+<td align="right" class="lineno"><pre>124</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>139</pre></td>
+<td align="right" class="lineno"><pre>125</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public func proceed(request: Request): Response{</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func proceed(request: Request): Response {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>140</pre></td>
+<td align="right" class="lineno"><pre>126</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        return proceed(request, transmitter, exchange);</pre></td>
+<td align="left" class="src coveredLine"><pre>        return proceed(request, transmitter, exchange)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>141</pre></td>
+<td align="right" class="lineno"><pre>127</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>142</pre></td>
+<td align="right" class="lineno"><pre>128</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>143</pre></td>
+<td align="right" class="lineno"><pre>129</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    /**</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>144</pre></td>
+<td align="right" class="lineno"><pre>130</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * Returns the connection the request will be executed on. This is only available in the chains</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>145</pre></td>
+<td align="right" class="lineno"><pre>131</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * of network interceptors: for application interceptors this is always null.</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>146</pre></td>
+<td align="right" class="lineno"><pre>132</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>147</pre></td>
+<td align="right" class="lineno"><pre>133</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    //func Connection connection():</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>148</pre></td>
+<td align="right" class="lineno"><pre>134</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>149</pre></td>
+<td align="right" class="lineno"><pre>135</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    /**</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>150</pre></td>
+<td align="right" class="lineno"><pre>136</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * The Function is getCall</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>151</pre></td>
+<td align="right" class="lineno"><pre>137</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     *</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>152</pre></td>
+<td align="right" class="lineno"><pre>138</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @return Type of Call</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>153</pre></td>
+<td align="right" class="lineno"><pre>139</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @since 0.29.3</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>154</pre></td>
+<td align="right" class="lineno"><pre>140</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>155</pre></td>
+<td align="right" class="lineno"><pre>141</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    public func getCall(): Call {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>156</pre></td>
+<td align="right" class="lineno"><pre>142</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return call</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>157</pre></td>
+<td align="right" class="lineno"><pre>143</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>158</pre></td>
+<td align="right" class="lineno"><pre>144</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>159</pre></td>
+<td align="right" class="lineno"><pre>145</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    /**</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>160</pre></td>
+<td align="right" class="lineno"><pre>146</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * The Function is getConnection</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>161</pre></td>
+<td align="right" class="lineno"><pre>147</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     *</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>162</pre></td>
+<td align="right" class="lineno"><pre>148</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @return Type of Option&lt;Connection&gt;</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>163</pre></td>
+<td align="right" class="lineno"><pre>149</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @since 0.30.4</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>164</pre></td>
+<td align="right" class="lineno"><pre>150</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>165</pre></td>
+<td align="right" class="lineno"><pre>151</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    public func getConnection(): Option&lt;Connection&gt; {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>166</pre></td>
+<td align="right" class="lineno"><pre>152</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        match (exchange) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>167</pre></td>
+<td align="right" class="lineno"><pre>153</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case Some(ex) =&gt; return ex.getConnection()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>168</pre></td>
+<td align="right" class="lineno"><pre>154</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            case None =&gt; return None</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            case None =&gt; return None</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>169</pre></td>
+<td align="right" class="lineno"><pre>155</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>170</pre></td>
+<td align="right" class="lineno"><pre>156</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>171</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>}</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>172</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>173</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>/**</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>174</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre> * The class is TimeUnit</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>175</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre> * @author guo_tingtingtekla,luoyukai4</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>176</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre> * @since 0.29.3</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>177</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre> */</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>178</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>public class TimeUnit {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>179</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>180</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>181</pre></td>
+<td align="right" class="lineno"><pre>157</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>}</pre></td>

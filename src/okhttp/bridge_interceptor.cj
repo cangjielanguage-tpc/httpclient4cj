@@ -127,28 +127,32 @@ public class BridgeInterceptor<: Interceptor {
  * @return Type of Bool
  * @since 0.29.3
  */
-public func hasBody(response: Response): Bool {
+func hasBody(response: Response): Bool {
     if (response.getRequest().getMethod().equals("HEAD")) {
         return false
     }
+
     let responseCode: Int64 = response.getCode()
+
     if ((responseCode < HttpStatusCode.STATUS_CONTINUE || responseCode >= HttpStatusCode.STATUS_OK) &&
         responseCode != HttpStatusCode.STATUS_NO_CONTENT &&
         responseCode != HttpStatusCode.STATUS_NOT_MODIFIED) {
         return true
     }
+
     let contentLength = response.getHeader("Content-Length", "")
+
     if (contentLength != "" && ((Int64.tryParse(contentLength) ?? -1) != -1) ||
      "chunked".equals(response.getHeader("Transfer-Encoding", ""))) {
         return true
-     }
+    }
     return false
 }
 
-public func contentLength(response: Response): Int64 {
+func contentLength(response: Response): Int64 {
     return contentLength(response.getHeaders())
 }
 
-public func contentLength(headers: Header): Int64 {
+func contentLength(headers: Header): Int64 {
     return Int64.tryParse(headers.get("Content-Length") ?? "") ?? -1
 }

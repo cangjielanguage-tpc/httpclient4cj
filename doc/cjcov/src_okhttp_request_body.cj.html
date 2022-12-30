@@ -284,7 +284,7 @@ pre
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2022-11-29 16:13:07</td>
+            <td class="headerValue">2022-12-29 14:38:50</td>
             <td></td>
             <td class="headerName">Lines:</td>
             <td class="headerTableEntry">20</td>
@@ -450,7 +450,7 @@ pre
 <td align="right" class="lineno"><pre>22</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    private var mediaType: String</pre></td>
+<td align="left" class="src "><pre>    private var mediaType: Option&lt;MediaType&gt;</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>23</pre></td>
@@ -504,7 +504,7 @@ pre
 <td align="right" class="lineno"><pre>31</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    init(mediaType: String, bytes: Array&lt;Byte&gt;) {</pre></td>
+<td align="left" class="src coveredLine"><pre>    init(mediaType: Option&lt;MediaType&gt;, bytes: Array&lt;Byte&gt;) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>32</pre></td>
@@ -576,7 +576,7 @@ pre
 <td align="right" class="lineno"><pre>43</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public func contentType(): String {</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func contentType(): Option&lt;MediaType&gt; {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>44</pre></td>
@@ -768,7 +768,7 @@ pre
 <td align="right" class="lineno"><pre>75</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public static func create(contentType: String, content: String): RequestBody {</pre></td>
+<td align="left" class="src coveredLine"><pre>    public static func create(contentType: Option&lt;MediaType&gt;, content: String): RequestBody {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>76</pre></td>
@@ -792,7 +792,7 @@ pre
 <td align="right" class="lineno"><pre>79</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public static func create(contentType: String, bytes: Array&lt;Byte&gt;): RequestBody {</pre></td>
+<td align="left" class="src coveredLine"><pre>    public static func create(contentType: Option&lt;MediaType&gt;, bytes: Array&lt;Byte&gt;): RequestBody {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>80</pre></td>
@@ -816,7 +816,7 @@ pre
 <td align="right" class="lineno"><pre>83</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public static func create(contentType: String, file: File): RequestBody {</pre></td>
+<td align="left" class="src coveredLine"><pre>    public static func create(contentType: Option&lt;MediaType&gt;, file: File): RequestBody {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>84</pre></td>
