@@ -88,28 +88,27 @@ class RouteSelector {
             return allRoutes
         }
 
-        var pos: UInt64 =0
 
-        var socketHost = address.getUrl().hostname()
-        eventListener.dnsStart(call, socketHost)
-        while (true) {
-            match (resolveDomain(TCP, socketHost, pos)) {
-                case Some(route) =>
-                    pos++
-                    let url = address.getUrl()
-                    let port:UInt16 = match(UInt16.tryParse(url.port())) {
-                        case Some(v) => v
-                        case None =>
-                            if (url.toString().startsWith("https")) {
-                                443
-                            } else {
-                                80
-                            }
-                    }
-                    allRoutes.append(Route(address, SocketAddress(route[0], route[1], port)))
-                case None => break
-            }
+        let url = address.getUrl()
+        var socketHost = url.hostname()
+        let port:UInt16 = match(UInt16.tryParse(url.port())) {
+            case Some(v) => v
+            case None =>
+                if (url.toString().startsWith("https")) {
+                    443
+                } else {
+                    80
+                }
         }
+        eventListener.dnsStart(call, socketHost)
+
+        let arr = resolveDomain(TCP, socketHost)
+
+        for (i in 0..arr.size) {
+            let route: (SocketAddressKind, Array<UInt8>) = arr[i]
+            allRoutes.append(Route(address, SocketAddress(route[0], route[1], port)))
+        }
+
         eventListener.dnsEnd(call, socketHost, allRoutes)
         routeCache.put(address, allRoutes)
         return allRoutes

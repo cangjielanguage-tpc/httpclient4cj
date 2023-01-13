@@ -10,7 +10,6 @@ from std import socket.*
 from std import sync.*
 
  var times:Int64 = 1000
- var start:Int64 = 0
  var end:Int64 = 0
  var port: UInt16 = 0
  var i:AtomicInt64 = AtomicInt64(0)
@@ -32,7 +31,6 @@ main (){
                         .url("http://127.0.0.1:${port}/1234")
                         .build()
     index = 0
-    start = Time.now().unixNano()
     while(index < times){
         index++;
         client.newCall(request).enqueue(MyCallbacks())
