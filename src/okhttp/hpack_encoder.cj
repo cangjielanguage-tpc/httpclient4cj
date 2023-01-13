@@ -226,12 +226,8 @@ class Encoder {
      *     +-------------------------------+
      */
     func addHPackString(str: String) {
-        println("=========addHPackString==========")
-        println("str = ${str}")
         let len: Int64 = huff_encode_count(str.toUtf8Array())
-        println("${len}, ${str.utf8View.size}")
         if (len < str.utf8View.size) {
-            println("!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             let first: Int64 = this.myBuffer.size
             addByteInt(7, UInt64(len))
             huff_encode(this.myBuffer, str.toUtf8Array())
