@@ -297,8 +297,8 @@ public class Part {
     }
 
     private static func checkName(name: String) {
-        for (c in name.toCharArray()) {
-            if (c <=  '\u{0020}' || c>= '\u{007f}') {
+        for (i in 0..name.toCharArray().size) {
+            if (name.charAt(i) <=  '\u{0020}' || name.charAt(i) >= '\u{007f}') {
                 throw IllegalArgumentException( "Unexpected char in header name: ${name}")
             }
         }
@@ -311,12 +311,12 @@ func randomBoundary(): String{
 
 func appendQuotedString(target: StringBuilder, key: String): Unit {
     target.append('"')
-    for (c in key.toCharArray()) {
-        match (c) {
+    for (i in 0..key.toCharArray().size) {
+        match (key[i]) {
             case '\n' => target.append("%0A")
             case '\r' => target.append("%0D")
             case '"' => target.append("%22")
-            case _ =>target.append(c)
+            case _ =>target.append(key[i])
         }
     }
     target.append('"')

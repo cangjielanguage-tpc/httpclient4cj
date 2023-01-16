@@ -41,8 +41,8 @@ public class CookieUtil {
 
         let cookies = ArrayList<Cookie>()
 
-        for (cookieStrings in values) {
-            let cookie = parse(url, cookieStrings)
+        for (i in 0..values.size) {
+            let cookie = parse(url, values[i])
             match (cookie) {
                 case None => continue
                 case Some(c) => cookies.append(c)
@@ -577,8 +577,9 @@ public class CookieUtil {
 
     static func stoi(s: String): Int64 {
         var num: Int64 = 0
-
+      var i: Int64 = 0
         for (u in s.utf8View) {
+           
             if (u < b'0' || u > b'9') {
                 return -1
             }
