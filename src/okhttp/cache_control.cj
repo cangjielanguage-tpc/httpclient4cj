@@ -245,9 +245,9 @@ public class CacheControl {
         }
 
         let headers: ArrayList<String> = ArrayList<String>()
-
-        for (i in head) {
-            let c: Array<String> = i.split(":")
+        let headSize = head.size
+        for (i in 0..headSize) {
+            let c: Array<String> = head[i].split(":")
             headers.appendAll(c)
         }
         return headers

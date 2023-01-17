@@ -353,11 +353,11 @@ class DynamicTables {
                 mySize = mySize - v.size()
                 let list = hashDynamicTable[v.name]
                 var index = 0
-                for (ind in list) {
-                    if (ind == index) {
+                for (index in 0..list.size) {
+                    if (list.size == index) {
                         break
                     }
-                    index ++
+                    //index ++
                 }
                 if (list.size == 1) {
                     hashDynamicTable.remove(v.name)
@@ -458,7 +458,7 @@ class DynamicTables {
         }
         match (hashDynamicTable.get(f.name)) {
             case Some(v) =>
-                for (i in v) {
+                for (i in 0..v.size) {
                     let field = dynamicArray[i].getOrThrow()
                     if (f.name.equals(field.name) && f.value.equals(field.value)) {
                         return (offset - i + 61, offset - i + 61)

@@ -158,8 +158,9 @@ public class Connection {
     }
 
     private func routeMatchesAny(routeSelector: RouteSelector): Bool {
-        for (select in routeSelector.getAll()) {
-            if (route.inetSocketAddress == select.inetSocketAddress) {
+        let routeSelectorSize = routeSelector.getAll()
+        for (i in 0..routeSelectorSize.size) {
+            if (route.inetSocketAddress == routeSelectorSize[i].inetSocketAddress) {
                 return true
             }
         }

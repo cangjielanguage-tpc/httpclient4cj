@@ -51,9 +51,9 @@ public class ConnectionPool {
         if (connection.noNewExchanges || maxIdleConnections == 0) {
             var index = -1
             var removeIndex = -1
-            for (i in connections) {
+            for (i in 0..connections.size()) {
                index++
-               if (refEq(i,conn) ) {
+               if (refEq(connections.get(i),conn) ) {
                    removeIndex = index
                    break
                }
@@ -84,14 +84,14 @@ public class ConnectionPool {
     func transmitterAcquirePooledConnection(address: Address, transmitter: Transmitter,
         routeSelector: Option<RouteSelector>, requireMultiplexed!: Bool = false): Bool {
 
-        for (conn in connections) {
-             if (requireMultiplexed && !conn.isMultiplexed()) {
+        for (i in 0..connections.size()) {
+             if (requireMultiplexed && !connections.get(i).isMultiplexed()) {
                 continue
              }
-             if (!conn.isEligible(address, routeSelector)) {
+             if (!connections.get(i).isEligible(address, routeSelector)) {
                 continue
              }
-             transmitter.acquireConnectionNoEvents(conn)
+             transmitter.acquireConnectionNoEvents(connections.get(i))
              return true
         }
 
@@ -119,8 +119,8 @@ public class ConnectionPool {
     public func idleConnectionCount(): Int64 {
         var total = 0
 
-        for (connection in connections) {
-            if (connection.getTransmitters().size == 0) {
+        for (i in 0..connections.size()) {
+            if (connections.get(i).getTransmitters().size == 0) {
                 total++
             }
         }
@@ -147,8 +147,8 @@ public class ConnectionPool {
                 }
             )
         }
-        for (connection in evictedConnections) {
-            Util.closeQuietly(connection.getSocket())
+        for (i in 0..evictedConnections.size) {
+            Util.closeQuietly(evictedConnections[i].getSocket())
         }
     }
 

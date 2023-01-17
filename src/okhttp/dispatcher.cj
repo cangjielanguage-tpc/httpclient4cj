@@ -224,15 +224,15 @@ public class Dispatcher {
      * @since 0.29.3
      */
     private func findExistingCallWithHost(host: String): Option<AsyncCall> {
-        for (existingCall in runningAsyncCalls) {
-          if (existingCall.host().equals(host)) {
-              return (existingCall)
+        for (i in (0..runningAsyncCalls.size())) {
+          if (runningAsyncCalls.get(i).host().equals(host)) {
+              return runningAsyncCalls.get(i)
           }
         }
 
-        for (existingCall in readyAsyncCalls) {
-          if (existingCall.host().equals(host)) {
-              return (existingCall)
+        for (i in (0..readyAsyncCalls.size())) {
+          if (readyAsyncCalls.get(i).host().equals(host)) {
+              return readyAsyncCalls.get(i)
           }
         }
 
@@ -287,15 +287,17 @@ public class Dispatcher {
                 runningAsyncCalls.add(asyncCall)
              }
 
-             for (index in arr) {
-                readyAsyncCalls.remove(index)
+             for (i in 0..arr.size) {
+                readyAsyncCalls.remove(arr[i])
              }
 
              isRunning = runningAsyncCalls.toArrayList().size + runningSyncCalls.toArrayList().size > 0
         }
 
-        for (asyncCall in executableCalls) {
-            asyncCall.executeOn()
+        for (i in 0..executableCalls.size) {
+
+               executableCalls[i].executeOn()
+            
         }
 
         return isRunning

@@ -230,8 +230,8 @@ public class H2Connection {
 
     func toHeaders(headerBlock: Array<HeaderField>): Header {
         let header:Header = Header()
-        for (headerField in  headerBlock) {
-            header.add(headerField.name, headerField.value.trim())
+        for (i in  0..headerBlock.size) {
+            header.add(headerBlock[i].name, headerBlock[i].value.trim())
         }
         return header
     }
