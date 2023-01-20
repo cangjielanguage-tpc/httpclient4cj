@@ -366,7 +366,13 @@ public class Exchange {
     public func createRequestBody(request: Request): Sink{
         let contentLength = request.getBody().getOrThrow().getContentLength()
         eventListener.requestBodyStart(call)
-        let rawRequestBody: Sink = codec.createRequestBody(request)
+        let rawRequestBody: Sink
+        if (contentLength != -1) {
+            rawRequestBody = RealBufferSink(codec.createRequestBody(request))
+        } else {
+            rawRequestBody = codec.createRequestBody(request)
+        }
+
         return RequestBodySink(rawRequestBody, contentLength, this)
     }
 

@@ -58,7 +58,7 @@ public class Settings {
     }
 
 
-    func isSet(id: Int64) : Bool {
+    public func isSet(id: Int64) : Bool {
         let bit = 1 << id
         return (set & bit) != 0
     }

@@ -14,7 +14,7 @@
 
 OkHttp 是一个高效的 HTTP 客户端, 代码参考: https://github.com/square/okhttp/tree/parent-3.14.9
 
-### 特性
+## 特性
 
 - 🚀 支持HTTP/2，允许所有同一个主机地址的请求共享同一个 socket 连接
 
@@ -22,7 +22,7 @@ OkHttp 是一个高效的 HTTP 客户端, 代码参考: https://github.com/squar
 
 - 💪 缓存响应内容，避免一些完全重复的请求
 
-### 路线
+## 路线
 
 <p align="center">
 <img src="./doc/assets/milestone.png" width="100%" >
@@ -30,13 +30,13 @@ OkHttp 是一个高效的 HTTP 客户端, 代码参考: https://github.com/squar
 
 ## <img alt="" src="./doc/assets/readme-icon-framework.png" style="display: inline-block;" width=3%/> 软件架构
 
-### 架构图
+## 架构图
 
 <p align="center">
 <img src="./doc/assets/framework.PNG" width="60%" >
 </p>
 
-### 源码目录
+## 源码目录
 
 ```shell
 .
@@ -50,6 +50,8 @@ OkHttp 是一个高效的 HTTP 客户端, 代码参考: https://github.com/squar
 │   └── xxx_lib.md 
 ├── lib
 │   └── libdns.so
+├── inclue
+│   └── dns.c
 ├── src
 │   └── okhttp
 │      ├── address.cj
@@ -117,11 +119,12 @@ OkHttp 是一个高效的 HTTP 客户端, 代码参考: https://github.com/squar
     └── UT
 ```
 - `lib`依赖 c 库的dns解析接口的动态链接文件
+- `clude` c代码目录
 - `doc`是库的设计文档、提案、库的使用文档、LLT 覆盖报告 ( 由于未支持服务端的对接,部分拦截器连接后处理逻辑暂时无法覆盖)
 - `src`是库源码目录
 - `test`是存放测试用例，包括 HLT 用例、LLT 用例和 UT 用例
 
-### 接口说明
+## 接口说明
 
 主要是核心类和成员函数说明,详情见 [API](./doc/api.md)
 
@@ -132,119 +135,170 @@ OkHttp 是一个高效的 HTTP 客户端, 代码参考: https://github.com/squar
 编译描述和具体shell命令
 
 ```shell
+make
 cpm update
 cpm build
 ```
 
-### 示例
+## 示例
 
 注意：以下示例若在本地不成功，可能是 url 地址请求失败，请换成实际可用地址。
 
-```
+### 获取HttpClient对象并配置超时时间
+
+```canjie
 from okhttp import okhttp.*
-from net import http.*
-from std import collection.*
-from encoding import url.*
-from net import tls.*
+from std import time.*
 
 main (){
-    let client = OkHttpClient.builder()
-                        .addNetworkInterceptor(MyInterceptor())
-                        .protocols(ArrayList<String>([Protocol.get("HTTP/2.0").toString(),Protocol.get("HTTP/1.1").toString()]))
-                        .build()
+    let client: OkHttpClient= OkHttpClient.builder()
+    .connectTimeout(Duration.millisecond(1000))
+    .readTimeout(Duration.millisecond(1000))
+    .writeTimeout(Duration.millisecond(1000)).build()
+}
 
-    let request: okhttp.Request = okhttp.Request
-                        .builder()
-                        .url("http://36.152.44.95/index.html")
-                        .header(Header())
-                        .header("User-Agent", "OkHttp-Example")
-                        .build()
-    let response: okhttp.Response = client.newCall(request).execute()
+```
+
+### 同步 GET 请求方法示例
+
+```canjie
+from okhttp import okhttp.*
+from std import time.*
+from encoding import url.*
+
+main() {
+    let url = URL.parse("https://postman-echo.com/get?foo1=bar1&foo2=bar2")
+
+    let client: OkHttpClient= OkHttpClient.builder()
+    .connectTimeout(Duration.millisecond(1000))
+    .readTimeout(Duration.millisecond(1000))
+    .writeTimeout(Duration.millisecond(1000))
+    .build()
+
+    let request = Request.builder().url(url).build()
+    let call = client.newCall(request)
+    let response = call.execute()
+    println(response.getBody().getOrThrow().getString())
     return 0
 }
 
-class MyInterceptor<: Interceptor {
-    public func intercept(chain: Chain): okhttp.Response {
-        let conn = chain.getConnection().getOrThrow()
-        conn.getRoute()
-        let add = Address(URL.parse("http://36.152.44.95/index.html"),
-                            ArrayList<String>([Protocol.get("H2_PRIOR_KNOWLEDGE").toString()]),
-                            Option<TlsClientConfig>.None
-                        )
-        add.getTlsConfig()
-        conn.noExchanges()
-        println(conn.isMultiplexed())
-        conn.cancel()
-        let request: okhttp.Request = chain.getRequest()
-        let header: Header = request.getHeaders()
-        let c = request.getCacheControl() ?? CacheControl.parse(header)
-        println(c.toString())
-        return okhttp.Response.builder().build()
-    }
-}
 ```
+### 同步 Post 发送json字符串
 
-执行结果
-
-```
-false
-no-cache, no-store, max-age=0, s-maxage=0, private, public, must-revalidate, max-stale=0, min-fresh=0, only-if-cached, no-transform, immutable
-
-```
-
-#### chunked分块传输请求
-```
+```cangjie
 
 from okhttp import okhttp.*
-from std import collection.*
-from net import http.*
-from std import io.*
-from std import socket.*
+from std import time.*
 
-var port: UInt16 = 0
 main() {
-    spawn {
-        serve()
-    }
-    sleep(1000*1000*1000)
-    let client: OkHttpClient= OkHttpClient.builder().build()
+   let client: OkHttpClient = OkHttpClient.builder()
+    .connectTimeout(Duration.millisecond(1000))
+    .readTimeout(Duration.millisecond(1000))
+    .writeTimeout(Duration.millisecond(1000))
+    .build()
+    let request = Request.builder()
+                .url("https://postman-echo.com/post")
+                .post(RealRequestBody.create(MediaType.get("application/json; charset=utf-8"),
+                 "{\"id\": \"123\"}"))
+                .build()
+    let response = client.newCall(request).execute()
+    println(response.getBody().getOrThrow().getString())
+    return 0
+}
+```
+
+### 同步 Post 发送文件内容
+
+```cangjie
+from okhttp import okhttp.*
+from std import time.*
+from std import fs.*
+main() {
+   let client: OkHttpClient= OkHttpClient.builder()
+    .connectTimeout(Duration.millisecond(1000))
+    .readTimeout(Duration.millisecond(1000))
+    .writeTimeout(Duration.millisecond(1000))
+    .build()
+
+    var arr: Array<Byte> = Array<Byte>(1024, {i => UInt8(i % 256)})
+    File.writeTo("./body.txt", arr)
+    let file = File("./body.txt", OpenOption.Open(true, false))
+    let body = RealRequestBody.create(MediaType.get("text/plain"),file)
     let request: okhttp.Request = okhttp.Request.builder()
-                                    .url("http://127.0.0.1:${port}/1234")
-                                    .method("POST", body: MyRequestBody())
-                                    .build()
+                                  .url("https://postman-echo.com/post")
+                                  .post(body)
+                                  .build()
     let response: okhttp.Response = client.newCall(request).execute()
-    println(response.toString())
-    if(response.getBody()?.isClosed() ?? true) {
-        return 1
-    } else {
-        response.getBody()?.close()
-        return 0
-    }
+    println(response.getBody().getOrThrow().getString())
+    File.delete("./body.txt")
+    return 0
+}
+```
+### multipart 发送数据以及多上传文件
+
+```cangjie
+from okhttp import okhttp.*
+from std import time.*
+from std import fs.*
+
+main() {
+    let client: OkHttpClient= OkHttpClient.builder()
+            .connectTimeout(Duration.millisecond(1000))
+            .readTimeout(Duration.millisecond(1000))
+            .writeTimeout(Duration.millisecond(1000))
+            .build()
+    var arr: Array<Byte> = Array<Byte>(1024, {i => UInt8(i % 256)})
+    File.writeTo("./body1.txt", arr)
+    File.writeTo("./body2.txt", arr)
+
+    let body1 = RealRequestBody.create(MediaType.get("text/plain"),File("./body1.txt",OpenOption.Open(true,false)))
+    let body2 = RealRequestBody.create(MediaType.get("text/plain"),File("./body2.txt",OpenOption.Open(true,false)))
+
+    let mu = MultipartBody.builder().
+    addFormDataPart("name", "huluwa").
+    addFormDataPart("age", "18").
+    addFormDataPart("file1", "body1.txt", body1).
+    addFormDataPart("file2", "body2.txt", body2).
+    build()
+
+    let request = Request.builder()
+                    .url("https://postman-echo.com/post")
+                    .post(mu)
+                    .build()
+    let response: okhttp.Response = client.newCall(request).execute()
+    println(response.getBody().getOrThrow().getString())
+    File.delete("./body1.txt")
+    File.delete("./body2.txt")
 }
 
-func serve(){
-    let hd = http.Route()
-    hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
-        println(String.fromUtf8(req.readToEnd()))
-        return
-    })
-    let server = http.Server(hd)
-    let socket = socket.SocketServer(SocketNet.TCP, "0.0.0.0", port)
-    port = socket.port
-    server.serve(socket)
+```
+
+### chunked分块传输请求
+```cangjie
+from okhttp import okhttp.*
+from std import time.*
+from std import io.*
+
+main() {
+
+    let client: OkHttpClient= OkHttpClient.builder().build()
+    let request= okhttp.Request.builder()
+                .url("https://postman-echo.com/post")
+                .post(MyRequestBody())
+                .build()
+    let response = client.newCall(request).execute()
+    println(response.getBody().getOrThrow().getString())
 }
-
-
 class MyRequestBody <:RequestBody {
-    public func contentType(): String {
-        return "application/json"
+    public func contentType(): Option<MediaType> {
+        return MediaType.parse("application/json")
     }
-    
+
     //声明的getContentLength -1，客户端拦截器默认添加"Transfer-Encoding", "chunked"头,使用ChunkedSink读取body
     public func getContentLength(): Int64 {
         return -1
     }
-    
+
     public func writeTo(sink: Sink): Unit {
         //每次调用write都会产生一个传输块
         sink.write("hello".toUtf8Array())
@@ -255,15 +309,241 @@ class MyRequestBody <:RequestBody {
         return ByteArrayStream()
 
     }
+}
 
+```
+### 异步请求以及回调
+
+```
+from okhttp import okhttp.*
+from std import time.*
+
+main() {
+     let client: OkHttpClient= OkHttpClient.builder()
+                    .connectTimeout(Duration.millisecond(1000))
+                    .readTimeout(Duration.millisecond(1000))
+                    .writeTimeout(Duration.millisecond(1000))
+                    .build()
+
+    let request = Request.builder().url("https://www.baidu.com")
+                    .header("User-Agent", "OkHttp-Example")
+                    .build()
+
+    for (i in 0..5) {
+        let async = client.newCall(request)
+        async.enqueue(MyCallbacks())
+    }
+
+    sleep(1000*1000*1000)
+}
+
+public class MyCallbacks <: Callback {
+
+    public func onFailure(call: Call,  e: Exception): Unit{
+        println("fail, ${e.message}")
+
+    }
+
+    public func onResponse(call: Call,  response: Response): Unit{
+        println(response)
+    }
 }
 ```
 
-运行结果
+### 拦截器使用
+
+```cangjie
+from okhttp import okhttp.*
+from std import time.*
+
+
+main (){
+    let client: OkHttpClient= OkHttpClient.builder()
+                .addNetworkInterceptor(MyInterceptor())//添加拦截器
+                .connectTimeout(Duration.millisecond(1000))
+                .readTimeout(Duration.millisecond(1000))
+                .writeTimeout(Duration.millisecond(1000))
+                .build()
+    let request = Request.builder().url("https://postman-echo.com/get?foo1=bar1&foo2=bar2").build()
+    let response: Response = client.newCall(request).execute()
+    println(response.getBody().getOrThrow().getString())
+    return 0
+}
+//自定义拦截器打印route地址
+class MyInterceptor<: Interceptor {
+     public func intercept(chain: Chain): okhttp.Response {
+        let conn = chain.getConnection().getOrThrow()
+        println("route = ${conn.getRoute().getInetSocketAddress()}")
+        return chain.proceed(chain.getRequest())
+    }
+}
 ```
-helloworld
-Response{protocol=http/1.1, code=200, message=OK, url=http://127.0.0.1:38621/1234}
+
+### cookie管理
+
+```cangjie
+from okhttp import okhttp.*
+from encoding import url.*
+from std import time.*
+
+main() {
+    let url: URL = URL.parse("https://www.zhihu.com")
+    let jar = getSimpleCookieJar()
+    let client: OkHttpClient = OkHttpClient.builder().cookieJar(jar)
+                            .connectTimeout(Duration.millisecond(1000))
+                            .readTimeout(Duration.millisecond(1000))
+                            .writeTimeout(Duration.millisecond(1000))
+                            .build()
+    let request = okhttp.Request.builder().url(url).build()
+    let call = client.newCall(request)
+
+
+    let response: okhttp.Response = call.execute()
+    for (cookie in client.getCookieJar().loadForRequest(url)) {
+        println(cookie.toString())
+    }
+    return 0
+
+}
+ 
 ```
+### 监听器使用
+
+```cangjie
+from okhttp import okhttp.*
+from std import time.*
+from encoding import url.*
+from std import socket.*
+from net import tls.*
+from std import collection.*
+
+main() {
+    let url = URL.parse("https://postman-echo.com/get?foo1=bar1&foo2=bar2")
+
+    let client: OkHttpClient= OkHttpClient.builder()
+    .eventListener(MyEventListener())
+    .connectTimeout(Duration.millisecond(1000))
+    .readTimeout(Duration.millisecond(1000))
+    .writeTimeout(Duration.millisecond(1000))
+    .build()
+
+    let request = Request.builder().url(url).build()
+    let call = client.newCall(request)
+    let response = call.execute()
+    println(response.getBody().getOrThrow().getString())
+    return 0
+}
+
+class MyEventListener <: EventListener {
+
+    public func callStart(call: Call): Unit {
+        println("callStart!!!")
+    }
+
+    public func callEnd(call: Call): Unit {
+        println("callEnd!!!")
+    }
+
+    public func dnsStart(call: Call, domainName: String): Unit {
+        println("dnsStart!!!")
+    }
+
+    public func dnsEnd(call: Call, domainName: String, allRoutes: ArrayList<Route>): Unit {
+        println("dnsEnd!!!")
+    }
+
+    public func connectStart(call: Call, socketAddress: SocketAddress): Unit {
+        println("connectStart!!!")
+    }
+
+    public func connectEnd(call: Call, socketAddress: SocketAddress, protocol: Protocol): Unit {
+        println("connectEnd!!!")
+    }
+
+    public func secureConnectStart(call: Call): Unit {
+        println("secureConnectStart!!!")
+    }
+
+    public func secureConnectEnd(call: Call, tlsConfig: TlsClientConfig): Unit {
+        println("secureConnectEnd!!!")
+    }
+
+    public func connectFailed(call: Call, socketAddress: SocketAddress, protocol: Protocol, e: HttpException ): Unit {
+        println("connectFailed!!!")
+    }
+
+    public func requestHeadersStart(call: Call): Unit {
+        println("requestHeadersStart!!!")
+    }
+
+    public func requestHeadersEnd(call: Call): Unit {
+        println("requestHeadersEnd!!!")
+    }
+
+    public func requestBodyStart(call: Call): Unit {
+        println("requestBodyStart!!!")
+    }
+
+    public func requestBodyEnd(call: Call, byteCount: Int64): Unit {
+        println("requestBodyEnd!!!")
+    }
+
+    public func requestFailed(call: Call, e: HttpException): Unit {
+        println("requestFailed!!!")
+    }
+
+    public func responseHeadersStart(call: Call): Unit {
+        println("responseHeadersStart!!!")
+    }
+
+    public func responseHeadersEnd(call: Call, response: Response): Unit {
+        println("responseHeadersEnd!!!")
+    }
+
+    public func responseBodyStart(call: Call): Unit {
+        println("responseBodyStart!!!")
+    }
+
+    public func responseBodyEnd(call: Call, byteCount: Int64): Unit {
+        println("responseBodyEnd!!!")
+    }
+
+    public func responseFailed(call: Call, e: HttpException): Unit {
+        println("responseFailed!!!")
+    }
+}
+
+```
+
+### 使用http2协议
+
+```cangjie
+from okhttp import okhttp.*
+from std import time.*
+from encoding import url.*
+from std import collection.*
+
+main() {
+    let url = URL.parse("https://www.taobao.com")
+
+    let client: OkHttpClient= OkHttpClient.builder()
+    .tlsConfig("./jjd.cer")//需要用户自己配置CA证书验证公钥,如果不配置CA证书将不进行服务端证书校验,将使用不安全的连接
+    //H2_PRIOR_KNOWLEDGE 使用明文http2协议, 不支持https
+    //.protocols(ArrayList<String>([Protocol.get("H2_PRIOR_KNOWLEDGE").toString()]))
+    //使用apln协商协议,服务端响应支持的协议，list中前面的协议会被优先选择
+    .protocols(ArrayList<String>([Protocol.get("HTTP/2.0").toString(),Protocol.get("HTTP/1.1").toString()]))
+    .connectTimeout(Duration.millisecond(1000))
+    .readTimeout(Duration.millisecond(1000))
+    .writeTimeout(Duration.millisecond(1000))
+    .build()
+
+    let request = Request.builder().url(url).build()
+    let call = client.newCall(request)
+    let response = call.execute()
+    return 0
+}
+```
+
 ## <img alt="" src="./doc/assets/readme-icon-contribute.png" style="display: inline-block;" width=3%/> 参与贡献
 
 主要写参与贡献的人以及个人主页链接

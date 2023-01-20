@@ -87,7 +87,7 @@ Call的工厂类，可用于发送 HTTP 请求并读取其响应，外观形式�
 | readTimeout              | readTimeout: Duration                                           | OkHttpClientBuilder | 配置读取连接超时时间                                                                                |
 | cookieJar                | cookieJar: CookieJar                                            | OkHttpClientBuilder | 配置cookieJar，默认使用cookieJar不保存cookie，也无法获取cookie，可以使用全局函数getSimpleCookieJar获取轻量的cookieJar对象 |
 | writeTimeout             | writeTimeout: Duration                                          | OkHttpClientBuilder | 配置读取连接超时时间                                                                                |
-| protocols                | protocols: ArrayList\<String\>                                  | OkHttpClientBuilder | 参数 protocols 使用协议的集合, 目前版本只支持 http/1.1, 强制使用http1.1 以及 h2_prior_knowledge, 强制使用http2      |
+| protocols                | protocols: ArrayList\<String\>                                  | OkHttpClientBuilder | 参数 protocols 使用协议的集合, 支持 http/1.1, http2 以及 h2_prior_knowledge                            |
 | tlsConfig                | path: String                                                    | OkHttpClientBuilder | 开启tls, 配置tls 的 CA证书路径                                                                     |
 | authenticator            | authenticator: (Option\<Route\>, Response) -> Option\<Request\> | OkHttpClientBuilder | 开启鉴权配置 (如果 code 返回 401 则需要鉴权配置), 如果lambda返回None则不再进行重试, 否则进行鉴权配置后重试请求                     |
 | followSslRedirects       | followSslRedirects: Bool                                        | OkHttpClientBuilder | 配置是否允许跨协议进行重定向                                                                            |
@@ -420,10 +420,11 @@ form表单格式的请求体
 
 连接服务器的路由
 
-| 成员函数          | 入参                                                  | 返回值     | 作用描述                                                                     |
-|---------------|-----------------------------------------------------|---------|--------------------------------------------------------------------------|
-| init          | address: Address, inetSocketAddress: SocketAddress  | 无       | address  包含服务器地址和连接协议的对象， inetSocketAddress 标准库SocketAddress类型表示socket地址 |
-| getAddress    | 无                                                   | Address | 获取 Address 对象                                                            |
+| 成员函数                 | 入参                                                  | 返回值           | 作用描述                                                                     |
+|----------------------|-----------------------------------------------------|---------------|--------------------------------------------------------------------------|
+| init                 | address: Address, inetSocketAddress: SocketAddress  | 无             | address  包含服务器地址和连接协议的对象， inetSocketAddress 标准库SocketAddress类型表示socket地址 |
+| getAddress           | 无                                                   | Address       | 获取 Address 对象                                                            |
+| getInetSocketAddress | 无                                                   | SocketAddress | 获取 SocketAddress 对象                                                      |
 
 
 #### class Address <: Hashable & Equatable\<Route\>
@@ -572,17 +573,17 @@ MAX_FRAME_SIZE = 5 (单帧负载最大字节值)
 MAX_HEADER_LIST_SIZE = 6 (报头集合的最大字节数)
 INITIAL_WINDOW_SIZE = 7 (连接初始的流量窗口字节数)
 
-| 成员函数                    | 入参                      | 返回值   | 作用描述              |
-|-------------------------|-------------------------|-------|-------------------|
-| setting                 | id: Int64, value: Int64 | Unit  | 设置配置项参数           |
-| isSet                   | id: Int64               | Bool  | 该id是否进行了配置        |
-| get                     | id: Int64               | Int64 | 获取该id配置的值         |
-| size                    | 无                       | Int64 | 已配置项参数的数量         |
-| getHeaderTableSize      | 无                       | Int64 | 获取id为1的配置参数       |
-| getMaxConcurrentStreams | 无                       | Int64 | 获取id为4的配置参数       |
-| getMaxFrameSize         | 无                       | Int64 | 获取id为5的配置参数       |
-| getInitialWindowSize    | 无                       | Int64 | 获取id为7的配置参数       |
-| merge                   | other: Settings         | Unit  | 用新的settings对象覆盖自身 |
+| 成员函数                    | 入参                      | 返回值       | 作用描述                |
+|-------------------------|-------------------------|-----------|---------------------|
+| setting                 | id: Int64, value: Int64 | Settings  | 设置配置项参数             |
+| isSet                   | id: Int64               | Bool      | 该id是否进行了配置          |
+| get                     | id: Int64               | Int64     | 获取该id配置的值           |
+| size                    | 无                       | Int64     | 已配置项参数的数量           |
+| getHeaderTableSize      | 无                       | Int64     | 获取id为1的配置参数         |
+| getMaxConcurrentStreams | 无                       | Int64     | 获取id为4的配置参数         |
+| getMaxFrameSize         | 无                       | Int64     | 获取id为5的配置参数         |
+| getInitialWindowSize    | 无                       | Int64     | 获取id为7的配置参数         |
+| merge                   | other: Settings         | Unit      | 用新的settings对象合并覆盖自身 |
 
 #### class H2Stream
 
