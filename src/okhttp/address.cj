@@ -72,8 +72,8 @@ public class Address <: Hashable & Equatable<Address> {
         var result: Int64 = 17
         result = 31 * result + url.toString().hashCode()
         var listCode =  1
-        for (s in 0 ..protocols.size) {
-            listCode = 31 * listCode + s.toString().hashCode()
+        for (i in 0 ..protocols.size) {
+            listCode = 31 * listCode + protocols[i].toString().hashCode()
         }
         result = 31 * result + listCode
         return result
