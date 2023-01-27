@@ -314,9 +314,9 @@ public class Connection {
                 protocol = Protocol.get(aplnSelected)
             }
         } catch (e: TlsException) {
-            throw ConnectException("{e.getMessage()}", e)
+            throw ConnectException("${e.message}", e)
         } catch (e2: TlsTimeoutException) {
-            throw ConnectException("{e2.getMessage()}", e2)
+            throw ConnectException("${e2.message}", e2)
         }
     }
 

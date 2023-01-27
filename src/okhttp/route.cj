@@ -46,6 +46,15 @@ public class Route <: Hashable & Equatable<Route> {
         return address
     }
 
+    /**
+     * The Function is getAddress
+     * @return Type of Address
+     * @since 0.29.3
+     */
+    public func getInetSocketAddress(): SocketAddress {
+        return inetSocketAddress
+    }
+
     public func hashCode(): Int64 {
         var result: Int64 = 17;
         result = 31 * result + address.hashCode();

@@ -194,7 +194,9 @@ public class OkHttpClientBuilder <: Builder<OkHttpClient> {
      * @since 0.30.4
      */
     public func tlsConfig(path: String): OkHttpClientBuilder {
-        this.tlsConfigBuild = TlsClientConfig(path)
+        var cfg = TlsClientConfig(path)
+        cfg.verifyMode = VerifyServer
+        this.tlsConfigBuild = cfg
         return this
     }
 
