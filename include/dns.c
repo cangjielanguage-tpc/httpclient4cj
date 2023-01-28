@@ -13,7 +13,8 @@ int okhttp_SyscallGetAddrInfo(const char* node, const char* service, const struc
 
 uint8_t* okhttp_SOCKET_ConvertAddrPtr(struct addrinfo* res)
 {
-	uint8_t tmpaddr[400];
+	const int arraddrlen = 400;
+	uint8_t tmpaddr[arraddrlen];
 	int ip4cnt = 0;
 	int ip6cnt = 0;
 	const int ip4bytes = 5;
@@ -25,7 +26,7 @@ uint8_t* okhttp_SOCKET_ConvertAddrPtr(struct addrinfo* res)
 		}
 
 		
-		if (ip4cnt * ip4bytes + ip6cnt * ip6bytes + 1 > 400 - (cur->ai_family == AF_INET ? ip4bytes : ip6bytes))
+		if (ip4cnt * ip4bytes + ip6cnt * ip6bytes + 1 > arraddrlen - (cur->ai_family == AF_INET ? ip4bytes : ip6bytes))
 		{
 			printf("Error: The number of IP exceeds the resolution range\n");
 			return NULL;
@@ -65,7 +66,8 @@ uint8_t* okhttp_SOCKET_ConvertAddrPtr(struct addrinfo* res)
 			return NULL;
 		}
 
-		memcpy(ret, tmpaddr, ip4cnt * ip4bytes + ip6cnt * ip6bytes + 1);
+		memcpy_s(ret, ip4cnt * ip4bytes + ip6cnt * ip6bytes + 1, tmpaddr, ip4cnt * ip4bytes + ip6cnt * ip6bytes + 1);
+		//memcpy(ret, tmpaddr, ip4cnt * ip4bytes + ip6cnt * ip6bytes + 1);
 		return ret;
 	}
 
@@ -95,4 +97,3 @@ uint8_t* okhttp_SOCKET_GetAddrInfo(uint8_t net, char* node)
 	freeaddrinfo(res);
 	return addr;
 }
-
