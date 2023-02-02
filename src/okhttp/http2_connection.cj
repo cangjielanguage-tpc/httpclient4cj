@@ -48,7 +48,7 @@ public class H2Connection {
     static let AWAIT_PING = 3
     private var shutdown: Bool = false
     let listener: Option<Connection>
-    var degradedPongDeadline: Time = Time.now()
+    var degradedPongDeadline: Int64 = Time.now().unixTimeStamp().milliseconds()
     var unacknowledgedBytesRead = 0
 
     public init(socket: SocketClient, sink: BufferedOutputStream, source: OkBuffer,
@@ -269,12 +269,13 @@ public class H2Connection {
         }
     }
 
-    public func isHealthy(time: Time) {
+    public func isHealthy() {
         if (shutdown) {
             return false
         }
 
-        if (degradedPongsReceived < degradedPingsSent && time <= degradedPongDeadline) {
+        if (degradedPongsReceived < degradedPingsSent &&
+            Time.now().unixTimeStamp().milliseconds() <= degradedPongDeadline) {
             return false
         }
 
@@ -340,6 +341,7 @@ public class H2Connection {
 
     func ping(reply: Bool, payload: Int64, payload2: Int64) {
         if (reply) {
+            degradedPongDeadline = (Time.now() + Duration.second()).unixTimeStamp().milliseconds()
             if  (payload == DEGRADED_PING) {
                 degradedPongsReceived++
             } else if (payload == INTERVAL_PING) {

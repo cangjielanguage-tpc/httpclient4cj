@@ -196,8 +196,7 @@ public class H2Stream {
             if (source.finished && sink.finished) {
                 return false
             }
-
-            this.errorCode = errorCode
+            this.errorCode = rstStatusCode
             this.errorException = errorException
             mutex.notifyAll()
         }

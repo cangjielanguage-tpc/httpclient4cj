@@ -26,7 +26,7 @@ public class MediaType <: ToString {
     }
 
     public static func get(string: String): MediaType {
-        let typeSubtype: Matcher = Regex(TOKEN + "/" + TOKEN).matcher(string)
+        let typeSubtype: Matcher = Regex("^" + TOKEN + "/" + TOKEN).matcher(string)
         var mediaType: String = ""
         var subtype: String = ""
         var end = 0

@@ -151,7 +151,7 @@ public class Connection {
             return false
         }
         match (h2conn) {
-            case Some(h2con) => return h2con.isHealthy(Time.now())
+            case Some(h2con) => return h2con.isHealthy()
             case None => ()
         }
         return true
