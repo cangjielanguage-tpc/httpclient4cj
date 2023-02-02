@@ -78,14 +78,13 @@ public class Http2ExchangeCodec <: ExchangeCodec {
     }
 
     public static func readHttp2HeadersList(headerBlock: Header, protocol: Protocol) {
-        let res = Response.builder()
+        let res = Response.builder().protocol(protocol)
         let header:Header = Header()
         var hasStatus: Bool = false
         for ((k,v) in headerBlock) {
             if ( k == RESPONSE_STATUS) {
                 let statusLine = StatusLine.parse("HTTP/1.1 " + v[0])
-                res.code(statusLine.code)
-                res.message(statusLine.message)
+                res.code(statusLine.code).message(statusLine.message)
                 hasStatus = true
             } else if (!HTTP_2_SKIPPED_RESPONSE_HEADERS.contains(k)) {
                 header.add(k, v[0])

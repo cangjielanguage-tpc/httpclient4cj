@@ -28,9 +28,15 @@ public class OkGzipSource <: Source {
         if (hasMoreGzip) {
             hasMoreGzip = false
             while (true) {
-                let read = source.read(base, byteCount)
-                if (read <= 0) {
-                    break
+                try {
+                    let read = source.read(base, byteCount)
+                    if (read <= 0) {
+                        break
+                    }
+                } catch (e: HttpException) {
+                    if (e.message == "EOF") {
+                        break
+                    }
                 }
             }
         }

@@ -20,7 +20,9 @@ public class OkBuffer <: Source {
     private func read(bytes: Array<Byte>): Int64 {
         let read = source.read(bytes)
 
-        if (read != -1) {
+        if (read <= 0) {
+            throw HttpException("EOF")
+        } else if (read != -1) {
             if (read == bytes.size) {
                 buffer.write(bytes)
             } else {

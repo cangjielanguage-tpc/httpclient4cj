@@ -381,9 +381,9 @@ public class Exchange {
             eventListener.requestHeadersStart(call)
             codec.writeRequestHeaders(request)
             eventListener.requestHeadersEnd(call)
-        } catch (e: HttpException) {
-            eventListener.requestFailed(call, e)
-            trackFailure(e)
+        } catch (e: SocketException | IOException) {
+            eventListener.requestFailed(call, HttpException(e.message))
+            trackFailure(HttpException(e.message))
             throw e
         }
     }
@@ -391,8 +391,8 @@ public class Exchange {
     public func flushRequest(): Unit {
         try {
             codec.flushRequest()
-        } catch (e: HttpException) {
-            trackFailure(e)
+        } catch (e: SocketException | IOException) {
+            trackFailure(HttpException(e.message))
             throw e
         }
     }
@@ -400,8 +400,8 @@ public class Exchange {
     public func finishRequest(): Unit {
         try {
             codec.finishRequest()
-        } catch (e: HttpException) {
-            trackFailure(e)
+        } catch (e: SocketException | IOException) {
+            trackFailure(HttpException(e.message))
             throw e
         }
     }

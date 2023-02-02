@@ -256,11 +256,11 @@ class FramingSink <: Sink {
             let hasTrailers: Bool = has(trailers)
             if (hasTrailers) {
                 while (sendBuffer.length > 0) {
-                    emitFrame(true)
+                    emitFrame(false)
                 }
                 let result: ArrayList<HeaderField> = ArrayList<HeaderField>()
                 for ((k,v) in trailers.getOrThrow()) {
-                    result.append(HeaderField(k, v[0]))
+                    result.append(HeaderField(k.toLower(), v[0]))
                 }
                 trailers = Option<Header>.None
                 http2Stream.cc.writeHeaders(http2Stream.id, true, result)

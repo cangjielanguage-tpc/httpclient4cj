@@ -548,19 +548,19 @@ socket 以及 http1连接
 
 http2连接
 
-| 成员函数                    | 入参                                                                                                                                | 返回值      | 作用描述                                     |
-|-------------------------|-----------------------------------------------------------------------------------------------------------------------------------|----------|------------------------------------------|
-| init                    | socket: SocketClient, sink: BufferedOutputStream, source: OkBuffer,  listener !: Option\<Connection\> = Option\<Connection\>.None | 无        | 构造器                                      |
-| start                   | 无                                                                                                                                 | Unit     | 对象创建后优先调用的函数，作用为启动连接,初始化设置,发送初始帧并开启读取子线程 |
-| openStreamCount         | 无                                                                                                                                 | Int64    | 获取在该连接开启的的可用Stream流数量                    |
-| close                   | 无                                                                                                                                 | Unit     | 关闭连接,并移除stream                           |
-| writeData               | streamId: UInt32, outFinished: Bool, buffer: ByteArrayStream, length: Int64                                                       | Unit     | 发送 data 帧                                |
-| isHealthy               | time: Time                                                                                                                        | Bool     | 在该时间连接是否健康                               |
-| shutdownConn            | statusCode: ErrorCode                                                                                                             | Unit     | 发送GOAway帧,准备关闭连接                         |
-| setSettings             | settings: Settings                                                                                                                | Unit     | 覆盖设置并发送Setiting帧                         |
-| newStream               | request: Request                                                                                                                  | H2Stream | 创建H2Stream对象                             |
-| getMaxConcurrentStreams | 无                                                                                                                                 | Int64    | 可创建Stream数最大值                            |
-| flush                   | 无                                                                                                                                 | Int64    | 刷新writer的缓存                              |
+| 成员函数                    | 入参                                                                                                                                | 返回值      | 作用描述                                                    |
+|-------------------------|-----------------------------------------------------------------------------------------------------------------------------------|----------|---------------------------------------------------------|
+| init                    | socket: SocketClient, sink: BufferedOutputStream, source: OkBuffer,  listener !: Option\<Connection\> = Option\<Connection\>.None | 无        | 构造器                                                     |
+| start                   | 无                                                                                                                                 | Unit     | 作用为启动连接, 初始化设置,发送初始帧并开启读取子线程， 对象创建后需要优先调用，否则在后续使用出现未知问题 |
+| openStreamCount         | 无                                                                                                                                 | Int64    | 获取在该连接开启的的可用Stream流数量                                   |
+| close                   | 无                                                                                                                                 | Unit     | 关闭连接, 并移除stream                                         |
+| writeData               | streamId: UInt32, outFinished: Bool, buffer: ByteArrayStream, length: Int64                                                       | Unit     | 发送 data 帧, outFinished: 是否是endStream 帧                  |
+| isHealthy               | 无                                                                                                                                 | Bool     | 连接是否健康                                                  |
+| shutdownConn            | statusCode: ErrorCode                                                                                                             | Unit     | 发送GOAway帧,准备关闭连接                                        |
+| setSettings             | settings: Settings                                                                                                                | Unit     | 覆盖设置并发送Settings帧                                        |
+| newStream               | request: Request                                                                                                                  | H2Stream | 创建H2Stream对象                                            |
+| getMaxConcurrentStreams | 无                                                                                                                                 | Int64    | 可创建Stream数最大值                                           |
+| flush                   | 无                                                                                                                                 | Int64    | 刷入writer的缓存                                             |
 
 #### class Settings
 
@@ -598,9 +598,9 @@ http2流
 | close           | rstStatusCode: ErrorCode, errorException: String | Unit                | 发送Reset_Stream帧并从连接中移除stream      |
 | closeLater      | rstStatusCode: ErrorCode                         | Bool                | 开启子线程发送Reset_Stream帧并从连接中移除stream |
 | getConnection   | 无                                                | H2Connection        | 获取H2连接对象                          |
-| takeHeaders     | 无                                                | Header              | 阻塞获取响应的Header                     |
+| takeHeaders     | 无                                                | Header              | 阻塞线程直到获取响应的Header                 |
 | enqueueTrailers | trailers: Header                                 | Unit                | Data帧中添加尾部的Header                 |
-| getTrailers     | 无                                                | Option\<Header\>    | 获取响应的尾部Header                     |
+| getTrailers     | 无                                                | Header              | 获取响应的尾部Header                     |
 | isOpen          | 无                                                | Bool                | stream是否开启中                       |
 
 #### enum errorCode
