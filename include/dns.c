@@ -1,3 +1,6 @@
+/*
+ *Copyright (c) Cangjie Library Team 2022-2032. All Right Resverd 
+ */
 #include<stdio.h>
 #include<string.h>
 #include<sys/types.h>
