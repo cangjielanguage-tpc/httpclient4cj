@@ -412,26 +412,24 @@ public class H2Connection {
         let outFinished: Bool = !has(request.getBody())
         var flushHeaders: Bool = false
         var streamId: UInt32 = 0
-        synchronized (writer.mutex) {
-            synchronized(muLock) {
-                if (Int32(nextStreamID) > Int32.Max / 2) {
-                    shutdownConn(REFUSED_STREAM)
-                }
-                if (shutdown) {
-                   throw ConnectionShutdownException("connection shutdown")
-                }
-                streamId = nextStreamID
-                nextStreamID += 2
-                flushHeaders = outFinished || bytesLeftInWriteWindow == 0
-                h2Stream  = H2Stream(streamId, this, outFinished)
-                h2Stream.start()
-                if (h2Stream.isOpen()) {
-                    streamMap.put(streamId, h2Stream)
-                }
-                let requestHeaders: ArrayList<HeaderField> = Http2ExchangeCodec.http2HeadersList(request)
-                writer.headers(outFinished, streamId, requestHeaders)
 
+        synchronized(muLock) {
+            if (Int32(nextStreamID) > Int32.Max / 2) {
+                shutdownConn(REFUSED_STREAM)
             }
+            if (shutdown) {
+               throw ConnectionShutdownException("connection shutdown")
+            }
+            streamId = nextStreamID
+            nextStreamID += 2
+            flushHeaders = outFinished || bytesLeftInWriteWindow == 0
+            h2Stream  = H2Stream(streamId, this, outFinished)
+            h2Stream.start()
+            if (h2Stream.isOpen()) {
+                streamMap.put(streamId, h2Stream)
+            }
+            let requestHeaders: ArrayList<HeaderField> = Http2ExchangeCodec.http2HeadersList(request)
+            writer.headers(outFinished, streamId, requestHeaders)
         }
         if (flushHeaders) {
             writer.flush()

@@ -210,16 +210,16 @@ class HeaderStaticTable {
      *
      * @return the Int64 * Int64
      */
-     static func searchFull(f: HeaderField): (Int64, Int64) {
-        match (hashStaticTable.get(f.name)) {
-            case Some(v) =>
-                for (i in v where f.name == (staticTable[i - 1].name) && f.value == (staticTable[i - 1].value)) {
-                    return (i, i)
-                }
-                return (v[0], -1)
-            case None => return (-1, -1)
-        }
-    }
+     public static func searchFull(f: HeaderField): (Int64, Int64) {
+         match (hashStaticTable.get(f.name)) {
+             case Some(v) =>
+                 for (i in 0..v.size where f.value == staticTable[v[i] - 1].value) {
+                     return (v[i], v[i])
+                 }
+                 return (v[0], -1)
+             case None => return (-1, -1)
+         }
+     }
 }
 
 let MAX_INT: Int64 = 0xFFFFFFFF

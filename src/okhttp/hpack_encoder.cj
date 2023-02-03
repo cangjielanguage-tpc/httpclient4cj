@@ -78,7 +78,7 @@ class Encoder {
             }
         }
 
-        return unsafe { this.myBuffer.getRawArray()[0..myBuffer.size] }
+        return unsafe { myBuffer.getRawArray()[0..myBuffer.size] }
     }
 
     /**
@@ -228,9 +228,9 @@ class Encoder {
     func addHPackString(str: String) {
         let len: Int64 = huff_encode_count(str.toUtf8Array())
         if (len < str.utf8View.size) {
-            let first: Int64 = this.myBuffer.size
+            let first = myBuffer.size
             addByteInt(7, UInt64(len))
-            huff_encode(this.myBuffer, str.toUtf8Array())
+            huff_encode(myBuffer, str.toUtf8Array())
             myBuffer[first] |= 0x80
         } else {
             let arr = str.toUtf8Array()

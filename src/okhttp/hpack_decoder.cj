@@ -10,11 +10,14 @@
 package okhttp
 
 
+
 /**
  * The enum Index type.
  */
 public enum IndexType {
-    | INCREMENTAL | NONE | NEVER
+    | INCREMENTAL  /* Literal Header Field with Incremental Indexing */
+    | NONE         /* Literal Header Field without Indexing*/
+    | NEVER        /* Literal Header Field never Indexed*/
 
     /**
      * Indexed func.
@@ -23,9 +26,9 @@ public enum IndexType {
      */
     public func indexed(): Bool {
         return match (this) {
+            case INCREMENTAL => true
             case NONE => false
             case NEVER => false
-            case INCREMENTAL => true
         }
     }
 
@@ -36,9 +39,9 @@ public enum IndexType {
      */
     public func sensitive(): Bool {
         return match (this) {
+            case INCREMENTAL => false
             case NONE => false
             case NEVER => true
-            case INCREMENTAL => false
         }
     }
 }
@@ -53,18 +56,18 @@ public enum IndexType {
  */
 class Decoder {
     private var dynTab: DynamicTables
-    private var maxDynamicTableSizeChangeRequired: Bool = false
     private var arr = Array<UInt8>(16, item: 0)
+    private var maxDynamicTableSizeChangeRequired: Bool = false
     // 0b1000_0000 128 128
     private static let INDEXD: (UInt8, UInt8) = (0b1000_0000, 0b0000_0000)
     // 0b0100_0000 192 64
     private static let LITERAL_WITH_INDEXING: (UInt8, UInt8) = (0b1100_0000, 0b0100_0000)
-    // 0b0000_0000 240 0
-    private static let LITERAL: (UInt8, UInt8) = (0b1111_0000, 0b0000_0000)
     // 0b0010_0000 224 32
     private static let SIZE_UPDATE: (UInt8, UInt8) = (0b1110_0000, 0b0010_0000)
     // 0b0001_0000 240 16
     private static let LITERAL_NEVER_INDEXED: (UInt8, UInt8) = (0b1111_0000, 0b0001_0000)
+    // 0b0000_0000 240 0
+    private static let LITERAL: (UInt8, UInt8) = (0b1111_0000, 0b0000_0000)
     init(dynTab: DynamicTables) {
         this.dynTab = dynTab
     }
@@ -76,7 +79,11 @@ class Decoder {
      * @since 0.29.3
      */
     public static func newDecode(): Decoder {
-        return newDecode(4096)
+        return Decoder(DynamicTables(4096))
+    }
+
+    public func clear(): Unit {
+        this.dynTab.clear()
     }
 
     /**
@@ -112,7 +119,7 @@ class Decoder {
              *     +---+---------------------------+
              */
             if ((src[i] & INDEXD[0]) != INDEXD[1]) {
-                i = parseFieldIndexed(src, i, headerBuf)
+                i = this.parseFieldIndexed(src, i, headerBuf)
             }
             /*
              *       0   1   2   3   4   5   6   7
@@ -121,7 +128,7 @@ class Decoder {
              *     +---+---------------------------+
              */
             else if ( (src[i] & LITERAL_WITH_INDEXING[0]) == LITERAL_WITH_INDEXING[1]) {
-                i = parseFieldLiteral(src, i, INDEXD_TRUE, INCREMENTAL, headerBuf)
+                i = this.parseFieldLiteral(src, i, INDEXD_TRUE, INCREMENTAL, headerBuf)
             }
             /*
              *       0   1   2   3   4   5   6   7
@@ -130,7 +137,7 @@ class Decoder {
              *     +---+---------------------------+
              */
             else if ( (src[i] & SIZE_UPDATE[0] ) == SIZE_UPDATE[1]) {
-                i = parseUpdateDynamicTableSize(src, i)
+                i = this.parseUpdateDynamicTableSize(src, i)
             }
             /*
              *       0   1   2   3   4   5   6   7
@@ -139,7 +146,7 @@ class Decoder {
              *     +---+---------------------------+
              */
             else if ((src[i] & LITERAL_NEVER_INDEXED[0]) == LITERAL_NEVER_INDEXED[1]) {
-                i = parseFieldLiteral(src, i, INDEXD_NEVER, NEVER, headerBuf)
+                i = this.parseFieldLiteral(src, i, INDEXD_NEVER, NEVER, headerBuf)
             }
             /*
              *       0   1   2   3   4   5   6   7
@@ -148,7 +155,7 @@ class Decoder {
              *     +---+---------------------------+
              */
             else if ((src[i] & LITERAL[0]) == LITERAL[1]) {
-                i = parseFieldLiteral(src, i, INDEXD_NONE, NONE, headerBuf)
+                i = this.parseFieldLiteral(src, i, INDEXD_NONE, NONE, headerBuf)
             }
         }
         return unsafe {headerBuf.getRawArray()[0..headerBuf.size]}
@@ -156,6 +163,31 @@ class Decoder {
 
     var targetIndex = 0
 
+    public func decode(src: Array<UInt8>, target: Array<HeaderField>): Int64 {
+        if (target.size == 0) {
+            return -1
+        }
+        targetIndex = 0
+        var i: Int64 = 0
+        while (i < src.size && i != -1) {
+            if ((src[i] & INDEXD[0]) != INDEXD[1]) {
+                i = this.parseFieldIndexed(src, i, target)
+            }
+            else if ( (src[i] & LITERAL_WITH_INDEXING[0]) == LITERAL_WITH_INDEXING[1]) {
+                i = this.parseFieldLiteral(src, i, INDEXD_TRUE, INCREMENTAL, target)
+            }
+            else if ( (src[i] & SIZE_UPDATE[0] ) == SIZE_UPDATE[1]) {
+                i = this.parseUpdateDynamicTableSize(src, i)
+            }
+            else if ((src[i] & LITERAL_NEVER_INDEXED[0]) == LITERAL_NEVER_INDEXED[1]) {
+                i = this.parseFieldLiteral(src, i, INDEXD_NEVER, NEVER, target)
+            }
+            else if ((src[i] & LITERAL[0]) == LITERAL[1]) {
+                i = this.parseFieldLiteral(src, i, INDEXD_NONE, NONE, target)
+            }
+        }
+        return this.targetIndex
+    }
 
     /**
      *   Maximum Dynamic Table Size Change.
@@ -169,17 +201,17 @@ class Decoder {
             return -1
         }
         let (idx, newIdx) = readVarInt(src, index, CHANGE_TABLE)
-        dynTab.setCapacity(UInt32(idx))
+        this.dynTab.setCapacity(UInt32(idx))
         return newIdx
     }
 
 
     public func updateMaxSize(size: UInt32): Unit {
         let len: UInt32 = size - UInt32(HeaderStaticTable.capacity)
-        if (!maxDynamicTableSizeChangeRequired) {
-            let isSetCap: Bool = dynTab.setCapacity(len)
+        if (!this.maxDynamicTableSizeChangeRequired) {
+            let isSetCap: Bool = this.dynTab.setCapacity(len)
             if (isSetCap) {
-                maxDynamicTableSizeChangeRequired = true
+                this.maxDynamicTableSizeChangeRequired = true
             }
         }
     }
@@ -202,7 +234,7 @@ class Decoder {
      *     +---+---------------------------+
      * @return the func
      */
-    public func parseFieldLiteral(src: Array<UInt8>, index: Int64, N: Int64, that: IndexType, buf: ArrayList<HeaderField>): Int64 {
+    protected func parseFieldLiteral(src: Array<UInt8>, index: Int64, N: Int64, that: IndexType, buf: ArrayList<HeaderField>): Int64 {
         if (index >= src.size) {
             return -1
         }
@@ -210,22 +242,51 @@ class Decoder {
         var newIndex = newIdx
         var name: String = ""
         if (idx > 0) {
-            let ihf: HeaderField = getHeader(idx)
-            newIndex = newIndex
+            let ihf: HeaderField = this.getHeader(idx)
             name = ihf.name
+            newIndex = newIndex
         } else {
-            let (strArr, len) = readString(src, newIndex)
-            name = String.fromUtf8(strArr)
+            let (strArr, len) = this.readString(src, newIndex)
             newIndex = len
+            name = String.fromUtf8(strArr)
         }
-        let (valArr, len) = readString(src, newIndex)
+        let (valArr, len) = this.readString(src, newIndex)
+        var value: String = String.fromUtf8(valArr)
+        newIndex = len
+        let header: HeaderField = HeaderField(name, value, that.sensitive())
+        let (indexA, indexB) = this.dynTab.search(header)
+        if (that.indexed()) {
+            this.dynTab.add(header)
+        }
+        buf.append(header)
+        return newIndex
+    }
+
+    protected func parseFieldLiteral(src: Array<UInt8>, index: Int64, N: Int64, that: IndexType, buf: Array<HeaderField>): Int64 {
+        if (index >= src.size) {
+            return -1
+        }
+        let (idx, newIdx) = readVarInt(src, index, N)
+        var newIndex = newIdx
+        var name: String = ""
+        if (idx > 0) {
+            let ihf: HeaderField = this.getHeader(idx)
+            name = ihf.name
+            newIndex = newIndex
+        } else {
+            let (strArr, len) = this.readString(src, newIndex)
+            newIndex = len
+            name = String.fromUtf8(strArr)
+        }
+        let (valArr, len) = this.readString(src, newIndex)
         var value: String = String.fromUtf8(valArr)
         newIndex = len
         let header: HeaderField = HeaderField(name, value, that.sensitive())
         if (that.indexed()) {
-            dynTab.add(header)
+            this.dynTab.add(header)
         }
-        buf.append(header)
+        this.targetIndex ++
+        buf[targetIndex] = header
         return newIndex
     }
 
@@ -246,16 +307,19 @@ class Decoder {
      *     |           ASCII               |
      *     +-------------------------------+
      */
-    public func readString(src: Array<UInt8>, i: Int64): (Array<UInt8>, Int64) {
+    protected func readString(src: Array<UInt8>, i: Int64): (Array<UInt8>, Int64) {
         if (i >= src.size) {
             return (Array<UInt8>(), -1)
         }
         var index = i
-        let (idx, len) = readVarInt(src, index, INDEXD_SUCCESS)
-        index++
+        let (len, idx) = readVarInt(src, index, INDEXD_SUCCESS)
         // ascii
         var length = len + idx
         let strArr = if ((src[i] & CONST_128_U8)== 0) {
+            index++
+            if (index == length) {
+                return ([], length)
+            }
             src[index..length]
         } else {  // HUFFMAN
             if (this.arr.size < (length-idx) * 5) {
@@ -273,12 +337,22 @@ class Decoder {
      *     | 1 |       Max size (7+)       |
      *     +---+---------------------------+
      */
-    public func parseFieldIndexed(src: Array<UInt8>, index: Int64, buf: ArrayList<HeaderField>): Int64 {
+    protected func parseFieldIndexed(src: Array<UInt8>, index: Int64, buf: ArrayList<HeaderField>): Int64 {
         if (src.size <= index) {
             return -1
         }
         let (idx, newIndex) = readVarInt(src, index, INDEXD_SUCCESS)
-        buf.append(getHeader(idx))
+        buf.append(this.getHeader(idx))
+        return newIndex
+    }
+
+    protected func parseFieldIndexed(src: Array<UInt8>, index: Int64, buf: Array<HeaderField>): Int64 {
+        if (src.size <= index) {
+            return -1
+        }
+        let (idx, newIndex) = readVarInt(src, index, INDEXD_SUCCESS)
+        targetIndex++
+        buf[targetIndex] = this.getHeader(idx)
         return newIndex
     }
 
@@ -298,7 +372,7 @@ class Decoder {
      *    +---+---------------------------+
      */
     @overflowWrapping
-    public func readVarInt(src: Array<UInt8>, index: Int64, N: Int64): (Int64, Int64) {
+    protected func readVarInt(src: Array<UInt8>, index: Int64, N: Int64): (Int64, Int64) {
         var indexVar: Int64 = index
         if (src.size <= indexVar || N <= 0 || N > BYTE_SIZE) {
             throw IndexOutOfBoundsException()
@@ -331,13 +405,13 @@ class Decoder {
      *
      * @return HeaderField
      */
-    public func getHeader(index: Int64): HeaderField {
+    protected func getHeader(index: Int64): HeaderField {
         if (index <= 0) {
             throw IndexOutOfBoundsException()
         }
         if (index <= STATIC_TABLE_SIZE) {
             return HeaderStaticTable.getIndex(index)
         }
-        return dynTab.getEntry(index)
+        return this.dynTab.getEntry(index)
     }
 }
