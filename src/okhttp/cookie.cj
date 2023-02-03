@@ -20,7 +20,7 @@ public class CookieUtil {
     private static let YEAR_PATTERN = "(\\d{2,4})[^\\d]*"
 
 
-    public static func delimiterOffset(input: String, pos: Int64, limit: Int64, delimiter: Char): Int64 {
+    static func delimiterOffset(input: String, pos: Int64, limit: Int64, delimiter: Char): Int64 {
         for (i in pos..limit) {
             if (input[i] == delimiter) {
                 return i
@@ -143,7 +143,7 @@ public class CookieUtil {
                     rawExpires: rawExpires, maxAge: deltaSeconds, secure: secureOnly, httpOnly: httpOnly)
     }
 
-    public static func trimSubstring(str: String, pos: Int64, limit: Int64): String {
+    static func trimSubstring(str: String, pos: Int64, limit: Int64): String {
         return str.substring(pos, limit - pos).trim()
     }
 
@@ -160,7 +160,7 @@ public class CookieUtil {
         return false
     }
 
-     public static func indexOfControlOrNonAscii(input: String): Int64 {
+     static func indexOfControlOrNonAscii(input: String): Int64 {
         for (i in 0..input.size) {
           let c: Char = input.charAt(i)
           if (c <= '\u{001f}' || c >= '\u{007f}') {
