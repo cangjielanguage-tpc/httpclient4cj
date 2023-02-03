@@ -225,7 +225,7 @@ public class H2Stream {
             throwErrorException()
         }
 
-        if (!source.finished || source.receiveBuffer.length != 0 || !source.readBuffer.length != 0) {
+        if (!source.finished || source.receiveBuffer.length != 0 || source.readBuffer.length != 0) {
             throw  IllegalStateException("too early; can't read the trailers yet")
         }
 
