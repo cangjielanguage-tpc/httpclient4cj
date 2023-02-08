@@ -1,5 +1,9 @@
 /*
- *Copyright (c) Cangjie Library Team 2022-2032. All Right Resverd 
+ * Copyright (c) Cangjie Library Team 2022-2032. All Right Resverd
+ * Description openssl ec.c for Cangjie API
+ * Auther: 0001
+ * Create: 2023-02-02
+ * Notes:
  */
 #include<stdio.h>
 #include<string.h>
@@ -11,21 +15,22 @@
 #include<malloc.h>
 
 int okhttp_SyscallGetAddrInfo(const char* node, const char* service,
-                              const struct addrinfo* hints, struct addrinfo** res) {
+                              const struct addrinfo* hints, struct addrinfo** res)
+{
     return getaddrinfo(node, service, hints, res);
-};
+}
 
 uint8_t* okhttp_SOCKET_ConvertAddrPtr(struct addrinfo* res)
 {
     const int arraddrlen = 400;
-	uint8_t tmpaddr[arraddrlen];
+    uint8_t tmpaddr[arraddrlen];
     int ip4cnt = 0;
     int ip6cnt = 0;
     const int ip4bytes = 5;
-	const int ip6bytes = 17;
+    const int ip6bytes = 17;
 
     for (struct addrinfo* cur = res; cur != NULL; cur = cur->ai_next) {
-		if (cur->ai_addr == NULL) {
+        if (cur->ai_addr == NULL) {
             continue;
         }
 
