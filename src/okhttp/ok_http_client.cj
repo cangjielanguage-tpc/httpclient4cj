@@ -38,6 +38,7 @@ public class OkHttpClient {
      private var authenticator: (Option<Route>, Response) -> Option<Request>
      private var followSslRedirects: Bool
      private var eventListener: EventListener
+     var cache: Option<Cache>
 
      /**
       * The Function is init constructor
@@ -61,6 +62,7 @@ public class OkHttpClient {
           this.protocols = builder.protocolsBuild
           this.authenticator = builder.authenticatorBuild
           this.eventListener = builder.listenerBuild
+          this.cache = builder.cacheBuild
      }
      /**
       * The Function is builder
@@ -182,6 +184,10 @@ public class OkHttpClient {
 
      public func getEventListener(): EventListener {
         return eventListener
+     }
+
+     public func getCache(): Option<Cache> {
+        return cache
      }
 }
 

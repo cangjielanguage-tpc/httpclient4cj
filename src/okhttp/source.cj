@@ -301,7 +301,7 @@ class FramingSource <: Source {
         while (true) {
             var readBytesDelivered = -1
             var errorExceptionToDeliver: Bool = false
-            synchronized(h2Stream.mutex) {
+            synchronized (h2Stream.mutex) {
                 if (has(h2Stream.errorCode)) {
                     errorExceptionToDeliver = true
                 }
@@ -370,7 +370,7 @@ class FramingSource <: Source {
 
             byteCount -= read
             var bytesDiscarded = 0
-            synchronized(stream.getOrThrow().mutex) {
+            synchronized (stream.getOrThrow().mutex) {
                 if (isClosed()) {
                     bytesDiscarded = receiveBuffer.length
                     receiveBuffer.clear()
@@ -394,7 +394,7 @@ class FramingSource <: Source {
 
     public func close(): Unit {
         let bytesDiscarded: Int64
-        synchronized(stream.getOrThrow().mutex) {
+        synchronized (stream.getOrThrow().mutex) {
             closed = true
             bytesDiscarded = readBuffer.length
             readBuffer.clear()
@@ -411,4 +411,57 @@ class FramingSource <: Source {
     public func isClosed(): Bool {
         return closed
     }
+}
+
+class CacheWritingSource <: Source {
+    var cacheRequestClosed: Bool = false
+    var source: Source
+    var cacheRequest: CacheRequest
+
+    init (source: Source, cacheRequest: CacheRequest) {
+        this.source = source
+        this.cacheRequest = cacheRequest
+    }
+
+    public func read(bytes: ByteArrayStream, byteCount: Int64): Int64 {
+        var bytesRead: Int64
+        let cacheBody = RealBufferSink(cacheRequest)
+
+        try {
+            bytesRead = source.read(bytes, byteCount)
+        } catch (e: IOException | HttpException) {
+            if (!cacheRequestClosed) {
+                cacheRequestClosed = true
+                cacheRequest.abort()
+            }
+            throw e
+        }
+
+        if (bytesRead == -1) {
+             if (!cacheRequestClosed) {
+                cacheRequestClosed = true
+                cacheBody.close() // The cache response is complete!
+             }
+
+             return -1
+        }
+
+        cacheBody.getBuffer().write(bytes.bytes())
+        cacheBody.flush()
+        return bytesRead
+    }
+
+    public func close(): Unit {
+        if (!cacheRequestClosed && !disCard(this)) {
+            cacheRequestClosed = true
+            cacheRequest.abort()
+        }
+
+        source.close()
+    }
+
+    public func isClosed(): Bool {
+        return source.isClosed()
+    }
+
 }

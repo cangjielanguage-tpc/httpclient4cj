@@ -33,10 +33,8 @@ public class OkGzipSource <: Source {
                     if (read <= 0) {
                         break
                     }
-                } catch (e: HttpException) {
-                    if (e.message == "EOF") {
-                        break
-                    }
+                } catch (e: EOFException) {
+                    break
                 }
             }
         }

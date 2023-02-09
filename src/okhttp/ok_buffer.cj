@@ -18,10 +18,16 @@ public class OkBuffer <: Source {
     }
 
     private func read(bytes: Array<Byte>): Int64 {
-        let read = source.read(bytes)
+        var read = 0
 
-        if (read <= 0) {
-            throw HttpException("EOF")
+        try{
+            read = source.read(bytes)
+        } catch (e: SocketException) {
+            return -1
+        }
+
+        if (read == 0) {
+            throw EOFException()
         } else if (read != -1) {
             if (read == bytes.size) {
                 buffer.write(bytes)
@@ -112,7 +118,7 @@ public class OkBuffer <: Source {
                  }
               }
            }
-           return -1
+           return 0
         } else {
              throw IllegalArgumentException("from=${start} to=${end}")
         }
@@ -129,24 +135,63 @@ public class OkBuffer <: Source {
         var index = 0
         while (true) {
             let indexLF = indexOf(0xAu8, index, limit)
+
             if (indexLF == -1) {
                 break
             }
-            let indexCR = indexOf(0xDu8, indexLF - 1, indexLF)
-            if (indexCR != -1 && indexCR + 1 == indexLF) {
-                if (indexCR == 0) {
+
+            if (indexLF !=0 ) {
+                let indexCR = indexOf(0xDu8, indexLF - 1, indexLF)
+
+                if (indexCR + 1 == indexLF) {
+
+                    if (indexCR == 0) {
+                        skipBuffer(2)
+
+                        return ""
+                    }
+
+                    let arr = Array<Byte>(indexCR, item: 0)
+                    buffer.read(arr)
+                    let line = String.fromUtf8(arr)
                     skipBuffer(2)
-                    return ""
+
+                    return line
+                } else if (indexCR == -1) {
+                    break
                 }
-                let arr = Array<Byte>(indexCR, item: 0)
-                buffer.read(arr)
-                let line = String.fromUtf8(arr)
-                skipBuffer(2)
-                return line
             }
-            index = indexLF
+
+            index = indexLF + 1
         }
-        throw IllegalArgumentException("can't find CRLF line")
+
+        throw EOFException("can't find CRLF line")
+    }
+
+    public func readUtf8Line(): String {
+        return readUtf8Line(Int64.Max)
+    }
+
+    public func readUtf8Line(limit: Int64): String {
+        if (limit < 0) {
+            throw  IllegalArgumentException("limit < 0: ${limit}")
+        }
+
+        let indexLF = indexOf(0xAu8, 0, limit)
+        if (indexLF == -1) {
+            throw EOFException("can't find '\n' line")
+        }
+
+        if (indexLF == 0) {
+            skipBuffer(1)
+            return ""
+        }
+
+        let arr = Array<Byte>(indexLF, item: 0)
+        buffer.read(arr)
+        let line = String.fromUtf8(arr)
+        skipBuffer(1)
+        return line
     }
 
     public func close(): Unit {

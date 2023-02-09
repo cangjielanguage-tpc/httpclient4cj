@@ -202,7 +202,7 @@ public class H2Connection {
     }
 
     func headers(inFinished: Bool, streamId: UInt32, associatedStreamId: Int64, headerBlock: Array<HeaderField>) {
-        synchronized(muLock) {
+        synchronized (muLock) {
             let stream = streamMap[streamId]
             stream.receiveHeaders(toHeaders(headerBlock), inFinished)
         }
@@ -289,7 +289,7 @@ public class H2Connection {
      * @since 0.34.3
      */
     public func shutdownConn(statusCode: ErrorCode) {
-        synchronized(writer.mutex) {
+        synchronized (writer.mutex) {
             synchronized (muLock) {
                 if (shutdown) {
                     return
@@ -365,8 +365,8 @@ public class H2Connection {
 
     func applyAndAckSettings(settings: Settings) {
         var delta = 0
-        synchronized(writer.mutex) {
-            synchronized(muLock) {
+        synchronized (writer.mutex) {
+            synchronized (muLock) {
                 let priorWriteWindowSize = peerSettings.getInitialWindowSize()
                 peerSettings.merge(settings)
                 let peerInitialWindowSize = peerSettings.getInitialWindowSize()
@@ -381,9 +381,9 @@ public class H2Connection {
                 close(ErrorCode.PROTOCOL_ERROR, ErrorCode.PROTOCOL_ERROR, e.message)
             }
         }
-        synchronized(writer.mutex) {
+        synchronized (writer.mutex) {
             for ((k,v) in streamMap) {
-                synchronized(v.mutex) {
+                synchronized (v.mutex) {
                     v.addBytesToWriteWindow(delta)
                 }
             }
@@ -413,7 +413,7 @@ public class H2Connection {
         var flushHeaders: Bool = false
         var streamId: UInt32 = 0
 
-        synchronized(muLock) {
+        synchronized (muLock) {
             if (Int32(nextStreamID) > Int32.Max / 2) {
                 shutdownConn(REFUSED_STREAM)
             }

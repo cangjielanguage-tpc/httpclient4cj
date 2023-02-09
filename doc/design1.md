@@ -63,6 +63,7 @@ Call的工厂类，可用于发送 HTTP 请求并读取其响应，外观形式�
 | getAuthenticator            | 无                | (Option\<Route\>, Response)-> Option\<Request\> | 获取鉴权配置         |
 | getFollowSslRedirects       | 无                | Bool                                            | 获取是否允许跨协议进行重定向 |
 | getEventListener            | 无                | EventListener                                   | 获取事件监听器        |
+| getCache                    | 无                | Option\<Cache\>                                 | 获取缓存对象         |
 
 | 静态函数      | 入参   | 返回值                  | 作用描述                      |
 |-----------|------|----------------------|---------------------------|
@@ -92,7 +93,7 @@ Call的工厂类，可用于发送 HTTP 请求并读取其响应，外观形式�
 | authenticator            | authenticator: (Option\<Route\>, Response) -> Option\<Request\> | OkHttpClientBuilder | 开启鉴权配置 (如果 code 返回 401 则需要鉴权配置), 如果lambda返回None则不再进行重试, 否则进行鉴权配置后重试请求                     |
 | followSslRedirects       | followSslRedirects: Bool                                        | OkHttpClientBuilder | 配置是否允许跨协议进行重定向                                                                            |
 | eventListener            | listener: EventListener                                         | OkHttpClientBuilder | 配置自定义事件监听器                                                                                |
-
+| cache                    | cache: Option\<Cache\>                                          | OkHttpClientBuilder | 配置使用缓存                                                                                    |
 
 #### interface Call
 
@@ -173,7 +174,7 @@ Call的工厂类，可用于发送 HTTP 请求并读取其响应，外观形式�
 | getHeaders      | 无                           | Header                             | 获取整个Header头对象                  |
 | getHeader       | 无                           | name: String                       | 获取Header中key对应的 Option<String> |
 | getHeader       | 无                           | name: String, defaultValue: String | 获取Header中key对应的value,如果没有返回默认值 |
-| getCacheControl | 无                           | Option\<CacheControl\>             | 获取请求中缓存控制对象                    |
+| getCacheControl | 无                           | CacheControl                       | 获取请求中缓存控制对象                    |
 | getTag          | s: String                   | Tag                                | 获取标签                           |
 | removeTag       | s: String                   | Unit                               | 移除标签                           |
 
@@ -300,23 +301,27 @@ form表单格式的请求体
 
 请求的响应
 
-| 成员函数            | 入参                                 | 返回值                    | 作用描述                           |
-|-----------------|------------------------------------|------------------------|--------------------------------|
-| newBuilder      | 无                                  | ResponseBuilder        | 根据自身配置创建 Builder               |
-| getRequest      | 无                                  | Request                | 获取对应的 Request 对象               |
-| getProtocol     | 无                                  | Protocol               | 获取使用协议                         |
-| getCode         | 无                                  | Int64                  | 获取状态码                          |
-| getMessage      | 无                                  | String                 | 获取报文消息                         |
-| isSuccess       | 无                                  | Bool                   | 请求是否成功                         |
-| getHeaders      | 无                                  | Header                 | 获取整个响应头                        |
-| getHeader       | name: String                       | Option\<String\>       | 获取Header中key对应的value           |
-| getHeader       | name: String, defaultValue: String | String                 | 获取Header中key对应的value,如果没有返回默认值 |
-| getBody         | 无                                  | Option\<ResponseBody\> | 获取响应体                          |
-| getPrevResponse | 无                                  | Option\<Response\>     | 获取重定向的前置响应对象                   |
-| isRedirect      | 无                                  | Bool                   | 是否是重定向响应                       |
-| close           | 无                                  | Unit                   | 关闭响应体资源                        |
-| toString        | 无                                  | String                 | 格式化输出                          |
-| getCacheControl | 无                                  | Option\<CacheControl\> | 获取缓存控制对象                       |
+| 成员函数                   | 入参                                  | 返回值                     | 作用描述                                                                   |
+|------------------------|-------------------------------------|-------------------------|------------------------------------------------------------------------|
+| newBuilder             | 无                                   | ResponseBuilder         | 根据自身配置创建 Builder                                                       |
+| getRequest             | 无                                   | Request                 | 获取对应的 Request 对象                                                       |
+| getProtocol            | 无                                   | Protocol                | 获取使用协议                                                                 |
+| getCode                | 无                                   | Int64                   | 获取状态码                                                                  |
+| getMessage             | 无                                   | String                  | 获取报文消息                                                                 |
+| isSuccess              | 无                                   | Bool                    | 请求是否成功                                                                 |
+| getHeaders             | 无                                   | Header                  | 获取整个响应头                                                                |
+| getHeader              | name: String                        | Option\<String\>        | 获取Header中key对应的value                                                   |
+| getHeader              | name: String, defaultValue: String  | String                  | 获取Header中key对应的value,如果没有返回默认值                                         |
+| getBody                | 无                                   | Option\<ResponseBody\>  | 获取响应体                                                                  |
+| getPrevResponse        | 无                                   | Option\<Response\>      | 获取重定向的前置响应对象                                                           |
+| isRedirect             | 无                                   | Bool                    | 是否是重定向响应                                                               |
+| close                  | 无                                   | Unit                    | 关闭响应体资源                                                                |
+| toString               | 无                                   | String                  | 格式化输出                                                                  |
+| getCacheControl        | 无                                   | CacheControl            | 获取缓存控制对象                                                               |
+| getSentRequestAtMillis | 无                                   | Int64                   | 获取请求发送时间                                                               |
+| getSentRequestAtMillis | 无                                   | Int64                   | 获取响应方接受时间                                                              |
+| getNetworkResponse     | 无                                   | Option<Response>        | 获取网络响应，使用缓存时为None,对于条件请求networkResponse以及cacheResponse可能均不为None        |
+| getCacheResponse       | 无                                   | Option<Response>        | 获取缓存中读取的响应，使用网络请求时为None, 对于条件请求networkResponse以及cacheResponse可能均不为None |
 
 | 静态函数     | 入参   | 返回值               | 作用描述                  |
 |----------|------|-------------------|-----------------------|
@@ -340,19 +345,24 @@ form表单格式的请求体
 
 用于创建Response，通过链式调用配置其属性
 
-| 成员函数          | 入参                                | 返回值               | 作用描述                                                  |
-|---------------|-----------------------------------|-------------------|-------------------------------------------------------|
-| build         | 无                                 | Response          | 通过配置项创建出核心类 Response                                  |
-| request       | request: Request                  | ResponseBuilder   | 配置原请求对象                                               |
-| protocol      | protocol: Protocol                | ResponseBuilder   | 配置http协议                                              |
-| code          | code: Int64                       | ResponseBuilder   | 配置状态码                                                 |
-| message       | message: String                   | ResponseBuilder   | 配置状态信息                                                |
-| header        | name: String, value: String       | ResponseBuilder   | 重设响应头key-value键值对                                     |
-| addHeader     | name: String, value: String       | ResponseBuilder   | 添加响应头key-value键值对                                     |
-| removeHeader  | name: String                      | ResponseBuilder   | 移除响应头key-value键值对                                     |
-| prevResponse  | prevResponse: Option\<Response\>  | ResponseBuilder   | 配置重定向的前置响应对象。注意，如果参数不为None的话，如果响应对象的 body 不为 None，抛异常 |
-| body          | body: ResponseBody                | ResponseBuilder   | 配置响应体                                                 |
-| header        | header: Header                    | ResponseBuilder   | 配置响应头                                                 |
+| 成员函数                     | 入参                                | 返回值                 | 作用描述                                                  |
+|--------------------------|-----------------------------------|---------------------|-------------------------------------------------------|
+| build                    | 无                                 | Response            | 通过配置项创建出核心类 Response                                  |
+| request                  | request: Request                  | ResponseBuilder     | 配置原请求对象                                               |
+| protocol                 | protocol: Protocol                | ResponseBuilder     | 配置http协议                                              |
+| code                     | code: Int64                       | ResponseBuilder     | 配置状态码                                                 |
+| message                  | message: String                   | ResponseBuilder     | 配置状态信息                                                |
+| header                   | name: String, value: String       | ResponseBuilder     | 重设响应头key-value键值对                                     |
+| addHeader                | name: String, value: String       | ResponseBuilder     | 添加响应头key-value键值对                                     |
+| removeHeader             | name: String                      | ResponseBuilder     | 移除响应头key-value键值对                                     |
+| prevResponse             | prevResponse: Option\<Response\>  | ResponseBuilder     | 配置重定向的前置响应对象。注意，如果参数不为None的话，如果响应对象的 body 不为 None，抛异常 |
+| body                     | body: ResponseBody                | ResponseBuilder     | 配置响应体                                                 |
+| header                   | header: Header                    | ResponseBuilder     | 配置响应头                                                 |
+| sentRequestAtMillis      | sentRequestAtMillis: Int64        | ResponseBuilder     | 配置请求发送时间                                              |
+| receivedResponseAtMillis | receivedResponseAtMillis: Int64   | ResponseBuilder     | 配置响应接受时间                                              |
+| networkResponse          | cacheResponse: Option<Response>   | ResponseBuilder     | 配置网络响应                                                |
+| cacheResponse            | networkResponse: Option<Response> | ResponseBuilder     | 配置缓存中读取的响应                                            |
+
 
 #### interface Source <: Resource
 
@@ -361,6 +371,23 @@ form表单格式的请求体
 | read        | bytes: ByteArrayStream, byteCount: Int64   | Int64 | 读取指定字节的数据   |
 | close       | 无                                          | Unit  | 关闭source    |
 | isClosed    | 无                                          | Unit  | source是否已关闭 |
+
+
+#### class OkBuffer <: Source
+
+用于读取响应报文以及缓存数据的功能类
+
+| 成员函数               | 入参                                | 返回值     | 作用描述                            |
+|--------------------|-----------------------------------|---------|---------------------------------|
+| init               | inputStream: InputStream          | 无       | 构造器 inputStream: 处理的输入流         |
+| readUtf8LineStrict | 无                                 | String  | 按\\r\\n读取utf8字符串                |
+| readUtf8LineStrict | limit: Int64                      | String  | 按\\r\\n读取utf8字符串                |
+| readUtf8Line       | 无                                 | String  | 按\n读取utf8字符串                    |
+| readUtf8Line       | limit: Int64                      | String  | 按\n读取utf8字符串                    |
+| skipBuffer         | limit: Int64                      | Unit    | 忽略并跳过limit个Byte                 |
+| readByte           | 无                                 | Byte    | 读取一个Byte                        |
+| indexOf            | b: Byte, start: Int64, end: Int64 | Int64   | 从start到end的位置找b的偏移位置并读取数据到缓冲    |
+
 
 #### class OkGzipSource <: Source
 
@@ -438,7 +465,7 @@ form表单格式的请求体
 | getProtocols | 无                                          | ArrayList\<String\> | 获取协议                           |
 
 
-#### enum protocol
+#### enum protocol <: ToString
 
 | HTTP_1_0| HTTP_1_1|  HTTP_2 | H2_PRIOR_KNOWLEDGE
 
@@ -673,7 +700,7 @@ HTTP2错误码， 从Reset_Stream帧或GOAway帧中获取
 | evictAll            | 无                                                                                     | Unit   | 移除并关闭所有空闲连接                                                              |
 | connectFailed       | failedRoute: Route                                                                    | Unit   | 记录连接失败的路由                                                                |
 
-#### class StatusLine
+#### class StatusLine <: ToString
 
 解析报文第一行StatusLine
 
@@ -701,11 +728,91 @@ HTTP2错误码， 从Reset_Stream帧或GOAway帧中获取
 | saveFromResponse   | url: URL, cookies: Array\<Cookie\> | Unit            | 保存cookie            |
 | loadForRequest     | url: URL                           | Array\<Cookie\> | 从CookieJar中获取cookie |
 
+
+#### class Cache <: Resource
+
+处理http缓存功能
+
+| 成员函数         | 入参                                      | 返回值                | 作用描述                                         |
+|--------------|-----------------------------------------|--------------------|----------------------------------------------|
+| init         | directoryPath: String, maxSize: Int64   | 无                  | directoryPath: 缓存目录地址, maxSize: 缓存大小，单位byte  |
+| getDirectory | 无                                       | Directory          | 获取缓存目录                                       |
+| getMaxSize   | 无                                       | Int64              | 获取最大可用缓存值                                    |
+| evictAll     | 无                                       | Unit               | 去除所有缓存内存以及缓存文件(不包括journal)                   |
+| delete       | 无                                       | Directory          | 删除缓存文件以及journal,但不删除内存中缓存                    |
+| urls         | 无                                       | Iterator<String>   | 获取已缓存url的迭代器                                 |
+| flush        | 无                                       | Unit               | 刷新缓存流到缓存文件中                                  |
+| initialize   | 无                                       | Unit               | 初始化，如过有读取缓存文件则读取保存于内存中，没有则构建缓存文件             |
+
+
+| 静态函数    | 入参        | 返回值      | 作用描述                    |
+|---------|-----------|----------|-------------------------|
+| key     | url: URL  | String   | 根据url进行md5加密，用于缓存文件的文件名 |
+
+#### class CacheControl <: ToString
+
+缓存控制分别为客户端请求控制和服务端相应控制，其中启用参数各有异同,部分如下：
+请求
++ no-cache
++ no-store
++ max-age = [秒]
++ max-stale(=[秒])
++ min-fresh(=[秒])
++ no-transform
++ only-if-cached()
+响应
++ public
++ private
++ no-cache
++ no-transform
++ must-revalidate
++ max-age = [秒]
++ s-maxage = [秒]
+
+| 成员函数            | 入参                                      | 返回值           | 作用描述                                        |
+|-----------------|-----------------------------------------|---------------|---------------------------------------------|
+| init            | directoryPath: String, maxSize: Int64   | 无             | directoryPath: 缓存目录地址, maxSize: 缓存大小，单位byte |
+| noCache         | 无                                       | Bool          | 是否使用缓存                                      |
+| noStore         | 无                                       | Bool          | 是否不保存缓存或请求                                  |
+| maxAgeSeconds   | 无                                       | Int64         | 缓存的最大Age值，单位：秒                              |
+| maxStaleSeconds | 无                                       | Int64         | 已过期缓存的最大Age值，单位：秒                           |
+| sMaxAgeSeconds  | 无                                       | Int64         | 公共缓存的最大Age值，单位：秒                            |
+| minFreshSeconds | 无                                       | Int64         |  期望指定时间内的响应，单位：秒                            |
+| isPrivate       | 无                                       | Bool          | 是否私有缓存                                      |
+| isPublic        | 无                                       | Bool          | 是否公共缓存                                      |
+| mustRevalidate  | 无                                       | Bool          | 过期缓存必须再次校验                                  |
+| onlyIfCached    | 无                                       | Int64         | 只使用缓存                                       |
+| noTransform     | 无                                       | Bool          | 不允许更改请求或响应                                  |
+| immutable       | 无                                       | Bool          | 资源保持不变                                      |
+| minFreshSeconds | 无                                       | Int64         | 期望指定时间内的响应                                  |
+| onlyIfCached    | 无                                       | Int64         | 只使用缓存                                       |
+
+| 静态函数    | 入参   | 返回值                 | 作用描述                                        |
+|---------|------|---------------------|---------------------------------------------|
+| builder | 无    | CacheControlBuilder | 创建 CacheControl 的Builder                    |
+| parse   | 无    | header: Header      | 从Header中解析Cache-control头的值并返回CacheControl对象 |
+
+#### class CacheControlBuilder
+
+用于创建客户端缓存控制
+
+| 成员函数           | 入参          | 返回值                  | 作用描述                                        |
+|----------------|-------------|----------------------|---------------------------------------------|
+| noCache        | 无           | CacheControlBuilder  | 配置是否使用缓存                                    |
+| noStore        | 无           | CacheControlBuilder  | 是否不保存缓存或请求                                  |
+| maxAge         | Int64       | CacheControlBuilder  | 配置使用缓存的最大Age值，单位：秒                          |
+| maxStale       | Int64       | CacheControlBuilder  | 配置使用已过期缓存的最大Age值，单位：秒                       |
+| minFresh       | Int64       | CacheControlBuilder  | 配置期望指定时间内的缓存，单位：秒                           |
+| onlyIfCached   | 无           | CacheControlBuilder  | 配置只使用缓存                                     |
+| noTransform    | 无           | CacheControlBuilder  | 配置不允许更改请求                                   |
+| immutable      | 无           | CacheControlBuilder  | 配置资源保持不变                                    |
+| build          | 无           | CacheControlBuilder  | 创建CacheControl对象                            |
+
 #### 全局函数
 
 | 全局函数                 | 入参       | 返回值           | 作用描述                                   |
 |----------------------|----------|---------------|----------------------------------------|
-| getSimpleCookieJar   | 无        | CookieJar     | 获取简单的使用内存的cookieJar, cookie保存于内存中,无序列化 |
+| getSimpleCookieJar   | 无        | CookieJar     | 获取简单的使用内存的cookieJar, cookie保存于内存中,无持久化 |
 
 ### 5.2 展示示例
 

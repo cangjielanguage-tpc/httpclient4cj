@@ -151,6 +151,7 @@ class RealCall<: Call {
        interceptors.appendAll(client.getInterceptors())
        interceptors.append(RetryAndFollowUpInterceptor(client))
        interceptors.append(BridgeInterceptor(client.getCookieJar()))
+       interceptors.append(CacheInterceptor(client.getCache()))
        interceptors.append(ConnectInterceptor(client))
 
        if (!forWebSocket) {

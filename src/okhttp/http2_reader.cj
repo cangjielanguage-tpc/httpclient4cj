@@ -63,11 +63,8 @@ class Http2Reader {
                 case  _ =>  source.skipBuffer(length)
             }
             return true
-        } catch (e: HttpException) {
-            if (e.message == "EOF") {
-                return false
-            }
-            throw e
+        } catch (e: EOFException) {
+            return false
         } catch (e: SocketException) {
             throw HttpException("SocketException")
         }

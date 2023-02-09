@@ -55,6 +55,11 @@ public open class ResponseBuilder <: Builder<Response> {
         this.headerBuild = response.getHeaders().clone()
         this.bodyBuild = response.getBody()
         this.exchange = response.exchange
+        this.networkResponseBuild = response.networkResponse
+        this.cacheResponseBuild  = response.cacheResponse
+        this.prevResponseBuild = response.prevResponse
+        this.sentRequestAtMillisBuild = response.sentRequestAtMillis
+        this.receivedResponseAtMillisBuild = response.receivedResponseAtMillis
     }
 
     /**

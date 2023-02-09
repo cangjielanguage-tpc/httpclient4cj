@@ -37,6 +37,7 @@ public class OkHttpClientBuilder <: Builder<OkHttpClient> {
     var authenticatorBuild: (Option<Route>, Response) -> Option<Request> =
         {route: Option<Route>, response: Response => Option<Request>.None}
     var listenerBuild: EventListener = NoneEventListener()
+    var cacheBuild: Option<Cache> = Option<Cache>.None
 
     /**
      * The Function is build
@@ -232,6 +233,11 @@ public class OkHttpClientBuilder <: Builder<OkHttpClient> {
 
     public func eventListener(listener: EventListener): OkHttpClientBuilder {
         this.listenerBuild = listener
+        return this
+    }
+
+    public func cache(cache: Option<Cache>): OkHttpClientBuilder {
+        this.cacheBuild = cache
         return this
     }
 }
