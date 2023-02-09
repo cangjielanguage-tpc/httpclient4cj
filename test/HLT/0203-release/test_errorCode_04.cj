@@ -1,5 +1,4 @@
 // 3rd_party_lib:okhttp/build/okhttp
-// 3rd_party_lib:okhttp/test/HLT/0203-release/lib_http2
 
 from std import unittest.*
 from std import unittest.testmacro.*
