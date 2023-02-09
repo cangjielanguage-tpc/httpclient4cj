@@ -31,6 +31,8 @@ public open class ResponseBuilder <: Builder<Response> {
     var exchange: Option<Exchange> = None
     var sentRequestAtMillisBuild = 0
     var receivedResponseAtMillisBuild = 0
+    var networkResponseBuild: Option<Response> = Option<Response>.None
+    var cacheResponseBuild: Option<Response> = Option<Response>.None
 
     /**
      * The Function is init constructor
@@ -204,12 +206,47 @@ public open class ResponseBuilder <: Builder<Response> {
          this.exchange = Option<Exchange>.Some(deferredTrailers)
     }
 
-    public func sentRequestAtMillis(sentRequestAtMillis: Int64): {
+    public func sentRequestAtMillis(sentRequestAtMillis: Int64): ResponseBuilder {
         this.sentRequestAtMillisBuild = sentRequestAtMillis
+        return this
     }
 
-    public func receivedResponseAtMillis(receivedResponseAtMillis: Int64): {
+    public func receivedResponseAtMillis(receivedResponseAtMillis: Int64): ResponseBuilder {
         this.receivedResponseAtMillisBuild = receivedResponseAtMillis
+        return this
+
+    }
+
+    public func cacheResponse(cacheResponse: Option<Response>): ResponseBuilder {
+        match (cacheResponse) {
+            case Some(cacheResp) =>
+                checkSupportResponse("cacheResponse", cacheResp)
+            case None => ()
+        }
+         this.cacheResponseBuild = cacheResponse
+         return this
+    }
+
+    public func networkResponse(networkResponse: Option<Response>): ResponseBuilder {
+        match (networkResponse) {
+            case Some(networkResp) =>
+                checkSupportResponse("networkResponse", networkResp)
+            case None => ()
+        }
+        this.networkResponseBuild = networkResponse
+        return this
+    }
+
+    private func checkSupportResponse(name: String, response: Response) {
+        if (has(response.getBody())) {
+            throw IllegalArgumentException(name + ".body != None")
+        } else if (has(response.getNetworkResponse())) {
+            throw  IllegalArgumentException(name + ".networkResponse != None")
+        } else if (has(response.getCacheResponse())) {
+            throw  IllegalArgumentException(name + ".cacheResponse != None")
+        } else if (has(response.getPrevResponse())) {
+            throw IllegalArgumentException(name + ".prevResponse != None");
+        }
     }
 }
 

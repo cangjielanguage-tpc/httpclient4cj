@@ -8,13 +8,25 @@
  */
 package okhttp
 
-public class Cache {
-    private static let VERSION: Int64 = 202212
-    private static let ENTRY_COUNT: Int64 = 2
-    private static let ENTRY_METADATA: Int64 = 0
-    private static let ENTRY_BODY: Int64 = 1
-    let cache: DiskLruCache
 
+let VERSION: Int64 = 202212
+let ENTRY_COUNT: Int64 = 2
+let ENTRY_METADATA: Int64 = 0
+let ENTRY_BODY: Int64 = 1
+
+let CLEAN: String = "CLEAN"
+let DIRTY: String = "DIRTY"
+let REMOVE: String = "REMOVE"
+let READ: String = "READ"
+let JOURNAL_FILE: String = "journal"
+let JOURNAL_FILE_TEMP: String = "journal.tmp"
+let JOURNAL_FILE_BACKUP: String = "journal.bkp"
+let VERSION_1: String = "1"
+let ANY_SEQUENCE_NUMBER = -1
+let MAGIC: String = "libcore.io.DiskLruCache"
+
+public class Cache {
+    let cache: DiskLruCache
     let lock: Monitor = Monitor()
 
     private var requestCount: Int64 = 0
@@ -24,23 +36,16 @@ public class Cache {
     private var networkCount: Int64 = 0
 
 
-
-
     public init(directoryPath: String, maxSize: Int64) {
         let directory: Directory
-
         if (!Directory.exists(directoryPath)) {
-            directory = Directory.create(directoryPath, recursive: ture)
+            directory = Directory.create(directoryPath, recursive: true)
         } else {
             directory = Directory(directoryPath)
         }
-
-        this(directory, maxSize, FileSystem(directory))
+        this.cache = DiskLruCache.create(FileSystem(directory), directory, VERSION, ENTRY_COUNT, maxSize)
     }
 
-    init(directory: Directory, maxSize: Int64, fileSystem: FileSystem) {
-        this.cache = DiskLruCache.create(fileSystem, directory, VERSION, ENTRY_COUNT, maxSize)
-    }
 
     func trackResponse(cacheStrategy: CacheStrategy) {
         synchronized(lock) {
@@ -54,7 +59,35 @@ public class Cache {
     }
 
     func update(cached: Response, network: Response): Unit {
+         var entry: CacheEntry = CacheEntry(network)
+         let snapshot: Snapshot  = match (cached.getBody().getOrThrow()) {
+            case cacheBody: CacheResponseBody =>
+                    cacheBody.snapshot
+            case _ => throw IllegalArgumentException("response has no cacheBody")
+         }
+         var editor: Option<Editor> = None
+         try {
+            editor = snapshot.edit()
+            match (editor) {
+                case Some(e) =>
+                    entry.writeTo(e)
+                    e.commit()
+                case None => ()
+            }
+         } catch (e: FSException) {
+            abortQuietly(editor)
+         }
+    }
 
+    private func abortQuietly(editor: Option<Editor>) {
+        try {
+            match (editor) {
+                case Some(e) => e.abort()
+                case None => ()
+            }
+        } catch (ignored: Exception) {
+
+        }
     }
 
     func trackConditionalCacheHit() {
@@ -63,10 +96,10 @@ public class Cache {
         }
     }
 
-    func get(request: Request): Response {
+    func get(request: Request): Option<Response> {
         let key = key(request.getUrl())
         var snapshot: Snapshot
-        var entry: Entry
+        var entry: CacheEntry
         try {
             match (cache.get(key)) {
                 case None =>
@@ -79,9 +112,10 @@ public class Cache {
         }
 
         try {
-            entry = CacheEntry(snapshot.getSource(ENTRY_METADATA), this)
+            entry = CacheEntry(snapshot.getSource(ENTRY_METADATA))
         } catch (e: Exception) {
             Util.closeQuietly(snapshot)
+            return Option<Response>.None
         }
 
         let response: Response = entry.response(snapshot)
@@ -106,9 +140,24 @@ public class Cache {
             return None
         }
 
-        if (hasVaryAll(response.getHeaders())) {
+        if (HttpHeaders.hasVaryAll(response.getHeaders())) {
             return None
         }
+
+        let entry: CacheEntry = CacheEntry(response)
+        let editor: Option<Editor>
+        try {
+            editor = cache.edit(key(response.getRequest().getUrl()))
+            if (!has(editor)) {
+                return None
+            }
+            let realEditor = editor.getOrThrow()
+            entry.writeTo(realEditor)
+            return CacheRequest(realEditor, this)
+        } catch (e: IOException) {
+            //TODO abort
+        }
+
 
         //TODO LRU
         return Option<CacheRequest>.None
@@ -124,7 +173,8 @@ public class Cache {
 
 
 }
-private class CacheEntry {
+
+class CacheEntry {
     /** Synthetic response header: the local time when the request was sent. */
     private static let SENT_MILLIS = "OkHttp-Sent-Millis";
 
@@ -140,30 +190,44 @@ private class CacheEntry {
     private let responseHeaders: Header
     private let sentRequestMillis: Int64
     private let receivedResponseMillis: Int64
+
+    init (response: Response) {
+        this.url = response.getRequest().getUrl().toString()
+        this.varyHeaders = HttpHeaders.varyHeaders(response)
+        this.requestMethod = response.getRequest().getMethod()
+        this.protocol = response.getProtocol()
+        this.code = response.getCode()
+        this.message = response.getMessage()
+        this.responseHeaders = response.getHeaders()
+        this.sentRequestMillis = response.getSentRequestAtMillis()
+        this.receivedResponseMillis = response.getReceivedResponseAtMillis()
+    }
     
-    init (in: OkBuffer) {
-        try (r = in) {
+    init (source: OkBuffer) {
+        try {
             let urlString = source.readUtf8LineStrict()
             url = urlString
             requestMethod = source.readUtf8LineStrict()
-            let varyRequestHeaderLineCount: Int64 = readInt(source)
-            let varyHeaders: Header = Header()
+            let varyRequestHeaderLineCount: Int64 = Int64(Int32(source.readByte()) << 24| Int32(source.readByte()) << 16
+                 | Int32(source.readByte()) << 8 | Int32(source.readByte()))
+            let varyHeader: Header = Header()
             for (i in 0..varyRequestHeaderLineCount) {
-                addLenient(varyHeaders, source.readUtf8LineStrict())
+                addLenient(varyHeader, source.readUtf8LineStrict())
             }
-
+            this.varyHeaders = varyHeader
             let statusLine: StatusLine = StatusLine.parse(source.readUtf8LineStrict())
             protocol = statusLine.protocol
             code = statusLine.code
             message = statusLine.message
 
             let responseHeader: Header = Header()
-            let responseHeaderLineCount: Int64 = readInt(source)
+            let responseHeaderLineCount: Int64 = Int64(Int32(source.readByte()) << 24| Int32(source.readByte()) << 16
+                | Int32(source.readByte()) << 8 | Int32(source.readByte()))
             for (i in 0..varyRequestHeaderLineCount) {
                 addLenient(responseHeader, source.readUtf8LineStrict())
             }
             let sendRequestMillisString: String = responseHeader.get(SENT_MILLIS).getOrThrow()
-            let receivedResponseMillisString: String = responseHeader.get(RECEIVED_MILLIS)getOrThrow()
+            let receivedResponseMillisString: String = responseHeader.get(RECEIVED_MILLIS).getOrThrow()
 
             sentRequestMillis = match (Int64.tryParse(sendRequestMillisString)) {
                 case None => 0
@@ -174,18 +238,22 @@ private class CacheEntry {
                 case None => 0
                 case Some(v) => v
             }
-            responseHeaders.remove(SENT_MILLIS)
-            responseHeaders.remove(RECEIVED_MILLIS)
+            responseHeader.remove(SENT_MILLIS)
+            responseHeader.remove(RECEIVED_MILLIS)
+            responseHeaders = responseHeader
 
+            //TODO https
             //if(urlString.startsWith("https://")) {
 
             //}
+        } finally {
+            source.close()
         }
     }
 
     public func response(snapshot: Snapshot): Response {
-         let contentType: String = responseHeader.get("Content-Type").getOrThrow()
-         let contentLength: String = responseHeader.get("Content-Length")getOrThrow()
+         let contentType: String = responseHeaders.get("Content-Type").getOrThrow()
+         let contentLength: String = responseHeaders.get("Content-Length").getOrThrow()
 
          let cacheRequest: Request = Request.builder()
             .url(url)
@@ -198,7 +266,7 @@ private class CacheEntry {
             .protocol(protocol)
             .code(code)
             .message(message)
-            .headers(responseHeaders)
+            .header(responseHeaders)
             .body(CacheResponseBody(snapshot, contentType, contentLength))
             .sentRequestAtMillis(sentRequestMillis)
             .receivedResponseAtMillis(receivedResponseMillis)
@@ -207,29 +275,95 @@ private class CacheEntry {
 
     }
 
-    private func readInt(source: OkBuffer): Int64 {
-        return Int64(Int32(source.readByte()) << 24| Int32(source.readByte()) << 16 |
-                Int32(source.readByte()) << 8 | Int32(source.readByte()))
+
+    public func writeTo(editor: Editor): Unit {
+        let sink = editor.newSink(ENTRY_METADATA)
+        sink.write(url.toUtf8Array())
+        sink.write("\n".toUtf8Array())
+        sink.write(requestMethod.toUtf8Array())
+        sink.write("\n".toUtf8Array())
+        //sink.write("${varyHeaders.getAll().size()}".toUtf8Array())
+        var size = 0
+        let list: ArrayList<Byte> = ArrayList<Byte>()
+        for ((k, v) in varyHeaders) {
+            size++
+            list.appendAll(k.toUtf8Array())
+            list.appendAll(": ".toUtf8Array())
+            list.appendAll(v[0].toUtf8Array())
+            list.appendAll("\n".toUtf8Array())
+            //sink.write(k.toUtf8Array())
+            //sink.write(": ".toUtf8Array())
+            //sink.write(v[0].toUtf8Array())
+            //sink.write("\n".toUtf8Array())
+        }
+        sink.write("${size}".toUtf8Array())
+        sink.write(list.toArray())
+        list.clear
+        size = 0
+
+
+        sink.write("${StatusLine(protocol, code, message)}".toUtf8Array())
+        sink.write("\n".toUtf8Array())
+        //sink.write("${responseHeaders.getAll().size() + 2 }".toUtf8Array())
+        sink.write("\n".toUtf8Array())
+        for ((k, v) in responseHeaders) {
+            size++
+            for(i in 0..v.size) {
+                list.appendAll(k.toUtf8Array())
+                list.appendAll(": ".toUtf8Array())
+                list.appendAll(v[i].toUtf8Array())
+                list.appendAll("\n".toUtf8Array())
+                //sink.write(k.toUtf8Array())
+                //sink.write(": ".toUtf8Array())
+                //sink.write(v[i].toUtf8Array())
+                //sink.write("\n".toUtf8Array())
+            }
+        }
+        sink.write("${size + 2}".toUtf8Array())
+        sink.write(list.toArray())
+        sink.write(SENT_MILLIS.toUtf8Array())
+        sink.write(": ".toUtf8Array())
+        sink.write("${sentRequestMillis}".toUtf8Array())
+        sink.write("\n".toUtf8Array())
+        sink.write(RECEIVED_MILLIS.toUtf8Array())
+        sink.write(": ".toUtf8Array())
+        sink.write("${receivedResponseMillis}".toUtf8Array())
+        sink.write("\n".toUtf8Array())
+        //if (isHttps()) {
+
+       // }
+        sink.write(SENT_MILLIS.toUtf8Array())
+        sink.write(SENT_MILLIS.toUtf8Array())
+        //TODO https
+        sink.close()
     }
 
 }
 
-private class CacheResponseBody <: ResponseBody {
+class CacheResponseBody <: ResponseBody {
     let snapshot: Snapshot
     //TODO delete
     //private let bodySource: OkBuffer
     //private let contentLength: String
     
     init(snapshot: Snapshot, contentType: String, contentLength: String) {
-         this.snapshot = snapshot
-         let length = match(Int64.tryParse(contentLength)) {
+         super(contentType, match(Int64.tryParse(contentLength)) {
             case Some(v) => v
             case None => -1
-         }
-         super(contentType, length, snapshot.getSource(ENTRY_BODY))
+         }, snapshot.getSource(ENTRY_BODY))
+         this.snapshot = snapshot
     }
 
 }
 
 
-public class CacheRequest{}
+public class CacheRequest {
+    private let editor: Editor
+    private let cache: Cache
+
+    init(editor: Editor, cache: Cache) {
+        this.editor = editor
+        this.cache = cache
+    }
+
+}

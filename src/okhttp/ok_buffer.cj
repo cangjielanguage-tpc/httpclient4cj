@@ -34,7 +34,7 @@ public class OkBuffer <: Source {
     }
 
     func exhausted(): Bool {
-        return buffer.size == 0
+        return buffer.length == 0
     }
 
     public func readByte(): Byte {

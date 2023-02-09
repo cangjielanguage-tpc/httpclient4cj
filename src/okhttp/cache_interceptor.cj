@@ -23,13 +23,13 @@ public class CacheInterceptor<: Interceptor {
     public func intercept(chain: Chain): Response {
         let cacheCandidate: Option<Response>  = if (has(cache))
             {
-                return cache.getOrThrow().get(chain.getRequest())
+                cache.getOrThrow().get(chain.getRequest())
             } else {
-                return None
+                Option<Response>.None
             }
 
         let strategy: CacheStrategy = CacheStrategyFactory(chain.getRequest(), cacheCandidate).get()
-        let networkRequest: Option<Response> = strategy.networkRequest
+        let networkRequest: Option<Request> = strategy.networkRequest
         let cacheResponse: Option<Response> = strategy.cacheResponse
 
         if (has(cache)) {
@@ -37,7 +37,7 @@ public class CacheInterceptor<: Interceptor {
         }
 
         if (has(cacheCandidate) && !has(cacheResponse)) {
-            Util.closeQuietly(cacheCandidate.getOrThrow().body())
+            Util.closeQuietly(cacheCandidate.getOrThrow().getBody())
         }
 
         if (!has(networkRequest) && !has(cacheResponse)) {
@@ -46,44 +46,45 @@ public class CacheInterceptor<: Interceptor {
                 .protocol(Protocol.HTTP_1_1)
                 .code(504)
                 .message("Unsatisfiable Request (only-if-cached)")
-                .body(OkBuffer(ByteArrayStream()))
-                .sentRequestAtMillis(-1L)
+                .body(ResponseBody("", 0, OkBuffer(ByteArrayStream())))
+                .sentRequestAtMillis(-1)
                 .receivedResponseAtMillis(Time.now().unixTimeStamp().milliseconds())
                 .build()
         }
 
         if (!has(networkRequest)) {
-            return cacheResponse.newBuilder()
+            return cacheResponse.getOrThrow().newBuilder()
                 .cacheResponse(stripBody(cacheResponse))
                 .build()
         }
 
+        let realNetworkRequest = networkRequest.getOrThrow()
         var networkResponse =  Response.builder().build()
 
         try {
-            networkResponse = chain.proceed(networkRequest.getOrThrow())
+            networkResponse = chain.proceed(realNetworkRequest)
         } finally {
             if (!has(networkResponse) && has(cacheCandidate)) {
-                closeQuietly(cacheCandidate.getOrThrow().getBody())
+                Util.closeQuietly(cacheCandidate.getOrThrow().getBody())
             }
         }
 
         if (has(cacheResponse)) {
             let cacheRes = cacheResponse.getOrThrow()
-            if (networkResponse.getCode() == HTTP_NOT_MODIFIED) {
+            if (networkResponse.getCode() == HttpStatusCode.STATUS_NOT_MODIFIED) {
                 let response: Response =  cacheRes.newBuilder()
-                    .headers(combine(cacheRes.getHeaders(), networkResponse.getHeaders()))
-                    .sentRequestAtMillis(networkResponse.sentRequestAtMillis())
-                    .receivedResponseAtMillis(networkResponse.receivedResponseAtMillis())
+                    .header(combine(cacheRes.getHeaders(), networkResponse.getHeaders()))
+                    .sentRequestAtMillis(networkResponse.getSentRequestAtMillis())
+                    .receivedResponseAtMillis(networkResponse.getReceivedResponseAtMillis())
                     .cacheResponse(stripBody(cacheResponse))
                     .networkResponse(stripBody(networkResponse))
                     .build()
-                networkResponse.getBody().close()
-                cache.trackConditionalCacheHit()
-                cache.update(cacheRes, response)
+                networkResponse.getBody().getOrThrow().close()
+                cache.getOrThrow().trackConditionalCacheHit()
+                cache.getOrThrow().update(cacheRes, response)
                 return response
             } else {
-                closeQuietly(cacheRes.getBody())
+                Util.closeQuietly(cacheRes.getBody())
             }
 
         }
@@ -94,26 +95,36 @@ public class CacheInterceptor<: Interceptor {
             .build()
 
         if (has(cache)) {
-            if (hasBody(response) && isCacheable(response, networkRequest.getOrThrow())) {
-                let cacheRequest: Option<CacheRequest> = cache.put(response)
+            if (hasBody(response) && isCacheable(response, realNetworkRequest)) {
+                let cacheRequest: Option<CacheRequest> = cache.getOrThrow().put(response)
                 return cacheWritingResponse(cacheRequest, response)
             }
 
+            if (invalidatesCache(realNetworkRequest.getMethod())) {
+                try {
+                    cache.getOrThrow().remove(realNetworkRequest)
+                } catch (ignored: IOException) {
+                    // The cache cannot be written
+                }
+            }
         }
 
+        return response
     }
+
+
     func cacheWritingResponse(cacheRequest: Option<CacheRequest>, response: Response) {
         return Response.builder().build()
     }
 
      /** Combines cached headers with a network headers as defined by RFC 7234, 4.3.4. */
-    private func combine (cachedHeaders: Header, networkHeaders: Header) {
+    private func combine(cachedHeaders: Header, networkHeaders: Header) {
         let result = Header()
 
         for((k,v) in cachedHeaders) {
             let fieldName = k
             let value = v[0]
-            if (equalsIgnoreCase("Warning") && value.startsWith("1")) {
+            if (equalsIgnoreCase("Warning", fieldName) && value.startsWith("1")) {
                 continue // Drop 100-level freshness warnings.
             }
 
@@ -163,7 +174,8 @@ public class CacheInterceptor<: Interceptor {
                     return v
                 }
 
-            case None => Option<ResponseBody>.None
+            case None =>
+                return Option<Response>.None
 
         }
     }
@@ -180,7 +192,7 @@ public class CacheStrategyFactory {
     var expires: Option<Time> = Option<Time>.None
     var etag: String = ""
     var ageSeconds: Int64 = 0
-    let nowMillis = Time.now()
+    let nowMillis = Time.now().unixTimeStamp().milliseconds()
     var sentRequestMillis: Int64 = 0
     var receivedResponseMillis: Int64 = 0
 
@@ -190,17 +202,17 @@ public class CacheStrategyFactory {
 
         if (has(cacheResponse)) {
             let cacheRes = cacheResponse.getOrThrow()
-            this.sentRequestMillis = cacheRes.sentRequestAtMillis()
-            this.receivedResponseMillis = cacheRes.receivedResponseAtMillis()
-            let headers: Header = cacheResponse.getHeaders()
+            this.sentRequestMillis = cacheRes.getSentRequestAtMillis()
+            this.receivedResponseMillis = cacheRes.getReceivedResponseAtMillis()
+            let headers: Header = cacheRes.getHeaders()
             for ((k,v) in headers) {
                 let value = v[0]
                 if(equalsIgnoreCase("Date", k)) {
-                    servedDate = CookieUtil.parseExpires(value, 0, value.length)
+                    servedDate = CookieUtil.parseExpires(value, 0, value.size)
                 } else if (equalsIgnoreCase("Expires", k)) {
-                    expires = CookieUtil.parseExpires(value, 0, value.length)
+                    expires = CookieUtil.parseExpires(value, 0, value.size)
                 } else if (equalsIgnoreCase("Last-Modified", k)) {
-                    lastModified = CookieUtil.parseExpires(value, 0, value.length)
+                    lastModified = CookieUtil.parseExpires(value, 0, value.size)
                     lastModifiedString = value
                 } else if (equalsIgnoreCase("ETag", k)) {
                     etag = value
@@ -227,17 +239,17 @@ public class CacheStrategyFactory {
         if (!has(cacheResponse)) {
              return CacheStrategy(request, Option<Response>.None)
         }
-
-        if (!isCacheable(cacheResponse.getOrThrow(), request)) {
+        let cacheResp = cacheResponse.getOrThrow()
+        if (!isCacheable(cacheResp, request)) {
             return CacheStrategy(request, Option<Response>.None)
         }
 
-        let responseCaching: CacheControl = cacheResponse.getOrThrow().getCacheControl()
+        let requestCaching: CacheControl = request.getCacheControl()
         let ageMillis = cacheResponseAge()
         var freshMillis = computeFreshnessLifetime()
 
         if (requestCaching.maxAgeSeconds() != -1) {
-            freshMillis = min(freshMillis, requestCaching.maxAgeSeconds()*1000)
+            freshMillis = min(freshMillis, requestCaching.maxAgeSeconds() * 1000)
         }
 
         var minFreshMillis = 0
@@ -246,16 +258,17 @@ public class CacheStrategyFactory {
         }
 
         var maxStaleMillis = 0
+        let responseCaching: CacheControl = cacheResp.getCacheControl()
 
-        if(!responseCaching.mustRevalidate() && requestCaching.maxStaleSeconds() != -1) {
+        if (!responseCaching.mustRevalidate() && requestCaching.maxStaleSeconds() != -1) {
             maxStaleMillis = requestCaching.maxStaleSeconds()*1000
         }
 
-        if(!responseCaching.noCache() && ageMillis + minFreshMillis < freshMillis + maxStaleMillis) {
-            let builder: ResponseBuilder  = cacheResponse.newBuilder()
+        if (!responseCaching.noCache() && ageMillis + minFreshMillis < freshMillis + maxStaleMillis) {
+            let builder: ResponseBuilder  = cacheResp.newBuilder()
             builder.addHeader("Warning", "110 HttpURLConnection \"Response is stale\"")
             var oneDayMillis = 24 * 60 * 60 * 1000
-            if(ageMillis > oneDayMillis && isFreshnessLifetimeHeuristic()) {
+            if (ageMillis > oneDayMillis && isFreshnessLifetimeHeuristic()) {
                 builder.addHeader("Warning", "113 HttpURLConnection \"Heuristic expiration\"")
             }
             return CacheStrategy(Option<Request>.None, builder.build())
@@ -275,22 +288,22 @@ public class CacheStrategyFactory {
         } else {
             return CacheStrategy(request, Option<Response>.None)
         }
-        let conditionalRequestHeaders = response.getHeaders().clone()
+        let conditionalRequestHeaders = request.getHeaders().clone()
         conditionalRequestHeaders.add(conditionName, conditionValue.trim())
 
-        var conditionalRequest =  request.newBuilder().headers(conditionalRequestHeaders).build()
+        var conditionalRequest =  request.newBuilder().header(conditionalRequestHeaders).build()
         return CacheStrategy(conditionalRequest, cacheResponse)
     }
 
 
     private func isFreshnessLifetimeHeuristic(): Bool {
-        return cacheResponse.cacheControl().maxAgeSeconds() == -1 && !has(expires)
+        return cacheResponse.getOrThrow().getCacheControl().maxAgeSeconds() == -1 && !has(expires)
     }
 
-    private func computeFreshnessLifetime() {
+    private func computeFreshnessLifetime(): Int64 {
         let responseCaching: CacheControl = cacheResponse.getOrThrow().getCacheControl()
-        if (responseCaching.getMaxAgeSeconds() != -1) {
-            return responseCaching.getMaxAgeSeconds() * 1000
+        if (responseCaching.maxAgeSeconds() != -1) {
+            return responseCaching.maxAgeSeconds() * 1000
         } else if (has(expires)) {
 
             let servedMillis = match(servedDate) {
@@ -303,7 +316,7 @@ public class CacheStrategyFactory {
                 delta = 0
             }
             return delta
-        } else if (has(lastModified) && cacheResponse.getRequest().getUrl().rawQuery() != "") {
+        } else if (has(lastModified) && cacheResponse.getOrThrow().getRequest().getUrl().rawQuery != "") {
              let servedMillis = match(servedDate) {
                 case Some(v) => return getTimeStamp(v)
                 case None => return sentRequestMillis
@@ -316,7 +329,6 @@ public class CacheStrategyFactory {
              return delta / 10
         }
         return 0
-
     }
 
     private func cacheResponseAge(): Int64 {
@@ -352,7 +364,7 @@ func isCacheable(response: Response, request: Request) {
         case _ => return false
 
     }
-    return !response.getCacheControl().noStore() && !request.cacheControl().noStore()
+    return !response.getCacheControl().noStore() && !request.getCacheControl().noStore()
 
 }
 

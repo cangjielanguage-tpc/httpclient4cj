@@ -281,5 +281,11 @@ class FramingSink <: Sink {
         http2Stream.cc.flush()
         http2Stream.cancelStreamIfNecessary()
     }
+}
 
+
+class BlackHole <: Sink {
+    public func write(bytes: Array<Byte>): Unit {}
+    public func flush(): Unit {}
+    public func close(): Unit {}
 }

@@ -35,7 +35,7 @@ class MyInterceptor<: Interceptor {
         println(conn.isMultiplexed())
         let request: okhttp.Request = chain.getRequest()
         let header: Header = request.getHeaders()
-        let c = request.getCacheControl() ?? CacheControl.parse(header)
+        let c = request.getCacheControl()
         println(c.toString())
         return okhttp.Response.builder().build()
     }

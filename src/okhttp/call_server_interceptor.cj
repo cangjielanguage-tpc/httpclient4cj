@@ -39,6 +39,7 @@ public class CallServerInterceptor<: Interceptor {
         let request: Request = chain.getRequest()
         let exchange: Exchange = chain.getExchange()
         exchange.writeRequestHeaders(request)
+        let sentRequestMillis = Time.now().unixTimeStamp().milliseconds()
         var responseBuilder: Option<ResponseBuilder> = None
         var responseHeadersStarted = false
 
@@ -76,20 +77,28 @@ public class CallServerInterceptor<: Interceptor {
         }
 
         let response: Response = responseBuilder.getOrThrow().request(request).build()
-        return checkResponse(exchange, request, response)
+        return checkResponse(exchange, request, response, sentRequestMillis)
     }
 
 
-    private func checkResponse( exchange: Exchange, request: Request, checkResponse: Response) : Response {
+    private func checkResponse( exchange: Exchange, request: Request,
+        checkResponse: Response, sentRequestMillis: Int64) : Response {
+
         var response: Response = checkResponse
         let code = response.getCode()
 
         if (code == 100) {
-            response = exchange.readResponseHeaders(false).getOrThrow().request(request).build()
+            response = exchange.readResponseHeaders(false).getOrThrow()
+                .request(request)
+                .sentRequestAtMillis(sentRequestMillis)
+                .receivedResponseAtMillis(Time.now().unixTimeStamp().milliseconds())
+                .build()
         }
 
         response = response.newBuilder()
                   .body(exchange.openResponseBody(response))
+                  .sentRequestAtMillis(sentRequestMillis)
+                  .receivedResponseAtMillis(Time.now().unixTimeStamp().milliseconds())
                   .build()
 
         exchange.responseHeadersEnd(response)

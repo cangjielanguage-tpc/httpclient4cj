@@ -28,11 +28,14 @@ public class Response <: ToString {
       let body: Option<ResponseBody>
       /* var member prevResponse type is Option<Response> */
       let prevResponse: Option<Response>
-
-      private let cacheControl: Option<CacheControl> = Option<CacheControl>.None
-      let exchange: Option<Exchange>
+      let cacheResponse: Option<Response>
+      let networkResponse: Option<Response>
+      private var cacheControl: Option<CacheControl> = Option<CacheControl>.None
+      var exchange: Option<Exchange>
       let sentRequestAtMillis: Int64
       let receivedResponseAtMillis: Int64
+
+
 
 
       /**
@@ -52,6 +55,8 @@ public class Response <: ToString {
          this.exchange = builder.exchange
          this.sentRequestAtMillis = builder.sentRequestAtMillisBuild
          this.receivedResponseAtMillis = builder.receivedResponseAtMillisBuild
+         this.networkResponse = builder.networkResponseBuild
+         this.cacheResponse = builder.cacheResponseBuild
       }
 
       /**
@@ -220,21 +225,30 @@ public class Response <: ToString {
        *
        * @since 0.30.4
        */
-      public func getCacheControl(): Option<CacheControl> {
+      public func getCacheControl(): CacheControl {
          match(cacheControl) {
                case Some(b) =>  return b  
                case None => 
-                  cacheControl = CacheControl.parse(header)
+                  let cacheControl = CacheControl.parse(header)
+                  this.cacheControl = cacheControl
                   return cacheControl
          }     
       }
 
-      public func sentRequestAtMillis(): Int64 {
+      public func getSentRequestAtMillis(): Int64 {
          return sentRequestAtMillis
       }
 
-      public func sentRequestAtMillis(): Int64 {
+      public func getReceivedResponseAtMillis(): Int64 {
          return receivedResponseAtMillis
+      }
+
+      public func getNetworkResponse(): Option<Response> {
+         return networkResponse
+      }
+
+      public func getCacheResponse(): Option<Response> {
+         return cacheResponse
       }
 }
 

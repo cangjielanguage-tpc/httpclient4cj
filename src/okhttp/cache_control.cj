@@ -139,8 +139,8 @@ public class CacheControl {
      *
      * @return Int64
      */
-    public func maxAgeSeconds(): Int32 {
-        return maxAgeSecondsInit
+    public func maxAgeSeconds(): Int64 {
+        return Int64(maxAgeSecondsInit)
     }
 
     /**
@@ -149,8 +149,8 @@ public class CacheControl {
      *
      * @return Int64
      */
-    public func sMaxAgeSeconds(): Int32 {
-        return sMaxAgeSecondsInit
+    public func sMaxAgeSeconds(): Int64 {
+        return Int64(sMaxAgeSecondsInit)
     }
 
     /**
@@ -189,18 +189,18 @@ public class CacheControl {
      * @return Type of Int32
      * @since 0.30.4
      */
-    public func maxStaleSeconds(): Int32 {
-        return maxStaleSecondsInit
+    public func maxStaleSeconds(): Int64 {
+        return Int64(maxStaleSecondsInit)
     }
 
     /**
      * The Function is minFreshSeconds
      *
-     * @return Type of Int32
+     * @return Type of Int64
      * @since 0.30.4
      */
-    public func minFreshSeconds(): Int32 {
-        return minFreshSecondsInit
+    public func minFreshSeconds(): Int64 {
+        return Int64(minFreshSecondsInit)
     }
 
     /**
@@ -346,7 +346,7 @@ public class CacheControl {
             case "public" =>  map.put(PUBLIC, "true")
             case "private" => map.put(PRIVATE, "true")
             case "must-revalidate" => map.put(MUST_REVALIDATE, "true")
-            case "max-stale" =>  map.put(MAX_STALE, "${Util.parseSeconds(parameter, Int32.Max)}")
+            case "max-stale" =>  map.put(MAX_STALE, "${Util.parseSeconds(parameter, Int64(Int32.Max))}")
             case "min-fresh" => map.put(MIN_FRESH, "${Util.parseSeconds(parameter, -1)}")
             case "only-if-cached" => map.put(ONLY_IF_CACHED, "true")
             case "no-transform" => map.put(NO_TRANSFORM, "true")
