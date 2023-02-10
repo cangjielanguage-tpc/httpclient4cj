@@ -1,9 +1,6 @@
 /*
- * Copyright (c) Cangjie Library Team 2022-2032. All Right Resverd
- * Description openssl ec.c for Cangjie API
- * Auther: 0001
- * Create: 2023-02-02
- * Notes:
+ * Copyright (c) Huawei Technologies co., Ltd. 2022-2023. All Rights Resverd.
+ * Description: openssl dns.c for Cangjie API
  */
 #include<stdio.h>
 #include<string.h>
