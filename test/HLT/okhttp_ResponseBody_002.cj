@@ -50,23 +50,9 @@ public class okhttp_ResponseBody_002{
                                     .build()
     var call = client.newCall(request)
     var response: okhttp.Response = call.execute()
-    var response_heads: http.Header = response.getHeaders()
-    var response_body:Array<Byte> = Array<Byte>(0, item: 0)
-    //response.getBody().getOrThrow()//.getSource().read(response_body)
-        match(response.getBody()) {
-        case Some(a) =>
-            return println("body")
-                
-        case None =>
-            return println("None")
-        }
-    //var str =String.fromUtf8(response_body)
-    println("response_body")
-    //println(str)
-    
-    //@Assert(str, "")
-    @Assert(response_body, "".toUtf8Array())
+    var responsebody = response.getBody().getOrThrow().getString()
+    println("responsebody = ${responsebody}")
 
-
+    @Assert(responsebody, "")
     }
 }

@@ -11,6 +11,7 @@ from std import socket.*
 from encoding import url.*
 from net import tls.*
 from std import core.*
+from std import fs.*
 
 @Test
 public class okhttp_Request_method_010{
@@ -36,21 +37,21 @@ public class okhttp_Request_method_010{
         serve()
     }
     sleep(1000*1000*1000)
-    var exc = ""
-    try {
-        let client: OkHttpClient= OkHttpClient.builder().build()
-        let request: okhttp.Request = okhttp.Request.builder()
-                                        .url("http://127.0.0.1:${port}/1234")
-                                        .method("abc")
-                                        .build()
-        var call = client.newCall(request)
-        var response: okhttp.Response = call.execute()
+    let client: OkHttpClient= OkHttpClient.builder().build()
+    let request: okhttp.Request = okhttp.Request.builder()
+                                    .url("http://127.0.0.1:${port}/1234")
+                                    .method("abc")
+                                    .build()
+    var call = client.newCall(request)
+    var response: okhttp.Response = call.execute()
 
-    } catch(e: Exception) {
-        exc = e.message
-    }
-    println(exc)
-    @Assert(exc, "Socket is closed.")
+    print("log flush", flush:true)
+    sleep(1000*1000*1000*1)
+    var filename = "../../log/split_log/HLT.okhttp_Request_method_010.cj.log"
+    var bytearry = File.readFrom(filename)
+    var str = String.fromUtf8(bytearry)
+
+    @Assert(str.contains("net/http: invalid method:abc"), true)
 
     }
 }

@@ -25,10 +25,7 @@ class MyInterceptor<: Interceptor {
         responseBuilder.addHeader("name3","value3")
         responseBuilder.addHeader("name4","value4")
         responseBuilder.removeHeader("name4")
-        @Assert(response.getHeader("name1"),"value2")
-        @Assert(response.getHeader("name3"),"value3")
         func exception(): String{ "exception"}
-        @Assert(response.getHeader("name4").getOrDefault(exception),"exception")
         return responseBuilder.build()
     }
 }

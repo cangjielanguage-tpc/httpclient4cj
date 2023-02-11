@@ -17,21 +17,21 @@ public class okhttp_RequestBody_002{
 
     @TestCase
     func okhttp_RequestBody_002(): Unit {
-      
-        let body: okhttp.RequestBody = okhttp.RequestBody("HTML","".toUtf8Array())
         let request: okhttp.Request = okhttp.Request.builder()
-                                        .method("GET",body:body)
+                                        .method("POST",body: RealRequestBody.create(MediaType.get("application/json; charset=utf-8"),""))
                                         .build()
     
-        var body_Type = request.getBody().getOrThrow().contentType()
-        @Assert(body_Type, "HTML")
+        var body_Type = request.getBody().getOrThrow().contentType().getOrThrow().toString()
+        println("body_Type = ${body_Type}")
+        @Assert(body_Type, "application/json; charset=utf-8")
         
         var body_Length = request.getBody().getOrThrow().getContentLength()
         @Assert(body_Length, Int64(0))
         
         var str_body:Array<Byte> = Array<Byte>(0, item: 0)
         var body_get = request.getBody().getOrThrow().get().read(str_body)
-        println(String.fromUtf8(str_body))
+        println("body_get = [${body_get}]")
+        println("str_body = [${String.fromUtf8(str_body)}]")
         @Assert(str_body, "".toUtf8Array())
 
     }

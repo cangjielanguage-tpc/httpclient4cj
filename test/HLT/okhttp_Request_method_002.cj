@@ -18,7 +18,7 @@ public class okhttp_Request_url_002{
     @TestCase
     func okhttp_Request_url_002(): Unit {
         let request: okhttp.Request = okhttp.Request.builder()
-                                        .method("PUT")
+                                        .method("PUT",body: RealRequestBody.create(MediaType.get("application/json; charset=utf-8"),"hello world"))
                                         .build()
         var request_method = request.getMethod()
         println(request_method)
