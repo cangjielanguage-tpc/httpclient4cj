@@ -138,11 +138,12 @@ public class Request <: ToString {
      *
      * @since 0.30.4
      */
-    public func getCacheControl(): Option<CacheControl> {
+    public func getCacheControl(): CacheControl {
         match(cacheControl) {
             case Some(b) =>  return b  
             case None => 
-                cacheControl = CacheControl.parse(header)
+                let cacheControl = CacheControl.parse(header)
+                this.cacheControl = cacheControl
                 return cacheControl
         }     
     }

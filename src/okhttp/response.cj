@@ -15,22 +15,27 @@ package okhttp
  */
 public class Response <: ToString {
       /* var member request type is Request */
-      var request: Request
+      let request: Request
       /* var member protocol type is Protocol */
-      var protocol: Protocol
+      let protocol: Protocol
       /* var member code type is Int64 */
-      var code: Int64
+      let code: Int64
       /* var member message type is String */
-      var message: String
+      let message: String
       /* var member header type is Header */
-      var header: Header
+      let header: Header
       /* var member body type is Option<ResponseBody> */
-      var body: Option<ResponseBody>
+      let body: Option<ResponseBody>
       /* var member prevResponse type is Option<Response> */
-      var prevResponse: Option<Response>
-
+      let prevResponse: Option<Response>
+      let cacheResponse: Option<Response>
+      let networkResponse: Option<Response>
       private var cacheControl: Option<CacheControl> = Option<CacheControl>.None
       var exchange: Option<Exchange>
+      let sentRequestAtMillis: Int64
+      let receivedResponseAtMillis: Int64
+
+
 
 
       /**
@@ -48,6 +53,10 @@ public class Response <: ToString {
          this.body = builder.bodyBuild
          this.prevResponse = builder.prevResponseBuild
          this.exchange = builder.exchange
+         this.sentRequestAtMillis = builder.sentRequestAtMillisBuild
+         this.receivedResponseAtMillis = builder.receivedResponseAtMillisBuild
+         this.networkResponse = builder.networkResponseBuild
+         this.cacheResponse = builder.cacheResponseBuild
       }
 
       /**
@@ -216,13 +225,30 @@ public class Response <: ToString {
        *
        * @since 0.30.4
        */
-      public func getCacheControl(): Option<CacheControl> {
+      public func getCacheControl(): CacheControl {
          match(cacheControl) {
                case Some(b) =>  return b  
                case None => 
-                  cacheControl = CacheControl.parse(header)
+                  let cacheControl = CacheControl.parse(header)
+                  this.cacheControl = cacheControl
                   return cacheControl
          }     
+      }
+
+      public func getSentRequestAtMillis(): Int64 {
+         return sentRequestAtMillis
+      }
+
+      public func getReceivedResponseAtMillis(): Int64 {
+         return receivedResponseAtMillis
+      }
+
+      public func getNetworkResponse(): Option<Response> {
+         return networkResponse
+      }
+
+      public func getCacheResponse(): Option<Response> {
+         return cacheResponse
       }
 }
 

@@ -10,7 +10,7 @@
 package okhttp
 
 
-public enum Protocol {
+public enum Protocol <: ToString {
     /**
     * An obsolete plaintext framing that does not use persistent sockets by default.
     */

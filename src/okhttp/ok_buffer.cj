@@ -33,6 +33,10 @@ public class OkBuffer <: Source {
         return read
     }
 
+    func exhausted(): Bool {
+        return buffer.length == 0
+    }
+
     public func readByte(): Byte {
 
         let arr = Array<Byte>(1, item: 0)

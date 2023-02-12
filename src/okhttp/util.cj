@@ -109,15 +109,15 @@ class Util {
         return posi-1
     }
 
-    public static func parseSeconds(value: String, defaultValue: Int32): Int32 {
+    public static func parseSeconds(value: String, defaultValue: Int64): Int64 {
         try {
             let seconds: Int32 = Int32.parse(value)
             if (seconds > Int32.Max) {
-                return Int32.Max
+                return Int64(Int32.Max)
             } else if (seconds < 0) {
                 return 0
             } else {
-                return seconds
+                return Int64(seconds)
             }
         } catch (e: Exception) {
             return defaultValue
@@ -129,6 +129,18 @@ class Util {
             case Some(v) => return true
             case None => return false
         }
+    }
+}
+
+func addLenient(header: Header, line: String) {
+    match (line.indexOf(":", 1)) {
+        case Some(index) => header.add(line.substring(0, index), line.substring(index + 1).trim())
+        case None =>
+            if (!line.startsWith(":")) {
+                header.add("", line)
+            } else {
+                throw ProtocolException("Unexpected header: ${line}")
+            }
     }
 }
 

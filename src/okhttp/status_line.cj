@@ -13,7 +13,7 @@ package okhttp
  * @author guo_tingtingtekla,luoyukai4
  * @since 0.29.3
  */
-public class StatusLine {
+public class StatusLine <: ToString {
     /** var member HTTP_TEMP_REDIRECT type is Int64 */
     public static let HTTP_TEMP_REDIRECT: Int64 = 307
     /** var member HTTP_PERM_REDIRECT type is Int64 */
@@ -75,6 +75,16 @@ public class StatusLine {
         }
 
         return StatusLine(protocol, statusCode , message)
+    }
+
+    public func toString(): String {
+        let sb: StringBuilder = StringBuilder()
+        sb.append("${protocol}")
+        sb.append(' ').append(code)
+        if (message != "") {
+            sb.append(' ').append(message)
+        }
+        return "${sb}"
     }
 }
 
