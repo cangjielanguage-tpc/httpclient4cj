@@ -22,10 +22,9 @@ public class okhttp_DNS_002{
                                 .maxAge(Duration.second(1000))
                                 .build()
     let client: OkHttpClient= OkHttpClient.builder().build()
-    // let body: okhttp.RequestBody = okhttp.RequestBody("Media-Type", "text/html")
     let request: okhttp.Request = okhttp.Request.builder()
                                     .url("http://www.google.cn/index.html")
-                                    .method("GET")//加body
+                                    .method("GET")
                                     .cacheControl(cache)
                                     .build()
     var call = client.newCall(request)
@@ -38,17 +37,6 @@ public class okhttp_DNS_002{
     // var response_body:Array<Byte> = response.getBody().getOrThrow().getSource().readToEnd()
     // var response_body_str = String.fromUtf8(response_body)
     var cacheControl = response.getCacheControl().getOrThrow().toString()
-    //var request2 = response.getRequest()
-
-    var httpRequest = request.toHttpRequest()
-    let arr =ByteArrayStream()
-    httpRequest.copyTo(arr)
-
-    println("httpRequest")
-    println(String.fromUtf8(arr.bytes()))
-
-    //println("response_body")
-    //println(response_body_str)
 
     println("-------------------------------OKHttp-Response_Header----------------------------")
     for ((nm,vl) in response_heads) {
@@ -67,7 +55,7 @@ public class okhttp_DNS_002{
     @Assert(response_isSuccess,true)
     @Assert(response.getHeader("Date").getOrThrow().contains("GMT"),true)
     // @Assert(response_body_str.isEmpty(), false)
-    @Assert(cacheControl, "no-cache, must-revalidate")
+    @Assert(cacheControl, "private, max-age=0")
 
     }
 }

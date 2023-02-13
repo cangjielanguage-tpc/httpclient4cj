@@ -44,7 +44,7 @@ public class okhttp_Response_004{
     // let body: okhttp.RequestBody = okhttp.RequestBody("Media-Type", "text/html")
     let request: okhttp.Request = okhttp.Request.builder()
                                     .url("http://127.0.0.1:${port}/1234")
-                                    .method("POST")
+                                    .method("POST",body: RealRequestBody.create(MediaType.get("application/json; charset=utf-8"),"hello world"))
                                     .cacheControl(cache)
                                     .build()
     var call = client.newCall(request)
@@ -78,10 +78,10 @@ public class okhttp_Response_004{
     @Assert(response.getHeader("bbb","123"),"123")
     @Assert(response.getHeader("Content-Length").getOrThrow(),"15")
     @Assert(response.getHeader("Date").getOrThrow().contains("GMT"),true)
-    @Assert(response.getHeader("Connection").getOrThrow(),"Keep-Alive")
+    @Assert(response.getHeader("Connection").getOrThrow(),"keep-alive")
     @Assert(response.getHeader("Content-Type").getOrThrow().toString(),"text/plain; charset=utf-8")
     @Assert(response_protocol,"http/1.1")
-    @Assert(responseStr,"Response{protocol=http/1.1, code=200, message=OK, url=http://127.0.0.1:${port}/1234}")//message= bug
+    @Assert(responseStr,"Response{protocol=http/1.1, code=200, message=OK, url=http://127.0.0.1:${port}/1234}")
 
     @Assert(response_isSuccess,true)
     

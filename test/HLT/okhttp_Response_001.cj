@@ -76,7 +76,7 @@ public class okhttp_Response_001{
     @Assert(response.getHeader("bbb","123"),"123")
     @Assert(response.getHeader("Content-Length"),"15")
     @Assert(response.getHeader("Date").toString().contains("GMT"),true)
-    @Assert(response.getHeader("Connection"),"Keep-Alive")
+    @Assert(response.getHeader("Connection"),"keep-alive")
     @Assert(response.getHeader("Content-Type"),"text/plain; charset=utf-8")
     @Assert(response_protocol,"http/1.1")
     @Assert(responseStr,"Response{protocol=http/1.1, code=200, message=OK, url=http://127.0.0.1:${port}/1234}")

@@ -70,7 +70,7 @@ public class okhttp_demo{
     // @Assert(response_body, "Hello from /red".toUtf8Array())
     @Assert(response.getHeader("Content-Length").getOrThrow(),"15")
     @Assert(response.getHeader("Date").getOrThrow().contains("GMT"),true)
-    @Assert(response.getHeader("Connection").getOrThrow(),"Keep-Alive")
+    @Assert(response.getHeader("Connection").getOrThrow(),"keep-alive")
     @Assert(response.getHeader("Content-Type").getOrThrow(),"text/plain; charset=utf-8")
     @Assert(response_protocol,"http/1.1")
 

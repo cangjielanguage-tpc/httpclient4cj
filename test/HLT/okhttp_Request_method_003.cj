@@ -17,12 +17,11 @@ public class okhttp_Request_method_003{
     @TestCase
     func okhttp_Request_method_003(): Unit {
         let request: okhttp.Request = okhttp.Request.builder()
-                                        .method("POST")
+                                        .method("POST",body: RealRequestBody.create(MediaType.get("application/json; charset=utf-8"),"hello world"))
                                         .build()
         var request_method = request.getMethod()
         println(request_method)
         @Assert(request_method, "POST")
-
     }
 
 }
