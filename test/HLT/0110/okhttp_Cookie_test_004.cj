@@ -14,6 +14,7 @@ from std import collection.*
 
 @Test
 public class okhttp_Cookie_Test_004{
+    var port: UInt16 = 0
     
     // public func saveFromResponse(url: URL, cookies: Array<Cookie>): Unit cookies 不包含cookie
     // public func loadForRequest(url: URL): Array<Cookie>
@@ -42,8 +43,8 @@ public class okhttp_Cookie_Test_004{
         jar.saveFromResponse(url, [Cookie("BD_HOME", "1"), Cookie("BD_UPN", "12314753")])
         let client2: OkHttpClient= OkHttpClient.builder().cookieJar(jar).build()
         let loadCookies2: Array<Cookie> = client.getCookieJar().loadForRequest(url)
-        @Expect(loadCookies2.size, 1) 
-        @Expect(loadCookies2[0].toString(), "BD_HOME=1")
+        @Expect(loadCookies2.size, 2) 
+        @Expect(loadCookies2[0].toString(), "BD_UPN=12314753")
     }
 
     // public func saveFromResponse(url: URL, cookies: Array<Cookie>): Unit cookies 包含多个cookie

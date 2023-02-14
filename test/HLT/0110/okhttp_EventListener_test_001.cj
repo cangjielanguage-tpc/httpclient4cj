@@ -11,6 +11,8 @@ from std import socket.*
 from encoding import url.*
 from net import tls.*
 from std import core.*
+from std import collection.*
+from std import fs.*
 
 @Test
 public class okhttp_EventListener_test_001{
@@ -69,7 +71,7 @@ public class okhttp_EventListener_test_001{
     func serve(){
         let hd = http.Route()
         hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
-            sleep(3000*1000*1000)
+            sleep(1000*1000*1000)
             let resp = "Hello from /red".toUtf8Array()
             rws.write(resp)
             println(String.fromUtf8(req.readToEnd()))

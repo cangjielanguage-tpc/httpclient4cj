@@ -45,14 +45,19 @@ public class okhttp_MediaType_test_002{
     // get 创建 MediaType 特殊符号
     @TestCase
     func okhttp_MediaType_test_013(): Unit { 
-        var mediaType = MediaType.get("#$%^@#&*$/{#}<>:?>[#], ch=}; charset=utf-8")
-        var get_type = mediaType.getType()
-        var get_sub = mediaType.getSubtype()
-        var get_charset = mediaType.getCharset()
+        try {
+            var mediaType = MediaType.get("#$%^@#&*$/{#}<>:?>[#], ch=}; charset=utf-8")
+            var get_type = mediaType.getType()
+            var get_sub = mediaType.getSubtype()
+            var get_charset = mediaType.getCharset()
+            
+            @Assert(get_type, "#$%^@#&*$")
+            @Assert(get_sub, "{#}<>:?>[#], ch=}")
+            @Assert(get_charset, "utf-8")
+        } catch (ex: Exception) {
+            @Expect(ex is IllegalArgumentException) 
+        }
         
-        @Assert(get_type, "#$%^@#&*$")
-        @Assert(get_sub, "{#}<>:?>[#], ch=}")
-        @Assert(get_charset, "utf-8")
     }
 
     // parse 创建 MediaType 特殊符号

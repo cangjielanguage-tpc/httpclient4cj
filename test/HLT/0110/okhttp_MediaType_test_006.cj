@@ -12,6 +12,7 @@ from std import socket.*
 from encoding import url.*
 from net import tls.*
 from std import core.*
+from std import fs.*
 
 @Test
 public class okhttp_MediaType_test_006{
@@ -35,8 +36,7 @@ public class okhttp_MediaType_test_006{
                                         .url("http://127.0.0.1:${port}/1234")
                                         .method("POST", body: multipartBody)
                                         .build()
-        let response: okhttp.Response = client.newCall(request).enqueue(MyCallbacks())
-        println(response.toString())
+        client.newCall(request).enqueue(MyCallbacks())
     }
 
     func serve() {

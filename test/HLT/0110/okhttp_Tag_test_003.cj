@@ -55,12 +55,24 @@ public class okhttp_Tag_Test_003{
         client.newCall(request_03).enqueue(MyCallbacks())
         client.newCall(request_04).enqueue(MyCallbacks())
         client.newCall(request_05).enqueue(MyCallbacks())
+        /*
+        let response_01: okhttp.Response = client.newCall(request_01).execute()
+        @Assert(response_01.getHeader("tag_test_01"),"tag_test_01")
+        let response_02: okhttp.Response = client.newCall(request_02).execute()
+        @Assert(response_02.getHeader("tag_test_02"),"tag_test_02")
+        let response_03: okhttp.Response = client.newCall(request_03).execute()
+        @Assert(response_03.getHeader("tag_test_03"),"tag_test_03")
+        let response_04: okhttp.Response = client.newCall(request_04).execute()
+        @Assert(response_04.getHeader("tag_test_04"),"tag_test_04")
+        let response_05: okhttp.Response = client.newCall(request_05).execute()
+        @Assert(response_05.getHeader("tag_test_05"),"tag_test_05")
+        */
     }
 
     func serve(){
         let hd = http.Route()
         hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
-            sleep(3000*1000*1000)
+            sleep(1000*1000*1000)
             let resp = "Hello from /red".toUtf8Array()
             rws.write(resp)
             return
@@ -118,4 +130,3 @@ class MyInterceptor<: Interceptor {
         return chain.proceed(chain.getRequest())
     }
 }
-
