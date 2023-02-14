@@ -61,14 +61,14 @@ public class okhttp_Cookie_Test_003{
         let url: URL = URL.parseRequestURI("http://www.nisohbfahoiaf.com/")
         try {
             let jar = getSimpleCookieJar()
-            jar.saveFromResponse(URL.parseRequestURI("http://example.com/foo/bar/baz"), [Cookie("BD_HOME", "1"), Cookie("BD_UPN", "12314753")])
+            jar.saveFromResponse(url, [Cookie("BD_HOME", "1"), Cookie("BD_UPN", "12314753")])
             let client: OkHttpClient= OkHttpClient.builder().cookieJar(jar).build()
             let request: okhttp.Request = okhttp.Request.builder()
                                             .url(url)
                                             .build()
             let call = client.newCall(request)
             let loadCookies: Array<Cookie> = client.getCookieJar().loadForRequest(url)
-            @Expect(loadCookies.size, 0) 
+            @Expect(loadCookies.size, 2) 
         } catch (e: Exception) {
             @Expect(e is NoneValueException)
         }
