@@ -11,6 +11,7 @@ from std import socket.*
 from encoding import url.*
 from net import tls.*
 from std import core.*
+from std import fs.*
 
 @Test
 public class okhttp_MediaType_test_005{

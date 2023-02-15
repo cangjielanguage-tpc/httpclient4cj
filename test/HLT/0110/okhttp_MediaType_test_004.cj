@@ -11,6 +11,7 @@ from std import socket.*
 from encoding import url.*
 from net import tls.*
 from std import core.*
+from std import fs.*
 
 @Test
 public class okhttp_MediaType_test_004{
@@ -36,15 +37,15 @@ public class okhttp_MediaType_test_004{
                                         .build()
         let response: okhttp.Response = client.newCall(request).execute()
         println(response.toString())
-        let responseType = response.getBody().getOrThrow().getContentType() // 如何修改服务端的返回类型呢?????
+        let responseType = response.getBody().getOrThrow().getContentType() 
         match (responseType) {
             case Some(contentType) =>
                 var get_type = contentType.getType()
                 var get_sub = contentType.getSubtype()
                 var get_charset = contentType.getCharset()
-                @Expect(get_type, "")
-                @Expect(get_sub, "")
-                @Expect(get_charset, "")
+                @Expect(get_type, "text")
+                @Expect(get_sub, "plain")
+                @Expect(get_charset, "utf-8")
             case None => 
                 println("None")
         }

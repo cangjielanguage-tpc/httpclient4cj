@@ -51,11 +51,16 @@ public class okhttp_Tag_Test_004{
         myInterceptor.setClient(client)
 
         try{
-            client.newCall(request_01).execute()
-            client.newCall(request_02).execute()
-            client.newCall(request_03).execute()
-            client.newCall(request_04).execute()
-            client.newCall(request_05).execute()
+            let response_01: okhttp.Response = client.newCall(request_01).execute()
+            @Assert(response_01.getHeader("tag_test_01"),"tag_test_01")
+            let response_02: okhttp.Response = client.newCall(request_02).execute()
+            @Assert(response_02.getHeader("tag_test_02"),"tag_test_02")
+            let response_03: okhttp.Response = client.newCall(request_03).execute()
+            @Assert(response_03.getHeader("tag_test_03"),"tag_test_03")
+            let response_04: okhttp.Response = client.newCall(request_04).execute()
+            @Assert(response_04.getHeader("tag_test_04"),"tag_test_04")
+            let response_05: okhttp.Response = client.newCall(request_05).execute()
+            @Assert(response_05.getHeader("tag_test_05"),"tag_test_05")
         }catch (e: Exception) {
             println("${e.message}")
         }
@@ -64,7 +69,7 @@ public class okhttp_Tag_Test_004{
     func serve(){
         let hd = http.Route()
         hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
-            sleep(3000*1000*1000)
+            sleep(1000*1000*1000)
             let resp = "Hello from /red".toUtf8Array()
             rws.write(resp)
             return
@@ -87,29 +92,38 @@ class MyInterceptor<: Interceptor {
         let dispatcher = client.getOrThrow().getDispatcher()
         let run = dispatcher.runningCalls()
         println(run.size)
+        let request: okhttp.Request = chain.getRequest()
+        let requestBuilder: okhttp.RequestBuilder  = request.newBuilder()
+        let header: Header = request.getHeaders()
+        var response: okhttp.Response =  chain.proceed(requestBuilder.build())
+        let responseBuilder: okhttp.ResponseBuilder = response.newBuilder().request(request)
         for(i in run) {
             if (i.getRequest().getTag("tag_test_01").tag != "") {
-                //i.cancel()
+                responseBuilder.header("tag_test_01","tag_test_01")
                 println("拦截到标签tag_test_01")
             }
 
             if (i.getRequest().getTag("tag_test_02").tag != "") {
+                responseBuilder.header("tag_test_02","tag_test_02")
                 println("拦截到标签tag_test_02")
             }
 
             if (i.getRequest().getTag("tag_test_03").tag != "") {
+                responseBuilder.header("tag_test_03","tag_test_03")
                 println("拦截到标签tag_test_03")
             }
 
             if (i.getRequest().getTag("tag_test_04").tag != "") {
+                responseBuilder.header("tag_test_04","tag_test_04")
                 println("拦截到标签tag_test_04")
             }
 
             if (i.getRequest().getTag("tag_test_05").tag != "") {
+                responseBuilder.header("tag_test_05","tag_test_05")
                 println("拦截到标签tag_test_05")
             }
         }
-        return chain.proceed(chain.getRequest())
+        return responseBuilder.build()
     }
 }
 

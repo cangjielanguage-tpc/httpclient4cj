@@ -57,10 +57,11 @@ public class okhttp_Cookie_Test_003{
     // public func saveFromResponse(url: URL, cookies: Array<Cookie>): Unit url 非法地址
     // public func loadForRequest(url: URL): Array<Cookie>
     @TestCase
-    func okhttp_Cookie_Test_017(): Unit { // 对非法地址没有任何的反应
+    func okhttp_Cookie_Test_017(): Unit {
+        let url: URL = URL.parseRequestURI("http://www.nisohbfahoiaf.com/")
         try {
             let jar = getSimpleCookieJar()
-            jar.saveFromResponse(URL.parseRequestURI("http://www.nisohbfahoiaf.com/"), [Cookie("BD_HOME", "1"), Cookie("BD_UPN", "12314753")])
+            jar.saveFromResponse(url, [Cookie("BD_HOME", "1"), Cookie("BD_UPN", "12314753")])
             let client: OkHttpClient= OkHttpClient.builder().cookieJar(jar).build()
             let request: okhttp.Request = okhttp.Request.builder()
                                             .url(url)
@@ -77,7 +78,7 @@ public class okhttp_Cookie_Test_003{
             jar.saveFromResponse(URL.parseRequestURI("http://example.com/foo/bar/baz"), [Cookie("BD_HOME", "1"), Cookie("BD_UPN", "12314753")])
             let client: OkHttpClient= OkHttpClient.builder().cookieJar(jar).build()
             let loadCookies: Array<Cookie> = client.getCookieJar().loadForRequest(URL.parseRequestURI("http://www.nisohbfahoiaf.com/"))
-            @Expect(loadCookies.size, 2) 
+            @Expect(loadCookies.size, 0) 
         } catch (e: Exception) {
             @Expect(e is NoneValueException)
         }

@@ -40,18 +40,21 @@ public class okhttp_MediaType_test_001{
                 @Assert(get_sub, "xxxxx")
                 @Assert(get_charset, "utf-8")
             case None => 
-                println("None")
+                @Assert("未获取到MediaType", "")
         }
     }
 
     // get 创建 MediaType 没有";"区分
     @TestCase
     func okhttp_MediaType_test_003(): Unit {
+        var flag = false
         try {
             var mediaType = MediaType.get("text/xxxxxcharset=utf-8")
         } catch (ex: Exception) {
             println(ex)
+            flag = true
         }
+        @Assert(flag)
     }
 
     // parse 创建 MediaType 没有";"区分
@@ -67,18 +70,22 @@ public class okhttp_MediaType_test_001{
                 @Assert(get_sub, "xxxxx")
                 @Assert(get_charset, "utf-8")
             case None => 
-                println("None")
+                // 应该获取不到
+                @Assert(true)
         }
     }
 
     // get 创建 MediaType 没有"charset"关键字
     @TestCase
     func okhttp_MediaType_test_005(): Unit {
+        var flag = false
         try {
             var mediaType = MediaType.get("text/xxxxx; utf-8")
         } catch (ex: Exception) {
             println(ex)
+            flag = true
         }
+        @Assert(flag)
     }
 
     // parse 创建 MediaType 没有"charset"关键字
@@ -94,7 +101,8 @@ public class okhttp_MediaType_test_001{
                 @Assert(get_sub, "xxxx")
                 @Assert(get_charset, "utf-8")
             case None => 
-                println("None")
+                // 应该获取不到
+                @Assert(true)
         }
     }
 
@@ -124,7 +132,7 @@ public class okhttp_MediaType_test_001{
                 @Assert(get_sub, "xxxxx")
                 @Assert(get_charset, "xxxx")
             case None => 
-                println("None")
+                @Assert("未获取到MediaType", "")
         }
     }
 
@@ -154,7 +162,7 @@ public class okhttp_MediaType_test_001{
                 @Assert(get_sub, "xxxxx")
                 @Assert(get_charset, "")
             case None => 
-                println("None")
+                @Assert("未获取到MediaType", "")
         }
     }
 }

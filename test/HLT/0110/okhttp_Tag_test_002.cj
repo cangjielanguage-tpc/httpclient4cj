@@ -52,16 +52,22 @@ public class okhttp_Tag_Test_002{
         let client: OkHttpClient= OkHttpClient.builder().addInterceptor(myInterceptor).build()
         myInterceptor.setClient(client)
 
-        client.newCall(request_01).enqueue(MyCallbacks())
-        client.newCall(request_02).enqueue(MyCallbacks())
-        client.newCall(request_03).enqueue(MyCallbacks())
-        client.newCall(request_04).enqueue(MyCallbacks())
+        let response_01: okhttp.Response = client.newCall(request_01).execute()
+        @Assert(response_01.getHeader("tag_test_01"),"tag_test_01")
+        @Assert(response_01.getHeader("tag_test_05"),"tag_test_05")
+        let response_02: okhttp.Response = client.newCall(request_02).execute()
+        @Assert(response_02.getHeader("tag_test_01"),"tag_test_01")
+        let response_03: okhttp.Response = client.newCall(request_03).execute()
+        @Assert(response_03.getHeader("tag_test_05"),"tag_test_05")
+        let response_04: okhttp.Response = client.newCall(request_04).execute()
+        @Assert(response_04.getHeader("tag_test_05").toString(), "None")
+
     }
 
     func serve(){
         let hd = http.Route()
         hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
-            sleep(3000*1000*1000)
+            sleep(1000*1000*1000)
             let resp = "Hello from /red".toUtf8Array()
             rws.write(resp)
             return
@@ -95,17 +101,25 @@ class MyInterceptor<: Interceptor {
         let dispatcher = client.getOrThrow().getDispatcher()
         let run = dispatcher.runningCalls()
         println(run.size)
+
+        let request: okhttp.Request = chain.getRequest()
+        let requestBuilder: okhttp.RequestBuilder  = request.newBuilder()
+        let header: Header = request.getHeaders()
+        var response: okhttp.Response =  chain.proceed(requestBuilder.build())
+        let responseBuilder: okhttp.ResponseBuilder = response.newBuilder().request(request)
+
         for(i in run) {
             if (i.getRequest().getTag("tag_test_01").tag != "") {
-                //i.cancel()
+                responseBuilder.header("tag_test_01","tag_test_01")
                 println("拦截到标签tag_test_01")
             }
 
             if (i.getRequest().getTag("tag_test_05").tag != "") {
+                responseBuilder.header("tag_test_05","tag_test_05")
                 println("拦截到标签tag_test_05")
             }
         }
-        return chain.proceed(chain.getRequest())
+        return responseBuilder.build()
     }
 }
 

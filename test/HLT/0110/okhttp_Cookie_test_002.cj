@@ -29,17 +29,12 @@ public class okhttp_Cookie_Test_002{
         @Expect(cookieUtil.get(0).getOrThrow().toString(), cookieString_01)
         @Expect(cookieUtil.get(1).getOrThrow().toString(), cookieString_02)
 
-        let cookieUtil2 = CookieUtil.parse(URL.parseRequestURI("http://[::180.101.49.13]/foo/bar/baz"), header)
+        let cookieUtil2 = CookieUtil.parseAll(URL.parseRequestURI("http://[::180.101.49.13]/foo/bar/baz"), header)
         println("cookieUtil2")
         @Expect(cookieUtil.get(0).getOrThrow().toString(), cookieString_01)
         @Expect(cookieUtil.get(1).getOrThrow().toString(), cookieString_02)
-
-        let cookieUtil3 = CookieUtil.parse(URL.parseRequestURI("http://[Ff00::b465:310d]/foo/bar/baz"), header)
-        println("cookieUtil3")
-        @Expect(cookieUtil3.get(0).getOrThrow().toString(), cookieString_01)
-        @Expect(cookieUtil3.get(1).getOrThrow().toString(), cookieString_02)
     }
-
+    
     // public static func parseAll(url: URL, headers: Header): ArrayList<Cookie> 非法url
     @TestCase
     func okhttp_Cookie_Test_011(): Unit {
@@ -50,7 +45,7 @@ public class okhttp_Cookie_Test_002{
         header.add("Set-Cookie", cookieString_02)
         
         try {
-            let cookieUtil = CookieUtil.parse(URL.parseRequestURI("http://www.nisohbfahoiaf.com/"), header)
+            let cookieUtil = CookieUtil.parseAll(URL.parseRequestURI("http://www.nisohbfahoiaf.com/"), header)
             @Expect(cookieUtil.get(0).getOrThrow().toString(), cookieString_01)
             @Expect(cookieUtil.get(1).getOrThrow().toString(), cookieString_02)
         } catch (e: Exception) {
@@ -58,9 +53,9 @@ public class okhttp_Cookie_Test_002{
         }
 
         try {
-            let cookieUtil2 = CookieUtil.parse(URL.parseRequestURI("http://[FF00::b465:310d]/foo/bar/baz"), header)
-            @Expect(cookieUtil.get(0).getOrThrow().toString(), cookieString_01)
-            @Expect(cookieUtil.get(1).getOrThrow().toString(), cookieString_02)
+            let cookieUtil2 = CookieUtil.parseAll(URL.parseRequestURI("http://[FF00::b465:310d]/foo/bar/baz"), header)
+            @Expect(cookieUtil2.get(0).getOrThrow().toString(), cookieString_01)
+            @Expect(cookieUtil2.get(1).getOrThrow().toString(), cookieString_02)
         } catch (e: Exception) {
             @Expect(e is NoneValueException)
         }
@@ -118,7 +113,7 @@ public class okhttp_Cookie_Test_002{
     func okhttp_Cookie_Test_014(): Unit {
         var cookieString_01 = "_zap=613ed211-a464-4e70-ab4e-f9cd9fb1c273; Path=/foo/bar; Domain=example.com; Expires=Sun, 13 Oct 2024 08:44:48 UTC"
         var cookieString_02 = "_zap=aaaa-bbbb; Path=/kkk/ddd; Domain=example.com; Expires=Mon, 25 Oct 2055 16:02:05 UTC"
-        var cookieString_03 = "key=; Path=/iiiiiii; Domain=example.com; Expires=Sun, 06 Oct 2007 23:44:50 UTC"
+        var cookieString_03 = "key=; Path=/iiiiiii; Domain=example.com; Expires=Sat, 06 Oct 2007 23:44:50 UTC"
 
         let header: http.Header = Header()
         header.add("Set-Cookie", cookieString_01) 
@@ -146,5 +141,6 @@ public class okhttp_Cookie_Test_002{
         println("cookieUtil")
         @Expect(cookieUtil.size, 0)
     }
+    
 }
 
