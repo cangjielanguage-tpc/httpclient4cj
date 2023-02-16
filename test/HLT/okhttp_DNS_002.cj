@@ -36,7 +36,7 @@ public class okhttp_DNS_002{
     var response_heads: http.Header = response.getHeaders()
     // var response_body:Array<Byte> = response.getBody().getOrThrow().getSource().readToEnd()
     // var response_body_str = String.fromUtf8(response_body)
-    var cacheControl = response.getCacheControl().getOrThrow().toString()
+    var cacheControl = response.getCacheControl().toString()
 
     println("-------------------------------OKHttp-Response_Header----------------------------")
     for ((nm,vl) in response_heads) {
