@@ -9,10 +9,9 @@
 package okhttp
 
 
-public class DiskLruCache {
+class DiskLruCache {
     let fileSystem: FileSystem
-    let directory: Directory
-    var appVersion: Int64
+    var directory: Directory
     var valueCount: Int64
     var maxSize: Int64
     var size: Int64 = 0
@@ -23,7 +22,7 @@ public class DiskLruCache {
 
     static let LEGAL_KEY_PATTERN: String = "[a-z0-9_-]{1,120}"
     let lruEntries: HashMap<String, Entry> = HashMap<String, Entry>()
-    var journalWriter: Option<RealBufferSink> = Option<RealBufferSink>.None
+    var journalWriter: Option<Sink> = Option<Sink>.None
     var redundantOpCount: Int64 = 0
     var hasJournalErrors: Bool = false
     var mostRecentTrimFailed: Bool = false
@@ -31,24 +30,16 @@ public class DiskLruCache {
     var nextSequenceNumber = 0
 
 
-    init(fileSystem: FileSystem, directory: Directory, appVersion: Int64, valueCount: Int64, maxSize: Int64) {
+    init(fileSystem: FileSystem, directory: Directory, valueCount: Int64, maxSize: Int64) {
         this.fileSystem = fileSystem
         this.directory = directory
-        this.appVersion = appVersion
         this.valueCount = valueCount
         this.maxSize = maxSize
     }
 
-    /*func initCreate(directory: Directory, fileName: String) {
-        let name = directory.info.path.toString() + fileName
-        if (!File.exists(name)) {
-            return directory.createFile(name)
-        }
-        return File(name, Open(true, false))
-    }*/
 
-    public static func create(fileSystem: FileSystem, directory: Directory,
-        appVersion: Int64, valueCount: Int64, maxSize: Int64): DiskLruCache {
+    static func create(fileSystem: FileSystem, directory: Directory,
+        valueCount: Int64, maxSize: Int64): DiskLruCache {
 
         if (maxSize <= 0) {
             throw IllegalArgumentException("maxSize <= 0");
@@ -58,21 +49,37 @@ public class DiskLruCache {
             throw IllegalArgumentException("valueCount <= 0");
         }
 
-        return DiskLruCache(fileSystem, directory, appVersion, valueCount, maxSize)
+        return DiskLruCache(fileSystem, directory, valueCount, maxSize)
     }
 
-    public func remove(key: String) {
+    public func remove(key: String): Bool {
+        synchronized (lock) {
+            initialize()
+            checkNotClosed()
+            validateKey(key)
 
+            match (lruEntries.get(key)) {
+                case Some(e) =>
+                    let removed = removeEntry(e)
 
+                    if (removed && size <= maxSize) {
+                        mostRecentTrimFailed = false
+                    }
+
+                    return removed
+                case None => return false
+            }
+        }
     }
 
     public func get(key: String): Option<Snapshot> {
-        synchronized(lock) {
+        synchronized (lock) {
             initialize()
             checkNotClosed()
             validateKey(key)
             match (lruEntries.get(key)) {
-                case None => return None
+                case None =>
+                    return None
                 case Some(entry) =>
                     if (!entry.readable) {
                         return None
@@ -80,7 +87,8 @@ public class DiskLruCache {
             }
 
             match (lruEntries[key].snapshot()) {
-                case None => return  Option<Snapshot>.None
+                case None =>
+                    return  Option<Snapshot>.None
                 case Some(v) =>
                     redundantOpCount++
                     let jw = journalWriter.getOrThrow()
@@ -89,9 +97,7 @@ public class DiskLruCache {
                     jw.write(key.toUtf8Array())
                     jw.write("\n".toUtf8Array())
                     if (journalRebuildRequired()) {
-                        spawn {
-                            cleanUp()
-                        }
+                        cleanUp()
                     }
                     return v
             }
@@ -103,7 +109,7 @@ public class DiskLruCache {
     }
 
     func edit(key: String, expectedSequenceNumber: Int64): Option<Editor> {
-        synchronized(lock) {
+        synchronized (lock) {
             initialize()
             checkNotClosed()
             validateKey(key)
@@ -113,14 +119,12 @@ public class DiskLruCache {
                 return None
             }
 
-            if(has(entry) && has(entry.getOrThrow().currentEditor)) {
+            if (has(entry) && has(entry.getOrThrow().currentEditor)) {
                 return None
             }
 
             if (mostRecentTrimFailed || mostRecentRebuildFailed) {
-                spawn {
-                    cleanUp()
-                }
+                cleanUp()
                 return None
             }
             let jw = journalWriter.getOrThrow()
@@ -130,7 +134,7 @@ public class DiskLruCache {
             jw.write("\n".toUtf8Array())
             jw.flush()
 
-            if(hasJournalErrors) {
+            if (hasJournalErrors) {
                 return None
             }
 
@@ -149,7 +153,7 @@ public class DiskLruCache {
 
 
     func cleanUp(): Unit {
-        synchronized(lock) {
+        synchronized (lock) {
             if (!initialized || closed) {
                 return // Nothing to do
             }
@@ -167,9 +171,7 @@ public class DiskLruCache {
                 }
             } catch (e: IOException) {
                 mostRecentRebuildFailed = true
-
-                //TODO blackhole
-                //journalWriter = Okio.buffer(Okio.blackhole())
+                journalWriter = RealBufferSink(BlackHole())
             }
         }
     }
@@ -180,7 +182,7 @@ public class DiskLruCache {
             && redundantOpCount >= lruEntries.size
     }
 
-    func removeEntry(entry: Entry) {
+    func removeEntry(entry: Entry): Bool {
         match (entry.currentEditor) {
             case Some(ce) =>
                 ce.detach()
@@ -192,6 +194,7 @@ public class DiskLruCache {
             size -= entry.lengths[i]
             entry.lengths[i] = 0
         }
+
         redundantOpCount++
         let jw = journalWriter.getOrThrow()
         jw.write(REMOVE.toUtf8Array())
@@ -199,25 +202,27 @@ public class DiskLruCache {
         jw.write(entry.key.toUtf8Array())
         jw.write("\n".toUtf8Array())
         lruEntries.remove(entry.key)
+
         if (journalRebuildRequired()) {
-              spawn {
-                  cleanUp()
-              }
+            cleanUp()
         }
+
+        return true
     }
 
     private func validateKey(key: String): Unit {
-         let matcher: Matcher = Regex(LEGAL_KEY_PATTERN).matcher(key)
-         match (matcher.find()) {
+
+         /*let matcher: Matcher = Regex(LEGAL_KEY_PATTERN).matcher(key)
+             match (matcher.find()) {
              case None =>
                  throw IllegalArgumentException("keys must match regex [a-z0-9_-]{1,120}: ${key}")
              case Some(data) =>
                  ()
-         }
+         }*/
     }
 
     private func checkNotClosed(): Unit {
-        synchronized(lock) {
+        synchronized (lock) {
             if (isClosed()) {
                 throw IllegalStateException("cache is closed")
             }
@@ -225,20 +230,22 @@ public class DiskLruCache {
     }
 
     public func isClosed(): Bool {
-        synchronized(lock) {
+        synchronized (lock) {
             return closed
         }
     }
+
     func trimToSize(): Unit {
         while (size > maxSize) {
             let toEvict: Entry = lruEntries.values().iterator().next().getOrThrow()
             removeEntry(toEvict)
         }
+
         mostRecentTrimFailed = false
     }
 
     public func initialize(): Unit {
-        synchronized(lock) {
+        synchronized (lock) {
             if (initialized) {
                 return // Already initialized.
             }
@@ -259,7 +266,7 @@ public class DiskLruCache {
                     processJournal()
                     initialized = true
                     return
-                } catch (e: Exception) {
+                } catch (e: FSException | HttpException | EOFException) {
 
                 }
 
@@ -268,17 +275,16 @@ public class DiskLruCache {
                 } finally {
                     closed = false
                 }
-
-                rebuildJournal()
-
-                initialized = true
             }
+
+            rebuildJournal()
+            initialized = true
         }
     }
 
     public func delete() {
         close()
-        fileSystem.deleteContents(directory)
+        this.directory = fileSystem.deleteContents(directory)
     }
 
     public func close() {
@@ -328,10 +334,10 @@ public class DiskLruCache {
 
     private func readJournal() {
         try (source = fileSystem.source(JOURNAL_FILE)) {
-            let magic = source.readUtf8LineStrict()
-            let version = source.readUtf8LineStrict()
-            let valueCountString = source.readUtf8LineStrict()
-            let blank = source.readUtf8LineStrict()
+            let magic = source.readUtf8Line()
+            let version = source.readUtf8Line()
+            let valueCountString = source.readUtf8Line()
+            let blank = source.readUtf8Line()
 
             if (!MAGIC.equals(magic)
                 || !VERSION_1.equals(version)
@@ -341,18 +347,18 @@ public class DiskLruCache {
             }
 
             var lineCount = 0
-
-            while(true) {
+            let content = StringBuilder("${magic}\n${version}\n${valueCountString}\n\n")
+            while (true) {
                 try {
-                    readJournalLine(source.readUtf8LineStrict())
+                    let s = source.readUtf8Line()
+                    content.append(s).append("\n")
+                    readJournalLine(s)
                     lineCount++
-                } catch (endOfJournal: Exception) {
+                } catch (endOfJournal: EOFException) {
                     break
                 }
             }
-
             redundantOpCount = lineCount - lruEntries.size
-
             if (!source.exhausted()) {
                 rebuildJournal()
             } else {
@@ -372,20 +378,22 @@ public class DiskLruCache {
             case None => ()
         }
 
-        synchronized(lock) {
-            /*match(journalWriter) {
+        synchronized (lock) {
+            match(journalWriter) {
                 case Some(jw) =>
                     jw.close()
                 case None => ()
-            }*/
+            }
 
             let writer = RealBufferSink(fileSystem.sink(JOURNAL_FILE_TEMP))
+
             try {
                 writer.write(MAGIC.toUtf8Array())
                 writer.write("\n".toUtf8Array())
                 writer.write(VERSION_1.toUtf8Array())
                 writer.write("\n".toUtf8Array())
                 writer.write("${valueCount}".toUtf8Array())
+                writer.write("\n".toUtf8Array())
                 writer.write("\n".toUtf8Array())
                 for (entry in lruEntries.values()) {
                     match (entry.currentEditor) {
@@ -407,9 +415,9 @@ public class DiskLruCache {
             if (fileSystem.exists(JOURNAL_FILE)) {
                 fileSystem.rename(JOURNAL_FILE, JOURNAL_FILE_BACKUP)
             }
+
             fileSystem.rename(JOURNAL_FILE_TEMP, JOURNAL_FILE)
             fileSystem.delete(JOURNAL_FILE_BACKUP)
-
             journalWriter = newJournalWriter()
             hasJournalErrors = false
             mostRecentRebuildFailed = false
@@ -419,17 +427,16 @@ public class DiskLruCache {
     private func readJournalLine(line: String): Unit {
         let firstSpace = line.indexOf(' ').getOrThrow({ => HttpException("unexpected journal line: ${line}")})
         let keyBegin = firstSpace + 1
-
         let key: String
         let secondSpace = match (line.indexOf(' ', keyBegin)) {
             case Some(index) =>
                  key = line[(keyBegin..index)]
                  index
             case None =>
-                 key = line.substring(keyBegin, line.size)
-
+                 key = line.substring(keyBegin, line.size - keyBegin)
                  if (firstSpace == REMOVE.size && line.startsWith(REMOVE)) {
                     lruEntries.remove(key)
+                    return
                  }
 
                 -1
@@ -443,7 +450,6 @@ public class DiskLruCache {
                 lruEntries.put(key, e)
                 e
         }
-
         if (secondSpace != -1 && firstSpace == CLEAN.size && line.startsWith(CLEAN)) {
             let parts: Array<String> = line.substring(secondSpace + 1).split(" ")
             entry.readable = true
@@ -457,13 +463,104 @@ public class DiskLruCache {
             throw HttpException("unexpected journal line: ${line}")
         }
     }
+
+    func flush(): Unit {
+        synchronized (lock) {
+            if (!initialized) {
+                return
+            }
+
+            checkNotClosed()
+            trimToSize()
+            journalWriter.getOrThrow().flush()
+        }
+    }
+
+    func evictAll() {
+         synchronized (lock) {
+            initialize()
+            let arr: ArrayList<Entry> = ArrayList<Entry>()
+            //Copying for safe iteration. resolve ConcurrentModificationException
+            for ((k,v) in lruEntries) {
+                arr.append(v)
+            }
+
+            for ( i in 0..arr.size) {
+                removeEntry(arr[i])
+            }
+         }
+
+         mostRecentTrimFailed = false
+    }
+
+    func snapshots(): Iterator<Snapshot> {
+        synchronized (lock) {
+            initialize()
+            return SnapshotIterator(this)
+        }
+    }
+
+    func getSize() {
+        synchronized (lock) {
+            initialize()
+            return size
+        }
+    }
+
+    func getMaxSize() {
+        synchronized (lock) {
+            return maxSize
+        }
+    }
+
+}
+
+class SnapshotIterator <: Iterator<Snapshot> {
+    let delegate: Iterator<Entry>
+    let diskLruCache: DiskLruCache
+    init (diskLruCache: DiskLruCache) {
+        this.diskLruCache = diskLruCache
+        this.delegate = diskLruCache.lruEntries.values().iterator()
+    }
+
+    public func next(): Option<Snapshot> {
+        synchronized (diskLruCache.lock) {
+            if (diskLruCache.closed) {
+                return Option<Snapshot>.None
+            }
+
+            while (true) {
+                let snapshot: Option<Snapshot> = match (delegate.next()) {
+                    case None =>
+                        break
+                    case Some(entry) =>
+                        if (!entry.readable) {
+                            continue
+                        }
+                        entry.snapshot()
+
+                }
+
+                match (snapshot) {
+                    case None => continue
+                    case Some(s) => return s
+                }
+
+            }
+        }
+        return Option<Snapshot>.None
+    }
+
+    public func iterator(): Iterator<Snapshot> {
+        return this
+    }
 }
 
 public class Editor {
     let entry: Entry
     let written: Option<Array<Bool>>
     private var done: Bool = false
-    private let diskLruCache: DiskLruCache
+    let diskLruCache: DiskLruCache
     let lock: Monitor = Monitor()
 
     init(entry: Entry, diskLruCache: DiskLruCache) {
@@ -490,14 +587,13 @@ public class Editor {
     }
 
     public func newSink(index: Int64): Sink {
-        synchronized(diskLruCache.lock) {
+        synchronized (diskLruCache.lock) {
             if (done) {
                 throw IllegalStateException("has done")
             }
 
             if (!refEq(entry.currentEditor.getOrThrow(), this)) {
-                //TODO blackhole
-                //journalWriter = Okio.buffer(Okio.blackhole())
+                return BlackHole()
             }
 
             if (!entry.readable) {
@@ -505,16 +601,20 @@ public class Editor {
             }
 
             let dirtyFile = entry.dirtyFiles[index]
+            let sink: Sink
+            try {
+                sink = diskLruCache.fileSystem.sink(dirtyFile)
+            } catch (e: FSException) {
+                return BlackHole()
+            }
 
-            let sink: Sink = diskLruCache.fileSystem.sink(dirtyFile)
-            //TODO FaultHidingSink
-            return sink
+            return FaultHidingSink(sink, this)
         }
 
     }
 
     func completeEdit(editor: Editor, success: Bool): Unit {
-        synchronized(lock) {
+        synchronized (lock) {
             let entry = editor.entry
             if (!refEq(entry.currentEditor.getOrThrow(), editor)) {
                 throw  IllegalStateException("editor is others")
@@ -550,34 +650,33 @@ public class Editor {
                 }
             }
 
-             diskLruCache.redundantOpCount++
-             entry.currentEditor = None
-             let jw = diskLruCache.journalWriter.getOrThrow()
-             if (entry.readable || success) {
-                 entry.readable = true
-                 jw.write(CLEAN.toUtf8Array())
-                 jw.write(" ".toUtf8Array())
-                 jw.write(entry.key.toUtf8Array())
-                 jw.write("\n".toUtf8Array())
-                 if (success) {
-                   entry.sequenceNumber = diskLruCache.nextSequenceNumber
-                   diskLruCache.nextSequenceNumber++
-                 }
-             } else {
-                 diskLruCache.lruEntries.remove(entry.key)
-                 jw.write(REMOVE.toUtf8Array())
-                 jw.write(" ".toUtf8Array())
-                 jw.write(entry.key.toUtf8Array())
-                 jw.write("\n".toUtf8Array())
-             }
-
-             jw.flush()
-
-             if (diskLruCache.size > diskLruCache.maxSize || diskLruCache.journalRebuildRequired()) {
-                spawn {
-                    diskLruCache.cleanUp()
+            diskLruCache.redundantOpCount++
+            entry.currentEditor = None
+            let jw = diskLruCache.journalWriter.getOrThrow()
+            if (entry.readable || success) {
+                entry.readable = true
+                jw.write(CLEAN.toUtf8Array())
+                jw.write(" ".toUtf8Array())
+                jw.write(entry.key.toUtf8Array())
+                entry.writeLengths(jw)
+                jw.write("\n".toUtf8Array())
+                if (success) {
+                    entry.sequenceNumber = diskLruCache.nextSequenceNumber
+                    diskLruCache.nextSequenceNumber++
                 }
-             }
+            } else {
+                diskLruCache.lruEntries.remove(entry.key)
+                jw.write(REMOVE.toUtf8Array())
+                jw.write(" ".toUtf8Array())
+                jw.write(entry.key.toUtf8Array())
+                jw.write("\n".toUtf8Array())
+            }
+
+            jw.flush()
+
+            if (diskLruCache.size > diskLruCache.maxSize || diskLruCache.journalRebuildRequired()) {
+                diskLruCache.cleanUp()
+            }
         }
 
     }
@@ -632,9 +731,9 @@ class Entry {
         let truncateTo = sb.size
         for (i in 0..diskLruCache.valueCount) {
             sb.append(i)
-            cleanFiles[i] = diskLruCache.directory.info.path.join(key).toString()
+            cleanFiles[i] = "${sb}"
             sb.append(".tmp")
-            cleanFiles[i] = diskLruCache.directory.info.path.join(key).toString()
+            dirtyFiles[i] = "${sb}"
             sb = StringBuilder("${sb}".substring(0, truncateTo))
         }
     }
@@ -644,11 +743,20 @@ class Entry {
         let arr: ArrayList<OkBuffer> = ArrayList<OkBuffer>()
         try {
             for (i in 0..diskLruCache.valueCount) {
-               arr[i] =  diskLruCache.fileSystem.source(cleanFiles[i])
+
+               arr.append(diskLruCache.fileSystem.source(cleanFiles[i]))
             }
             return Snapshot(key, sequenceNumber, arr.toArray(), cl, diskLruCache)
-        } catch (e: IOException) {
-            //TODO file not found
+        } catch (e: FSException) {
+            for (i in 0..diskLruCache.valueCount) {
+                if (i < arr.size) {
+                    Util.closeQuietly(arr[i])
+                } else {
+                    break
+                }
+            }
+
+            diskLruCache.removeEntry(this)
         }
         return None
     }
@@ -714,32 +822,30 @@ public class Snapshot <: Resource {
 }
 
 public class FileSystem {
-    let directory: Directory
+    var directory: Directory
 
     init(directory: Directory) {
         this.directory = directory
     }
+
     public func source(name: String): OkBuffer {
-        let file = File(name, Open(true, false))
+        let file = File(directory.info.path.join(name), Open(true, true))
         return OkBuffer(file)
     }
 
     public func sink(name: String): Sink {
-        //TODO sink
-        let file = File(name, Open(true, false))
-        return BlackHole()
+        let file = directory.createFile(name)
+        return FileSink(file)
     }
 
-    public func appendingSink(file: String): Sink {
-        //TODO sink
-        return BlackHole()
+    public func appendingSink(name: String): Sink {
+        let file = File(directory.info.path.join(name), Append)
+        return FileSink(file)
     }
 
     public func delete(name: String): Unit {
-        try {
+        if (exists(name)) {
             File.delete(directory.info.path.join(name))
-        } catch (e : IOException) {
-            throw HttpException("failed to delete ${directory.info.path.join(name)}")
         }
     }
 
@@ -748,18 +854,17 @@ public class FileSystem {
     }
 
     public func rename(f: String, t: String): Unit {
-        try {
-            File.copy(directory.info.path.join(f), directory.info.path.join(t), true)
-        } catch (e : IOException) {
-            throw HttpException("failed to rename from ${directory.info.path.join(f)} to ${directory.info.path.join(t)}")
-        }
+        File.move(directory.info.path.join(f), directory.info.path.join(t), true)
     }
 
-    public func deleteContents(directory: Directory) {
+    public func deleteContents(directory: Directory): Directory {
+        let path = directory.info.path
         Directory.delete(directory.info.path, recursive: true)
+        this.directory = Directory.create(path, recursive: true)
+        return directory
     }
 
     public func size(name: String): Int64 {
-        return File(name, Open(true, false)).length
+        return File(directory.info.path.join(name), Open(true, false)).length
     }
 }

@@ -77,6 +77,8 @@ public open class ResponseBody <: Resource {
         let stream = ByteArrayStream()
         try (r = source) {
             while (source.read(stream, 4096) > 0) {}
+        } catch (e: EOFException) {
+
         }
         return String.fromUtf8(stream.readToEnd())
     }

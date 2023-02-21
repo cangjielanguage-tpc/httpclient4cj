@@ -1,0 +1,55 @@
+// EXEC: cjc %import-path %L %l %f
+// EXEC: ./main
+
+from okhttp import okhttp.*
+
+
+//第一次走网络不使用缓存，第二次缓存不走网络(此时应该只生成tmp文件,cache只保存在内存中)
+main() {
+    let cc = CacheControl.builder()
+        .noCache()//不使用缓存，所有走网络
+        .noStore()//不使用缓存，也不存储缓存
+        .maxAge(3600)//指示客户机能够接收响应时间小于当前时间加上指定时间的响应
+        .maxStale(3600)//指示客户机能够接收超出超时期间的响应消息
+        .minFresh(3600)//指示客户机能够接收生存期不大于指定时间的响应
+        .onlyIfCached()//只使用缓存
+        .noTransform()//禁止转码
+        .immutable().build()
+    let cache: Cache = Cache("./cacheccccccc", 10 * 1024 * 1024)
+    let client: OkHttpClient= OkHttpClient.builder().cache(cache).build()
+    let request = okhttp.Request.builder()
+            .url("https://publicobject.com/helloworld.txt")
+            .method("GET")
+            .build()
+
+    let res = client.newCall(request).execute()
+    let s = res.getBody().getOrThrow().getString()
+    //第一次走网络不走缓存
+    let exec1 = match(res.getNetworkResponse()) {
+        case Some(v) => true
+        case None => false
+    }
+
+    let exec2 = match(res.getCacheResponse()) {
+        case Some(v) => false
+        case None => true
+    }
+
+    //第二次走缓存不走网络
+    let res2 = client.newCall(request).execute()
+    let s2 = res2.getBody().getOrThrow().getString()
+    let exec3 = match(res2.getNetworkResponse()) {
+        case Some(v) => false
+        case None => true
+    }
+
+    let exec4 = match(res2.getCacheResponse()) {
+        case Some(v) => true
+        case None => false
+    }
+    if (exec1 && exec2 && exec3 && exec4) {
+        return 0
+    }
+    return 1
+}
+

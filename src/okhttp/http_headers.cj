@@ -8,17 +8,17 @@ package okhttp
  * @file The file manage Http2Writer.
  */
 
-public class HttpHeaders {
+class HttpHeaders {
 
-    public static func hasVaryAll(response: Response): Bool {
+    static func hasVaryAll(response: Response): Bool {
         return hasVaryAll(response.getHeaders())
     }
 
-    public static func hasVaryAll(responseHeaders: Header): Bool {
+    static func hasVaryAll(responseHeaders: Header): Bool {
         return varyFields(responseHeaders).contains("*")
     }
 
-    public static func varyFields(responseHeaders: Header): Set<String> {
+    static func varyFields(responseHeaders: Header): Set<String> {
         let result: Set<String> = HashSet()
         for ((k,v) in responseHeaders) {
             if (!equalsIgnoreCase("Vary", k)) {
@@ -33,7 +33,7 @@ public class HttpHeaders {
         return result
     }
 
-    public static func varyHeaders(response: Response): Header {
+    static func varyHeaders(response: Response): Header {
         let requestHeaders = response.getNetworkResponse().getOrThrow().getRequest().getHeaders()
         let responseHeaders = response.getHeaders()
         return varyHeaders(requestHeaders, responseHeaders)

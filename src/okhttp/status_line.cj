@@ -79,7 +79,11 @@ public class StatusLine <: ToString {
 
     public func toString(): String {
         let sb: StringBuilder = StringBuilder()
-        sb.append("${protocol}")
+        match (protocol) {
+            case HTTP_1_0 =>  sb.append("HTTP/1.0")
+            case _ => sb.append("HTTP/1.1")
+        }
+
         sb.append(' ').append(code)
         if (message != "") {
             sb.append(' ').append(message)

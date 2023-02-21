@@ -16,7 +16,7 @@ package okhttp
 public class CacheInterceptor<: Interceptor {
     let cache: Option<Cache>
 
-    public init(cache: Cache) {
+    public init(cache: Option<Cache>) {
         this.cache = cache
     }
 
@@ -72,7 +72,7 @@ public class CacheInterceptor<: Interceptor {
         if (has(cacheResponse)) {
             let cacheRes = cacheResponse.getOrThrow()
             if (networkResponse.getCode() == HttpStatusCode.STATUS_NOT_MODIFIED) {
-                let response: Response =  cacheRes.newBuilder()
+                let response: Response = cacheRes.newBuilder()
                     .header(combine(cacheRes.getHeaders(), networkResponse.getHeaders()))
                     .sentRequestAtMillis(networkResponse.getSentRequestAtMillis())
                     .receivedResponseAtMillis(networkResponse.getReceivedResponseAtMillis())
@@ -103,7 +103,7 @@ public class CacheInterceptor<: Interceptor {
             if (invalidatesCache(realNetworkRequest.getMethod())) {
                 try {
                     cache.getOrThrow().remove(realNetworkRequest)
-                } catch (ignored: IOException) {
+                } catch (ignored: FSException | EOFException) {
                     // The cache cannot be written
                 }
             }
@@ -114,14 +114,25 @@ public class CacheInterceptor<: Interceptor {
 
 
     func cacheWritingResponse(cacheRequest: Option<CacheRequest>, response: Response) {
-        return Response.builder().build()
+        let body: CacheRequest = match (cacheRequest) {
+            case None =>
+                return response
+            case Some(v) => v
+        }
+
+        let source =  response.getBody().getOrThrow().getSource()
+        let contentType = response.getHeader("Content-Type", "")
+        let contentLength = response.getBody().getOrThrow().getContentLength()
+        return response.newBuilder()
+           .body(ResponseBody(contentType, contentLength, CacheWritingSource(source, body)))
+           .build()
     }
 
      /** Combines cached headers with a network headers as defined by RFC 7234, 4.3.4. */
     private func combine(cachedHeaders: Header, networkHeaders: Header) {
         let result = Header()
 
-        for((k,v) in cachedHeaders) {
+        for ((k,v) in cachedHeaders) {
             let fieldName = k
             let value = v[0]
             if (equalsIgnoreCase("Warning", fieldName) && value.startsWith("1")) {
@@ -136,7 +147,7 @@ public class CacheInterceptor<: Interceptor {
             }
         }
 
-        for((k,v) in networkHeaders) {
+        for ((k,v) in networkHeaders) {
             let fieldName = k
             if (isContentSpecificHeader(fieldName)
                 || !isEndToEnd(fieldName)) {
@@ -207,7 +218,7 @@ public class CacheStrategyFactory {
             let headers: Header = cacheRes.getHeaders()
             for ((k,v) in headers) {
                 let value = v[0]
-                if(equalsIgnoreCase("Date", k)) {
+                if (equalsIgnoreCase("Date", k)) {
                     servedDate = CookieUtil.parseExpires(value, 0, value.size)
                 } else if (equalsIgnoreCase("Expires", k)) {
                     expires = CookieUtil.parseExpires(value, 0, value.size)
@@ -225,7 +236,7 @@ public class CacheStrategyFactory {
 
     }
 
-    public func get(): CacheStrategy{
+    public func get(): CacheStrategy {
         let candidate: CacheStrategy = getCandidate()
 
         if (has(candidate.networkRequest) && request.getCacheControl().onlyIfCached()) {
@@ -235,16 +246,31 @@ public class CacheStrategyFactory {
         return candidate
     }
 
+    private func hasConditions(request: Request): Bool {
+        return request.getHeader("If-Modified-Since", "") != "" || request.getHeader("If-None-Match", "") != ""
+    }
+
     private func getCandidate() {
+        //没有从缓存目录解析到response, 直接使用网络请求
         if (!has(cacheResponse)) {
-             return CacheStrategy(request, Option<Response>.None)
+            return CacheStrategy(request, Option<Response>.None)
         }
+
         let cacheResp = cacheResponse.getOrThrow()
+        //对缓存的response的状态码进行校验，一些特殊的状态码不论怎样都走网络请求
         if (!isCacheable(cacheResp, request)) {
             return CacheStrategy(request, Option<Response>.None)
         }
 
         let requestCaching: CacheControl = request.getCacheControl()
+        // 如果请求的Cache-Control中指定了no-cache，则使用网络请求,或者请求头中配置缓存过期时间则使用网络请求
+
+        if (requestCaching.noCache() || hasConditions(request)) {
+            return CacheStrategy(request, Option<Response>.None)
+        }
+
+        let responseCaching: CacheControl = cacheResp.getCacheControl()
+        // 计算当前缓存的response的存活时间以及缓存应当被刷新的时间
         let ageMillis = cacheResponseAge()
         var freshMillis = computeFreshnessLifetime()
 
@@ -258,12 +284,12 @@ public class CacheStrategyFactory {
         }
 
         var maxStaleMillis = 0
-        let responseCaching: CacheControl = cacheResp.getCacheControl()
 
         if (!responseCaching.mustRevalidate() && requestCaching.maxStaleSeconds() != -1) {
             maxStaleMillis = requestCaching.maxStaleSeconds()*1000
         }
 
+        // 对未超过时限的缓存，直接采用缓存数据策略
         if (!responseCaching.noCache() && ageMillis + minFreshMillis < freshMillis + maxStaleMillis) {
             let builder: ResponseBuilder  = cacheResp.newBuilder()
             builder.addHeader("Warning", "110 HttpURLConnection \"Response is stale\"")
@@ -271,11 +297,15 @@ public class CacheStrategyFactory {
             if (ageMillis > oneDayMillis && isFreshnessLifetimeHeuristic()) {
                 builder.addHeader("Warning", "113 HttpURLConnection \"Heuristic expiration\"")
             }
+
             return CacheStrategy(Option<Request>.None, builder.build())
         }
+
+        //对If-None-Match、If-Modified-Since等Header进行处理
         var conditionName: String
         var conditionValue: String
 
+        //优限度为etag>lastModified>servedDate
         if (etag != "") {
             conditionName = "If-None-Match"
             conditionValue = etag
@@ -286,11 +316,12 @@ public class CacheStrategyFactory {
             conditionName = "If-Modified-Since"
             conditionValue = servedDateString
         } else {
+            //response未配置缓存过期时间则使用网络请求
             return CacheStrategy(request, Option<Response>.None)
         }
+        //存在的话,则在请求中添加该请求头并合本地cacheResponse创建缓存策略
         let conditionalRequestHeaders = request.getHeaders().clone()
         conditionalRequestHeaders.add(conditionName, conditionValue.trim())
-
         var conditionalRequest =  request.newBuilder().header(conditionalRequestHeaders).build()
         return CacheStrategy(conditionalRequest, cacheResponse)
     }
@@ -302,30 +333,36 @@ public class CacheStrategyFactory {
 
     private func computeFreshnessLifetime(): Int64 {
         let responseCaching: CacheControl = cacheResponse.getOrThrow().getCacheControl()
+
         if (responseCaching.maxAgeSeconds() != -1) {
             return responseCaching.maxAgeSeconds() * 1000
         } else if (has(expires)) {
-
             let servedMillis = match(servedDate) {
-                case Some(v) => return getTimeStamp(v)
-                case None => return receivedResponseMillis
+                case Some(v) =>
+                    v.unixTimeStamp().milliseconds()
+                case None =>
+                    receivedResponseMillis
             }
-            var delta = getTimeStamp(expires.getOrThrow()) - servedMillis
+            var delta = expires.getOrThrow().unixTimeStamp().milliseconds() - servedMillis
 
             if (delta < 0) {
                 delta = 0
             }
+
             return delta
-        } else if (has(lastModified) && cacheResponse.getOrThrow().getRequest().getUrl().rawQuery != "") {
+        } else if (has(lastModified) && cacheResponse.getOrThrow().getRequest().getUrl().rawQuery == "") {
              let servedMillis = match(servedDate) {
-                case Some(v) => return getTimeStamp(v)
-                case None => return sentRequestMillis
+                case Some(v) =>
+                    v.unixTimeStamp().milliseconds()
+                case None =>
+                    sentRequestMillis
              }
-             var delta = servedMillis - getTimeStamp(lastModified.getOrThrow())
+             var delta = servedMillis - lastModified.getOrThrow().unixTimeStamp().milliseconds()
 
              if (delta < 0) {
                  delta = 0
              }
+
              return delta / 10
         }
         return 0
@@ -333,17 +370,20 @@ public class CacheStrategyFactory {
 
     private func cacheResponseAge(): Int64 {
         let apparentReceivedAge = match(servedDate) {
-            case Some(v) => return max(0,receivedResponseMillis - getTimeStamp(v))
+            case Some(v) =>
+                max(0,receivedResponseMillis - v.unixTimeStamp().milliseconds())
             case None => 0
         }
 
         let receivedAge = if (ageSeconds != -1) {
-            return max(apparentReceivedAge, ageSeconds*1000)
+            max(apparentReceivedAge, ageSeconds*1000)
         } else {
-            return apparentReceivedAge
+            apparentReceivedAge
         }
+
         let responseDuration = receivedResponseMillis - sentRequestMillis
         let residentDuration = nowMillis - receivedResponseMillis
+
         return receivedAge + responseDuration + residentDuration
     }
 
@@ -351,7 +391,10 @@ public class CacheStrategyFactory {
 
 func isCacheable(response: Response, request: Request) {
     match (response.getCode()) {
+        //以下code除非备header禁止,否则会缓存
         case 200 | 203 | 204 | 300 | 301 | 308 | 404 | 405 | 410 | 414 | 501  => ()
+        //以下code只有在特定header下能缓存,详情见http://tools.ietf.org/html/rfc7234#section-3
+        // s-maxage is not checked because OkHttp is a private cache that should ignore s-maxage.
         case 302 | 307 =>
             if (response.getHeader("Expires", "") != ""
                 || response.getCacheControl().maxAgeSeconds() != -1
@@ -361,6 +404,7 @@ func isCacheable(response: Response, request: Request) {
             } else {
                 return false
             }
+        //其他所有code都不缓存
         case _ => return false
 
     }

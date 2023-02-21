@@ -181,6 +181,10 @@ public class RealBufferSink <: Sink {
         }
     }
 
+    func getBuffer(): ByteArrayStream {
+        return buffer
+    }
+
     public func close(): Unit {
         if (!closed) {
             if (buffer.length > 0) {
@@ -218,7 +222,7 @@ class FramingSink <: Sink {
 
     private func emitFrame(outFinishedOnLastFrame: Bool): Unit {
         let toWrite: Int64
-        synchronized(http2Stream.mutex) {
+        synchronized (http2Stream.mutex) {
             while (http2Stream.bytesLeftInWriteWindow <=0 &&
                 !finished && !closed && !has(http2Stream.errorCode)) {
                 http2Stream.mutex.wait()
@@ -228,13 +232,14 @@ class FramingSink <: Sink {
             toWrite = min(http2Stream.bytesLeftInWriteWindow, sendBuffer.length)
             http2Stream.bytesLeftInWriteWindow -= toWrite
         }
+
         let outFinished: Bool = outFinishedOnLastFrame && toWrite == sendBuffer.length
         http2Stream.cc.writeData(http2Stream.id, outFinished, sendBuffer, toWrite)
 
     }
 
     public func flush(): Unit {
-        synchronized(http2Stream.mutex) {
+        synchronized (http2Stream.mutex) {
             http2Stream.checkOutNotClosed()
         }
 
@@ -245,7 +250,7 @@ class FramingSink <: Sink {
     }
 
     public func close(): Unit {
-        synchronized(http2Stream.mutex) {
+        synchronized (http2Stream.mutex) {
             if (closed) {
                 return
             }
@@ -274,7 +279,7 @@ class FramingSink <: Sink {
 
         }
 
-        synchronized(http2Stream.mutex) {
+        synchronized (http2Stream.mutex) {
            closed = true
         }
 
@@ -286,6 +291,104 @@ class FramingSink <: Sink {
 
 class BlackHole <: Sink {
     public func write(bytes: Array<Byte>): Unit {}
+
     public func flush(): Unit {}
+
     public func close(): Unit {}
+}
+
+open class ForwardingSink <: Sink {
+    protected let delegate: Sink
+
+    public init(delegate: Sink) {
+        this.delegate = delegate
+    }
+
+    public open func write(bytes: Array<Byte>): Unit {
+        this.delegate.write(bytes)
+    }
+
+    public open func flush(): Unit {
+        this.delegate.flush()
+    }
+
+    public open func close(): Unit {
+        this.delegate.close()
+    }
+}
+
+class FileSink <: Sink {
+
+    let file: File
+
+    init (file: File) {
+        this.file = file
+    }
+
+    public func write(bytes: Array<Byte>): Unit {
+        file.write(bytes)
+    }
+
+    public func flush(): Unit {
+        file.flush()
+    }
+
+    public func close(): Unit {
+        file.close()
+    }
+}
+
+class FaultHidingSink <: ForwardingSink {
+    var hasErrors = false
+    let editor: Editor
+
+    init(sink: Sink, editor: Editor) {
+        super(sink)
+        this.editor = editor
+    }
+
+    public override func write(bytes: Array<Byte>): Unit {
+        if (hasErrors) {
+           return
+        }
+
+        try {
+            super.write(bytes)
+        } catch (e: FSException | EOFException) {
+            hasErrors = true
+            onException()
+        }
+    }
+
+    public override func flush(): Unit {
+        if (hasErrors) {
+           return
+        }
+
+        try {
+            super.flush()
+        } catch (e: FSException | EOFException) {
+            hasErrors = true
+            onException()
+        }
+    }
+
+    public override func close(): Unit {
+        if (hasErrors) {
+           return
+        }
+
+        try {
+            super.close()
+        } catch (e: HttpException | FSException | EOFException) {
+            hasErrors = true
+            onException()
+        }
+    }
+
+    func onException() {
+        synchronized (editor.diskLruCache.lock) {
+            editor.detach()
+        }
+    }
 }

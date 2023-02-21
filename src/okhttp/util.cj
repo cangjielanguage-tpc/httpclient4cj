@@ -26,7 +26,7 @@ class Util {
      * @param socket of Option<Socket>
      * @since 0.29.3
      */
-    public static func closeQuietly <T> (socket: Option<T>): Unit where T<: Resource {
+    static func closeQuietly <T> (socket: Option<T>): Unit where T<: Resource {
 
         match(socket) {
             case Some(s) =>
@@ -50,7 +50,7 @@ class Util {
      * @return Type of Bool
      * @since 0.29.3
      */
-    public static func sameConnection( a: URL, b: URL): Bool {
+    static func sameConnection( a: URL, b: URL): Bool {
         return a.host == b.host
             && a.port() == b.port()
             && a.scheme == b.scheme
@@ -65,7 +65,7 @@ class Util {
      * @return Type of RequestMethod
      * @since 0.29.3
      */
-    public static func getRequestMethod(method: String): RequestMethod {
+    static func getRequestMethod(method: String): RequestMethod {
         match (method) {
             case "GET" => GET
             case "PUT" => PUT
@@ -81,35 +81,35 @@ class Util {
 
     }
 
-    public static func skipUntil(input: String, pos: Int32, characters: String): Int32 {
-        var posi: Int64 = Int64(pos)
+    static func skipUntil(input: String, pos: Int64, characters: String): Int64 {
+        var posi: Int64 = pos
 
         while (posi < input.size) {
-            posi++
             let res: Int64 = characters.indexOf(input.charAt(Int64(posi))) ?? -1
             if (res != -1) {
                 break
             }
+            posi++
         }
 
-        return Int32(posi)
+        return posi
     }
 
-    public static func skipWhitespace(input: String, pos: Int32): Int32 {
-        var posi: Int32 = pos
+    static func skipWhitespace(input: String, pos: Int64): Int64 {
+        var posi: Int64 = pos
 
-        while (posi < Int32(input.size)) {
-            posi++
+        while (posi < input.size) {
             let c: Char = input.charAt(Int64(posi))
-            if (UInt32(c) != UInt32(' ') && UInt32(c) != UInt32('\t')) {
+            if (c != ' ' && c != '\t') {
                 break
             }
+            posi++
         }
 
-        return posi-1
+        return posi
     }
 
-    public static func parseSeconds(value: String, defaultValue: Int64): Int64 {
+    static func parseSeconds(value: String, defaultValue: Int64): Int64 {
         try {
             let seconds: Int32 = Int32.parse(value)
             if (seconds > Int32.Max) {
@@ -124,7 +124,7 @@ class Util {
         }
     }
 
-    public static func verifyAsIpAddress(host: String): Bool {
+    static func verifyAsIpAddress(host: String): Bool {
         match(Regex(VERIFY_AS_IP_ADDRESS).matches(host)) {
             case Some(v) => return true
             case None => return false

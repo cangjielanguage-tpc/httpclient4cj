@@ -53,7 +53,7 @@ class Http2Writer {
     }
 
     func connectionPreface(): Unit {
-        synchronized(mutex) {
+        synchronized (mutex) {
 
             if (closed) {
                 throw HttpException("closed")
@@ -65,7 +65,7 @@ class Http2Writer {
     }
     
     func settings(settings: Settings): Unit {
-        synchronized(mutex) {
+        synchronized (mutex) {
 
             if (closed) {
                 throw HttpException("closed")
@@ -98,7 +98,7 @@ class Http2Writer {
     }
 
     func flush() {
-         synchronized(mutex) {
+         synchronized (mutex) {
             if (closed) {
                 throw HttpException("closed")
             }
@@ -107,7 +107,7 @@ class Http2Writer {
     }
 
     func windowUpdate(streamId: UInt32, windowSizeIncrement: Int64) {
-         synchronized(mutex) {
+         synchronized (mutex) {
              if (closed) {
                  throw HttpException("closed")
              }
@@ -178,7 +178,7 @@ class Http2Writer {
     }
 
     func goAway(lastGoodStreamId: UInt32, errorCode: ErrorCode, debugData: Array<Byte>) {
-        synchronized(mutex) {
+        synchronized (mutex) {
             if (closed) {
                 throw HttpException("closed")
             }
@@ -197,7 +197,7 @@ class Http2Writer {
     }
 
     func headers(outFinished: Bool, streamId: UInt32, headerBlock: ArrayList<HeaderField>) {
-        synchronized(mutex) {
+        synchronized (mutex) {
             if (closed) {
                 throw HttpException("closed")
             }
@@ -242,7 +242,7 @@ class Http2Writer {
     }
 
     func applyAndAckSettings(peerSettings: Settings) {
-        synchronized(mutex) {
+        synchronized (mutex) {
             if (closed) {
                 throw HttpException("closed")
             }
@@ -263,7 +263,7 @@ class Http2Writer {
     }
 
     func ping(reply: Bool, payload1: Int64, payload2: Int64) {
-        synchronized(mutex) {
+        synchronized (mutex) {
             if (closed) {
                 throw HttpException("closed")
             }

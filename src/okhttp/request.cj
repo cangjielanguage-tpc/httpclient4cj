@@ -37,7 +37,7 @@ public class Request <: ToString {
      */
     public init(builder: RequestBuilder) {
         this.url = builder.urlBuild
-        this.header = builder.headerBuild
+        this.header = builder.headerBuild.clone()
         this.method = builder.methodBuild
         this.body = builder.bodyBuild
         this.tags = builder.tagsBuild

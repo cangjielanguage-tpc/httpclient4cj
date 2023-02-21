@@ -26,6 +26,28 @@ public open class HttpException <: Exception {
     }
 }
 
+public class EOFException <: Exception {
+    /**
+     * The Function is init constructor
+     *
+     * @param message of String
+     * @since 0.36.4
+     */
+    public init(message: String) {
+        super(message)
+    }
+
+    /**
+     * The Function is init constructor
+     *
+     * @param message of String
+     * @since 0.36.4
+     */
+    public init() {
+        super("EOF")
+    }
+}
+
 public class RouteException <: Exception {
     private let firstException: HttpException
     private var lastException: HttpException

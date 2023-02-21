@@ -19,7 +19,7 @@ public class okhttp_DNS_001{
     @TestCase
     func okhttp_DNS_001(): Unit {
     let cache: CacheControl = CacheControl.builder()
-                                .maxAge(Duration.second(1000))
+                                .maxAge(1000)
                                 .build()
     let client: OkHttpClient= OkHttpClient.builder().build()
     // let body: okhttp.RequestBody = okhttp.RequestBody("Media-Type", "text/html")

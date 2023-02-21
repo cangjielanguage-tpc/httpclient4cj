@@ -67,7 +67,7 @@ public class H2Stream {
      * @since 0.34.3
      */
     public func getErrorCode(): Option<ErrorCode>  {
-        synchronized(mutex) {
+        synchronized (mutex) {
             return errorCode
         }
     }
@@ -188,7 +188,7 @@ public class H2Stream {
     }
 
     private func closeInternal(rstStatusCode: ErrorCode, errorException: String): Bool {
-        synchronized(mutex) {
+        synchronized (mutex) {
             if (has(errorCode)) {
                return false;
             }
@@ -200,6 +200,7 @@ public class H2Stream {
             this.errorException = errorException
             mutex.notifyAll()
         }
+
         cc.removeStream(id)
         return true
     }
@@ -237,7 +238,7 @@ public class H2Stream {
 
     func receiveHeaders(headers: Header, inFinished: Bool) {
         var opened = false
-        synchronized(mutex) {
+        synchronized (mutex) {
             if (!hasResponseHeaders || !inFinished) {
                 hasResponseHeaders = true
                 headersQueue.append(headers)
@@ -257,7 +258,7 @@ public class H2Stream {
 
 
     func receiveRstStream(errorCode: ErrorCode) {
-        synchronized(mutex) {
+        synchronized (mutex) {
             if (!has(this.errorCode)) {
                 this.errorCode = errorCode
             }
@@ -268,7 +269,7 @@ public class H2Stream {
     func cancelStreamIfNecessary() {
         var opened = false
         var cancel = false
-        synchronized(mutex) {
+        synchronized (mutex) {
             cancel = !source.finished && source.closed && (sink.finished || sink.closed)
             opened = isOpen()
         }
@@ -282,7 +283,7 @@ public class H2Stream {
     }
 
     func addBytesToWriteWindow(delta: Int64) {
-        synchronized(mutex) {
+        synchronized (mutex) {
             bytesLeftInWriteWindow += delta
         }
 

@@ -15,7 +15,8 @@ from std import unicode.*
  * @author guo_tingtingtekla
  * @since 0.30.4
  */
-public class CacheControl {
+public class CacheControl <: ToString {
+
     /**
      * Cache control request directives that require network validation of responses. Note that such
      * requests may be assisted by the cache via conditional GET requests.
@@ -29,16 +30,16 @@ public class CacheControl {
      */
     public static let FORCE_CACHE: CacheControl = CacheControlBuilder()
         .onlyIfCached()
-        .maxStale(Duration.second(Int64(Int32.Max)))
+        .maxStale(Int64(Int32.Max))
         .build()
        
     private var noCacheInit: Bool = true
     
     private var noStoreInit: Bool = true
     
-    private var maxAgeSecondsInit: Int32 = 0
+    private var maxAgeSecondsInit: Int64 = 0
     
-    private var sMaxAgeSecondsInit: Int32 = 0
+    private var sMaxAgeSecondsInit: Int64 = 0
     
     private var isPrivateInit: Bool = true
     
@@ -46,9 +47,9 @@ public class CacheControl {
     
     private var mustRevalidateInit: Bool = true
     
-    private var maxStaleSecondsInit: Int32 = 0
+    private var maxStaleSecondsInit: Int64 = 0
     
-    private var minFreshSecondsInit: Int32 = 0
+    private var minFreshSecondsInit: Int64 = 0
     
     private var onlyIfCachedInit: Bool = true
     
@@ -56,25 +57,12 @@ public class CacheControl {
     
     private var immutableInit: Bool = true
 
-    private static let NO_CACHE: String = "no-cache"
-    private static let NO_STORE: String = "no-store"
-    private static let MAX_AGE: String = "max-age"
-    private static let S_MAXAGE: String = "s-maxage"
-    private static let PUBLIC: String = "public"
-    private static let PRIVATE: String = "private"
-    private static let MUST_REVALIDATE: String = "must-revalidate"
-    private static let MAX_STALE: String = "max-stale"
-    private static let MIN_FRESH: String = "min-fresh"
-    private static let ONLY_IF_CACHED: String = "only-if-cached"
-    private static let NO_TRANSFORM: String = "no-transform"
-    private static let IMMUTABLE: String = "immutable"
-
     // Lazily computed, null if absent
     var headerValue: String = ""
 
-    private init (noCache: Bool, noStore: Bool, maxAgeSeconds: Int32, 
-                    sMaxAgeSeconds: Int32, isPrivate: Bool, isPublic: Bool, 
-                    mustRevalidate: Bool, maxStaleSeconds: Int32, minFreshSeconds: Int32, 
+    private init (noCache: Bool, noStore: Bool, maxAgeSeconds: Int64,
+                    sMaxAgeSeconds: Int64, isPrivate: Bool, isPublic: Bool,
+                    mustRevalidate: Bool, maxStaleSeconds: Int64, minFreshSeconds: Int64,
                     onlyIfCached: Bool, noTransform: Bool, immutable: Bool, headerValue: String)
     {
         this.noCacheInit = noCache
@@ -92,7 +80,7 @@ public class CacheControl {
         this.headerValue = headerValue 
     }
 
-    public init(builder: CacheControlBuilder) {
+    init(builder: CacheControlBuilder) {
         this.noCacheInit = builder.noCacheBuild
         this.noStoreInit = builder.noStoreBuild
         this.maxAgeSecondsInit = builder.maxAgeSeconds
@@ -140,7 +128,7 @@ public class CacheControl {
      * @return Int64
      */
     public func maxAgeSeconds(): Int64 {
-        return Int64(maxAgeSecondsInit)
+        return maxAgeSecondsInit
     }
 
     /**
@@ -150,7 +138,7 @@ public class CacheControl {
      * @return Int64
      */
     public func sMaxAgeSeconds(): Int64 {
-        return Int64(sMaxAgeSecondsInit)
+        return sMaxAgeSecondsInit
     }
 
     /**
@@ -186,11 +174,11 @@ public class CacheControl {
     /**
      * The Function is maxStaleSeconds
      *
-     * @return Type of Int32
+     * @return Type of Int64
      * @since 0.30.4
      */
     public func maxStaleSeconds(): Int64 {
-        return Int64(maxStaleSecondsInit)
+        return maxStaleSecondsInit
     }
 
     /**
@@ -200,7 +188,7 @@ public class CacheControl {
      * @since 0.30.4
      */
     public func minFreshSeconds(): Int64 {
-        return Int64(minFreshSecondsInit)
+        return minFreshSecondsInit
     }
 
     /**
@@ -233,81 +221,45 @@ public class CacheControl {
         return immutableInit
     }
 
-    private static func makeNameValues(header: Header): ArrayList<String> {
-        var ss: ByteArrayStream = ByteArrayStream()
-        header.writeTo(ss)
-        let nameAndValue: Array<String> = String.fromUtf8(ss.readToEnd()).split("\r\n")
-        let nvSize = nameAndValue.size
-        var head: ArrayList<String> = ArrayList<String>()
-
-        for (i in 0..nvSize-1) {
-            head.append(nameAndValue[i])
-        }
-
-        let headers: ArrayList<String> = ArrayList<String>()
-        let headSize = head.size
-        for (i in 0..headSize) {
-            let c: Array<String> = head[i].split(":")
-            headers.appendAll(c)
-        }
-        return headers
-    }
-
-    /**
-     * The Function is parse
-     *
-     * @param header of Header
-     *
-     * @return Type of CacheControl
-     * @since 0.30.4
-     */
     public static func parse(header: Header): CacheControl {
-        let map: HashMap<String,String> =  HashMap<String,String>()
-        map.put(NO_CACHE, "false")
-        map.put(NO_STORE, "false")
-        map.put(MAX_AGE, "-1")
-        map.put(S_MAXAGE, "-1")
-        map.put(PUBLIC, "false")
-        map.put(PRIVATE, "false")
-        map.put(MUST_REVALIDATE, "false")
-        map.put(MAX_STALE, "-1")
-        map.put(MIN_FRESH, "-1")
-        map.put(ONLY_IF_CACHED, "false")
-        map.put(NO_TRANSFORM, "false")
-        map.put(IMMUTABLE, "false")
-        let headerValue: String = parseNameValues(header, map)
-        return CacheControl(Bool.parse(map[NO_CACHE]), Bool.parse(map[NO_STORE]), Int32.parse(map[MAX_AGE]),
-            Int32.parse(map[S_MAXAGE]), Bool.parse(map[PRIVATE]), Bool.parse(map[PUBLIC]),
-            Bool.parse(map[MUST_REVALIDATE]), Int32.parse(map[MAX_STALE]), Int32.parse(map[MIN_FRESH]),
-            Bool.parse(map[ONLY_IF_CACHED]), Bool.parse(map[NO_TRANSFORM]), Bool.parse(map[IMMUTABLE]),
-            headerValue.trim())
-    }
-
-    private static func parseNameValues(header: Header, map: HashMap<String,String>): String {
-        let headers: ArrayList<String> = makeNameValues(header)
-        var headerValue: String = ""
+        var noCache: Bool = false
+        var noStore: Bool = false
+        var maxAgeSeconds: Int64 = -1
+        var sMaxAgeSeconds: Int64 = -1
+        var isPrivate: Bool = false
+        var isPublic: Bool = false
+        var mustRevalidate: Bool = false
+        var maxStaleSeconds: Int64 = -1
+        var minFreshSeconds: Int64 = -1
+        var onlyIfCached: Bool = false
+        var noTransform: Bool = false
+        var immutable: Bool = false
         var canUseHeaderValue: Bool = true
-        var index: Int64 = 0
+        var headerValue: String = ""
 
-        for (i in 0..headers.size/2) {
-            index++
-            let name: String = headers[i * 2]
-            let value: String = headers[i * 2 + 1]
-            if (name.toLower().equals("cache-control")) {
-                if (!headerValue.isEmpty()) {
+        for ((k,v) in header) {
+            let name = k
+            let value = v[0]
+
+            if (equalsIgnoreCase(name, "cache-control")) {
+                if (v.size > 1) {
+                    // Multiple cache-control headers means we can't use the raw value.
                     canUseHeaderValue = false
                 } else {
                     headerValue = value
                 }
-            } else if (name.toLower().equals("pragma")) {
+            } else if (equalsIgnoreCase("name", "pragma")) {
+                // Might specify additional cache-control params. We invalidate just in case.
                 canUseHeaderValue = false
             } else {
                 continue
             }
+
             var pos: Int64 = 0
+
             while (pos < value.size) {
                 let tokenStart: Int64 = pos
-                pos = Int64(Util.skipUntil(value, Int32(pos), "=,;"))
+                pos = Util.skipUntil(value, pos, "=,;")
                 let directive: String = value.substring(tokenStart, pos - tokenStart).trim()
                 var parameter: String = ""
                 if (pos == value.size || value.charAt(pos) == ',' || value.charAt(pos) == ';') {
@@ -315,44 +267,56 @@ public class CacheControl {
                     parameter = ""
                 } else {
                     pos++ // consume '='
-                    pos = Int64(Util.skipWhitespace(value, Int32(pos)))
+                    pos = Util.skipWhitespace(value, pos)
+
                     if (pos < value.size && value.charAt(pos) == '\"') {
                         pos++ // consume '"' open quote
                         let parameterStart: Int64 = pos
-                        pos = Int64(Util.skipUntil(value, Int32(pos), "\""))
+                        pos = Util.skipUntil(value, pos, "\"")
                         parameter = value.substring(parameterStart, pos - parameterStart)
                         pos++ // consume '"' close quote (if necessary)
                     } else {
                         let parameterStart: Int64 = pos
-                        pos = Int64(Util.skipUntil(value, Int32(pos), ",;"))
+                        pos = Util.skipUntil(value, pos, ",;")
                         parameter = value.substring(parameterStart, pos - parameterStart).trim()
                     }
                 }
-               parseDirective(directive, map, parameter)
-               if (!canUseHeaderValue) {
-                   headerValue = ""
-               }
+
+                if (equalsIgnoreCase("no-cache", directive)) {
+                    noCache = true
+                } else if (equalsIgnoreCase("no-store", directive)) {
+                    noStore = true
+                } else if (equalsIgnoreCase("max-age", directive)) {
+                    maxAgeSeconds = Util.parseSeconds(parameter, -1)
+                } else if (equalsIgnoreCase("s-maxage", directive)) {
+                    sMaxAgeSeconds = Util.parseSeconds(parameter, -1)
+                } else if (equalsIgnoreCase("private", directive)) {
+                    isPrivate = true
+                } else if (equalsIgnoreCase("public", directive)) {
+                    isPublic = true
+                } else if (equalsIgnoreCase("must-revalidate", directive)) {
+                    mustRevalidate = true
+                } else if (equalsIgnoreCase("max-stale", directive)) {
+                    maxStaleSeconds = Util.parseSeconds(parameter, Int64(Int32.Max))
+                } else if (equalsIgnoreCase("min-fresh", directive)) {
+                    minFreshSeconds = Util.parseSeconds(parameter, -1)
+                } else if (equalsIgnoreCase("only-if-cached", directive)) {
+                    onlyIfCached = true
+                } else if (equalsIgnoreCase("no-transform", directive)) {
+                    noTransform = true
+                } else if (equalsIgnoreCase("immutable", directive)) {
+                    immutable = true
+                }
             }
         }
-        return headerValue
-    }
 
-    private static func parseDirective (directive: String, map: HashMap<String,String>, parameter: String): Unit {
-        match (directive.toLower()) {
-            case "no-cache" => map.put(NO_CACHE, "true")
-            case "no-store" => map.put(NO_STORE, "true")
-            case "max-age" => map.put(MAX_AGE, "${Util.parseSeconds(parameter, -1)}")
-            case "s-maxage" => map.put(S_MAXAGE, "${Util.parseSeconds(parameter, -1)}")
-            case "public" =>  map.put(PUBLIC, "true")
-            case "private" => map.put(PRIVATE, "true")
-            case "must-revalidate" => map.put(MUST_REVALIDATE, "true")
-            case "max-stale" =>  map.put(MAX_STALE, "${Util.parseSeconds(parameter, Int64(Int32.Max))}")
-            case "min-fresh" => map.put(MIN_FRESH, "${Util.parseSeconds(parameter, -1)}")
-            case "only-if-cached" => map.put(ONLY_IF_CACHED, "true")
-            case "no-transform" => map.put(NO_TRANSFORM, "true")
-            case "immutable" => map.put(IMMUTABLE, "true")
-            case _ => ()
+        if (!canUseHeaderValue) {
+            headerValue = ""
         }
+
+        return CacheControl(noCache, noStore, maxAgeSeconds, sMaxAgeSeconds, isPrivate, isPublic,
+        mustRevalidate, maxStaleSeconds, minFreshSeconds, onlyIfCached, noTransform, immutable,
+        headerValue)
     }
 
     /**
@@ -366,12 +330,12 @@ public class CacheControl {
         if (result != "") {
            return result 
         } else { 
-            headerValue = headerValueFunc()
+            headerValue = getHeaderValue()
             return headerValue
         }    
     }
 
-    private func headerValueFunc(): String {
+    private func getHeaderValue(): String {
         var result: StringBuilder = StringBuilder()
         if (noCacheInit) { result.append("no-cache, ") }
         if (noStoreInit) { result.append("no-store, ") }

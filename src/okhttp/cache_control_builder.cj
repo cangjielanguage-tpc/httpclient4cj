@@ -15,21 +15,21 @@ package okhttp
  * @since 0.30.4
  */
 public class CacheControlBuilder <: Builder<CacheControl> {
-    public var noCacheBuild: Bool = true
+    public var noCacheBuild: Bool = false
     
-    public var noStoreBuild: Bool = true
+    public var noStoreBuild: Bool = false
     
-    public var maxAgeSeconds: Int32 = -1
+    public var maxAgeSeconds: Int64 = -1
     
-    public var maxStaleSeconds: Int32 = -1
+    public var maxStaleSeconds: Int64 = -1
     
-    public var minFreshSeconds: Int32 = -1
+    public var minFreshSeconds: Int64 = -1
     
-    public var onlyIfCachedBuild: Bool = true
+    public var onlyIfCachedBuild: Bool = false
     
-    public var noTransformBuild: Bool = true
+    public var noTransformBuild: Bool = false
     
-    public var immutableBuild: Bool = true
+    public var immutableBuild: Bool = false
     
     /**
      * Do not use cache, all go online
@@ -55,14 +55,15 @@ public class CacheControlBuilder <: Builder<CacheControl> {
      * Sets the maximum age of a cached response. If the cache response is age exceeds 
      * maxAge, it will not be used and a network request will be made.
      *
-     * @param maxAge a non-negative integer
-     * @param TimeUnit of Duration
+     * @param maxAge of Int64
      * 
      * @return CacheControlBuilder
      */
-    public func maxAge(timeUnit: Duration): CacheControlBuilder {
-        let maxAgeSecondsLong: Int64 = timeUnit.seconds()
-        this.maxAgeSeconds = if ( maxAgeSecondsLong >  Int64(Int32.Max) ) { Int32.Max } else { Int32(maxAgeSecondsLong) }
+    public func maxAge(maxAge: Int64): CacheControlBuilder {
+        if (maxAge < 0) {
+            throw IllegalArgumentException("maxAge : ${maxAge} < 0")
+        }
+        this.maxAgeSeconds = maxAge
         return this
     }
 
@@ -70,14 +71,15 @@ public class CacheControlBuilder <: Builder<CacheControl> {
      * Accept cached responses that have exceeded their freshness lifetime by up to 
      * maxStale. If unspecified, stale cache responses will not be used.
      *
-     * @param maxStale a non-negative integer
-     * @param TimeUnit of Duration
+     * @param maxStale of Int64
      * 
      * @return CacheControlBuilder
      */
-    public func maxStale(timeUnit: Duration): CacheControlBuilder {
-        let maxStaleSecondsLong: Int64 = timeUnit.seconds()
-        this.maxStaleSeconds = if ( maxStaleSecondsLong >  Int64(Int32.Max) ) {Int32.Max } else { Int32(maxStaleSecondsLong) }
+    public func maxStale(maxStale: Int64): CacheControlBuilder {
+        if (maxStale < 0) {
+            throw IllegalArgumentException("maxStale : ${maxStale} < 0")
+        }
+        this.maxStaleSeconds = maxStale
         return this
     }
 
@@ -86,14 +88,15 @@ public class CacheControlBuilder <: Builder<CacheControl> {
      * response will be stale when  minFresh have elapsed, the cached response will not be
      * used and a network request will be made.
      *
-     * @param minFresh a non-negative integer
-     * @param TimeUnit of Duration
+     * @param minFresh of Int64
      * 
      * @return CacheControlBuilder
      */
-    public func minFresh(timeUnit: Duration): CacheControlBuilder {
-        let minFreshSecondsLong: Int64 = timeUnit.seconds()
-        this.maxStaleSeconds = if ( minFreshSecondsLong >  Int64(Int32.Max) ) {Int32.Max } else { Int32(minFreshSecondsLong) }
+    public func minFresh(minFresh: Int64): CacheControlBuilder {
+        if (minFresh < 0) {
+            throw IllegalArgumentException("minFresh : ${minFresh} < 0")
+        }
+        this.minFreshSeconds = minFresh
         return this
     }
 

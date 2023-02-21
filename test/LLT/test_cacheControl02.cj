@@ -16,7 +16,7 @@ main() {
     sleep(1000*1000*1000)
 
     let cache: CacheControl = CacheControl.builder()
-                                .maxAge(Duration.second(1000))
+                                .maxAge(1000)
                                 .build()
     let client: OkHttpClient= OkHttpClient.builder().build()
     let request: okhttp.Request = okhttp.Request.builder()

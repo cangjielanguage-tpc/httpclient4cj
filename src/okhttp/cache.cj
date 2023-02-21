@@ -9,7 +9,6 @@
 package okhttp
 
 
-let VERSION: Int64 = 202212
 let ENTRY_COUNT: Int64 = 2
 let ENTRY_METADATA: Int64 = 0
 let ENTRY_BODY: Int64 = 1
@@ -21,38 +20,47 @@ let READ: String = "READ"
 let JOURNAL_FILE: String = "journal"
 let JOURNAL_FILE_TEMP: String = "journal.tmp"
 let JOURNAL_FILE_BACKUP: String = "journal.bkp"
-let VERSION_1: String = "1"
+let VERSION_1: String = "20230228"
 let ANY_SEQUENCE_NUMBER = -1
-let MAGIC: String = "libcore.io.DiskLruCache"
+let MAGIC: String = "OKHTTP"
 
-public class Cache {
+/** Synthetic response header: the local time when the request was sent. */
+let SENT_MILLIS = "OkHttp-Sent-Millis";
+
+/** Synthetic response header: the local time when the response was received. */
+let RECEIVED_MILLIS = "OkHttp-Received-Millis"
+
+
+public class Cache <: Resource {
     let cache: DiskLruCache
     let lock: Monitor = Monitor()
 
     private var requestCount: Int64 = 0
     private var hitCount: Int64 = 0
-    private var writeSuccessCount: Int64 = 0
+    var writeSuccessCount: Int64 = 0
     private var writeAbortCount: Int64 = 0
     private var networkCount: Int64 = 0
 
 
     public init(directoryPath: String, maxSize: Int64) {
         let directory: Directory
+
         if (!Directory.exists(directoryPath)) {
             directory = Directory.create(directoryPath, recursive: true)
         } else {
             directory = Directory(directoryPath)
         }
-        this.cache = DiskLruCache.create(FileSystem(directory), directory, VERSION, ENTRY_COUNT, maxSize)
+
+        this.cache = DiskLruCache.create(FileSystem(directory), directory, ENTRY_COUNT, maxSize)
     }
 
 
     func trackResponse(cacheStrategy: CacheStrategy) {
-        synchronized(lock) {
+        synchronized (lock) {
              requestCount++
              if (has(cacheStrategy.networkRequest)) {
                 networkCount++
-             } else if(has(cacheStrategy.cacheResponse)) {
+             } else if (has(cacheStrategy.cacheResponse)) {
                 hitCount++
              }
          }
@@ -91,7 +99,7 @@ public class Cache {
     }
 
     func trackConditionalCacheHit() {
-         synchronized(lock) {
+         synchronized (lock) {
             hitCount++
         }
     }
@@ -107,13 +115,13 @@ public class Cache {
                 case Some(v) =>
                     snapshot = v
             }
-        } catch (e: Exception) {
+        } catch (e: FSException | EOFException) {
             return Option<Response>.None
         }
 
         try {
             entry = CacheEntry(snapshot.getSource(ENTRY_METADATA))
-        } catch (e: Exception) {
+        } catch (e: FSException | EOFException) {
             Util.closeQuietly(snapshot)
             return Option<Response>.None
         }
@@ -127,7 +135,7 @@ public class Cache {
         if (invalidatesCache(requestMethod)) {
             try {
                 remove(response.getRequest())
-            } catch (ignored: HttpException) {
+            } catch (ignored: FSException | EOFException) {
 
             }
             return None
@@ -145,7 +153,8 @@ public class Cache {
         }
 
         let entry: CacheEntry = CacheEntry(response)
-        let editor: Option<Editor>
+        var editor: Option<Editor> = Option<Editor>.None
+
         try {
             editor = cache.edit(key(response.getRequest().getUrl()))
             if (!has(editor)) {
@@ -155,16 +164,25 @@ public class Cache {
             entry.writeTo(realEditor)
             return CacheRequest(realEditor, this)
         } catch (e: IOException) {
-            //TODO abort
+            try {
+                match (editor) {
+                    case Some(e) => e.abort()
+                    case None => ()
+                }
+            } catch (e: FSException | EOFException) {
+                // ignored
+            }
         }
 
-
-        //TODO LRU
         return Option<CacheRequest>.None
     }
 
-    func key(url: URL) {
-        return url.toString()
+    public static func key(url: URL): String {
+        return url.toString().substring(url.toString().size -5 ,5)
+    }
+
+    public func getDirectory(): Directory {
+        return cache.directory
     }
 
     func remove(request: Request) {
@@ -172,14 +190,76 @@ public class Cache {
     }
 
 
+    public func initialize(): Unit {
+        cache.initialize()
+    }
+
+    public func delete(): Unit {
+        cache.delete()
+    }
+
+    public func evictAll(): Unit {
+        cache.evictAll()
+    }
+
+    public func urls(): Iterator<String> {
+        return CacheIterator(this)
+    }
+
+    public func flush(): Unit {
+        cache.flush()
+    }
+
+    public func close(): Unit {
+        cache.close()
+    }
+
+    public func getSize(): Int64 {
+        cache.getSize()
+    }
+
+    public func getMaxSize(): Int64 {
+        cache.getMaxSize()
+    }
+
+    public func isClosed(): Bool {
+        cache.isClosed()
+    }
+
+}
+
+class CacheIterator <: Iterator<String> {
+    let cache: Cache
+    let delegate: Iterator<Snapshot>
+
+    init (cache: Cache) {
+        this.cache = cache
+        this.delegate = cache.cache.snapshots()
+    }
+
+    public func next(): Option<String> {
+        while (true) {
+            match (delegate.next()) {
+                case None =>
+                    return Option<String>.None
+                case Some(snapshot) =>
+                    try {
+                        let source = snapshot.getSource(ENTRY_METADATA)
+                        return source.readUtf8Line()
+                    } catch (e: FSException | EOFException) {
+                        return Option<String>.None
+                    }
+            }
+        }
+        return Option<String>.None
+    }
+
+    public func iterator(): Iterator<String> {
+        return this
+    }
 }
 
 class CacheEntry {
-    /** Synthetic response header: the local time when the request was sent. */
-    private static let SENT_MILLIS = "OkHttp-Sent-Millis";
-
-    /** Synthetic response header: the local time when the response was received. */
-    private static let RECEIVED_MILLIS = "OkHttp-Received-Millis"
 
     private let url: String
     private let varyHeaders: Header
@@ -205,30 +285,43 @@ class CacheEntry {
     
     init (source: OkBuffer) {
         try {
-            let urlString = source.readUtf8LineStrict()
+            let urlString = source.readUtf8Line()
             url = urlString
-            requestMethod = source.readUtf8LineStrict()
-            let varyRequestHeaderLineCount: Int64 = Int64(Int32(source.readByte()) << 24| Int32(source.readByte()) << 16
-                 | Int32(source.readByte()) << 8 | Int32(source.readByte()))
-            let varyHeader: Header = Header()
-            for (i in 0..varyRequestHeaderLineCount) {
-                addLenient(varyHeader, source.readUtf8LineStrict())
+            requestMethod = source.readUtf8Line()
+            let varyRequestHeaderLineCount: Int64
+
+            try {
+                varyRequestHeaderLineCount = Int64.parse(source.readUtf8Line())
+            } catch(e: Exception) {
+                throw HttpException(e.message)
             }
+
+            let varyHeader: Header = Header()
+
+            for (i in 0..varyRequestHeaderLineCount) {
+                addLenient(varyHeader, source.readUtf8Line())
+            }
+
             this.varyHeaders = varyHeader
-            let statusLine: StatusLine = StatusLine.parse(source.readUtf8LineStrict())
+            let statusLine: StatusLine = StatusLine.parse(source.readUtf8Line())
             protocol = statusLine.protocol
             code = statusLine.code
             message = statusLine.message
-
             let responseHeader: Header = Header()
-            let responseHeaderLineCount: Int64 = Int64(Int32(source.readByte()) << 24| Int32(source.readByte()) << 16
-                | Int32(source.readByte()) << 8 | Int32(source.readByte()))
-            for (i in 0..varyRequestHeaderLineCount) {
-                addLenient(responseHeader, source.readUtf8LineStrict())
+            let responseHeaderLineCount: Int64
+
+            try {
+                responseHeaderLineCount = Int64.parse(source.readUtf8Line())
+            } catch(e: Exception) {
+                throw HttpException(e.message)
             }
+
+            for (i in 0..responseHeaderLineCount) {
+                addLenient(responseHeader, source.readUtf8Line())
+            }
+
             let sendRequestMillisString: String = responseHeader.get(SENT_MILLIS).getOrThrow()
             let receivedResponseMillisString: String = responseHeader.get(RECEIVED_MILLIS).getOrThrow()
-
             sentRequestMillis = match (Int64.tryParse(sendRequestMillisString)) {
                 case None => 0
                 case Some(v) => v
@@ -243,9 +336,7 @@ class CacheEntry {
             responseHeaders = responseHeader
 
             //TODO https
-            //if(urlString.startsWith("https://")) {
 
-            //}
         } finally {
             source.close()
         }
@@ -282,7 +373,6 @@ class CacheEntry {
         sink.write("\n".toUtf8Array())
         sink.write(requestMethod.toUtf8Array())
         sink.write("\n".toUtf8Array())
-        //sink.write("${varyHeaders.getAll().size()}".toUtf8Array())
         var size = 0
         let list: ArrayList<Byte> = ArrayList<Byte>()
         for ((k, v) in varyHeaders) {
@@ -291,35 +381,28 @@ class CacheEntry {
             list.appendAll(": ".toUtf8Array())
             list.appendAll(v[0].toUtf8Array())
             list.appendAll("\n".toUtf8Array())
-            //sink.write(k.toUtf8Array())
-            //sink.write(": ".toUtf8Array())
-            //sink.write(v[0].toUtf8Array())
-            //sink.write("\n".toUtf8Array())
         }
         sink.write("${size}".toUtf8Array())
+        sink.write("\n".toUtf8Array())
         sink.write(list.toArray())
-        list.clear
+        list.clear()
         size = 0
 
 
         sink.write("${StatusLine(protocol, code, message)}".toUtf8Array())
         sink.write("\n".toUtf8Array())
-        //sink.write("${responseHeaders.getAll().size() + 2 }".toUtf8Array())
-        sink.write("\n".toUtf8Array())
+
         for ((k, v) in responseHeaders) {
             size++
-            for(i in 0..v.size) {
+            for (i in 0..v.size) {
                 list.appendAll(k.toUtf8Array())
                 list.appendAll(": ".toUtf8Array())
                 list.appendAll(v[i].toUtf8Array())
                 list.appendAll("\n".toUtf8Array())
-                //sink.write(k.toUtf8Array())
-                //sink.write(": ".toUtf8Array())
-                //sink.write(v[i].toUtf8Array())
-                //sink.write("\n".toUtf8Array())
             }
         }
         sink.write("${size + 2}".toUtf8Array())
+        sink.write("\n".toUtf8Array())
         sink.write(list.toArray())
         sink.write(SENT_MILLIS.toUtf8Array())
         sink.write(": ".toUtf8Array())
@@ -329,11 +412,7 @@ class CacheEntry {
         sink.write(": ".toUtf8Array())
         sink.write("${receivedResponseMillis}".toUtf8Array())
         sink.write("\n".toUtf8Array())
-        //if (isHttps()) {
 
-       // }
-        sink.write(SENT_MILLIS.toUtf8Array())
-        sink.write(SENT_MILLIS.toUtf8Array())
         //TODO https
         sink.close()
     }
@@ -342,9 +421,6 @@ class CacheEntry {
 
 class CacheResponseBody <: ResponseBody {
     let snapshot: Snapshot
-    //TODO delete
-    //private let bodySource: OkBuffer
-    //private let contentLength: String
     
     init(snapshot: Snapshot, contentType: String, contentLength: String) {
          super(contentType, match(Int64.tryParse(contentLength)) {
@@ -357,13 +433,55 @@ class CacheResponseBody <: ResponseBody {
 }
 
 
-public class CacheRequest {
+public class CacheRequest <: Sink {
     private let editor: Editor
     private let cache: Cache
+    private let cacheOut: Sink
+    private var done = false
 
     init(editor: Editor, cache: Cache) {
         this.editor = editor
         this.cache = cache
+        this.cacheOut = editor.newSink(ENTRY_BODY)
     }
 
+    public func write(bytes: Array<Byte>): Unit {
+        this.cacheOut.write(bytes)
+    }
+
+    public func flush(): Unit {
+        this.cacheOut.flush()
+    }
+
+    public func close(): Unit {
+
+        synchronized (cache.lock) {
+            if (done) {
+              return
+            }
+            done = true
+            cache.writeSuccessCount++
+        }
+
+        cacheOut.close()
+        editor.commit()
+    }
+
+    public func abort() {
+        synchronized (cache.lock) {
+            if (done) {
+              return
+            }
+            done = true
+            cache.writeSuccessCount++
+        }
+
+        cacheOut.close()
+
+        try {
+            editor.abort()
+        } catch (ignored: IOException | HttpException) {
+
+        }
+    }
 }
