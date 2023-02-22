@@ -134,16 +134,24 @@ public class H2Connection {
         synchronized (muLock) {
             streamMap.removeIf({
                 id: UInt32, stream: H2Stream =>
-                    stream.close(streamCode, cause)
+                    try {
+                        stream.close(streamCode, cause)
+                    } catch (ignored: SocketException) {
+
+                    }
                     return true
             })
         }
 
-        writer.close()
+        try {
+            writer.close()
+        } catch ( ignored: SocketException) {
+
+        }
 
         try {
             socket.close()
-        } catch ( ignored: Exception) {
+        } catch ( ignored: SocketException) {
 
         }
     }
