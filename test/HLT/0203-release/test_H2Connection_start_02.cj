@@ -35,19 +35,20 @@ public class okhttp_H2Connection_01{
                                                             .header("content-type",formBody.contentType().getOrThrow().toString())
                                                             .build()
 
-        println("step04")
         var h2stream=h2conn.newStream(request)
         var ba=ByteArrayStream()
         var arr01=Array<Byte>(100,item:8)
-        println("step01")
         ba.write(arr01)
-        println("step02")
         h2conn.writeData(h2stream.getId(),true,ba,100)
-        println("step03")
         h2conn.start()
-        println("step05")
         sleep(1000*1000*1000)
+        var flag=1
+        try{
+            h2conn.writeData(h2stream.getId(),true,ba,100)
+        }catch(e:Exception){
+            flag=0
+        }
+        @Assert(flag,0)
         @Assert(h2stream.getErrorCode().getOrThrow().toString(),"PROTOCOL_ERROR")
-        h2conn.writeData(h2stream.getId(),true,ba,100)
     }
 }

@@ -107,18 +107,27 @@ public class OkBuffer <: Source {
                }
            } else {
               while (offSet < end) {
-                 for (i in offSet..buffer.length) {
-                     if (buffer.bytes()[i] == b) {
-                       return i
+                 if (offSet < buffer.length) {
+                     for (i in offSet..buffer.length) {
+                         if (i > end) {
+                            return -1
+                         }
+
+                         if (buffer.bytes()[i] == b) {
+                             return i
+                         }
                      }
+
+                     offSet = buffer.length
                  }
-                 offSet = buffer.length
+
                  if (read(Array<Byte>(4096, item: 0)) == -1) {
                      return -1
                  }
               }
            }
-           return 0
+
+           return -1
         } else {
              throw IllegalArgumentException("from=${start} to=${end}")
         }
@@ -140,9 +149,8 @@ public class OkBuffer <: Source {
                 break
             }
 
-            if (indexLF !=0 ) {
+            if (indexLF !=0) {
                 let indexCR = indexOf(0xDu8, indexLF - 1, indexLF)
-
                 if (indexCR + 1 == indexLF) {
 
                     if (indexCR == 0) {
@@ -157,15 +165,13 @@ public class OkBuffer <: Source {
                     skipBuffer(2)
 
                     return line
-                } else if (indexCR == -1) {
-                    break
                 }
             }
 
             index = indexLF + 1
         }
 
-        throw EOFException("can't find CRLF line")
+        throw EOFException(##"can't find CRLF line"##)
     }
 
     public func readUtf8Line(): String {
@@ -179,7 +185,7 @@ public class OkBuffer <: Source {
 
         let indexLF = indexOf(0xAu8, 0, limit)
         if (indexLF == -1) {
-            throw EOFException("can't find '\n' line")
+            throw EOFException(##"can't find '\n' line"##)
         }
 
         if (indexLF == 0) {
@@ -198,6 +204,8 @@ public class OkBuffer <: Source {
         if (closed) {
             return
         }
+
+        closed = true
         buffer.clear()
         match (source) {
             case r: Resource => r.close()
