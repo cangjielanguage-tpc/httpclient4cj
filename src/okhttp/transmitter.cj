@@ -310,7 +310,7 @@ public class Transmitter {
      public func exchangeDoneDueToException(): Unit {
         synchronized (connectionPool.mutex) {
           if (noExchanges) {
-             throw HttpException("IllegalStateException");
+             throw IllegalStateException("");
           }
           exchange = None
         }

@@ -146,7 +146,7 @@ class RealCall<: Call {
      * @return Type of Response
      * @since 0.29.3
      */
-    public func getResponseWithInterceptorChain(): Response {
+    func getResponseWithInterceptorChain(): Response {
        let interceptors: ArrayList<Interceptor> = ArrayList<Interceptor>()
        interceptors.appendAll(client.getInterceptors())
        interceptors.append(RetryAndFollowUpInterceptor(client))
@@ -201,7 +201,7 @@ class RealCall<: Call {
      * @return Type of RealCall
      * @since 0.29.3
      */
-    public static func newRealCall( client: OkHttpClient,  originalRequest: Request,  forWebSocket: Bool): RealCall {
+    static func newRealCall( client: OkHttpClient,  originalRequest: Request,  forWebSocket: Bool): RealCall {
          let call: RealCall = RealCall(client, originalRequest, forWebSocket)
          call.transmitter = Transmitter(client, call)
          return call
