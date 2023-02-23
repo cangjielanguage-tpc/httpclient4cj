@@ -81,7 +81,7 @@ public class Dispatcher {
      */
     public func setMaxRequestsPerHost(maxRequestsPerHost: Int64): Unit {
         if (maxRequestsPerHost < 1) {
-          throw  IllegalArgumentException("max < 1: ${ maxRequestsPerHost}")
+          throw IllegalArgumentException("max < 1: ${ maxRequestsPerHost}")
         }
 
         synchronized (mutex) {
