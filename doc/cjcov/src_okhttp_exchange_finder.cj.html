@@ -284,12 +284,12 @@ pre
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2022-12-29 14:38:50</td>
+            <td class="headerValue">2023-02-24 11:13:25</td>
             <td></td>
             <td class="headerName">Lines:</td>
-            <td class="headerTableEntry">165</td>
-            <td class="headerTableEntry">197</td>
-            <td class="headerTableEntry" style="background-color:Yellow">83.8 %</td>
+            <td class="headerTableEntry">167</td>
+            <td class="headerTableEntry">199</td>
+            <td class="headerTableEntry" style="background-color:Yellow">83.9 %</td>
           </tr>
           <tr>
             <td class="headerName">Legend:</td>
@@ -773,14 +773,14 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>76</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            trackFailure()</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            trackFailure()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>77</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            throw RouteException(e1.message, e1)</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            throw RouteException(e1.message, e1)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>78</pre></td>
@@ -1349,8 +1349,8 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>172</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                throw HttpException("Transmitter has Canceled")</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                throw HttpException("Transmitter has Canceled")</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>173</pre></td>
@@ -2111,8 +2111,8 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>299</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                case None =&gt; ()</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                case None =&gt; ()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>300</pre></td>
@@ -2273,8 +2273,8 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>326</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        } catch (e: HttpException) {</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>        } catch (e: HttpException) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>327</pre></td>
@@ -2531,236 +2531,236 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>369</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        let rawRequestBody: Sink = codec.createRequestBody(request)</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        let rawRequestBody: Sink</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>370</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        return RequestBodySink(rawRequestBody, contentLength, this)</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (contentLength != -1) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>371</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            rawRequestBody = RealBufferSink(codec.createRequestBody(request))</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>372</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="left" class="src "><pre>        } else {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>373</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public func writeRequestHeaders(request: Request): Unit {</pre></td>
+<td align="left" class="src coveredLine"><pre>            rawRequestBody = codec.createRequestBody(request)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>374</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        try {</pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>375</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            eventListener.requestHeadersStart(call)</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>376</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            codec.writeRequestHeaders(request)</pre></td>
+<td align="left" class="src coveredLine"><pre>        return RequestBodySink(rawRequestBody, contentLength, this)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>377</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>378</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>379</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func writeRequestHeaders(request: Request): Unit {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>380</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        try {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>381</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            eventListener.requestHeadersStart(call)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>382</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            codec.writeRequestHeaders(request)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>383</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            eventListener.requestHeadersEnd(call)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>378</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        } catch (e: HttpException) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>379</pre></td>
+<td align="right" class="lineno"><pre>384</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            eventListener.requestFailed(call, e)</pre></td>
+<td align="left" class="src uncoveredLine"><pre>        } catch (e: SocketException | IOException) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>380</pre></td>
+<td align="right" class="lineno"><pre>385</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            trackFailure(e)</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            eventListener.requestFailed(call, HttpException(e.message))</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>381</pre></td>
+<td align="right" class="lineno"><pre>386</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            trackFailure(HttpException(e.message))</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>387</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            throw e</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>382</pre></td>
+<td align="right" class="lineno"><pre>388</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>383</pre></td>
+<td align="right" class="lineno"><pre>389</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>384</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>385</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public func flushRequest(): Unit {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>386</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        try {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>387</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            codec.flushRequest()</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>388</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        } catch (e: HttpException) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>389</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            trackFailure(e)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>390</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>            throw e</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>391</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func flushRequest(): Unit {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>392</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="left" class="src "><pre>        try {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>393</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            codec.flushRequest()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>394</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public func finishRequest(): Unit {</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>        } catch (e: SocketException | IOException) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>395</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        try {</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            trackFailure(HttpException(e.message))</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>396</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            codec.finishRequest()</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>397</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        } catch (e: HttpException) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>398</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            trackFailure(e)</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>399</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            throw e</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>400</pre></td>
+<td align="right" class="lineno"><pre>397</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>401</pre></td>
+<td align="right" class="lineno"><pre>398</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>402</pre></td>
+<td align="right" class="lineno"><pre>399</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>403</pre></td>
+<td align="right" class="lineno"><pre>400</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    func bodyComplete(bytesRead: Int64, responseDone: Bool, requestDone: Bool, exception: Option&lt;HttpException&gt;): Unit {</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func finishRequest(): Unit {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>401</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        try {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>402</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            codec.finishRequest()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>403</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>        } catch (e: SocketException | IOException) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>404</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        match(exception) {</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            trackFailure(HttpException(e.message))</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>405</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            case Some(e) =&gt; trackFailure(e)</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>            throw e</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>406</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            case None =&gt; ()</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>407</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>408</pre></td>
@@ -2772,142 +2772,178 @@ pre
 <td align="right" class="lineno"><pre>409</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        if (requestDone) {</pre></td>
+<td align="left" class="src coveredLine"><pre>    func bodyComplete(bytesRead: Int64, responseDone: Bool, requestDone: Bool, exception: Option&lt;HttpException&gt;): Unit {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>410</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            if (has(exception)) {</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        match(exception) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>411</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                eventListener.requestFailed(call, exception.getOrThrow())</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            case Some(e) =&gt; trackFailure(e)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>412</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>            } else {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            case None =&gt; ()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>413</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                eventListener.requestBodyEnd(call, bytesRead)</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>414</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>            }</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>415</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (requestDone) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>416</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>417</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        if (responseDone) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>418</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (has(exception)) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>419</pre></td>
+<td align="right" class="lineno"><pre>417</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                eventListener.responseFailed(call, exception.getOrThrow())</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                eventListener.requestFailed(call, exception.getOrThrow())</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>420</pre></td>
+<td align="right" class="lineno"><pre>418</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            } else {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>421</pre></td>
+<td align="right" class="lineno"><pre>419</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                eventListener.responseBodyEnd(call, bytesRead)</pre></td>
+<td align="left" class="src coveredLine"><pre>                eventListener.requestBodyEnd(call, bytesRead)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>422</pre></td>
+<td align="right" class="lineno"><pre>420</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>423</pre></td>
+<td align="right" class="lineno"><pre>421</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>424</pre></td>
+<td align="right" class="lineno"><pre>422</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>425</pre></td>
+<td align="right" class="lineno"><pre>423</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        transmitter.exchangeMessageDone(this, requestDone, responseDone)</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (responseDone) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>424</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            if (has(exception)) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>425</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                eventListener.responseFailed(call, exception.getOrThrow())</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>426</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="left" class="src "><pre>            } else {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>427</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                eventListener.responseBodyEnd(call, bytesRead)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>428</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>            }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>429</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>430</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>428</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    func trackFailure(exception: HttpException): Unit {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>429</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        finder.trackFailure()</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>430</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        codec.getConnection().trackFailure(exception)</pre></td>
-</tr>
-<tr>
 <td align="right" class="lineno"><pre>431</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        transmitter.exchangeMessageDone(this, requestDone, responseDone)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>432</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>432</pre></td>
+<td align="right" class="lineno"><pre>433</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>434</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    func trackFailure(exception: HttpException): Unit {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>435</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        finder.trackFailure()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>436</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        codec.getConnection().trackFailure(exception)</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>437</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>438</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>}</pre></td>

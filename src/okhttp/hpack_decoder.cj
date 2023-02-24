@@ -163,32 +163,6 @@ class Decoder {
 
     var targetIndex = 0
 
-    public func decode(src: Array<UInt8>, target: Array<HeaderField>): Int64 {
-        if (target.size == 0) {
-            return -1
-        }
-        targetIndex = 0
-        var i: Int64 = 0
-        while (i < src.size && i != -1) {
-            if ((src[i] & INDEXD[0]) != INDEXD[1]) {
-                i = this.parseFieldIndexed(src, i, target)
-            }
-            else if ( (src[i] & LITERAL_WITH_INDEXING[0]) == LITERAL_WITH_INDEXING[1]) {
-                i = this.parseFieldLiteral(src, i, INDEXD_TRUE, INCREMENTAL, target)
-            }
-            else if ( (src[i] & SIZE_UPDATE[0] ) == SIZE_UPDATE[1]) {
-                i = this.parseUpdateDynamicTableSize(src, i)
-            }
-            else if ((src[i] & LITERAL_NEVER_INDEXED[0]) == LITERAL_NEVER_INDEXED[1]) {
-                i = this.parseFieldLiteral(src, i, INDEXD_NEVER, NEVER, target)
-            }
-            else if ((src[i] & LITERAL[0]) == LITERAL[1]) {
-                i = this.parseFieldLiteral(src, i, INDEXD_NONE, NONE, target)
-            }
-        }
-        return this.targetIndex
-    }
-
     /**
      *   Maximum Dynamic Table Size Change.
      *       0   1   2   3   4   5   6   7
@@ -259,34 +233,6 @@ class Decoder {
             this.dynTab.add(header)
         }
         buf.append(header)
-        return newIndex
-    }
-
-    protected func parseFieldLiteral(src: Array<UInt8>, index: Int64, N: Int64, that: IndexType, buf: Array<HeaderField>): Int64 {
-        if (index >= src.size) {
-            return -1
-        }
-        let (idx, newIdx) = readVarInt(src, index, N)
-        var newIndex = newIdx
-        var name: String = ""
-        if (idx > 0) {
-            let ihf: HeaderField = this.getHeader(idx)
-            name = ihf.name
-            newIndex = newIndex
-        } else {
-            let (strArr, len) = this.readString(src, newIndex)
-            newIndex = len
-            name = String.fromUtf8(strArr)
-        }
-        let (valArr, len) = this.readString(src, newIndex)
-        var value: String = String.fromUtf8(valArr)
-        newIndex = len
-        let header: HeaderField = HeaderField(name, value, that.sensitive())
-        if (that.indexed()) {
-            this.dynTab.add(header)
-        }
-        this.targetIndex ++
-        buf[targetIndex] = header
         return newIndex
     }
 

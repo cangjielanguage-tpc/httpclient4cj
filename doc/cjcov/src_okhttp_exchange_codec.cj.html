@@ -284,12 +284,12 @@ pre
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2022-12-29 14:38:50</td>
+            <td class="headerValue">2023-02-24 11:13:25</td>
             <td></td>
             <td class="headerName">Lines:</td>
-            <td class="headerTableEntry">113</td>
-            <td class="headerTableEntry">138</td>
-            <td class="headerTableEntry" style="background-color:Yellow">81.9 %</td>
+            <td class="headerTableEntry">103</td>
+            <td class="headerTableEntry">134</td>
+            <td class="headerTableEntry" style="background-color:Yellow">76.9 %</td>
           </tr>
           <tr>
             <td class="headerName">Legend:</td>
@@ -971,14 +971,14 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>109</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    private func newUnknownLengthSource(): Source {</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>    private func newUnknownLengthSource(): Source {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>110</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        if (state != STATE_OPEN_RESPONSE_BODY) {</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>        if (state != STATE_OPEN_RESPONSE_BODY) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>111</pre></td>
@@ -1001,20 +1001,20 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>114</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        state = STATE_READING_RESPONSE_BODY;</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>        state = STATE_READING_RESPONSE_BODY;</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>115</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        realConnection.noExchanges()</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>        realConnection.noExchanges()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>116</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        return UnknownLengthSource(this)</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>        return UnknownLengthSource(this)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>117</pre></td>
@@ -1457,8 +1457,8 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>190</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            return None</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            return None</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>191</pre></td>
@@ -1469,14 +1469,14 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>192</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>             state = STATE_READ_RESPONSE_HEADERS</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>             state = STATE_READ_RESPONSE_HEADERS</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>193</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>             return responseBuilder</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>             return responseBuilder</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>194</pre></td>
@@ -1602,55 +1602,55 @@ pre
 <td align="right" class="lineno"><pre>214</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            match (line.indexOf(":", 1)) {</pre></td>
+<td align="left" class="src coveredLine"><pre>            addLenient(header, line)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>215</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                case Some(index) =&gt; header.add(line.substring(0, index), line.substring(index + 1).trim())</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>216</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>                case None =&gt;</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        return header</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>217</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                    if (!line.startsWith(":")) {</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>218</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                        header.add("", line)</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>219</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>                    } else {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    public func createRequestBody(request: Request): Sink {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>220</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>                        throw ProtocolException("Unexpected header: ${line}")</pre></td>
+<td align="left" class="src coveredLine"><pre>        let contentLength: Int64 =  match(request.getBody()) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>221</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>                    }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            case Some(v) =&gt; v.getContentLength()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>222</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>            }</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            case None =&gt; throw  ProtocolException("no request body");</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>223</pre></td>
@@ -1661,44 +1661,44 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>224</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        return header</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>225</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        if ("chunked" == request.getHeader("Transfer-Encoding","").toLower()) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>226</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            return newChunkedSink()</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>227</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>228</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>227</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public func createRequestBody(request: Request): Sink {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>228</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        let contentLength: Int64 =  match(request.getBody()) {</pre></td>
-</tr>
-<tr>
 <td align="right" class="lineno"><pre>229</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            case Some(v) =&gt; v.getContentLength()</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (contentLength != -1) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>230</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            case None =&gt; throw  ProtocolException("no request body");</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            return newKnownLengthSink()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>231</pre></td>
@@ -1715,20 +1715,20 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>233</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        if ("chunked" == request.getHeader("Transfer-Encoding","").toLower()) {</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>        throw IllegalStateException(</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>234</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            return newChunkedSink()</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>                "Cannot stream a request body without chunked encoding or a known content length!")</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>235</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>236</pre></td>
@@ -1739,368 +1739,368 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>237</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        if (contentLength != -1) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>238</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            return newKnownLengthSink()</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>239</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>240</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>241</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        throw IllegalStateException(</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>242</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                "Cannot stream a request body without chunked encoding or a known content length!")</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>243</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>244</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>245</pre></td>
-<td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    /*</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>246</pre></td>
+<td align="right" class="lineno"><pre>238</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * The Function is reportedContentLength</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>247</pre></td>
+<td align="right" class="lineno"><pre>239</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     *</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>248</pre></td>
+<td align="right" class="lineno"><pre>240</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @return Type of Int64</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>249</pre></td>
+<td align="right" class="lineno"><pre>241</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @since 0.29.3</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>250</pre></td>
+<td align="right" class="lineno"><pre>242</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>251</pre></td>
+<td align="right" class="lineno"><pre>243</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    public func reportedContentLength(response: Response): Int64{</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>252</pre></td>
+<td align="right" class="lineno"><pre>244</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (!hasBody(response)) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>253</pre></td>
+<td align="right" class="lineno"><pre>245</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            return 0</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>254</pre></td>
+<td align="right" class="lineno"><pre>246</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>255</pre></td>
+<td align="right" class="lineno"><pre>247</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>256</pre></td>
+<td align="right" class="lineno"><pre>248</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if ("chunked" == response.getHeader("Transfer-Encoding","").toLower()) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>257</pre></td>
+<td align="right" class="lineno"><pre>249</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            return -1</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>258</pre></td>
+<td align="right" class="lineno"><pre>250</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>259</pre></td>
+<td align="right" class="lineno"><pre>251</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>260</pre></td>
+<td align="right" class="lineno"><pre>252</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        match (response.getHeader("Content-Length")) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>261</pre></td>
+<td align="right" class="lineno"><pre>253</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            case Some(s) =&gt;</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>262</pre></td>
+<td align="right" class="lineno"><pre>254</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            match (Int64.tryParse(s)) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>263</pre></td>
+<td align="right" class="lineno"><pre>255</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>                case Some(n) =&gt; return n</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>264</pre></td>
+<td align="right" class="lineno"><pre>256</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                case None =&gt; return -1</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>265</pre></td>
+<td align="right" class="lineno"><pre>257</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>266</pre></td>
+<td align="right" class="lineno"><pre>258</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            case None =&gt; return  -1</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            case None =&gt; return  -1</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>267</pre></td>
+<td align="right" class="lineno"><pre>259</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>268</pre></td>
+<td align="right" class="lineno"><pre>260</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>269</pre></td>
+<td align="right" class="lineno"><pre>261</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    public func openResponseBodySource(response: Response): Source {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>270</pre></td>
+<td align="right" class="lineno"><pre>262</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (!hasBody(response)) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>271</pre></td>
+<td align="right" class="lineno"><pre>263</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            return newFixedLengthSource(0)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>272</pre></td>
+<td align="right" class="lineno"><pre>264</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>273</pre></td>
+<td align="right" class="lineno"><pre>265</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>274</pre></td>
+<td align="right" class="lineno"><pre>266</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if ("chunked" == response.getHeader("Transfer-Encoding","").toLower()) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>275</pre></td>
+<td align="right" class="lineno"><pre>267</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            return newChunkedSource(response.getRequest().getUrl())</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>276</pre></td>
+<td align="right" class="lineno"><pre>268</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>277</pre></td>
+<td align="right" class="lineno"><pre>269</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>278</pre></td>
+<td align="right" class="lineno"><pre>270</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        let contentLength: Int64 = contentLength(response)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>279</pre></td>
+<td align="right" class="lineno"><pre>271</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>280</pre></td>
+<td align="right" class="lineno"><pre>272</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        if (contentLength != -1) {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>281</pre></td>
+<td align="right" class="lineno"><pre>273</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            return newFixedLengthSource(contentLength)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>282</pre></td>
+<td align="right" class="lineno"><pre>274</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>283</pre></td>
+<td align="right" class="lineno"><pre>275</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>284</pre></td>
+<td align="right" class="lineno"><pre>276</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        return newUnknownLengthSource()</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>        return newUnknownLengthSource()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>285</pre></td>
+<td align="right" class="lineno"><pre>277</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>286</pre></td>
+<td align="right" class="lineno"><pre>278</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>287</pre></td>
+<td align="right" class="lineno"><pre>279</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    /**</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>288</pre></td>
+<td align="right" class="lineno"><pre>280</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * The Function is getConnection</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>289</pre></td>
+<td align="right" class="lineno"><pre>281</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     *</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>290</pre></td>
+<td align="right" class="lineno"><pre>282</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @return Type of Connection</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>291</pre></td>
+<td align="right" class="lineno"><pre>283</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @since 0.30.4</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>292</pre></td>
+<td align="right" class="lineno"><pre>284</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>293</pre></td>
+<td align="right" class="lineno"><pre>285</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    public func getConnection(): Connection {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>294</pre></td>
+<td align="right" class="lineno"><pre>286</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return this.realConnection</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>295</pre></td>
+<td align="right" class="lineno"><pre>287</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>296</pre></td>
+<td align="right" class="lineno"><pre>288</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>297</pre></td>
+<td align="right" class="lineno"><pre>289</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    func responseBodyComplete() {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>290</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>291</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>         if (state == STATE_CLOSED)  {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>292</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            return</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>293</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>         }</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>294</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>295</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>         if (state != STATE_READING_RESPONSE_BODY) {</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>296</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            throw IllegalStateException("state: ${state}")</pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>297</pre></td>
+<td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>         }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>298</pre></td>
@@ -2112,124 +2112,76 @@ pre
 <td align="right" class="lineno"><pre>299</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>         if (state == STATE_CLOSED)  {</pre></td>
+<td align="left" class="src coveredLine"><pre>         state = STATE_CLOSED</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>300</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            return</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>301</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>         }</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>302</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>303</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>         if (state != STATE_READING_RESPONSE_BODY) {</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>304</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            throw IllegalStateException("state: ${state}")</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>305</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>         }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>306</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>307</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>         state = STATE_CLOSED</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>308</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>    }</pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>309</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
-</tr>
-<tr>
-<td align="right" class="lineno"><pre>310</pre></td>
-<td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    /**</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>311</pre></td>
+<td align="right" class="lineno"><pre>303</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * The Function is cancel</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>312</pre></td>
+<td align="right" class="lineno"><pre>304</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     *</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>313</pre></td>
+<td align="right" class="lineno"><pre>305</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @return Type of Unit</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>314</pre></td>
+<td align="right" class="lineno"><pre>306</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     * @since 0.30.4</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>315</pre></td>
+<td align="right" class="lineno"><pre>307</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>     */</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>316</pre></td>
+<td align="right" class="lineno"><pre>308</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>    public func cancel(): Unit {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>317</pre></td>
+<td align="right" class="lineno"><pre>309</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>        this.realConnection.cancel()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>318</pre></td>
+<td align="right" class="lineno"><pre>310</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>319</pre></td>
+<td align="right" class="lineno"><pre>311</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>}</pre></td>

@@ -284,11 +284,11 @@ pre
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2022-12-29 14:38:50</td>
+            <td class="headerValue">2023-02-24 11:13:25</td>
             <td></td>
             <td class="headerName">Lines:</td>
-            <td class="headerTableEntry">171</td>
-            <td class="headerTableEntry">181</td>
+            <td class="headerTableEntry">172</td>
+            <td class="headerTableEntry">182</td>
             <td class="headerTableEntry" style="background-color:LightGreen">94.5 %</td>
           </tr>
           <tr>
@@ -2118,13 +2118,13 @@ pre
 <td align="right" class="lineno"><pre>300</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        for (c in name.toCharArray()) {</pre></td>
+<td align="left" class="src coveredLine"><pre>        for (i in 0..name.toCharArray().size) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>301</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            if (c &lt;=  '\u{0020}' || c&gt;= '\u{007f}') {</pre></td>
+<td align="left" class="src coveredLine"><pre>            if (name.charAt(i) &lt;=  '\u{0020}' || name.charAt(i) &gt;= '\u{007f}') {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>302</pre></td>
@@ -2202,13 +2202,13 @@ pre
 <td align="right" class="lineno"><pre>314</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    for (c in key.toCharArray()) {</pre></td>
+<td align="left" class="src coveredLine"><pre>    for (i in 0..key.toCharArray().size) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>315</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        match (c) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        match (key[i]) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>316</pre></td>
@@ -2232,7 +2232,7 @@ pre
 <td align="right" class="lineno"><pre>319</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            case _ =&gt;target.append(c)</pre></td>
+<td align="left" class="src coveredLine"><pre>            case _ =&gt;target.append(key[i])</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>320</pre></td>
