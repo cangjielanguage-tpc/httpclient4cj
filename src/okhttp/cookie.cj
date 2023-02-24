@@ -163,7 +163,7 @@ public class CookieUtil {
      static func indexOfControlOrNonAscii(input: String): Int64 {
         for (i in 0..input.size) {
           let c: Char = input.charAt(i)
-          if (c <= '\u{001f}' || c >= '\u{007f}') {
+          if ((c <= '\u{001f}' || c >= '\u{007f}') || ##"(),/:;<=>?@[\]{}"##.contains(c)) {
              return i
           }
         }
