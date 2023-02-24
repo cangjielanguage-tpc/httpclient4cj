@@ -284,7 +284,7 @@ pre
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2022-12-29 14:38:50</td>
+            <td class="headerValue">2023-02-24 11:13:25</td>
             <td></td>
             <td class="headerName">Lines:</td>
             <td class="headerTableEntry">103</td>
@@ -738,7 +738,7 @@ pre
 <td align="right" class="lineno"><pre>70</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        synchronized(mutex) {</pre></td>
+<td align="left" class="src coveredLine"><pre>        synchronized (mutex) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>71</pre></td>
@@ -1464,7 +1464,7 @@ pre
 <td align="right" class="lineno"><pre>191</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        synchronized(mutex) {</pre></td>
+<td align="left" class="src coveredLine"><pre>        synchronized (mutex) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>192</pre></td>
@@ -1511,32 +1511,32 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>199</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            this.errorCode = rstStatusCode</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>200</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            this.errorCode = errorCode</pre></td>
+<td align="left" class="src coveredLine"><pre>            this.errorException = errorException</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>201</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            this.errorException = errorException</pre></td>
+<td align="left" class="src coveredLine"><pre>            mutex.notifyAll()</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>202</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            mutex.notifyAll()</pre></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>203</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre>        }</pre></td>
+<td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>204</pre></td>
@@ -1692,7 +1692,7 @@ pre
 <td align="right" class="lineno"><pre>229</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        if (!source.finished || source.receiveBuffer.length != 0 || !source.readBuffer.length != 0) {</pre></td>
+<td align="left" class="src uncoveredLine"><pre>        if (!source.finished || source.receiveBuffer.length != 0 || source.readBuffer.length != 0) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>230</pre></td>
@@ -1764,7 +1764,7 @@ pre
 <td align="right" class="lineno"><pre>241</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        synchronized(mutex) {</pre></td>
+<td align="left" class="src coveredLine"><pre>        synchronized (mutex) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>242</pre></td>
@@ -1884,7 +1884,7 @@ pre
 <td align="right" class="lineno"><pre>261</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        synchronized(mutex) {</pre></td>
+<td align="left" class="src coveredLine"><pre>        synchronized (mutex) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>262</pre></td>
@@ -1950,7 +1950,7 @@ pre
 <td align="right" class="lineno"><pre>272</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        synchronized(mutex) {</pre></td>
+<td align="left" class="src coveredLine"><pre>        synchronized (mutex) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>273</pre></td>
@@ -2034,7 +2034,7 @@ pre
 <td align="right" class="lineno"><pre>286</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        synchronized(mutex) {</pre></td>
+<td align="left" class="src coveredLine"><pre>        synchronized (mutex) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>287</pre></td>

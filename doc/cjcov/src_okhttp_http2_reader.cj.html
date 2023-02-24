@@ -284,12 +284,12 @@ pre
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2022-12-29 14:38:50</td>
+            <td class="headerValue">2023-02-24 11:13:25</td>
             <td></td>
             <td class="headerName">Lines:</td>
-            <td class="headerTableEntry">106</td>
+            <td class="headerTableEntry">115</td>
             <td class="headerTableEntry">173</td>
-            <td class="headerTableEntry" style="background-color:LightPink">61.3 %</td>
+            <td class="headerTableEntry" style="background-color:LightPink">66.5 %</td>
           </tr>
           <tr>
             <td class="headerName">Legend:</td>
@@ -677,8 +677,8 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>60</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>                    readGoAway(handler, length, flags, streamId)</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>                    readGoAway(handler, length, flags, streamId)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>61</pre></td>
@@ -714,13 +714,13 @@ pre
 <td align="right" class="lineno"><pre>66</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        } catch (e: SocketTimeoutException) {</pre></td>
+<td align="left" class="src coveredLine"><pre>        } catch (e: EOFException) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>67</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            throw HttpException("EOF")</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            return false</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>68</pre></td>
@@ -731,8 +731,8 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>69</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            throw HttpException("SocketException")</pre></td>
+<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
+<td align="left" class="src uncoveredLine"><pre>            throw HttpException("SocketException")</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>70</pre></td>
@@ -1151,14 +1151,14 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>139</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>    private func readGoAway(handler: H2Connection, length: Int64, flags: Byte, streamId: UInt32) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>    private func readGoAway(handler: H2Connection, length: Int64, flags: Byte, streamId: UInt32) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>140</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        if (length &lt; 8) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (length &lt; 8) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>141</pre></td>
@@ -1181,8 +1181,8 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>144</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        if (streamId != 0) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (streamId != 0) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>145</pre></td>
@@ -1205,26 +1205,26 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>148</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        let lastStreamId = readInt32(source)</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        let lastStreamId = readInt32(source)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>149</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        let errorCodeInt = readInt32(source)</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        let errorCodeInt = readInt32(source)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>150</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        let opaqueDataLength = length - 8</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        let opaqueDataLength = length - 8</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>151</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        let errorCode = ErrorCode.fromHttp2(errorCodeInt)</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        let errorCode = ErrorCode.fromHttp2(errorCodeInt)</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>152</pre></td>
@@ -1235,14 +1235,14 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>153</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>        if (!has(errorCode)) {</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>        if (!has(errorCode)) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>154</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
-<td align="left" class="src uncoveredLine"><pre>            throw HttpException("TYPE_GOAWAY unexpected error code: ${errorCodeInt}")</pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>            throw HttpException("TYPE_GOAWAY unexpected error code: ${errorCodeInt}")</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>155</pre></td>

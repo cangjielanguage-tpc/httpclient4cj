@@ -284,11 +284,11 @@ pre
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2022-12-29 14:38:50</td>
+            <td class="headerValue">2023-02-24 11:13:25</td>
             <td></td>
             <td class="headerName">Lines:</td>
-            <td class="headerTableEntry">308</td>
-            <td class="headerTableEntry">362</td>
+            <td class="headerTableEntry">309</td>
+            <td class="headerTableEntry">363</td>
             <td class="headerTableEntry" style="background-color:Yellow">85.1 %</td>
           </tr>
           <tr>
@@ -456,7 +456,7 @@ pre
 <td align="right" class="lineno"><pre>23</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public static func delimiterOffset(input: String, pos: Int64, limit: Int64, delimiter: Char): Int64 {</pre></td>
+<td align="left" class="src coveredLine"><pre>    static func delimiterOffset(input: String, pos: Int64, limit: Int64, delimiter: Char): Int64 {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>24</pre></td>
@@ -582,13 +582,13 @@ pre
 <td align="right" class="lineno"><pre>44</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>        for (cookieStrings in values) {</pre></td>
+<td align="left" class="src coveredLine"><pre>        for (i in 0..values.size) {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>45</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>            let cookie = parse(url, cookieStrings)</pre></td>
+<td align="left" class="src coveredLine"><pre>            let cookie = parse(url, values[i])</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>46</pre></td>
@@ -1194,7 +1194,7 @@ pre
 <td align="right" class="lineno"><pre>146</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    public static func trimSubstring(str: String, pos: Int64, limit: Int64): String {</pre></td>
+<td align="left" class="src coveredLine"><pre>    static func trimSubstring(str: String, pos: Int64, limit: Int64): String {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>147</pre></td>
@@ -1296,7 +1296,7 @@ pre
 <td align="right" class="lineno"><pre>163</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>     public static func indexOfControlOrNonAscii(input: String): Int64 {</pre></td>
+<td align="left" class="src coveredLine"><pre>     static func indexOfControlOrNonAscii(input: String): Int64 {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>164</pre></td>
@@ -1686,7 +1686,7 @@ pre
 <td align="right" class="lineno"><pre>228</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
-<td align="left" class="src coveredLine"><pre>    private static func parseExpires(s: String, start: Int64, limit: Int64): Time {</pre></td>
+<td align="left" class="src coveredLine"><pre>    static func parseExpires(s: String, start: Int64, limit: Int64): Time {</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>229</pre></td>
@@ -3797,8 +3797,8 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>580</pre></td>
 <td align="right" class="linebranch"></td>
-<td align="center" class="linecount "><pre></pre></td>
-<td align="left" class="src "><pre></pre></td>
+<td align="center" class="linecount coveredLine"><pre>Y</pre></td>
+<td align="left" class="src coveredLine"><pre>      var i: Int64 = 0</pre></td>
 </tr>
 <tr>
 <td align="right" class="lineno"><pre>581</pre></td>
@@ -3809,89 +3809,95 @@ pre
 <tr>
 <td align="right" class="lineno"><pre>582</pre></td>
 <td align="right" class="linebranch"></td>
+<td align="center" class="linecount "><pre></pre></td>
+<td align="left" class="src "><pre></pre></td>
+</tr>
+<tr>
+<td align="right" class="lineno"><pre>583</pre></td>
+<td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            if (u &lt; b'0' || u &gt; b'9') {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>583</pre></td>
+<td align="right" class="lineno"><pre>584</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount uncoveredLine"><pre>N</pre></td>
 <td align="left" class="src uncoveredLine"><pre>                return -1</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>584</pre></td>
+<td align="right" class="lineno"><pre>585</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>            }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>585</pre></td>
+<td align="right" class="lineno"><pre>586</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            var n = u - b'0'</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>586</pre></td>
+<td align="right" class="lineno"><pre>587</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>            num = num * 10 + Int64(n)</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>587</pre></td>
+<td align="right" class="lineno"><pre>588</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>        }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>588</pre></td>
+<td align="right" class="lineno"><pre>589</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>589</pre></td>
+<td align="right" class="lineno"><pre>590</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>        return num</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>590</pre></td>
+<td align="right" class="lineno"><pre>591</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>    }</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>591</pre></td>
+<td align="right" class="lineno"><pre>592</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>}</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>592</pre></td>
+<td align="right" class="lineno"><pre>593</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre></pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>593</pre></td>
+<td align="right" class="lineno"><pre>594</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>func getTimeStamp(time: Time): Int64 {</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>594</pre></td>
+<td align="right" class="lineno"><pre>595</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    let standardTime = Time(1970,Month.of(1),1,loc: Location.load("UTC"))</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>595</pre></td>
+<td align="right" class="lineno"><pre>596</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount coveredLine"><pre>Y</pre></td>
 <td align="left" class="src coveredLine"><pre>    return (time - standardTime).milliseconds()</pre></td>
 </tr>
 <tr>
-<td align="right" class="lineno"><pre>596</pre></td>
+<td align="right" class="lineno"><pre>597</pre></td>
 <td align="right" class="linebranch"></td>
 <td align="center" class="linecount "><pre></pre></td>
 <td align="left" class="src "><pre>}</pre></td>
