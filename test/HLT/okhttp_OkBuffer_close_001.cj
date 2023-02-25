@@ -1,0 +1,52 @@
+// 3rd_party_lib:okhttp/build/okhttp
+
+from std import io.*
+from std import time.*
+from okhttp import okhttp.*
+from std import fs.*
+
+@Test
+public class okhttp_OkBuffer_close_001 {
+
+    @TestCase
+    func okhttp_OkBuffer_close_001(): Unit {
+        println("---------------------------okhttp_OkBuffer_close_001-----------------------------")
+        var exc = ""
+        try {
+            File.delete("../../testData/okhttp_OkBuffer_close_001_2.txt")
+        } catch (e:Exception){
+            println("e.message = ${e.message}")
+        }
+        
+        var file = File.create("../../testData/okhttp_OkBuffer_close_001_2.txt")
+        file.write("hello world".toUtf8Array())
+        file = File("../../testData/okhttp_OkBuffer_close_001_2.txt",OpenOption.Open(true, true))
+        
+        var okbuffer = OkBuffer(file)
+        try {
+            println("okbuffer.readByte() = ${okbuffer.readByte()}")
+            println("okbuffer.readByte() = ${okbuffer.readByte()}")
+            @Assert(okbuffer.readByte(),108)  
+
+            println("okbuffer.isClosed() = ${okbuffer.isClosed()}")
+            println("file.isClosed() = ${file.isClosed()}")
+            okbuffer.close()
+            println("okbuffer.isClosed() = ${okbuffer.isClosed()}")
+            println("file.isClosed() = ${file.isClosed()}")
+            @Assert(okbuffer.isClosed(),true) 
+
+            println("okbuffer.readByte() = ${okbuffer.readByte()}")
+
+        } catch (e:Exception) {
+            // e.printStackTrace()
+            println("e.message = ${e.message}")
+            exc = e.message 
+        }
+        @Assert(exc,"The file not opened, can not to read.") 
+
+        file = File("../../testData/okhttp_OkBuffer_close_001_2.txt",OpenOption.Open(true, true))
+        okbuffer = OkBuffer(file)
+        println("okbuffer.readByte() = ${okbuffer.readByte()}")
+        @Assert(okbuffer.readByte(),101) 
+    }
+}
