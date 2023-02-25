@@ -11,3 +11,5 @@ module-resolve.json
 /test/HLT/report/
 /test/HLT/log/
 /test/HLT/tmp/
+*.gcda
+*.gcno
