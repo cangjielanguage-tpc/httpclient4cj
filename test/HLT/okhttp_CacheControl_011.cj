@@ -61,7 +61,7 @@ public class okhttp_CacheControl_011 {
         let cachecontrol: CacheControl = CacheControl.builder()
                             .maxAge(3)
                             .build()
-        let cache: Cache = Cache("./cc", 10 * 1024 * 1024)
+        let cache: Cache = Cache("./okhttp_CacheControl_011", 10 * 1024 * 1024)
         let client: OkHttpClient= OkHttpClient.builder().cache(cache).addNetworkInterceptor(MyInterceptor()).build()
         let request: okhttp.Request = okhttp.Request.builder()
                                         .url("http://127.0.0.1:${port}/1234567")

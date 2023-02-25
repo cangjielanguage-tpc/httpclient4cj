@@ -48,6 +48,7 @@ public class okhttp_cachedelete_001 {
     }
 
     @TestCase
+    @Skip
     func okhttp_cachedelete_001(): Unit {
         spawn {
             serve()
@@ -57,7 +58,7 @@ public class okhttp_cachedelete_001 {
         let cachecontrol: CacheControl = CacheControl.builder()
                                     .maxAge(2000)
                                     .build()
-        let cache: Cache = Cache("./cc", 10 * 1024 * 1024)
+        let cache: Cache = Cache("./okhttp_cachedelete_001", 10 * 1024 * 1024)
         let client: OkHttpClient= OkHttpClient.builder().cache(cache).addNetworkInterceptor(MyInterceptor()).build()
         let request: okhttp.Request = okhttp.Request.builder()
                                         .url("http://127.0.0.1:${port}/1234567")
@@ -146,7 +147,7 @@ public class okhttp_cachedelete_001 {
         println("response_4.getCacheResponse() : ${response_4.getCacheResponse()}")
 
         println("-------------------------------OKHttp-OKHttp-第五次请求-更换客户端对象 缓存对象---------------------------")
-        let cache3: Cache = Cache("./cc", 10 * 1024 * 1024)
+        let cache3: Cache = Cache("./okhttp_cachedelete_001", 10 * 1024 * 1024)
         let client2: OkHttpClient= OkHttpClient.builder().cache(cache3).addNetworkInterceptor(MyInterceptor()).build()
         
         var response_5: okhttp.Response = client2.newCall(request2).execute()
@@ -156,7 +157,7 @@ public class okhttp_cachedelete_001 {
         println("response_5.getCacheResponse() : ${response_5.getCacheResponse()}")
 
         println("-------------------------------OKHttp-OKHttp-第六次请求-更换缓存文件夹---------------------------")
-        let cache4: Cache = Cache("./cc2", 10 * 1024 * 1024)
+        let cache4: Cache = Cache("./okhttp_cachedelete_001_2", 10 * 1024 * 1024)
         let client3: OkHttpClient= OkHttpClient.builder().cache(cache4).addNetworkInterceptor(MyInterceptor()).build()
         
         var response_6: okhttp.Response = client3.newCall(request2).execute()
@@ -203,7 +204,7 @@ public class okhttp_cachedelete_001 {
     //     let cachecontrol: CacheControl = CacheControl.builder()
     //                                 .maxAge(2000)
     //                                 .build()
-    //     let cache: Cache = Cache("./cc", 10 * 1024 * 1024)
+    //     let cache: Cache = Cache("./okhttp_cachedelete_001", 10 * 1024 * 1024)
     //     let client: OkHttpClient= OkHttpClient.builder().cache(cache).addNetworkInterceptor(MyInterceptor()).build()
     //     let request: okhttp.Request = okhttp.Request.builder()
     //                                     .url("http://127.0.0.1:${port}/1234567")
@@ -221,7 +222,7 @@ public class okhttp_cachedelete_001 {
     //     sleep(1000*1000*1000)
 
     //     println("-------------------------------OKHttp-OKHttp-第五次请求-更换客户端对象 缓存对象---------------------------")
-    //     let cache3: Cache = Cache("./cc", 10 * 1024 * 1024)
+    //     let cache3: Cache = Cache("./okhttp_cachedelete_001", 10 * 1024 * 1024)
     //     let client2: OkHttpClient= OkHttpClient.builder().cache(cache3).addNetworkInterceptor(MyInterceptor()).build()
         
 

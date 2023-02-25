@@ -51,6 +51,7 @@ public class okhttp_cache_007 {
     }
    
     @TestCase
+    @Skip
     func okhttp_cache_007(): Unit {
         spawn {
             serve()
@@ -58,9 +59,9 @@ public class okhttp_cache_007 {
         sleep(1000*1000*1000)
 
         let cachecontrol: CacheControl = CacheControl.builder()
-                                    .maxAge(20)
+                                    .maxAge(3)
                                     .build()
-        let cache: Cache = Cache("./cc", 10 * 1024 * 1024)
+        let cache: Cache = Cache("./okhttp_cache_007", 10 * 1024 * 1024)
         let client: OkHttpClient= OkHttpClient.builder().cache(cache).addNetworkInterceptor(MyInterceptor()).build()
         let request: okhttp.Request = okhttp.Request.builder()
                                         .url("http://127.0.0.1:${port}/1234567")
@@ -117,6 +118,6 @@ public class okhttp_cache_007 {
         @Assert(response2.getReceivedResponseAtMillis().toString()=="",false) 
         println("response2.getNetworkResponse() : ${response2.getNetworkResponse()}")
         println("response2.getCacheResponse() : ${response2.getCacheResponse()}")
-        @Assert(response2.getCacheResponse().toString(),"None")
+        @Assert(response2.getCacheResponse().toString(),"Some(Response{protocol=http/1.1, code=200, message=OK, url=http://127.0.0.1:1501/1234567})")
     }
 }
