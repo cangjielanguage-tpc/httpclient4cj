@@ -135,8 +135,14 @@ OkHttp 是一个高效的 HTTP 客户端, 代码参考: https://github.com/squar
 编译描述和具体shell命令
 
 ```shell
-make
-cpm update
+# linux
+git clone -b lib_okhttp https://gitee.com/HW-PLLab/ci_lib.git third --depth 1
+mkdir lib ; cp -r third/linux_x86_64/lib/lib_okhttp/* lib
+cpm build
+
+# windows
+git clone -b lib_okhttp https://gitee.com/HW-PLLab/ci_lib.git third --depth 1
+mkdir lib ; cp -r third/windows/lib/lib_okhttp/* lib
 cpm build
 ```
 

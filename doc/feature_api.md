@@ -2257,6 +2257,7 @@ public static func key(url: URL): String
 #### class CacheControl <: ToString
 
 缓存控制分别为客户端请求控制和服务端相应控制，其中启用参数各有异同,部分如下：
+
 请求
 + no-cache
 + no-store
@@ -2265,7 +2266,8 @@ public static func key(url: URL): String
 + min-fresh(=[秒])
 + no-transform
 + only-if-cached()
-  响应
+
+响应
 + public
 + private
 + no-cache
@@ -2347,11 +2349,6 @@ public func immutable(): Bool
  * @return Int64
  */
 public func minFreshSeconds(): Int64
-/*
- * 只使用缓存
- * @return Int64
- */
-public func onlyIfCached(): Int64
 
 /*
  * 创建 CacheControl 的Builder
