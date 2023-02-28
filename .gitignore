@@ -13,3 +13,4 @@ module-resolve.json
 /test/HLT/tmp/
 *.gcda
 *.gcno
+lib/*

@@ -294,7 +294,8 @@ public class CacheStrategyFactory {
             let builder: ResponseBuilder  = cacheResp.newBuilder()
             builder.addHeader("Warning", "110 HttpURLConnection \"Response is stale\"")
             var oneDayMillis = 24 * 60 * 60 * 1000
-            if (ageMillis > oneDayMillis && isFreshnessLifetimeHeuristic()) {
+            let falg = isFreshnessLifetimeHeuristic()
+            if (falg && ageMillis > oneDayMillis) {
                 builder.addHeader("Warning", "113 HttpURLConnection \"Heuristic expiration\"")
             }
 
@@ -393,15 +394,15 @@ func isCacheable(response: Response, request: Request) {
     match (response.getCode()) {
         //以下code除非备header禁止,否则会缓存
         case 200 | 203 | 204 | 300 | 301 | 308 | 404 | 405 | 410 | 414 | 501  => ()
-        //以下code只有在特定header下能缓存,详情见http://tools.ietf.org/html/rfc7234#section-3
+        //以下code只有在特定header下能缓存
         // s-maxage is not checked because OkHttp is a private cache that should ignore s-maxage.
         case 302 | 307 =>
-            if (response.getHeader("Expires", "") != ""
-                || response.getCacheControl().maxAgeSeconds() != -1
-                || response.getCacheControl().isPublic()
-                || response.getCacheControl().isPrivate()) {
-
-            } else {
+            let flag1 = response.getHeader("Expires", "") != ""
+            let flag2 = response.getCacheControl().maxAgeSeconds() != -1
+            let flag3 = response.getCacheControl().isPublic()
+            let flag4 = response.getCacheControl().isPrivate()
+            let flag = flag1 || flag2 || flag3 || flag4
+            if (!flag) {
                 return false
             }
         //其他所有code都不缓存

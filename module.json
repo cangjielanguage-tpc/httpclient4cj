@@ -4,13 +4,16 @@
   "name": "okhttp",
   "description": "nothing here",
   "version": "0.0.6",
-  "requires": {
-  },
+  "requires": {},
   "foreign_requires": {
     "dns": {
       "path": "./lib/",
       "export": []
     }
+  },
+  "package_requires": {
+    "path_option": [],
+    "package_option": {}
   },
   "output_type": "dynamic",
   "command_option": "-O2"

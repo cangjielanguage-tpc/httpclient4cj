@@ -240,7 +240,12 @@ public class CookieUtil {
         while (pos < limit) {
             let end = dateCharacterOffset(s, pos + 1, limit, true)
             let offString = s[pos..end]
-            if (hour == -1 && matchTime(offString)) {
+
+            let ifMatchTime = matchTime(offString)
+            let ifMatchDOM = matchDOM(offString)
+            let ifMatchMonth = matchMonth(offString)
+            let ifMatchYear = matchYear(offString)
+            if (hour == -1 && ifMatchTime) {
                 match (timeMatcher.matches(offString)) {
                     case Some(data) =>
                         hour = Int64.parse(data.matchStr(1))
@@ -248,20 +253,20 @@ public class CookieUtil {
                         second = Int64.parse(data.matchStr(3))
                     case None => ()
                 }
-            } else if (dayOfMonth == -1 && matchDOM(offString)) {
+            } else if (dayOfMonth == -1 && ifMatchDOM) {
                 match (domMatcher.matches(s[pos..end])) {
                     case Some(data) =>
                         dayOfMonth = Int64.parse(data.matchStr(1))
                     case None => ()
                 }
-            } else if (month == -1 && matchMonth(offString)) {
+            } else if (month == -1 && ifMatchMonth) {
                 match (monthMatcher.matches(s[pos..end])) {
                     case Some(data) =>
                         let monthString = data.matchStr(1)
                         month = IndexOfMonthDay(monthString)
                     case None => ()
                 }
-            } else if (year == -1 && matchYear(offString)) {
+            } else if (year == -1 && ifMatchYear) {
                 match (yearMatcher.matches(s[pos..end])) {
                     case Some(data) =>
                         year = Int64.parse(data.matchStr(1))
@@ -270,7 +275,7 @@ public class CookieUtil {
             }
             pos = dateCharacterOffset(s, end + 1, limit, false)
         }
-
+        println(" ${year} ${month} ${dayOfMonth} ${hour} ${minute} ${second} ")
         return checkTime(year, month, dayOfMonth, hour, minute, second)
     }
 

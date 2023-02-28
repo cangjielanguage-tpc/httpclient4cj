@@ -57,7 +57,8 @@ public class Transmitter {
                 this.connectionPool =  pool
                 client.connectionPool = pool
         }
-        this.connectionPool = client.getConnectionPool() ?? ConnectionPool()
+        let conn = ConnectionPool()
+        this.connectionPool = client.getConnectionPool() ?? conn
         this.eventListener = client.getEventListener()
         this.call = call
     }
@@ -164,20 +165,18 @@ public class Transmitter {
     public func prepareToConnect(request: Request): Unit {
         match (this.request) {
             case Some(r) =>
-
-                if (Util.sameConnection(r.getUrl(), request.getUrl()) && exchangeFinder.getOrThrow().hasRouteToTry()) {
-                    return
+                if (Util.sameConnection(r.getUrl(), request.getUrl())) {
+                    if(exchangeFinder.getOrThrow().hasRouteToTry()){
+                        return
+                    }
                 }
-
                 if (hasExchange()) {
                     throw IllegalStateException("hasExchange")
                 }
-
                 if (hasExchangeFinder()) {
                     maybeReleaseConnection(true)
                     exchangeFinder = None
                 }
-
             case None => ()
         }
         this.request = request
@@ -318,6 +317,8 @@ public class Transmitter {
 
     public func canRetry(): Bool {
         let ex = exchangeFinder.getOrThrow()
-        return ex.getHasStreamFailure() && ex.hasRouteToTry()
+        let flag1 = ex.getHasStreamFailure()
+        let flag2 = ex.hasRouteToTry()
+        return flag1 && flag2
     }
 }
