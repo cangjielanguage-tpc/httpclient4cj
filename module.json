@@ -4,7 +4,13 @@
   "name": "okhttp",
   "description": "nothing here",
   "version": "0.0.6",
-  "requires": {},
+  "requires": {
+    "cryptocj": {
+      "organization": "cangjie",
+      "version": "0.0.6",
+      "path": "./cryptocj"
+    }
+  },
   "foreign_requires": {
     "dns": {
       "path": "./lib/",

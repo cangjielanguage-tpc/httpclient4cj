@@ -8,6 +8,8 @@
  */
 package okhttp
 
+from cryptocj import md5cj.*
+from encoding import hex.*
 
 let ENTRY_COUNT: Int64 = 2
 let ENTRY_METADATA: Int64 = 0
@@ -41,7 +43,6 @@ public class Cache <: Resource {
     private var writeAbortCount: Int64 = 0
     private var networkCount: Int64 = 0
 
-
     public init(directoryPath: String, maxSize: Int64) {
         let directory: Directory
 
@@ -50,10 +51,8 @@ public class Cache <: Resource {
         } else {
             directory = Directory(directoryPath)
         }
-
         this.cache = DiskLruCache.create(FileSystem(directory), directory, ENTRY_COUNT, maxSize)
     }
-
 
     func trackResponse(cacheStrategy: CacheStrategy) {
         synchronized (lock) {
@@ -178,7 +177,10 @@ public class Cache <: Resource {
     }
 
     public static func key(url: URL): String {
-        return url.toString().substring(url.toString().size -5 ,5)
+        let md = Array<UInt8>(16, item: 0)
+        md5(url.toString().toUtf8Array(), md)
+        let result = toHexString(md)
+        return result
     }
 
     public func getDirectory(): Directory {
@@ -433,7 +435,7 @@ class CacheResponseBody <: ResponseBody {
 }
 
 
-public class CacheRequest <: Sink {
+class CacheRequest <: Sink {
     private let editor: Editor
     private let cache: Cache
     private let cacheOut: Sink

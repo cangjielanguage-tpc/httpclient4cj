@@ -104,7 +104,7 @@ public class Http1ExchangeCodec <: ExchangeCodec {
 
         state = STATE_READING_RESPONSE_BODY
         return ChunkedSource(url, this)
-   }
+    }
 
     private func newUnknownLengthSource(): Source {
         if (state != STATE_OPEN_RESPONSE_BODY) {

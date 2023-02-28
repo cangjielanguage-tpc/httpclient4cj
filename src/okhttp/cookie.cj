@@ -227,12 +227,7 @@ public class CookieUtil {
 
     static func parseExpires(s: String, start: Int64, limit: Int64): Time {
         var pos = dateCharacterOffset(s, start, limit, false)
-        var hour = -1
-        var minute = -1
-        var second = -1
-        var dayOfMonth = -1
-        var month = -1
-        var year = -1
+        var (hour,minute,second,dayOfMonth,month,year) = (-1,-1,-1,-1,-1,-1)
         let timeMatcher = Regex(TIME_PATTERN)
         let domMatcher = Regex(DAY_OF_MONTH_PATTERN)
         let monthMatcher = Regex(MONTH_PATTERN)
@@ -275,7 +270,6 @@ public class CookieUtil {
             }
             pos = dateCharacterOffset(s, end + 1, limit, false)
         }
-        println(" ${year} ${month} ${dayOfMonth} ${hour} ${minute} ${second} ")
         return checkTime(year, month, dayOfMonth, hour, minute, second)
     }
 

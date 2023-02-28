@@ -9,7 +9,7 @@
 package okhttp
 
 
-public class RequestLine {
+class RequestLine {
 
     public static func get(request: Request): String {
         let result: StringBuilder = StringBuilder()

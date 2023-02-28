@@ -1387,8 +1387,11 @@ public func getAddress(): Address
  * @return SocketAddress
  */
 public func getInetSocketAddress(): SocketAddress
-
-
+/*
+ * 获取 hashcode
+ * @return Int64
+ */
+public func hashCode(): Int64
 ```
 
 #### class Address <: Hashable & Equatable\<Route\>
@@ -1412,8 +1415,11 @@ public func getUrl(): URL
  * @return ArrayList<String>
  */
 public func getProtocols(): ArrayList<String>
-
-
+/*
+ * 获取hashCode
+ * @return Int64
+ */
+public func hashCode(): Int64
 ```
 
 #### enum protocol <: ToString
@@ -1649,7 +1655,66 @@ public func finishRequest(): Unit
  * @param sink: BufferedOutputStream
  */
 public init(client: OkHttpClient, realConnection: Connection, source: OkBuffer, sink: BufferedOutputStream) 
-
+/*
+ * flush request
+ */
+public func flushRequest(): Unit
+/*
+ * 结束request
+ */
+public func finishRequest(): Unit
+/*
+ * 获取Trailer
+ * @return Header
+ */
+public func getTrailers(): Header
+/*
+ * 写header
+ * @param request: Request
+ */
+public func writeRequestHeaders(request: Request): Unit
+/*
+ * 写request
+ * @param headers: Header
+ * @param requestLine: String
+ */
+public func writeRequest(headers: Header, requestLine: String): Unit
+/*
+ * The Function is readResponseHeaders
+ * @param expectContinue: Bool
+ * @return Type of ResponseBuilder
+ */
+public func readResponseHeaders(expectContinue: Bool): Option<ResponseBuilder>
+/*
+ * create body
+ * @param request: Request
+ * @return Sink
+ */
+public func createRequestBody(request: Request): Sink
+/*
+ * The Function is reportedContentLength
+ * @param response: Response
+ * @return Type of Int64
+ */
+public func reportedContentLength(response: Response): Int64
+/*
+ * openResponseBodySource
+ * @param response: Response
+ * @return Source
+ */
+public func openResponseBodySource(response: Response): Source
+/**
+  * The Function is getConnection
+  *
+  * @return Type of Connection
+  */
+public func getConnection(): Connection
+/**
+  * The Function is cancel
+  *
+  * @return Type of Unit
+  */
+public func cancel(): Unit
 ```
 
 #### class Http2ExchangeCodec <: ExchangeCodec
@@ -1664,8 +1729,12 @@ public init(client: OkHttpClient, realConnection: Connection, source: OkBuffer, 
  * @param http2Connection: H2Connection
  */
 public init(client: OkHttpClient, realConnection: Connection, http2Connection: H2Connection) 
-
-
+/*
+ * 获取Header
+ * @param expectContinue: Bool
+ * @return ResponseBuilder
+ */
+public func readResponseHeaders(expectContinue: Bool): Option<ResponseBuilder>
 /*
  * Http2 的 Header 转换为标准Header并以ResponseBuilder形式返回
  * @param headerBlock: Header
@@ -1673,7 +1742,53 @@ public init(client: OkHttpClient, realConnection: Connection, http2Connection: H
  * @return ResponseBuilder
  */
 public static func readHttp2HeadersList(headerBlock: Header, protocol: Protocol): ResponseBuilder
-
+/*
+ * 获取Trailer
+ * @return Header
+ */
+public func getTrailers(): Header
+/*
+ * 获取ContentLength
+ * @param response: Response
+ * @return Int64
+ */
+public func reportedContentLength(response: Response): Int64
+/*
+ * 获取ResponseBodySource
+ * @param response: Response
+ * @return Source
+ */
+public func openResponseBodySource(response: Response): Source
+/*
+ * 获取Connection
+ * @return Connection
+ */
+public func getConnection(): Connection
+/*
+ * cancel
+ */
+public func cancel(): Unit
+/*
+ * 创建RequestBody
+ * @param request: Request
+ * @return Sink
+ */
+public func createRequestBody(request: Request): Sink
+/*
+ * 写Header
+ * @param request: Request
+ */
+public func writeRequestHeaders(request: Request): Unit
+/*
+ * flush request
+ */
+public func flushRequest(): Unit
+/*
+ * finish request
+ * @param 
+ * @return 
+ */
+public func finishRequest(): Unit
 ```
 
 #### class Connection
@@ -2242,9 +2357,23 @@ public func flush(): Unit
 /*
  * 初始化，如过有读取缓存文件则读取保存于内存中，没有则构建缓存文件
  */
-public initialize(): Unit
-
-
+public func initialize(): Unit
+/*
+ * 关闭
+ */
+public func close(): Unit
+/*
+ * 获取大小
+ * @param 
+ * @return 
+ */
+public func getSize(): Int64
+/*
+ * 关闭状态
+ * @param 
+ * @return 
+ */
+public func isClosed(): Bool
 /*
  * 根据url进行md5加密，用于缓存文件的文件名
  * @param url: URL
@@ -2422,6 +2551,25 @@ public func build(): CacheControlBuilder
 
 ```
 
+#### class RouteException
+
+```
+/*
+ * 构造函数
+ */
+public init(message: String, e: HttpException)
+/*
+ * 获取第一次HttpException
+ * @return HttpException
+ */
+public func getFirstConnectException(): HttpException
+/*
+ * 获取最后一次HttpException
+ * @return HttpException
+ */
+public func getLastConnectException(): HttpException
+```
+
 #### 全局函数
 
 ```
@@ -2430,4 +2578,11 @@ public func build(): CacheControlBuilder
  * @return CookieJar
  */
 public func getSimpleCookieJar(): CookieJar
+/*
+ * 解析域名
+ * @param net: SocketNet
+ * @param domain: String
+ * @return ArrayList<(SocketAddressKind, Array<UInt8>)>
+ */
+public func resolveDomain(net: SocketNet, domain: String): ArrayList<(SocketAddressKind, Array<UInt8>)>
 ```
