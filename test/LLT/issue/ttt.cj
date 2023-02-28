@@ -9,7 +9,7 @@ from std import time.*
 from std import socket.*
 from std import sync.*
 
- var times:Int64 = 1000
+ var times:Int64 = 100
  var end:Int64 = 0
  var port: UInt16 = 0
  var i:AtomicInt64 = AtomicInt64(0)
@@ -56,10 +56,10 @@ func serve() {
 public class MyCallbacks <: Callback {
 
     public func onFailure(call: Call,  e: Exception): Unit{
-        println("failed")
+        print("failed ")
     }
     public func onResponse(call: Call,  response: okhttp.Response): Unit{
         i.fetchAdd(1)
-        println("${i.load()}")
+        print("${i.load() }")
     }
 }

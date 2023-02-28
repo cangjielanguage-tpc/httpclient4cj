@@ -13,4 +13,6 @@ module-resolve.json
 /test/HLT/tmp/
 *.gcda
 *.gcno
-lib/*
+lib
+cryptocj
+test1

@@ -136,13 +136,20 @@ OkHttp 是一个高效的 HTTP 客户端, 代码参考: https://github.com/squar
 
 ```shell
 # linux
+# okhttp依赖libdns.so
 git clone -b lib_okhttp https://gitee.com/HW-PLLab/ci_lib.git third --depth 1
 mkdir lib ; cp -r third/linux_x86_64/lib/lib_okhttp/* lib
+# okhttp依赖cryptocj 需要在module.json中requires项配置cryptocj目录(cryptocj需预编译)
+# 然后在okhttp目录build
 cpm build
-
+```
+```shell
 # windows
+# okhttp依赖libdns.dll
 git clone -b lib_okhttp https://gitee.com/HW-PLLab/ci_lib.git third --depth 1
 mkdir lib ; cp -r third/windows/lib/lib_okhttp/* lib
+# okhttp依赖cryptocj 需要在module.json中requires项配置cryptocj目录(cryptocj需预编译)
+# 然后在okhttp目录build
 cpm build
 ```
 

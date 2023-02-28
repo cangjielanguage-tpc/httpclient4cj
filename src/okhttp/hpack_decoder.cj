@@ -14,7 +14,7 @@ package okhttp
 /**
  * The enum Index type.
  */
-public enum IndexType {
+enum IndexType {
     | INCREMENTAL  /* Literal Header Field with Incremental Indexing */
     | NONE         /* Literal Header Field without Indexing*/
     | NEVER        /* Literal Header Field never Indexed*/

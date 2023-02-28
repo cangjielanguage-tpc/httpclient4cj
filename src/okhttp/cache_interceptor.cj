@@ -192,7 +192,7 @@ public class CacheInterceptor<: Interceptor {
     }
 }
 
-public class CacheStrategyFactory {
+class CacheStrategyFactory {
 
     let request: Request
     let cacheResponse: Option<Response>
@@ -413,7 +413,7 @@ func isCacheable(response: Response, request: Request) {
 
 }
 
-public class CacheStrategy {
+class CacheStrategy {
     public let networkRequest: Option<Request>
     public let cacheResponse: Option<Response>
 
