@@ -36,6 +36,7 @@ let RECEIVED_MILLIS = "OkHttp-Received-Millis"
 public class Cache <: Resource {
     let cache: DiskLruCache
     let lock: Monitor = Monitor()
+    let cacheDir: String
 
     private var requestCount: Int64 = 0
     private var hitCount: Int64 = 0
@@ -51,6 +52,8 @@ public class Cache <: Resource {
         } else {
             directory = Directory(directoryPath)
         }
+        this.cacheDir = directoryPath
+        CacheRegister.regDir(cacheDir)
         this.cache = DiskLruCache.create(FileSystem(directory), directory, ENTRY_COUNT, maxSize)
     }
 
@@ -197,6 +200,7 @@ public class Cache <: Resource {
     }
 
     public func delete(): Unit {
+        this.close()
         cache.delete()
     }
 
@@ -214,6 +218,7 @@ public class Cache <: Resource {
 
     public func close(): Unit {
         cache.close()
+        CacheRegister.releaseDir(this.cacheDir)
     }
 
     public func getSize(): Int64 {
@@ -484,6 +489,37 @@ class CacheRequest <: Sink {
             editor.abort()
         } catch (ignored: IOException | HttpException) {
 
+        }
+    }
+}
+
+class CacheRegister{
+    private static let map = HashMap<String,Int64>()
+    private static let lock: Monitor = Monitor()
+    static func regDir(dir: String):Unit{
+        synchronized(lock){
+            if (map.contains(dir)) {
+                throw IllegalStateException("cache dir is in use")
+            } else {
+                map.put(dir, 1)
+            }
+            // println("regdir ${map[dir]}")
+        }
+    }
+    static func releaseDir(dir: String):Unit{
+        synchronized(lock){
+            map.remove(dir)
+            // println("releasedir ${count}")
+        }
+    }
+    static func ifSafe(dir: String){
+        synchronized(lock){
+            // if(map.contains(dir)){
+            //     println("ifsafe ${map[dir]}")
+            // }else{
+            //     println("ifsafe 0")
+            // }
+            return !map.contains(dir)
         }
     }
 }

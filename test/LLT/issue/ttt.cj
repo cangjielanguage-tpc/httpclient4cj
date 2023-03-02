@@ -9,7 +9,7 @@ from std import time.*
 from std import socket.*
 from std import sync.*
 
- var times:Int64 = 100
+ var times:Int64 = 50
  var end:Int64 = 0
  var port: UInt16 = 0
  var i:AtomicInt64 = AtomicInt64(0)

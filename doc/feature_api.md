@@ -2324,6 +2324,7 @@ public func loadForRequest(url: URL): Array<Cookie>
  * @param directoryPath: String
  * @param maxSize: Int64
  * @throw FSException
+ * @throw IllegalStateException
  */
 public init(directoryPath: String, maxSize: Int64) 
 /*
@@ -2337,11 +2338,11 @@ public func getDirectory(): Directory
  */
 public func getMaxSize(): Int64
 /*
- * 去除所有缓存内存以及缓存文件(不包括journal)
+ * 删除缓存
  */
 public func evictAll(): Unit
 /*
- * 删除缓存文件以及journal,但不删除内存中缓存
+ * 关闭cache 删除缓存
  * @return Directory
  */
 public func delete(): Directory
@@ -2359,7 +2360,7 @@ public func flush(): Unit
  */
 public func initialize(): Unit
 /*
- * 关闭
+ * 关闭cache
  */
 public func close(): Unit
 /*
