@@ -12,7 +12,6 @@ package okhttp
 class DiskLruCache {
     let fileSystem: FileSystem
     var directory: Directory
-    let cacheDir: String
     var valueCount: Int64
     var maxSize: Int64
     var size: Int64 = 0
@@ -35,9 +34,6 @@ class DiskLruCache {
         this.directory = directory
         this.valueCount = valueCount
         this.maxSize = maxSize
-
-        this.cacheDir = directory.info.path.fileName.getOrThrow()
-        CacheRegister.regDir(this.cacheDir)
     }
 
 
@@ -286,12 +282,7 @@ class DiskLruCache {
     }
 
     public func delete() {
-        close()
-        if(CacheRegister.ifSafe(this.cacheDir)){
-            fileSystem.deleteContents(directory)
-        }else{
-            throw IllegalStateException("cache dir is in use, cache closed.")
-        }
+        fileSystem.deleteContents(directory)
     }
 
     public func close(): Unit{
@@ -299,8 +290,7 @@ class DiskLruCache {
             return
         }
         if (initialized){
-            for (key in lruEntries.keys()) {
-                let entry = lruEntries[key]
+            for (entry in lruEntries.values() |> collectArray) {
                 match (entry.currentEditor) {
                     case None =>
                         ()
@@ -314,7 +304,6 @@ class DiskLruCache {
             journalWriter = None
         }
         closed = true
-        CacheRegister.releaseDir(this.cacheDir)
     }
 
     private func processJournal(): Unit {
@@ -527,7 +516,7 @@ class SnapshotIterator <: Iterator<Snapshot> {
     let diskLruCache: DiskLruCache
     init (diskLruCache: DiskLruCache) {
         this.diskLruCache = diskLruCache
-        this.delegate = diskLruCache.lruEntries.values().iterator()
+        this.delegate = (diskLruCache.lruEntries.values() |> collectArray).iterator()
     }
 
     public func next(): Option<Snapshot> {
@@ -880,42 +869,5 @@ class FileSystem {
 
     public func size(name: String): Int64 {
         return File(directory.info.path.join(name), Open(true, false)).length
-    }
-}
-
-class CacheRegister{
-    private static let map = HashMap<String,Int64>()
-    private static let lock: Monitor = Monitor()
-    static func regDir(dir: String):Unit{
-        synchronized(lock){
-            if (map.contains(dir)) {
-                map.put(dir, map[dir] + 1)
-            } else {
-                map.put(dir, 1)
-            }
-            println("regdir ${map[dir]}")
-        }
-    }
-    static func releaseDir(dir: String){
-        synchronized(lock){
-            let count = map[dir] - 1
-            if(count == 0){
-                map.remove(dir)
-            }else{
-                map.put(dir, count)
-            }
-            println("releasedir ${count}")
-            return count
-        }
-    }
-    static func ifSafe(dir: String){
-        synchronized(lock){
-            if(map.contains(dir)){
-                println("ifsafe ${map[dir]}")
-            }else{
-                println("ifsafe 0")
-            }
-            return !map.contains(dir)
-        }
     }
 }

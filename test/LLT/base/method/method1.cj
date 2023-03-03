@@ -8,7 +8,7 @@ main() {
     let client: OkHttpClient= OkHttpClient.builder()
                                           .build()
     let request: okhttp.Request = okhttp.Request.builder()
-                                    .url("http://www.baidu.com")
+                                    .url("https://publicobject.com/helloworld.txt")
                                     .method("POST", body: RealRequestBody.create(
                                         MediaType.get("application/json"), "123"))
                                     .build()

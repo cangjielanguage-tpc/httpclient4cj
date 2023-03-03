@@ -29,7 +29,7 @@ public class okhttp_getMaxSize_001 {
     func okhttp_getMaxSize_001_2(): Unit {
         var exc = ""
         try{
-            let cache: Cache = Cache("./cacheDirectory", 0)
+            let cache: Cache = Cache("./cacheDirectory2", 0)
             println("cache.getMaxSize() ${cache.getMaxSize()}")
         }catch(e:IllegalArgumentException){
             exc = e.message
@@ -42,7 +42,7 @@ public class okhttp_getMaxSize_001 {
     func okhttp_getMaxSize_001_3(): Unit {
         var exc = ""
         try{
-            let cache: Cache = Cache("./cacheDirectory", -1)
+            let cache: Cache = Cache("./cacheDirectory3", -1)
         }catch(e:IllegalArgumentException){
             exc = e.message
         }
