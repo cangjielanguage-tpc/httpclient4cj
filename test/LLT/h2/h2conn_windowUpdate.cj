@@ -23,13 +23,13 @@ main (){
      addFormDataPart("age", "18").
      addFormDataPart("file1", "body.text", body).build()
      let request: okhttp.Request = okhttp.Request.builder().url("http://127.0.0.1:50066/cangjie_test-1.0-SNAPSHOT/post")
-        //.header("User-Agent", "OkHttp-Example")
-        //未使用拦截器手动添加请求头
-        .header("content-type",mu.contentType().getOrThrow().toString())
-        .header("Host","127.0.0.1:50066")
-        .header("content-length",mu.getContentLength().toString())
-        .post(mu)
-        .build()
+    //.header("User-Agent", "OkHttp-Example")
+    //未使用拦截器手动添加请求头
+    .header("content-type",mu.contentType().getOrThrow().toString())
+    .header("Host","127.0.0.1:50066")
+    .header("content-length",mu.getContentLength().toString())
+    .post(mu)
+    .build()
     let soc = Socket(TCP,"127.0.0.1", 50066)
     soc.connect()
     let sc = SocketC(soc)
