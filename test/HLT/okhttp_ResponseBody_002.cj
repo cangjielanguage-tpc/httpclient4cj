@@ -17,7 +17,7 @@ from std import core.*
 @Test
 public class okhttp_ResponseBody_002{
 
-    var port: UInt16 = 1118
+    var port: UInt16 = 0
     func serve(){
         let hd = http.Route()
         hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
@@ -32,7 +32,6 @@ public class okhttp_ResponseBody_002{
     }
 
     @TestCase
-    @Skip
     func okhttp_ResponseBody_002(): Unit {
     spawn {
         serve()
@@ -43,7 +42,6 @@ public class okhttp_ResponseBody_002{
                                 .maxAge(1000)
                                 .build()
     let client: OkHttpClient= OkHttpClient.builder().build()
-    let body: okhttp.RequestBody = okhttp.RequestBody("Media-Type", "text/html".toUtf8Array())
     let request: okhttp.Request = okhttp.Request.builder()
                                     .url("http://127.0.0.1:${port}/1234")
                                     .method("GET")

@@ -22,10 +22,6 @@ class MyInterceptor<: Interceptor {
         let requestBuilder: okhttp.RequestBuilder  = request.newBuilder()
         var response: okhttp.Response =  chain.proceed(requestBuilder.build())
         let responseBuilder: okhttp.ResponseBuilder = response.newBuilder().request(request)
-        var data:String = response.getHeader("Date").toString()
-        if (data.size != 33){
-            responseBuilder.header("Date",data.substring(5,7)+" "+data.substring(12,21))
-        }
         func exception(): String{ "exception"}
         return responseBuilder.build()
     }
@@ -35,7 +31,7 @@ class MyInterceptor<: Interceptor {
 public class okhttp_CacheControl_001 {
 
 
-    var port: UInt16 = 1501
+    var port: UInt16 = 0
     var sev_cache_control = "public, private, no-cache, no-transform, must-revalidate, max-age=1, s-maxage=2"
     func serve(){
         let hd = http.Route() 

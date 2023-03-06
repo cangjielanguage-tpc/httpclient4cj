@@ -1,7 +1,6 @@
 // 3rd_party_lib:okhttp/build/okhttp
 // 3rd_party_lib:okhttp/ci_lib/cryptocj
 
-
 from std import unittest.*
 from std import unittest.testmacro.*
 from std import io.*
@@ -13,7 +12,6 @@ from encoding import url.*
 from net import tls.*
 from std import core.*
 from std import fs.*
-// from std import time.*
 
 class MyInterceptor<: Interceptor {
     
@@ -23,10 +21,6 @@ class MyInterceptor<: Interceptor {
         let requestBuilder: okhttp.RequestBuilder  = request.newBuilder()
         var response: okhttp.Response =  chain.proceed(requestBuilder.build())
         let responseBuilder: okhttp.ResponseBuilder = response.newBuilder().request(request)
-        var data:String = response.getHeader("Date").toString()
-        if (data.size != 33){
-            responseBuilder.header("Date",data.substring(5,7)+" "+data.substring(12,21))
-        }
         func exception(): String{ "exception"}
         return responseBuilder.build()
     }
@@ -36,7 +30,7 @@ class MyInterceptor<: Interceptor {
 public class okhttp_CacheControl_002 {
 
 
-    var port: UInt16 = 1501
+    var port: UInt16 = 0
     func serve(){
         let hd = http.Route() 
         hd.handle("/1234567", { rws: http.ResponseWriteStream, req: http.Request =>

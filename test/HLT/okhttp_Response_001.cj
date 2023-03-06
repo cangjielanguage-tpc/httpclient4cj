@@ -17,7 +17,7 @@ from std import core.*
 @Test
 public class okhttp_Response_001{
 
-    var port: UInt16 = 1112
+    var port: UInt16 = 0
     func serve(){
         let hd = http.Route()
         hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
@@ -42,24 +42,20 @@ public class okhttp_Response_001{
                                 .maxAge(1000)
                                 .build()
     let client: OkHttpClient= OkHttpClient.builder().build()
-    // let body: okhttp.RequestBody = okhttp.RequestBody("Media-Type", "text/html")
     let request: okhttp.Request = okhttp.Request.builder()
                                     .url("http://127.0.0.1:${port}/1234")
-                                    .method("GET")//加body
+                                    .method("GET")
                                     .cacheControl(cache)
                                     .build()
     var call = client.newCall(request)
     var response: okhttp.Response = call.execute()
     var request2: okhttp.Request = response.getRequest()
     var response_heads: http.Header = response.getHeaders()
-    // var response_body:Array<Byte> = response.getBody().getOrThrow().getSource().readToEnd()
-    // var str =String.fromUtf8(response_body)
     var response_protocol = response.getProtocol().toString()
     var response_code : Int64 = response.getCode()
     var response_isSuccess:Bool= response.isSuccess()
     var responseStr:String = response.toString()
-    // println("response_body")
-    // println(str)
+
 
     for ((nm,vl) in response_heads) {
         println(nm)
@@ -69,10 +65,7 @@ public class okhttp_Response_001{
     println("code = ${response_code}")
     println("isSuccess = ${response_isSuccess}")
 
-    //@Assert(request2,request)
     @Assert(response_code,Int64(200))
-    // @Assert(str, "Hello from /red")
-    // @Assert(response_body, "Hello from /red".toUtf8Array())
     @Assert(response.getHeader("aaa").toString(),"None")
     @Assert(response.getHeader("bbb","123"),"123")
     @Assert(response.getHeader("Content-Length"),"15")
@@ -80,7 +73,7 @@ public class okhttp_Response_001{
     @Assert(response.getHeader("Connection"),"keep-alive")
     @Assert(response.getHeader("Content-Type"),"text/plain; charset=utf-8")
     @Assert(response_protocol,"http/1.1")
-    @Assert(responseStr,"Response{protocol=http/1.1, code=200, message=OK, url=http://127.0.0.1:${port}/1234}")
+    @Assert(responseStr,"Response{protocol=http/1.1, code=200, message=OK, url=${request.getUrl().toString()}}")
 
     @Assert(response_isSuccess,true)
 

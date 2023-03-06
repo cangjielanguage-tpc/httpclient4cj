@@ -18,6 +18,7 @@ public class okhttp_Request_method_004{
 
     @TestCase
     func okhttp_Request_method_004(): Unit {
+        let body: okhttp.RequestBody = okhttp.RealRequestBody.create(MediaType.get("application/json; charset=utf-8"), "hello".toUtf8Array())
         let request: okhttp.Request = okhttp.Request.builder()
                                         .method("HEAD")
                                         .build()
@@ -26,6 +27,22 @@ public class okhttp_Request_method_004{
         @Assert(request_method, "HEAD")
 
     }
+    @TestCase
+    func okhttp_Request_method_004_exception(): Unit {
+        var exception = ""
+        let body: okhttp.RequestBody = okhttp.RealRequestBody.create(MediaType.get("application/json; charset=utf-8"), "hello".toUtf8Array())
+        try{
+            let request: okhttp.Request = okhttp.Request.builder()
+                                            .method("HEAD",body:body)
+                                            .build()
+            var request_method = request.getMethod()
+            
+        } catch (e : Exception) {
+            println("e.message = ${e.message}")
+            exception = e.message
+        }
+        @Assert(exception.contains("method HEAD must not have a request body."), true)
 
+    }
 }
 

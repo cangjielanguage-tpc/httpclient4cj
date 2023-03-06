@@ -20,7 +20,6 @@ class MyInterceptor<: Interceptor {
         let requestBuilder: okhttp.RequestBuilder  = request.newBuilder()
         var response: okhttp.Response =  chain.proceed(requestBuilder.build())
         let responseBuilder: okhttp.ResponseBuilder = response.newBuilder().request(request)
-        responseBuilder.header("Date","Wed, 22 Feb 2023 17:53:23 GMT")
         func exception(): String{ "exception"}
         return responseBuilder.build()
     }
@@ -29,7 +28,7 @@ class MyInterceptor<: Interceptor {
 @Test
 public class okhttp_cache_002 {
 
-    var port: UInt16 = 1502
+    var port: UInt16 = 0
     func serve(){
         let hd = http.Route() 
         hd.handle("/1234567", { rws: http.ResponseWriteStream, req: http.Request =>
