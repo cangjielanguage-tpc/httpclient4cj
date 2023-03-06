@@ -21,11 +21,6 @@ class MyInterceptor<: Interceptor {
         let requestBuilder: okhttp.RequestBuilder  = request.newBuilder()
         var response: okhttp.Response =  chain.proceed(requestBuilder.build())
         let responseBuilder: okhttp.ResponseBuilder = response.newBuilder().request(request)
-        var data:String = response.getHeader("Date").toString()
-        if (data.size != 33){
-            responseBuilder.header("Date",data.substring(5,7)+" "+data.substring(12,21))
-        }
-        // responseBuilder.header("Date","Thu, 23 Feb 2023 16:23:49 GMT")
         func exception(): String{ "exception"}
         return responseBuilder.build()
     }
@@ -34,7 +29,7 @@ class MyInterceptor<: Interceptor {
 @Test
 public class okhttp_cache_008 {
 
-    var port: UInt16 = 1501
+    var port: UInt16 = 0
     var sev_cache_control = "max-age=200"
     func serve(){
         let hd = http.Route() 
@@ -133,6 +128,6 @@ public class okhttp_cache_008 {
         @Assert(response2.getReceivedResponseAtMillis().toString()=="",false) 
         println("response2.getNetworkResponse() : ${response2.getNetworkResponse()}")
         println("response2.getCacheResponse() : ${response2.getCacheResponse()}")
-        @Assert(response2.getCacheResponse().toString(),"Some(Response{protocol=http/1.1, code=200, message=OK, url=http://127.0.0.1:1501/1234567})")
+        @Assert(response2.getCacheResponse().toString(),"Some(Response{protocol=http/1.1, code=200, message=OK, url=${request2.getUrl().toString()}})")
     }
 }

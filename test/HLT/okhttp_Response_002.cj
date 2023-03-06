@@ -17,7 +17,7 @@ from std import core.*
 @Test
 public class okhttp_Response_002{
 
-    var port: UInt16 = 1113
+    var port: UInt16 = 0
     func serve(){
         let hd = http.Route()
         hd.handle("/12345", { rws: http.ResponseWriteStream, req: http.Request =>

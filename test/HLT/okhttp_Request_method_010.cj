@@ -18,7 +18,7 @@ from std import fs.*
 public class okhttp_Request_method_010{
 
 
-    var port: UInt16 = 1110
+    var port: UInt16 = 0
     func serve(){
         let hd = http.Route()
         hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>

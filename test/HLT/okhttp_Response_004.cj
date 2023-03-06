@@ -17,7 +17,7 @@ from std import core.*
 @Test
 public class okhttp_Response_004{
 
-    var port: UInt16 = 1115
+    var port: UInt16 = 0
     func serve(){
         let hd = http.Route()
         hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
@@ -82,7 +82,7 @@ public class okhttp_Response_004{
     @Assert(response.getHeader("Connection").getOrThrow(),"keep-alive")
     @Assert(response.getHeader("Content-Type").getOrThrow().toString(),"text/plain; charset=utf-8")
     @Assert(response_protocol,"http/1.1")
-    @Assert(responseStr,"Response{protocol=http/1.1, code=200, message=OK, url=http://127.0.0.1:${port}/1234}")
+    @Assert(responseStr,"Response{protocol=http/1.1, code=200, message=OK, url=${request.getUrl().toString()}}")
 
     @Assert(response_isSuccess,true)
     

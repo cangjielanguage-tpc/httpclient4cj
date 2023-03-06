@@ -50,7 +50,7 @@ public class okhttp_Chain_002{
     static var check2:String = "" 
     static var check3:String = "" 
 
-    var port: UInt16 = 1102
+    var port: UInt16 = 0
     func serve(){
         let hd = http.Route()
         hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
