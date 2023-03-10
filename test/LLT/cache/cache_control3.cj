@@ -17,11 +17,12 @@ main() {
         .immutable().build()
     let cache: Cache = Cache("./cacheccccccc", 10 * 1024 * 1024)
     let client: OkHttpClient= OkHttpClient.builder().cache(cache).build()
+
+    /*request1*/
     let request = okhttp.Request.builder()
-            .url("https://publicobject.com/helloworld.txt")
+            .url("https://httpbin.org/cache/10")
             .method("GET")
             .build()
-
     let res = client.newCall(request).execute()
     let s = res.getBody().getOrThrow().getString()
     //第一次走网络不走缓存
@@ -29,12 +30,12 @@ main() {
         case Some(v) => true
         case None => false
     }
-
     let exec2 = match(res.getCacheResponse()) {
         case Some(v) => false
         case None => true
     }
 
+    /*request2*/
     //第二次走缓存不走网络
     let res2 = client.newCall(request).execute()
     let s2 = res2.getBody().getOrThrow().getString()
@@ -47,9 +48,12 @@ main() {
         case Some(v) => true
         case None => false
     }
+
+    /*res*/
     if (exec1 && exec2 && exec3 && exec4) {
         return 0
     }
+    println("${exec1} ${exec2} ${exec3} ${exec4}")
     return 1
 }
 

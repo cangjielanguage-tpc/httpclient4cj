@@ -8,7 +8,7 @@ from std import time.*
 main() {
     let client: OkHttpClient= OkHttpClient.builder().connectTimeout(Duration.millisecond(10000)).
         readTimeout(Duration.millisecond(100000)).writeTimeout(Duration.millisecond(100000)).build()
-    let request: Request = Request.builder().url("https://publicobject.com/helloworld.txt")
+    let request: Request = Request.builder().url("https://httpbin.org/anything")
     .header("User-Agent", "OkHttp-Example")
     .build()
     let response: Response = client.newCall(request).execute()
