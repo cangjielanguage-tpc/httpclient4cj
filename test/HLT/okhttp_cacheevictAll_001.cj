@@ -22,11 +22,12 @@ class MyInterceptor<: Interceptor {
         let requestBuilder: okhttp.RequestBuilder  = request.newBuilder()
         var response: okhttp.Response =  chain.proceed(requestBuilder.build())
         let responseBuilder: okhttp.ResponseBuilder = response.newBuilder().request(request)
-        var data:String = response.getHeader("Date").toString()
-        if (data.size != 33){
-            responseBuilder.header("Date",data.substring(5,7)+" "+data.substring(12,21))
-        }
         func exception(): String{ "exception"}
+        let utctime = Time.now().utc()
+        let utctimestr = utctime.toString(", dd MMM yyyy HH:mm:ss z")
+        let str = "${utctime.weekDay().toString()[0..3]}${utctimestr}"
+        println("str:${str}")
+        responseBuilder.header("Date",str)
         return responseBuilder.build()
     }
 }

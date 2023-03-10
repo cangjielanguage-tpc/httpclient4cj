@@ -22,6 +22,11 @@ class MyInterceptor<: Interceptor {
         var response: okhttp.Response =  chain.proceed(requestBuilder.build())
         let responseBuilder: okhttp.ResponseBuilder = response.newBuilder().request(request)
         func exception(): String{ "exception"}
+        let utctime = Time.now().utc()
+        let utctimestr = utctime.toString(", dd MMM yyyy HH:mm:ss z")
+        let str = "${utctime.weekDay().toString()[0..3]}${utctimestr}"
+        println("str:${str}")
+        responseBuilder.header("Date",str)
         return responseBuilder.build()
     }
 }
@@ -53,7 +58,6 @@ public class okhttp_cache_001 {
             serve()
         }
         sleep(1000*1000*1000)
-
         let cachecontrol: CacheControl = CacheControl.builder()
                                     .maxAge(20)
                                     .build()

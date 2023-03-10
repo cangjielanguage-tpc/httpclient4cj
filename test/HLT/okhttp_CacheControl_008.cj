@@ -23,6 +23,11 @@ class MyInterceptor<: Interceptor {
         var response: okhttp.Response =  chain.proceed(requestBuilder.build())
         let responseBuilder: okhttp.ResponseBuilder = response.newBuilder().request(request)
         func exception(): String{ "exception"}
+        let utctime = Time.now().utc()
+        let utctimestr = utctime.toString(", dd MMM yyyy HH:mm:ss z")
+        let str = "${utctime.weekDay().toString()[0..3]}${utctimestr}"
+        println("str:${str}")
+        responseBuilder.header("Date",str)
         return responseBuilder.build()
     }
 }
