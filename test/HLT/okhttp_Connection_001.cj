@@ -55,7 +55,7 @@ public class okhttp_Connection_001 {
 
     
     @TestCase
-    func okhttp_CacheControl_004(): Unit {
+    func okhttp_CacheControl_001(): Unit {
         spawn {
             serve()
         }

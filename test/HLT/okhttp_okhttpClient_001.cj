@@ -52,9 +52,11 @@ public class okhttp_okhttpClient_001{
         var response: okhttp.Response = call.execute()
 
         println(client.getTlsConfig().getOrThrow().certificateChainFile)
+        @Assert(client.getTlsConfig().getOrThrow().certificateChainFile, "")
         println(client.getTlsConfig().getOrThrow().caFile)
+        @Assert(client.getTlsConfig().getOrThrow().caFile, "../data/jjd.cer")
         println(client.getFollowSslRedirects())
-
+        @Assert(client.getFollowSslRedirects(), true)
         
     }
 }
