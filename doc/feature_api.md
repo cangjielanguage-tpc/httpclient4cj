@@ -56,9 +56,9 @@ public func getDispatcher(): Dispatcher
 public func getInterceptors(): ArrayList<Interceptor>
 /*
  * 获取自定义连接后处理拦截器
- * @return getNetworkInterceptors
+ * @return ArrayList<Interceptor>
  */
-public func getNetworkInterceptors(): getNetworkInterceptors
+public func getNetworkInterceptors(): ArrayList<Interceptor>
 /*
  * 获取CookieJar
  * @return CookieJar

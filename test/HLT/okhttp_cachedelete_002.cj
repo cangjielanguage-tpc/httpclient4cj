@@ -69,7 +69,7 @@ public class okhttp_cachedelete_002 {
                                         .method("GET").cacheControl(cachecontrol)
                                         .build()
         let request2: okhttp.Request = okhttp.Request.builder()
-                                        .url("https://publicobject.com/helloworld.txt")
+                                        .url("https://www.baidu.com")
                                         .method("GET").cacheControl(cachecontrol)
                                         .build()
         println("-------------------------------OKHttp-第一次请求----------------------------")

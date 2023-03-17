@@ -11,7 +11,7 @@ main() {
     let cache: Cache = Cache("./cacheccccccc", 10 * 1024 * 1024)
     let client: OkHttpClient= OkHttpClient.builder().cache(cache).build()
     let request = okhttp.Request.builder()
-            .url("https://publicobject.com/helloworld.txt")
+            .url("https://httpbin.org/cache")
             .build()
 
     let res = client.newCall(request).execute()
@@ -28,7 +28,7 @@ main() {
     }
     sleep(1000*1000*1000)//休眠一秒保证缓存失效
     let request2 = okhttp.Request.builder()
-        .url("https://publicobject.com/helloworld.txt")
+        .url("https://httpbin.org/cache")
         .cacheControl(CacheControl.builder().maxAge(1).build()) //设置缓存有效时间不足，触发协商缓存
         .build()
     //第二次走网络，用户手动添加不走缓存

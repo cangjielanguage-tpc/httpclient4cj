@@ -12,9 +12,10 @@ main() {
     let client: OkHttpClient= OkHttpClient.builder().cache(cache).build()
     let request = okhttp.Request.builder()
             .cacheControl(forceNet)
-            .url("https://publicobject.com/helloworld.txt")
+            .url("https://httpbin.org/cache")
             .build()
     let res = client.newCall(request).execute()
+    println(res.getCode())
     if (res.getCode() == 504) {
         0
     } else {

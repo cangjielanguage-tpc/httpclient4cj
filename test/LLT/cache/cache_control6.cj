@@ -11,27 +11,30 @@ from okhttp import okhttp.*
 main() {
     let cache: Cache = Cache("./cacheccccccc", 10 * 1024 * 1024)
     let client: OkHttpClient= OkHttpClient.builder().cache(cache).build()
-    let request = okhttp.Request.builder()
-            .url("https://publicobject.com/helloworld.txt")
-            .header("If-None-Match","5383fa03-6df")
-            .build()
 
+    /*request1*/
+    let request = okhttp.Request.builder()
+            .url("https://httpbin.org/etag/5383fa03-6df")
+            // .header("If-None-Match","5383fa03-6df")
+            .build()
+    //第一次走网络不走缓存,返回后创建缓存，code为200
     let res = client.newCall(request).execute()
     let s = res.getBody().getOrThrow().getString()
-    //第一次走网络不走缓存,返回后创建缓存，因If-Modified-Since不同， code为200
+    // println("request1 ${res.getCode()} ${s}")
     let exec1 = match(res.getNetworkResponse()) {
         case Some(v) =>
             if(v.getCode()==200) {true} else {false}
         case None => false
     }
-
     let exec2 = match(res.getCacheResponse()) {
         case Some(v) => false
         case None => true
     }
+
+    /*request2*/
     let request2 = okhttp.Request.builder()
-        .url("https://publicobject.com/helloworld.txt")
-        .header("If-None-Match","\"5383fa03-6df\"")
+        .url("https://httpbin.org/etag/5383fa03-6df")
+        .header("If-None-Match","5383fa03-6df")
         .build()
     //第二次走网络，用户手动添加不走缓存
     let res2 = client.newCall(request2).execute()
@@ -41,7 +44,6 @@ main() {
         case Some(v) => if(v.getCode() == 304) {true} else {false}
         case None => false
     }
-
     let exec4 = match (res2.getCacheResponse()) {
         case Some(v) => false
         case None => true

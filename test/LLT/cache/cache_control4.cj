@@ -11,12 +11,13 @@ main() {
     let cache: Cache = Cache("./cacheccccccc", 10 * 1024 * 1024)
     let client: OkHttpClient= OkHttpClient.builder().cache(cache).build()
     let request = okhttp.Request.builder()
-            .url("https://publicobject.com/helloworld.txt")
-            .header("If-Modified-Since","Tue, 27 May 2022 02:35:47 GMT")
+            .url("https://httpbin.org/cache")
+            // .header("If-Modified-Since","Tue, 27 May 2022 02:35:47 GMT")
             .build()
 
     let res = client.newCall(request).execute()
     let s = res.getBody().getOrThrow().getString()
+    // println("request1 ${res.getCode()} ${s}")
     //第一次走网络不走缓存,返回后创建缓存，因If-Modified-Since不同， code为200
     let exec1 = match(res.getNetworkResponse()) {
         case Some(v) =>
@@ -29,13 +30,13 @@ main() {
         case None => true
     }
     let request2 = okhttp.Request.builder()
-        .url("https://publicobject.com/helloworld.txt")
+        .url("https://httpbin.org/cache")
         .header("If-Modified-Since","Tue, 27 May 2014 02:35:47 GMT")
         .build()
     //第二次走网络，用户手动添加不走缓存
     let res2 = client.newCall(request2).execute()
     let s2 = res2.getBody().getOrThrow().getString()
-    println(s2)
+    // println(s2)
     let exec3 = match(res2.getNetworkResponse()) {
         case Some(v) => if(v.getCode() == 304) {true} else {false}
         case None => false
@@ -49,6 +50,7 @@ main() {
     if (exec1 && exec2 && exec3 && exec4) {
         return 0
     }
+    println(",${exec1},${exec2},${exec3},${exec4}")
 
     return 1
 }
