@@ -2,17 +2,24 @@
  * Copyright (c) Huawei Technologies co., Ltd. 2022-2023. All Rights Resverd.
  * Description: openssl dns.c for Cangjie API
  */
-#include<stdio.h>
-#include<string.h>
-#include<sys/types.h>
-#include<sys/socket.h>
-#include<netdb.h>
-#include<netinet/in.h>
-#include<arpa/inet.h>
-#include<malloc.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/types.h>
+#ifdef _WIN32
+#include <winsock2.h>
+#include <winsock.h>
+#include <windows.h>
+#include <ws2tcpip.h>
+#else
+#include <sys/socket.h>
+#include <netdb.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#endif
+#include <stdint.h>
+#include <malloc.h>
 
-int okhttp_SyscallGetAddrInfo(const char* node, const char* service,
-                              const struct addrinfo* hints, struct addrinfo** res)
+int okhttp_SyscallGetAddrInfo(const char* node, const char* service, const struct addrinfo* hints, struct addrinfo** res)
 {
     return getaddrinfo(node, service, hints, res);
 }
@@ -25,8 +32,9 @@ uint8_t* okhttp_SOCKET_ConvertAddrPtr(struct addrinfo* res)
     int ip6cnt = 0;
     const int ip4bytes = 5;
     const int ip6bytes = 17;
+    struct addrinfo* cur;
 
-    for (struct addrinfo* cur = res; cur != NULL; cur = cur->ai_next) {
+    for (cur = res; cur != NULL; cur = cur->ai_next) {
         if (cur->ai_addr == NULL) {
             continue;
         }
@@ -48,16 +56,12 @@ uint8_t* okhttp_SOCKET_ConvertAddrPtr(struct addrinfo* res)
             }
             ip4cnt++;
         }
-		
+
         if (cur->ai_family == AF_INET6) {
             struct sockaddr_in6* addr = (struct sockaddr_in6*)cur->ai_addr;
             tmpaddr[ip4cnt * ip4bytes + ip6cnt * ip6bytes + 1] = ip6bytes - 1;
-    #if defined __hm__ || __ohos__
-            uint8_t* ip = addr->sin6_addr.__in6_union.__s6_addr;
-    #else
-			uint8_t* ip = addr->sin6_addr.__in6_u.__u6_addr8;
-    #endif
-			for (int i = 1; i < ip6bytes; i++) {
+            uint8_t* ip = addr->sin6_addr.s6_addr;
+            for (int i = 1; i < ip6bytes; i++) {
                 tmpaddr[ip4cnt * ip4bytes + ip6cnt * ip6bytes + i + 1] = ip[i - 1];
             }
             ip6cnt++;
@@ -72,7 +76,6 @@ uint8_t* okhttp_SOCKET_ConvertAddrPtr(struct addrinfo* res)
         }
 
         memcpy_s(ret, ip4cnt * ip4bytes + ip6cnt * ip6bytes + 1, tmpaddr, ip4cnt * ip4bytes + ip6cnt * ip6bytes + 1);
-		// before: memcpy(ret, tmpaddr, ip4cnt * ip4bytes + ip6cnt * ip6bytes + 1)
         return ret;
     }
 
@@ -84,7 +87,10 @@ uint8_t* okhttp_SOCKET_GetAddrInfo(uint8_t net, char* node)
     if (node == NULL || (net != IPPROTO_TCP && net != IPPROTO_UDP)) {
         return NULL;
     }
+
+    int ret;
     struct addrinfo hints, *res = NULL;
+    hints.ai_addrlen = 0;
     hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = 0;
     hints.ai_flags = AI_PASSIVE | AI_ALL;
@@ -92,13 +98,31 @@ uint8_t* okhttp_SOCKET_GetAddrInfo(uint8_t net, char* node)
     hints.ai_canonname = NULL;
     hints.ai_addr = NULL;
     hints.ai_next = NULL;
-    int i = 0;
-    int r = okhttp_SyscallGetAddrInfo(node, NULL, &hints, &res);
-    if (r != 0) {
+
+#ifdef _WIN32
+    WSADATA wsaData;
+    ret = WSAStartup(MAKEWORD(2,2), &wsaData);
+    if (ret != 0) {
+        printf("WSAStartup failed: %d\n", ret);
+        return NULL;
+    }
+#endif
+
+    ret = okhttp_SyscallGetAddrInfo(node, NULL, &hints, &res);
+    if (ret != 0) {
+#ifdef _WIN32
+        printf("GetAddrInfo failed\n");
+        WSACleanup();
+#endif
         return NULL;
     }
 
     uint8_t* addr = okhttp_SOCKET_ConvertAddrPtr(res);
     freeaddrinfo(res);
+
+#ifdef _WIN32
+    WSACleanup();
+#endif
+
     return addr;
 }
