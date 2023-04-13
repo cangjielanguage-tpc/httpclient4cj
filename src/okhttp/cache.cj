@@ -252,7 +252,9 @@ class CacheIterator <: Iterator<String> {
                 case Some(snapshot) =>
                     try {
                         let source = snapshot.getSource(ENTRY_METADATA)
-                        return source.readUtf8Line()
+                        let str = source.readUtf8Line()
+                        snapshot.close()
+                        return str
                     } catch (e: FSException | EOFException) {
                         return Option<String>.None
                     }
