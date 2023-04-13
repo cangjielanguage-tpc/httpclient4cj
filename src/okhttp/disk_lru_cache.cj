@@ -302,6 +302,7 @@ class DiskLruCache {
             trimToSize()
             journalWriter.getOrThrow().close()
             journalWriter = None
+            fileSystem.close()
         }
         closed = true
     }
@@ -819,6 +820,7 @@ class Snapshot <: Resource {
 
 class FileSystem {
     var directory: Directory
+    let closeFuncs = ArrayList<()->Unit>()
 
     init(directory: Directory) {
         this.directory = directory
@@ -826,17 +828,25 @@ class FileSystem {
 
     public func source(name: String): OkBuffer {
         let file = File(directory.info.path.join(name), Open(true, true))
+        closeFuncs.append{=>file.close()}
         return OkBuffer(file)
     }
 
     public func sink(name: String): Sink {
         let file = directory.createFile(name)
+        closeFuncs.append{=>file.close()}
         return FileSink(file)
     }
 
     public func appendingSink(name: String): Sink {
         let file = File(directory.info.path.join(name), Append)
+        closeFuncs.append{=>file.close()}
         return FileSink(file)
+    }
+
+    func close(): Unit{
+        closeFuncs |> forEach{f:()->Unit=>f()}
+        closeFuncs.clear()
     }
 
     public func delete(name: String): Unit {
@@ -868,6 +878,6 @@ class FileSystem {
     }
 
     public func size(name: String): Int64 {
-        return File(directory.info.path.join(name), Open(true, false)).length
+        return FileInfo(directory.info.path.join(name)).length
     }
 }
