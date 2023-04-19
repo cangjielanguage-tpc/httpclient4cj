@@ -17,5 +17,5 @@ make
 cd  ${dns_path}/
 echo start build okhttp
 cpm build -V
-cp ${dns_path}/lib/*.so ${dns_path}/build/okhttp/
+cp ${dns_path}/lib/*.dll ${dns_path}/build/okhttp/
 echo end build okhttp

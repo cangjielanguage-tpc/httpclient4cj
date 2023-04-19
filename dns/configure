@@ -53,7 +53,7 @@ case "$1" in
     --cross-prefix=*) CROSS_PREFIX=`echo $1 | sed 's/.*=//'`; shift ;;
     --cc=*) CC=`echo $1 | sed 's/.*=//'`; shift ;;
     --target=*) TARGET=`echo $1 | sed 's/.*=//'`; shift ;;
-    --cflags=*) CFLAGS="${CFLAGS} `echo $1 | sed 's/.*=//'`"; shift ;;
+    --cflags=*) CFLAGS="${CFLAGS} `echo $1 | sed 's/--cflags=//'`"; shift ;;
     *)
       echo "unknown option: $1" | tee -a configure.log
       echo "$0 --help for help" | tee -a configure.log
