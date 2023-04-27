@@ -64,7 +64,6 @@ public class Route <: Hashable & Equatable<Route> {
 
     public operator func ==(rhs: Route): Bool {
         return address == rhs.getAddress()
-        inetSocketAddress == this.inetSocketAddress
     }
 
     public operator func != (rhs: Route): Bool {

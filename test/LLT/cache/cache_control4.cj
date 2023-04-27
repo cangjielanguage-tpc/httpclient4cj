@@ -2,6 +2,7 @@
 // EXEC: ./main
 
 from okhttp import okhttp.*
+from std import time.*
 
 //Last-Modified: Tue, 27 May 2014 02:35:47 GMT
 //ETag: "5383fa03-6df"
@@ -9,7 +10,12 @@ from okhttp import okhttp.*
 //（Last-Modified），如果不同，则返回最新资源，HTTP 200 OK，否则 说明资源无新修改，响应 HTTP 304 (用户手动添加不走缓存，拦截器自动添加走缓存)
 main() {
     let cache: Cache = Cache("./cacheccccccc", 10 * 1024 * 1024)
-    let client: OkHttpClient= OkHttpClient.builder().cache(cache).build()
+    let client: OkHttpClient= OkHttpClient.builder()
+        .cache(cache)
+        .connectTimeout(Duration.minute(1))
+        .readTimeout(Duration.minute(1))
+        .writeTimeout(Duration.minute(1))
+        .build()
     let request = okhttp.Request.builder()
             .url("https://httpbin.org/cache")
             // .header("If-Modified-Since","Tue, 27 May 2022 02:35:47 GMT")

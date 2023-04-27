@@ -113,8 +113,8 @@ class DiskLruCache {
             checkNotClosed()
             validateKey(key)
             var entry: Option<Entry> = lruEntries.get(key)
-            if (expectedSequenceNumber != ANY_SEQUENCE_NUMBER
-                && (!has(entry) || entry.getOrThrow().sequenceNumber != expectedSequenceNumber)) {
+            if (expectedSequenceNumber != ANY_SEQUENCE_NUMBER && 
+                (!has(entry) || entry.getOrThrow().sequenceNumber != expectedSequenceNumber)) {
                 return None
             }
 
@@ -177,8 +177,7 @@ class DiskLruCache {
 
     func journalRebuildRequired() {
         let redundantOpCompactThreshold = 2000
-        return redundantOpCount >= redundantOpCompactThreshold
-            && redundantOpCount >= lruEntries.size
+        return redundantOpCount >= redundantOpCompactThreshold && redundantOpCount >= lruEntries.size
     }
 
     func removeEntry(entry: Entry): Bool {
@@ -336,10 +335,10 @@ class DiskLruCache {
             let valueCountString = source.readUtf8Line()
             let blank = source.readUtf8Line()
 
-            if (!MAGIC.equals(magic)
-                || !VERSION_1.equals(version)
-                || !"${valueCount}".equals(valueCountString)
-                || !"".equals(blank)) {
+            if (!MAGIC.equals(magic) || 
+                !VERSION_1.equals(version) || 
+                !"${valueCount}".equals(valueCountString) || 
+                !"".equals(blank)) {
                 throw HttpException("unexpected journal header: [${magic},${version},${valueCountString},${blank}")
             }
 

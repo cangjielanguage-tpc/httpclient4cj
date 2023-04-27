@@ -146,7 +146,7 @@ public class Transmitter {
      func acquireConnectionNoEvents(connection: Option<Connection>): Unit {
         synchronized (connectionPool.mutex) {
             match (connection) {
-                case Some(conn) => ()
+                case Some(conn) =>
                     this.connection =  conn
                     conn.transmitters.append(this)
                 case None => throw HttpException("IllegalStateException")

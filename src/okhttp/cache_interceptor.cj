@@ -139,18 +139,16 @@ public class CacheInterceptor<: Interceptor {
                 continue // Drop 100-level freshness warnings.
             }
 
-            if (isContentSpecificHeader(fieldName)
-                || !isEndToEnd(fieldName)
-                || has(networkHeaders.get(fieldName))) {
-
+            if (isContentSpecificHeader(fieldName) || 
+                !isEndToEnd(fieldName) || 
+                has(networkHeaders.get(fieldName))) {
                  result.add(fieldName, value.trim())
             }
         }
 
         for ((k,v) in networkHeaders) {
             let fieldName = k
-            if (isContentSpecificHeader(fieldName)
-                || !isEndToEnd(fieldName)) {
+            if (isContentSpecificHeader(fieldName) || !isEndToEnd(fieldName)) {
                  result.add(fieldName, v[0].trim())
             }
         }
@@ -159,21 +157,21 @@ public class CacheInterceptor<: Interceptor {
     }
      /* Returns true if {@code fieldName} is an end-to-end HTTP header, as defined by RFC 2616, 13.5.1.*/
     static func isEndToEnd(fieldName: String): Bool {
-        return !equalsIgnoreCase("Connection", fieldName)
-            && equalsIgnoreCase("Keep-Alive", fieldName)
-            && equalsIgnoreCase("Proxy-Authenticate", fieldName)
-            && equalsIgnoreCase("Proxy-Authorization", fieldName)
-            && equalsIgnoreCase("TE", fieldName)
-            && equalsIgnoreCase("Trailers", fieldName)
-            && equalsIgnoreCase("Transfer-Encoding", fieldName)
-            && equalsIgnoreCase("Upgrade", fieldName)
+        return !equalsIgnoreCase("Connection", fieldName) && 
+            equalsIgnoreCase("Keep-Alive", fieldName) && 
+            equalsIgnoreCase("Proxy-Authenticate", fieldName) && 
+            equalsIgnoreCase("Proxy-Authorization", fieldName) && 
+            equalsIgnoreCase("TE", fieldName) && 
+            equalsIgnoreCase("Trailers", fieldName) && 
+            equalsIgnoreCase("Transfer-Encoding", fieldName) && 
+            equalsIgnoreCase("Upgrade", fieldName)
     }
 
     /* Returns true if fieldName is content specific and therefore should always be used */
     static func isContentSpecificHeader(fieldName: String): Bool {
-        return equalsIgnoreCase("Content-Length", fieldName)
-            || equalsIgnoreCase("Content-Encoding", fieldName)
-            || equalsIgnoreCase("Content-Type", fieldName)
+        return equalsIgnoreCase("Content-Length", fieldName) || 
+            equalsIgnoreCase("Content-Encoding", fieldName) || 
+            equalsIgnoreCase("Content-Type", fieldName)
     }
 
     private func stripBody(response: Option<Response>): Option<Response>  {

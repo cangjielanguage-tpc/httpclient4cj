@@ -152,8 +152,9 @@ public class CookieUtil {
             return true
         }
 
-        if (urlHost.endsWith(domain) && urlHost.charAt(urlHost.size - domain.size - 1) == '.'
-            && !Util.verifyAsIpAddress(urlHost)) {
+        if (urlHost.endsWith(domain) && 
+            urlHost.charAt(urlHost.size - domain.size - 1) == '.' && 
+            !Util.verifyAsIpAddress(urlHost)) {
             return true
         }
 
@@ -380,8 +381,12 @@ public class CookieUtil {
     private static func dateCharacterOffset(input: String, pos: Int64, limit: Int64, invert: Bool) {
         for (i in pos..limit) {
             let c = input[i]
-            let dateCharacter: Bool = (c < ' ' && c != '\t') || (c >= '\u{007f}') ||  (c >= '0' && c <= '9')
-                || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == ':')
+            let dateCharacter: Bool = (c < ' ' && c != '\t') || 
+                (c >= '\u{007f}') ||  
+                (c >= '0' && c <= '9') || 
+                (c >= 'a' && c <= 'z') || 
+                (c >= 'A' && c <= 'Z') || 
+                (c == ':')
             if (dateCharacter == !invert) {
                 return i
             }

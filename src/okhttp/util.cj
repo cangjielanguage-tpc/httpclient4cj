@@ -51,9 +51,9 @@ class Util {
      * @since 0.29.3
      */
     static func sameConnection( a: URL, b: URL): Bool {
-        return a.host == b.host
-            && a.port() == b.port()
-            && a.scheme == b.scheme
+        return a.host == b.host && 
+            a.port() == b.port() && 
+            a.scheme == b.scheme
     }
 
 

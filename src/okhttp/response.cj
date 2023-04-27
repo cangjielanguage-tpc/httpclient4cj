@@ -184,15 +184,7 @@ public class Response <: ToString {
        * @since 0.29.3
        */
       public func toString(): String {
-         return "Response{protocol="
-            + protocol.toString()
-            + ", code="
-            + code.toString()
-            + ", message="
-            + message
-            + ", url="
-            + request.getUrl().toString()
-            + "}"
+         return "Response{protocol=${protocol}, code=${code}, message=${message}, url=${request.getUrl()}}"
       }
 
       /**

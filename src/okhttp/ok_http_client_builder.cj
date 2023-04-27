@@ -201,9 +201,17 @@ public class OkHttpClientBuilder <: Builder<OkHttpClient> {
         return this
     }
 
+    /*
+     * set TlsClientConfig
+     */
+    public func tlsConfig(cfg: TlsClientConfig): OkHttpClientBuilder {
+        this.tlsConfigBuild = cfg
+        return this
+    }
+
     public func protocols(protocols: ArrayList<String>): OkHttpClientBuilder {
-        if (!protocols.contains(Protocol.get("H2_PRIOR_KNOWLEDGE").toString())
-                  && !protocols.contains(Protocol.get("HTTP/1.1").toString())) {
+        if (!protocols.contains(Protocol.get("H2_PRIOR_KNOWLEDGE").toString()) && 
+            !protocols.contains(Protocol.get("HTTP/1.1").toString())) {
                 throw  IllegalArgumentException(
                     "protocols must contain h2_prior_knowledge or http/1.1")
         }

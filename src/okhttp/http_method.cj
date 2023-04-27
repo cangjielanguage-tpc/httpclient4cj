@@ -6,12 +6,11 @@ package okhttp
 
 
 func invalidatesCache(method: String): Bool {
-    return method.equals("POST")
-             || method.equals("PUT")
-             || method.equals("PATCH")
-             || method.equals("PUT")
-             || method.equals("DELETE")
-             || method.equals("MOVE")
+    return method.equals("POST") || 
+        method.equals("PUT") || 
+        method.equals("PATCH") || 
+        method.equals("DELETE") || 
+        method.equals("MOVE")
 }
 
 func permitsRequestBody(method: String): Bool {
@@ -19,11 +18,11 @@ func permitsRequestBody(method: String): Bool {
 }
 
 func requiresRequestBody(method: String): Bool {
-    return method.equals("POST")
-         || method.equals("PUT")
-         || method.equals("PATCH")
-         || method.equals("PROPPATCH")
-         || method.equals("REPORT")
+    return method.equals("POST") || 
+        method.equals("PUT") || 
+        method.equals("PATCH") || 
+        method.equals("PROPPATCH") || 
+        method.equals("REPORT")
 }
 
 
