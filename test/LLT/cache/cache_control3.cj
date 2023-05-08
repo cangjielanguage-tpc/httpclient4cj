@@ -1,6 +1,7 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
+from std import time.*
 from okhttp import okhttp.*
 
 
@@ -16,7 +17,12 @@ main() {
         .noTransform()//禁止转码
         .immutable().build()
     let cache: Cache = Cache("./cacheccccccc", 10 * 1024 * 1024)
-    let client: OkHttpClient= OkHttpClient.builder().cache(cache).build()
+    let client: OkHttpClient= OkHttpClient.builder()
+        .connectTimeout(Duration.minute(1))
+        .readTimeout(Duration.minute(1))
+        .writeTimeout(Duration.minute(1))
+        .cache(cache)
+        .build()
 
     /*request1*/
     let request = okhttp.Request.builder()
