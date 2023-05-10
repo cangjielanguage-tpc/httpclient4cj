@@ -17,7 +17,7 @@ main() {
         .cache(cache).build()
     let request = okhttp.Request.builder()
             .cacheControl(forceNet)
-            .url("https://httpbin.org/cache")
+            .url("http://okhttp:50067/cache")
             .build()
     let res = client.newCall(request).execute()
     println(res.getCode())

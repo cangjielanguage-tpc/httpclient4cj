@@ -8,7 +8,7 @@ main() {
     let cache: Cache = Cache("./cacheccccccc", 10 * 1024 * 1024)
     let client: OkHttpClient= OkHttpClient.builder().cache(cache).build()
     let request = okhttp.Request.builder()
-            .url("https://httpbin.org/anything")
+            .url("http://okhttp:50067/anything")
             .build()
 
     let res = client.newCall(request).execute()
@@ -25,7 +25,7 @@ main() {
     }
 
     for (i in cache.urls()) {
-        if (i == "https://httpbin.org/anything") {
+        if (i == "http://okhttp:50067/anything") {
             return 0
         }
     }
