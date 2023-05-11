@@ -17,7 +17,7 @@ main() {
         .writeTimeout(Duration.minute(1))
         .build()
     let request = okhttp.Request.builder()
-            .url("https://httpbin.org/cache")
+            .url("http://okhttp:50067/cache")
             // .header("If-Modified-Since","Tue, 27 May 2022 02:35:47 GMT")
             .build()
 
@@ -36,7 +36,7 @@ main() {
         case None => true
     }
     let request2 = okhttp.Request.builder()
-        .url("https://httpbin.org/cache")
+        .url("http://okhttp:50067/cache")
         .header("If-Modified-Since","Tue, 27 May 2014 02:35:47 GMT")
         .build()
     //第二次走网络，用户手动添加不走缓存

@@ -26,11 +26,12 @@ main() {
 
     /*request1*/
     let request = okhttp.Request.builder()
-            .url("https://httpbin.org/cache/10")
+            .url("http://okhttp:50067/cache/1000")
             .method("GET")
             .build()
     let res = client.newCall(request).execute()
     let s = res.getBody().getOrThrow().getString()
+    println(s)
     //第一次走网络不走缓存
     let exec1 = match(res.getNetworkResponse()) {
         case Some(v) => true
@@ -45,6 +46,7 @@ main() {
     //第二次走缓存不走网络
     let res2 = client.newCall(request).execute()
     let s2 = res2.getBody().getOrThrow().getString()
+    println(s2)
     let exec3 = match(res2.getNetworkResponse()) {
         case Some(v) => false
         case None => true

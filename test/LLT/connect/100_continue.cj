@@ -9,7 +9,7 @@ main() {
     let client: OkHttpClient= OkHttpClient.builder()
                                           .build()
     let request: okhttp.Request = okhttp.Request.builder()
-                                    .url("https://httpbin.org/anything")
+                                    .url("http://okhttp:50067/anything")
                                     .header("Expect", "100-continue")
                                     .method("POST", body: RealRequestBody.create(MediaType.get("application/json"), "123"))
                                     .build()

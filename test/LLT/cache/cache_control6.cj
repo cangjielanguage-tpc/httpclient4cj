@@ -20,7 +20,7 @@ main() {
 
     /*request1*/
     let request = okhttp.Request.builder()
-            .url("https://httpbin.org/etag/5383fa03-6df")
+            .url("http://okhttp:50067/etag/5383fa03-6df")
             // .header("If-None-Match","5383fa03-6df")
             .build()
     //第一次走网络不走缓存,返回后创建缓存，code为200
@@ -39,7 +39,7 @@ main() {
 
     /*request2*/
     let request2 = okhttp.Request.builder()
-        .url("https://httpbin.org/etag/5383fa03-6df")
+        .url("http://okhttp:50067/etag/5383fa03-6df")
         .header("If-None-Match","5383fa03-6df")
         .build()
     //第二次走网络，用户手动添加不走缓存

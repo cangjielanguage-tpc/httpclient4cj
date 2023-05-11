@@ -17,7 +17,7 @@ main() {
     let client: OkHttpClient= OkHttpClient.builder().cache(cache).build()
     let request: okhttp.Request = okhttp.Request.builder()
                                     //.url("http://127.0.0.1:8080/cangjie_test-1.0-SNAPSHOT/hello")
-                                    .url("https://httpbin.org/anything")
+                                    .url("http://okhttp:50067/anything")
                                     .method("GET")
                                     .build()
     println("first =====================")

@@ -16,3 +16,7 @@ module-resolve.json
 lib
 cryptocj
 test1
+unittest
+log
+report
+tmp

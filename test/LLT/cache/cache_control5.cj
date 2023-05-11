@@ -11,35 +11,40 @@ main() {
     let cache: Cache = Cache("./cacheccccccc", 10 * 1024 * 1024)
     let client: OkHttpClient= OkHttpClient.builder().cache(cache).build()
     let request = okhttp.Request.builder()
-            .url("https://httpbin.org/cache")
+            .url("http://okhttp:50067/cache")
             .build()
 
     let res = client.newCall(request).execute()
     let s = res.getBody().getOrThrow().getString()
+    println("${res} ${s.size}")
+
     //第一次走网络不走缓存,返回后创建缓存
     let exec1 = match(res.getNetworkResponse()) {
         case Some(v) =>true
         case None => false
     }
-
     let exec2 = match(res.getCacheResponse()) {
         case Some(v) => false
         case None => true
     }
+
     sleep(1000*1000*1000)//休眠一秒保证缓存失效
+
     let request2 = okhttp.Request.builder()
-        .url("https://httpbin.org/cache")
+        .url("http://okhttp:50067/cache")
         .cacheControl(CacheControl.builder().maxAge(1).build()) //设置缓存有效时间不足，触发协商缓存
         .build()
     //第二次走网络，用户手动添加不走缓存
     let res2 = client.newCall(request2).execute()
     let s2 = res2.getBody().getOrThrow().getString()
-    println(s2)
+    println("${res2} ${s2.size}")
+    println("${res2.getNetworkResponse()}")
+    println("${res2.getCacheResponse()}")
+
     let exec3 = match(res2.getNetworkResponse()) {
         case Some(v) => if(v.getCode() == 304) {true} else {false}
         case None => false
     }
-
     //拦截器自动添加走缓存
     let exec4 = match (res2.getCacheResponse()) {
         case Some(v) => true

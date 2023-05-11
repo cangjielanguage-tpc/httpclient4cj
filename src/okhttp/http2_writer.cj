@@ -165,16 +165,18 @@ class Http2Writer {
     }
 
     func rstStream(streamId: UInt32, errorCode: ErrorCode) {
-        if (closed) {
-            throw HttpException("closed")
-        }
+        synchronized (mutex) {
+            if (closed) {
+                throw HttpException("closed")
+            }
 
-        let length = 4
-        let frameType = TYPE_RST_STREAM
-        let flags = FLAG_NONE
-        frameHeader(streamId, length, frameType, flags)
-        writeUInt32(sink, errorCode.getCode())
-        sink.flush()
+            let length = 4
+            let frameType = TYPE_RST_STREAM
+            let flags = FLAG_NONE
+            frameHeader(streamId, length, frameType, flags)
+            writeUInt32(sink, errorCode.getCode())
+            sink.flush()
+        }
     }
 
     func goAway(lastGoodStreamId: UInt32, errorCode: ErrorCode, debugData: Array<Byte>) {
@@ -285,15 +287,17 @@ class Http2Writer {
     }
 
     func data(outFinished: Bool, streamId: UInt32, source: ByteArrayStream, byteCount: Int64) {
-        if (closed) {
-            throw HttpException("closed")
-        }
-        var flags: Byte = FLAG_NONE
+        synchronized (mutex) {
+            if (closed) {
+                throw HttpException("closed")
+            }
+            var flags: Byte = FLAG_NONE
 
-        if (outFinished) {
-            flags |= FLAG_END_STREAM
+            if (outFinished) {
+                flags |= FLAG_END_STREAM
+            }
+            dataFrame(streamId, flags, source, byteCount)
         }
-        dataFrame(streamId, flags, source, byteCount)
     }
 
     func dataFrame(streamId: UInt32, flags: Byte, source: ByteArrayStream, byteCount: Int64) {
@@ -307,6 +311,8 @@ class Http2Writer {
    }
 
    func close() {
-       closed = true
+        synchronized (mutex) {
+            closed = true
+        }
    }
 }
