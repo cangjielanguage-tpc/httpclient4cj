@@ -12,15 +12,14 @@
     }
   },
   "foreign_requires": {
-    "dns": {
-      "path": "./lib/",
-      "export": []
-    }
+  },
+  "condition_option": {
+    "cfg_win" : "-lws2_32"
   },
   "package_requires": {
     "path_option": [],
     "package_option": {}
   },
   "output_type": "dynamic",
-  "command_option": "-O2 -Llib -ldns"
+  "command_option": "-O2"
 }

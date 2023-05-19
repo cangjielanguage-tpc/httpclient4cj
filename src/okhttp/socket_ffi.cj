@@ -6,20 +6,13 @@ let AI_IPPROTO_UDP: UInt8 = 17
 let SOCK_ADDR_IPV4_LEN: Int64 = 4
 let SOCK_ADDR_IPV6_LEN: Int64 = 16
 
-foreign {
-    func okhttp_SOCKET_GetAddrInfo(net: UInt8, damin: CString): CPointer<UInt8>
-
-    @fastNative
-    func free(ptr: CPointer<Unit>): Unit
-}
-
 public func resolveDomain(net: SocketNet, domain: String): ArrayList<(SocketAddressKind, Array<UInt8>)> {
     var protocol = match (net) {
         case TCP => AI_IPPROTO_TCP
         case UDP => AI_IPPROTO_UDP
     }
     var domainName = CString(domain)
-    var ip = unsafe { okhttp_SOCKET_GetAddrInfo(protocol, domainName)}
+    var ip = okhttp_SOCKET_GetAddrInfo(protocol, domainName)
     unsafe { domainName.free() }
     if (ip.isNull()) {
         throw HttpException("parse domain = ${domain} fail ")
@@ -32,7 +25,7 @@ public func resolveDomain(net: SocketNet, domain: String): ArrayList<(SocketAddr
         let sz = Int64(unsafe { ip.read(index) })
         index++
         if (sz != SOCK_ADDR_IPV4_LEN && sz != SOCK_ADDR_IPV6_LEN) {
-            unsafe { free(CPointer<Unit>(ip)) }
+            unsafe { free(ip) }
             throw HttpException("parse domain = ${domain} fail ")
         }
         var ips = Array<UInt8>(sz, item: 0)
@@ -45,6 +38,6 @@ public func resolveDomain(net: SocketNet, domain: String): ArrayList<(SocketAddr
             case _ => arr.append((IPv6, ips))
         }
     }
-    unsafe { free(CPointer<Unit>(ip)) }
+    unsafe { free(ip) }
     return arr
 }
