@@ -12,9 +12,9 @@ main() {
     //.protocols(ArrayList<String>([Protocol.get("H2_PRIOR_KNOWLEDGE").toString()]))
     //使用apln协商协议,服务端响应支持的协议，list中前面的协议会被优先选择
     .protocols(ArrayList<String>([Protocol.get("HTTP/2.0").toString(),Protocol.get("HTTP/1.1").toString()]))
-    .connectTimeout(Duration.millisecond(1000))
-    .readTimeout(Duration.millisecond(1000))
-    .writeTimeout(Duration.millisecond(1000))
+    .connectTimeout(Duration.second)
+    .readTimeout(Duration.second)
+    .writeTimeout(Duration.second)
     .build()
 
     let request = Request.builder().url(url).build()

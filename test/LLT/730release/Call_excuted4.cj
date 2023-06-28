@@ -4,7 +4,7 @@
 from std import io.*
 from okhttp import okhttp.*
 from std import time.*
-
+from std import sync.sleep
 
 var asyncCount = 0;
 main() {
@@ -14,11 +14,11 @@ main() {
     .build()
     let async = client.newCall(request2)
     async.enqueue(MyCallbacks())
-    sleep(11000*1000*1000)
+    sleep(11*Duration.second)
     if(asyncCount == 1) {
         return 0
     } else {
-        return -1
+        return 1
     }
 }
 

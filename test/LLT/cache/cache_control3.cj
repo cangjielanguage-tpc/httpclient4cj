@@ -18,9 +18,9 @@ main() {
         .immutable().build()
     let cache: Cache = Cache("./cacheccccccc", 10 * 1024 * 1024)
     let client: OkHttpClient= OkHttpClient.builder()
-        .connectTimeout(Duration.minute(1))
-        .readTimeout(Duration.minute(1))
-        .writeTimeout(Duration.minute(1))
+        .connectTimeout(Duration.minute*1)
+        .readTimeout(Duration.minute*1)
+        .writeTimeout(Duration.minute*1)
         .cache(cache)
         .build()
 

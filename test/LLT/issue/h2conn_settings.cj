@@ -10,6 +10,8 @@ from encoding import url.*
 from net import tls.*
 from std import core.*
 from std import log.*
+from std import sync.sleep
+
 public var port:UInt16=50066
 public let TEST_STR: String = "http2 server write"
 
@@ -41,6 +43,6 @@ main () {
     h2conn.writeData(h2stream.getId(),true,ba,100)
     h2conn.flush()
 
-    sleep(1000*1000*1000)
+    sleep(Duration.second)
     return 0
     }

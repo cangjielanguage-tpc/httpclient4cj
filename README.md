@@ -5,7 +5,7 @@
 <p align="center">
 <img alt="" src="https://img.shields.io/badge/release-v0.0.6-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjc-v0.37.2-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjc-v0.39.4-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-85.0%25-brightgreen" style="display: inline-block;" /> 
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
@@ -170,9 +170,9 @@ from std import time.*
 
 main (){
     let client: OkHttpClient= OkHttpClient.builder()
-    .connectTimeout(Duration.millisecond(1000))
-    .readTimeout(Duration.millisecond(1000))
-    .writeTimeout(Duration.millisecond(1000)).build()
+    .connectTimeout(Duration.second)
+    .readTimeout(Duration.second)
+    .writeTimeout(Duration.second).build()
 }
 
 ```
@@ -188,9 +188,9 @@ main() {
     let url = URL.parse("https://postman-echo.com/get?foo1=bar1&foo2=bar2")
 
     let client: OkHttpClient= OkHttpClient.builder()
-    .connectTimeout(Duration.millisecond(1000))
-    .readTimeout(Duration.millisecond(1000))
-    .writeTimeout(Duration.millisecond(1000))
+    .connectTimeout(Duration.second)
+    .readTimeout(Duration.second)
+    .writeTimeout(Duration.second)
     .build()
 
     let request = Request.builder().url(url).build()
@@ -210,9 +210,9 @@ from std import time.*
 
 main() {
    let client: OkHttpClient = OkHttpClient.builder()
-    .connectTimeout(Duration.millisecond(1000))
-    .readTimeout(Duration.millisecond(1000))
-    .writeTimeout(Duration.millisecond(1000))
+    .connectTimeout(Duration.second)
+    .readTimeout(Duration.second)
+    .writeTimeout(Duration.second)
     .build()
     let request = Request.builder()
                 .url("https://postman-echo.com/post")
@@ -233,9 +233,9 @@ from std import time.*
 from std import fs.*
 main() {
    let client: OkHttpClient= OkHttpClient.builder()
-    .connectTimeout(Duration.millisecond(1000))
-    .readTimeout(Duration.millisecond(1000))
-    .writeTimeout(Duration.millisecond(1000))
+    .connectTimeout(Duration.second)
+    .readTimeout(Duration.second)
+    .writeTimeout(Duration.second)
     .build()
 
     var arr: Array<Byte> = Array<Byte>(1024, {i => UInt8(i % 256)})
@@ -261,9 +261,9 @@ from std import fs.*
 
 main() {
     let client: OkHttpClient= OkHttpClient.builder()
-            .connectTimeout(Duration.millisecond(1000))
-            .readTimeout(Duration.millisecond(1000))
-            .writeTimeout(Duration.millisecond(1000))
+            .connectTimeout(Duration.second)
+            .readTimeout(Duration.second)
+            .writeTimeout(Duration.second)
             .build()
     var arr: Array<Byte> = Array<Byte>(1024, {i => UInt8(i % 256)})
     File.writeTo("./body1.txt", arr)
@@ -338,9 +338,9 @@ from std import time.*
 
 main() {
      let client: OkHttpClient= OkHttpClient.builder()
-                    .connectTimeout(Duration.millisecond(1000))
-                    .readTimeout(Duration.millisecond(1000))
-                    .writeTimeout(Duration.millisecond(1000))
+                    .connectTimeout(Duration.second)
+                    .readTimeout(Duration.second)
+                    .writeTimeout(Duration.second)
                     .build()
 
     let request = Request.builder().url("https://www.baidu.com")
@@ -352,7 +352,7 @@ main() {
         async.enqueue(MyCallbacks())
     }
 
-    sleep(1000*1000*1000)
+    sleep(Duration.second)
 }
 
 public class MyCallbacks <: Callback {
@@ -378,9 +378,9 @@ from std import time.*
 main (){
     let client: OkHttpClient= OkHttpClient.builder()
                 .addNetworkInterceptor(MyInterceptor())//添加拦截器
-                .connectTimeout(Duration.millisecond(1000))
-                .readTimeout(Duration.millisecond(1000))
-                .writeTimeout(Duration.millisecond(1000))
+                .connectTimeout(Duration.second)
+                .readTimeout(Duration.second)
+                .writeTimeout(Duration.second)
                 .build()
     let request = Request.builder().url("https://postman-echo.com/get?foo1=bar1&foo2=bar2").build()
     let response: Response = client.newCall(request).execute()
@@ -408,9 +408,9 @@ main() {
     let url: URL = URL.parse("https://www.zhihu.com")
     let jar = getSimpleCookieJar()
     let client: OkHttpClient = OkHttpClient.builder().cookieJar(jar)
-                            .connectTimeout(Duration.millisecond(1000))
-                            .readTimeout(Duration.millisecond(1000))
-                            .writeTimeout(Duration.millisecond(1000))
+                            .connectTimeout(Duration.second)
+                            .readTimeout(Duration.second)
+                            .writeTimeout(Duration.second)
                             .build()
     let request = okhttp.Request.builder().url(url).build()
     let call = client.newCall(request)
@@ -440,9 +440,9 @@ main() {
 
     let client: OkHttpClient= OkHttpClient.builder()
     .eventListener(MyEventListener())
-    .connectTimeout(Duration.millisecond(1000))
-    .readTimeout(Duration.millisecond(1000))
-    .writeTimeout(Duration.millisecond(1000))
+    .connectTimeout(Duration.second)
+    .readTimeout(Duration.second)
+    .writeTimeout(Duration.second)
     .build()
 
     let request = Request.builder().url(url).build()
@@ -550,9 +550,9 @@ main() {
     //.protocols(ArrayList<String>([Protocol.get("H2_PRIOR_KNOWLEDGE").toString()]))
     //使用apln协商协议,服务端响应支持的协议，list中前面的协议会被优先选择
     .protocols(ArrayList<String>([Protocol.get("HTTP/2.0").toString(),Protocol.get("HTTP/1.1").toString()]))
-    .connectTimeout(Duration.millisecond(1000))
-    .readTimeout(Duration.millisecond(1000))
-    .writeTimeout(Duration.millisecond(1000))
+    .connectTimeout(Duration.second)
+    .readTimeout(Duration.second)
+    .writeTimeout(Duration.second)
     .build()
 
     let request = Request.builder().url(url).build()

@@ -11,6 +11,7 @@ from net import http.*
 from std import socket.*
 from encoding import url.*
 from net import tls.*
+from std import sync.sleep
 
 @Test
 public class okhtttp_code_507{
@@ -35,7 +36,7 @@ public class okhtttp_code_507{
         spawn {
             serve()
         }
-    sleep(1000*1000*1000)
+    sleep(Duration.second)
 
     let client: OkHttpClient= OkHttpClient.builder().build()
     let request: okhttp.Request = okhttp.Request.builder()

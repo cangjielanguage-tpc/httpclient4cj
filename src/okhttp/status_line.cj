@@ -41,10 +41,10 @@ public class StatusLine <: ToString {
         var protocol = Protocol.HTTP_1_0
 
         if (statusLine.startsWith("HTTP/1.")) {
-            if (statusLine.size < 9 || statusLine.charAt(8) != ' ') {
+            if (statusLine.size < 9 || statusLine[8] != ' ') {
                 throw ProtocolException("Unexpected status line: ${statusLine}")
             }
-            let httpMinorVersion = statusLine.charAt(7)
+            let httpMinorVersion = statusLine[7]
             if (httpMinorVersion == '0') {
                 protocol = Protocol.HTTP_1_0
             } else if (httpMinorVersion == '1') {
@@ -68,7 +68,7 @@ public class StatusLine <: ToString {
         var message: String = ""
 
         if (statusLine.size > codeStart + 3) {
-          if (statusLine.charAt(codeStart + 3) != ' ') {
+          if (statusLine[codeStart + 3] != ' ') {
             throw ProtocolException("Unexpected status line: ${statusLine}")
           }
           message = statusLine.substring(codeStart + 4)

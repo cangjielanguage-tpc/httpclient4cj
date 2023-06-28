@@ -11,7 +11,7 @@ from std import socket.*
 from encoding import url.*
 from net import tls.*
 from std import core.*
-
+from std import sync.sleep
 
 @Test
 public class okhttp_ResponseBody_007{
@@ -20,6 +20,7 @@ public class okhttp_ResponseBody_007{
     func serve(){
         let hd = http.Route()
         hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
+            req
             let resp = "hello".toUtf8Array()
             rws.write(resp)
             return
@@ -35,7 +36,7 @@ public class okhttp_ResponseBody_007{
         spawn {
             serve()
         }
-        sleep(1000*1000*1000)
+        sleep(Duration.second)
         var exe = ""
         let cache: CacheControl = CacheControl.builder()
                                     .maxAge(1000)
@@ -48,7 +49,7 @@ public class okhttp_ResponseBody_007{
                                         .build()
         var call = client.newCall(request)
         var response: okhttp.Response = call.execute()
-        var response_heads: http.Header = response.getHeaders()   
+        response.getHeaders()   
 
         println("isClosed =${response.getBody().getOrThrow().isClosed()}")
         @Assert(response.getBody().getOrThrow().isClosed(), false)

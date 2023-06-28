@@ -10,6 +10,7 @@ from std import socket.*
 from encoding import url.*
 from net import tls.*
 from std import core.*
+from std import sync.sleep
 
 var port: UInt16 = 1504
 var sev_cache_control = "max-age=200"
@@ -46,7 +47,7 @@ main() {
     spawn {
         serve()
     }
-    sleep(1000*1000*1000)
+    sleep(Duration.second)
     let cache: Cache = Cache("./okhttp_cache_001", 10 * 1024 * 1024)
     let client: OkHttpClient = OkHttpClient.builder().cache(cache).build()
     let request: okhttp.Request = okhttp.Request.builder().url("http://127.0.0.1:${port}/1").method("GET").build()

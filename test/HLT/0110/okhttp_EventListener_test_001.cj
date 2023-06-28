@@ -14,6 +14,7 @@ from net import tls.*
 from std import core.*
 from std import collection.*
 from std import fs.*
+from std import sync.sleep
 
 @Test
 public class okhttp_EventListener_test_001{
@@ -24,13 +25,13 @@ public class okhttp_EventListener_test_001{
         spawn {
             serve()
         }
-        sleep(1000*1000*1000)
+        sleep(Duration.second)
         let request_01: okhttp.Request = okhttp.Request.builder()
                                         .url("http://127.0.0.1:${port}/1234")
                                         .build()
         let client: OkHttpClient= OkHttpClient.builder().eventListener(MyEventListener()).build()
         client.newCall(request_01).enqueue(MyCallbacks())
-        sleep(10000*1000*1000)
+        sleep(10*Duration.second)
     }
     
     @TestCase
@@ -38,13 +39,13 @@ public class okhttp_EventListener_test_001{
         spawn {
             serve()
         }
-        sleep(1000*1000*1000)
+        sleep(Duration.second)
         let request_01: okhttp.Request = okhttp.Request.builder()
                                         .url("https://1.0.0.1:${port}/1234")
                                         .build()
         let client: OkHttpClient= OkHttpClient.builder().eventListener(MyEventListener()).build()
         client.newCall(request_01).enqueue(MyCallbacks())
-        sleep(10000*1000*1000)
+        sleep(10*Duration.second)
     }
 
     @TestCase
@@ -52,7 +53,7 @@ public class okhttp_EventListener_test_001{
         spawn {
             serve()
         }
-        sleep(1000*1000*1000)
+        sleep(Duration.second)
 
         let body_image = RealRequestBody.create(MediaType.get("text/img"),File("./image.png",OpenOption.Open(true,false)))
 
@@ -66,13 +67,13 @@ public class okhttp_EventListener_test_001{
                                         .build()
         let client: OkHttpClient= OkHttpClient.builder().eventListener(MyEventListener()).build()
         let response = client.newCall(request).enqueue(MyCallbacks())
-        sleep(10000*1000*1000)
+        sleep(10*Duration.second)
     }
 
     func serve(){
         let hd = http.Route()
         hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
-            sleep(1000*1000*1000)
+            sleep(Duration.second)
             let resp = "Hello from /red".toUtf8Array()
             rws.write(resp)
             println(String.fromUtf8(req.readToEnd()))

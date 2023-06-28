@@ -2230,9 +2230,9 @@ public func write(buffer: Array<Byte> , timeout: Duration): Unit
 /*
  * maxIdleConnections 最大空闲连接数, 默认为5 keepAliveDurationNs 连接最大空闲保持存活时间 默认为5分钟
  * @param maxIdleConnections!: Int64 = 5
- * @param keepAliveDurationNs!: Duration = Duration.minute(5)
+ * @param keepAliveDurationNs!: Duration = Duration.minute*5
  */
-public init(maxIdleConnections!: Int64 = 5, keepAliveDurationNs!: Duration = Duration.minute(5)) 
+public init(maxIdleConnections!: Int64 = 5, keepAliveDurationNs!: Duration = Duration.minute*5) 
 /*
  * 获取当前空闲连接数
  * @return Int64

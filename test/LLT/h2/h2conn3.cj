@@ -9,6 +9,7 @@ from net import tls.*
 from std import socket.*
 from std import time.*
 from std import io.*
+from std import sync.sleep
 
 //创建h2conn 并发送 goaway 关闭连接,此时再创建stream将抛出异常
 
@@ -24,7 +25,7 @@ main (){
     let h2conn = H2Connection(sc, BufferedOutputStream(socket), OkBuffer(socket))
     h2conn.start()
     h2conn.close()
-    sleep(1000*1000*1000)
+    sleep(Duration.second)
     try  {
         let stream = h2conn.newStream(request)
     } catch(e: Exception) {

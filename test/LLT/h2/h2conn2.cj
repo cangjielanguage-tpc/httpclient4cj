@@ -9,6 +9,7 @@ from net import tls.*
 from std import socket.*
 from std import time.*
 from std import io.*
+from std import sync.sleep
 
 //创建h2conn 和 stream，发送data 帧 以及trailers的header帧
 
@@ -34,7 +35,7 @@ main (){
     trailers.set("test", "ttt")
     stream.enqueueTrailers(trailers)
     formBody.writeTo(sink)
-    sleep(1000*1000*1000)
+    sleep(Duration.second)
     try {
         sink.close()
     } catch (e: Exception) {

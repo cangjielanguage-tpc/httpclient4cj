@@ -182,7 +182,7 @@ class RealCall<: Call {
            transmitter.ref = false
 
            if (has(transmitter.connection)) {
-               transmitter.connection.getOrThrow().idleAtNanos = Time.now()
+               transmitter.connection.getOrThrow().idleAtNanos = DateTime.now()
            }
 
            if (!calledNoMoreExchanges) {
@@ -266,7 +266,7 @@ class AsyncCall {
       * @since 0.29.3
       */
      func host(): String {
-        return realCall.getRequest().getUrl().hostname()
+        return realCall.getRequest().getUrl().hostName
      }
 
      public func cancel() {

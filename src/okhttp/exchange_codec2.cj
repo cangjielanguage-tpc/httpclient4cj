@@ -141,7 +141,17 @@ public class Http2ExchangeCodec <: ExchangeCodec {
     static func http2HeadersList(request: Request): ArrayList<HeaderField> {
         let result: ArrayList<HeaderField> = ArrayList<HeaderField>()
         result.append(HeaderField(TARGET_METHOD, request.getMethod()));
-        result.append(HeaderField(TARGET_PATH, request.getUrl().requestURI()))
+        let u = request.getUrl()
+        let rawPath = if(u.rawPath.size > 0){
+            u.rawPath
+        }else{
+            "/"
+        }
+        let rawQuery = match(u.rawQuery){
+            case Some(v) => "?${v}"
+            case _ => ""
+        }
+        result.append(HeaderField(TARGET_PATH, "${rawPath}${rawQuery}"))
         let host = request.getHeader("Host", "")
 
         if (host != "") {

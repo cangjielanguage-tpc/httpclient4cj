@@ -7,12 +7,17 @@ from std import unittest.testmacro.*
 from std import io.*
 from okhttp import okhttp.*
 from std import time.*
-from net import http.*
+from net import http.Route
+from net import http.ResponseWriteStream
+from net import http.Request
+from net import http.Server
+from net import http.Header
 from std import socket.*
 from encoding import url.*
 from net import tls.*
 from std import core.*
 from std import fs.*
+from std import sync.sleep
 
 class MyInterceptor<: Interceptor {
     
@@ -23,9 +28,10 @@ class MyInterceptor<: Interceptor {
         var response: okhttp.Response =  chain.proceed(requestBuilder.build())
         let responseBuilder: okhttp.ResponseBuilder = response.newBuilder().request(request)
         func exception(): String{ "exception"}
-        let utctime = Time.now().utc()
+        exception
+        let utctime = DateTime.nowUTC()
         let utctimestr = utctime.toString(", dd MMM yyyy HH:mm:ss z")
-        let str = "${utctime.weekDay().toString()[0..3]}${utctimestr}"
+        let str = "${utctime.dayOfWeek.toString()[0..3]}${utctimestr}"
         println("str:${str}")
         responseBuilder.header("Date",str)
         return responseBuilder.build()
@@ -40,6 +46,7 @@ public class okhttp_CacheControl_008 {
     func serve(){
         let hd = http.Route() 
         hd.handle("/1234567", { rws: http.ResponseWriteStream, req: http.Request =>
+            req
             let resp = "Hello from /red".toUtf8Array()
             rws.header().add("Last-Modified", "Tue, 27 May 2014 02:35:47 GMT")
             rws.header().add("cache-control", "max-age=3") 
@@ -58,7 +65,7 @@ public class okhttp_CacheControl_008 {
         spawn {
             serve()
         }
-        sleep(1000*1000*1000)
+        sleep(Duration.second)
 
         let cache: Cache = Cache("./okhttp_CacheControl_008", 10 * 1024 * 1024)
         let client: OkHttpClient= OkHttpClient.builder().cache(cache).addNetworkInterceptor(MyInterceptor()).build()
@@ -69,6 +76,7 @@ public class okhttp_CacheControl_008 {
         println("-------------------------------OKHttp-第一次请求----------------------------")
         var response: okhttp.Response = client.newCall(request).execute()
         var body = response.getBody().getOrThrow().getString()
+        body
         var response_heads: http.Header = response.getHeaders()
         
         for ((nm,vl) in response_heads) {
@@ -130,7 +138,7 @@ public class okhttp_CacheControl_008 {
         println("response.getNetworkResponse() : ${response.getNetworkResponse()}")
         println("response.getCacheResponse() : ${response.getCacheResponse()}")
         @Assert(response.getCacheResponse().toString(),"None")
-        sleep(1000*1000*1000*1)
+        sleep(Duration.second)
        
         println("-------------------------------OKHttp-OKHttp-第二次请求----------------------------")
         var response2: okhttp.Response = client.newCall(request).execute()
@@ -140,6 +148,7 @@ public class okhttp_CacheControl_008 {
             println(vl)
         }
         var body2 = response2.getBody().getOrThrow().getString()
+        body2
 
         var sOrN_cache2 : Bool = true
         match (client.getCache()) {

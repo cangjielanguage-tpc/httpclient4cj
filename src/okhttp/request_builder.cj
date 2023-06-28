@@ -54,7 +54,7 @@ public class RequestBuilder <: Builder<Request> {
      * @since 0.29.3
      */
     public func url(url: String): RequestBuilder {
-        this.urlBuild = URL.parseRequestURI(url)
+        this.urlBuild = URL.parse(url)
         return this
     }
 

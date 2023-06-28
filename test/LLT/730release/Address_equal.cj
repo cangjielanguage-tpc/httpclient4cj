@@ -11,7 +11,7 @@ from std import collection.*
 main() {
     let parseUrl = URL.parse("http://www.baidu.com/index.html")
     let parseUrl2 = URL.parse("http://www.jd.com/index.html")
-    let parseUrl3 = parseUrl.resolveReference(parseUrl2)
+    let parseUrl3 = parseUrl.resolveURL(parseUrl2)
     printlnURL(parseUrl)
     printlnURL(parseUrl2)
     printlnURL(parseUrl3)
@@ -25,9 +25,9 @@ main() {
 }
 
 func printlnURL(url: URL) {
-    println("host = ${url.host}")
+    println("host = ${url.hostName}")
     println("path = ${url.path}")
-    println("hostname = ${url.hostname()}")
-    println("port = ${url.port()}")
+    println("hostname = ${url.hostName}")
+    println("port = ${url.port}")
     println("toString = ${url.toString()}")
 }

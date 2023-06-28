@@ -317,7 +317,7 @@ class Decoder {
      *    | 0 |    Value-(2^N-1) MSB      |
      *    +---+---------------------------+
      */
-    @overflowWrapping
+    @OverflowWrapping
     protected func readVarInt(src: Array<UInt8>, index: Int64, N: Int64): (Int64, Int64) {
         var indexVar: Int64 = index
         if (src.size <= indexVar || N <= 0 || N > BYTE_SIZE) {

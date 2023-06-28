@@ -14,7 +14,8 @@ main() {
     let arr = Array<Byte>(input.length, item:0)
     input.read(arr)
     let s = String.fromUtf8(arr)
-    if( s == "username=admin&password=123456&host=%6D"
+    println("${s} ${formBody.contentType().getOrThrow().toString()} ${formBody.getContentLength()}")
+    if( s == "username=admin&password=123456&host=%256D"
         && formBody.contentType().getOrThrow().toString() == "application/x-www-form-urlencoded"
         && formBody.getContentLength() == s.size
         ) {

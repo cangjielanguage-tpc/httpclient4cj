@@ -9,13 +9,15 @@ from encoding import url.*
 from net import tls.*
 from std import core.*
 from std import collection.*
+from std import sync.sleep
+from std import time.*
 
 var port: UInt16 = 0
 main(){
   spawn {
     serve()
   }
-  sleep(1000*1000*1000*2)
+  sleep(Duration.second*2)
  let mUrl = "http://0.0.0.0:${port}/1241"
  var jsonStr = ##"{"name":"Tom","age":"18","version":"0.1.1"}"##
  let requestBody:Option<RequestBody> = Option<RequestBody>.Some(

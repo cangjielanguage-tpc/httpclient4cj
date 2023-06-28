@@ -12,6 +12,7 @@ from encoding import url.*
 from net import tls.*
 from std import core.*
 from std import fs.*
+from std import sync.sleep
 
 @Test
 public class okhttp_resolveDomain_001 {
@@ -34,9 +35,9 @@ public class okhttp_resolveDomain_001 {
         spawn {
             serve()
         }
-        sleep(1000*1000*1000)
+        sleep(Duration.second)
         let url = URL.parse("http://127.0.0.1:${port}/1234")
-        var socketHost = url.hostname()
+        var socketHost = url.hostName
         let arr = resolveDomain(TCP, socketHost)
 
         println("resolveDomain.size:${arr.size}")

@@ -13,6 +13,7 @@ from encoding import url.*
 from net import tls.*
 from std import core.*
 from std import log.*
+from std import sync.sleep
 
 public var port:UInt16=36389
 
@@ -42,7 +43,7 @@ public class okhttp_H2Connection_01{
         var arr01=Array<Byte>(100,item:8)
         ba.write(arr01)
         h2conn.shutdownConn(ErrorCode.INADEQUATE_SECURITY)
-        sleep(3*1000*1000*1000)
+        sleep(3*Duration.second)
         var flag=0
         try{
             h2conn.writeData(h2stream.getId(),true,ba,100)

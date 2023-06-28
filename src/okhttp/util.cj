@@ -51,8 +51,8 @@ class Util {
      * @since 0.29.3
      */
     static func sameConnection( a: URL, b: URL): Bool {
-        return a.host == b.host && 
-            a.port() == b.port() && 
+        return a.hostName == b.hostName && 
+            a.port == b.port && 
             a.scheme == b.scheme
     }
 
@@ -85,7 +85,7 @@ class Util {
         var posi: Int64 = pos
 
         while (posi < input.size) {
-            let res: Int64 = characters.indexOf(input.charAt(Int64(posi))) ?? -1
+            let res: Int64 = characters.indexOf(input[Int64(posi)]) ?? -1
             if (res != -1) {
                 break
             }
@@ -99,7 +99,7 @@ class Util {
         var posi: Int64 = pos
 
         while (posi < input.size) {
-            let c: Char = input.charAt(Int64(posi))
+            let c: Char = input[Int64(posi)]
             if (c != ' ' && c != '\t') {
                 break
             }

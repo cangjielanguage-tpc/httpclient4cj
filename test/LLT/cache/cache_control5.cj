@@ -2,6 +2,8 @@
 // EXEC: ./main
 
 from okhttp import okhttp.*
+from std import sync.sleep
+from std import time.*
 
 //Last-Modified: Tue, 27 May 2014 02:35:47 GMT
 //ETag: "5383fa03-6df"
@@ -28,7 +30,7 @@ main() {
         case None => true
     }
 
-    sleep(1000*1000*1000)//休眠一秒保证缓存失效
+    sleep(Duration.second)//休眠一秒保证缓存失效
 
     let request2 = okhttp.Request.builder()
         .url("http://okhttp:50067/cache")

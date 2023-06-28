@@ -13,6 +13,7 @@ from encoding import url.*
 from net import tls.*
 from std import core.*
 from std import fs.*
+from std import sync.sleep
 
 @Test
 public class okhttp_MediaType_test_005{
@@ -23,7 +24,7 @@ public class okhttp_MediaType_test_005{
         spawn {
             serve()
         }
-        sleep(1000*1000*1000)
+        sleep(Duration.second)
 
         let body = RealRequestBody.create(MediaType.get("text/img"),File("./body.text",OpenOption.Open(true,false)))
 

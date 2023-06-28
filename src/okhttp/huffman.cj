@@ -32,7 +32,7 @@ func huff_encode_count(arr: Array<UInt8>): Int64 {
  *
  * @return the func
  */
-@overflowWrapping
+@OverflowWrapping
 func huff_encode(bufs: ArrayList<UInt8>, arr: Array<UInt8>) {
     var bits: Int64 = 0
     var index = bufs.size

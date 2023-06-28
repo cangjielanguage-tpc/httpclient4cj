@@ -74,8 +74,15 @@ public class CookieUtil {
             return None
         }
 
-        var expiresAt: Time = Time(2260, Month.of(12), 31, hour: 23,
-            min: 59, sec: 59, loc: Location.load("GMT"))
+        var expiresAt: DateTime = DateTime.of(
+            year:2260, 
+            month:Month.of(12), 
+            dayOfMonth:31, 
+            hour: 23,
+            minute: 59, 
+            second: 59, 
+            timeZone: TimeZone.load("GMT")
+        )
         var deltaSeconds = -1
         var domain = ""
         var path = ""
@@ -125,7 +132,7 @@ public class CookieUtil {
             deltaSeconds = 0
         }
 
-        let urlHost = url.hostname()
+        let urlHost = url.hostName
 
         if (domain == "") {
             domain = urlHost
@@ -134,7 +141,7 @@ public class CookieUtil {
         }
 
         if (path == "" || !path.startsWith("/")) {
-            let encodedPath = url.escapedPath()
+            let encodedPath = url.rawPath
             let lastSlash = encodedPath.lastIndexOf('/') ?? 0
             path = if (lastSlash != 0) {encodedPath.substring(0, lastSlash)} else {"/"}
         }
@@ -151,9 +158,11 @@ public class CookieUtil {
         if (urlHost == domain) {
             return true
         }
-
+        if(urlHost[0] == '[' && urlHost[urlHost.size-1] == ']' && urlHost[1..urlHost.size-1] == domain){
+            return true
+        }
         if (urlHost.endsWith(domain) && 
-            urlHost.charAt(urlHost.size - domain.size - 1) == '.' && 
+            urlHost[urlHost.size - domain.size - 1] == '.' && 
             !Util.verifyAsIpAddress(urlHost)) {
             return true
         }
@@ -163,7 +172,7 @@ public class CookieUtil {
 
      static func indexOfControlOrNonAscii(input: String): Int64 {
         for (i in 0..input.size) {
-          let c: Char = input.charAt(i)
+          let c: Char = input[i]
           if ((c <= '\u{001f}' || c >= '\u{007f}') || ##"(),/:;<=>?@[\]{}"##.contains(c)) {
              return i
           }
@@ -173,8 +182,8 @@ public class CookieUtil {
      }
 
 
-    @overflowSaturating
-    private static func checkExpiresAt(e: Int64, deltaSeconds: Int64): Time {
+    @OverflowSaturating
+    private static func checkExpiresAt(e: Int64, deltaSeconds: Int64): DateTime {
         var expiresAt = e
 
         if (deltaSeconds == Int64.Min) {
@@ -185,7 +194,7 @@ public class CookieUtil {
             } else {
                 Int64.Max
             }
-            expiresAt = getTimeStamp(Time.now()) + deltaMilliseconds
+            expiresAt = getTimeStamp(DateTime.now()) + deltaMilliseconds
         }
         return getTime(expiresAt)
     }
@@ -226,7 +235,7 @@ public class CookieUtil {
         return s
     }
 
-    static func parseExpires(s: String, start: Int64, limit: Int64): Time {
+    static func parseExpires(s: String, start: Int64, limit: Int64): DateTime {
         var pos = dateCharacterOffset(s, start, limit, false)
         var (hour,minute,second,dayOfMonth,month,year) = (-1,-1,-1,-1,-1,-1)
         let timeMatcher = Regex(TIME_PATTERN)
@@ -311,7 +320,7 @@ public class CookieUtil {
     }
 
     private static func checkTime(y: Int64, month: Int64, dayOfMonth: Int64,
-        hour: Int64, minute: Int64, second: Int64): Time {
+        hour: Int64, minute: Int64, second: Int64): DateTime {
 
         var year = y
          // Convert two-digit years into four-digit years. 99 becomes 1999, 15 becomes 2015.
@@ -349,15 +358,22 @@ public class CookieUtil {
             throw IllegalArgumentException()
         }
 
-        let time: Time = Time(year, Month.of(month), dayOfMonth, hour: hour,
-            min: minute, sec: second, loc: Location.load("UTC"))
+        let time: DateTime = DateTime.of(
+            year:year, 
+            month:Month.of(month), 
+            dayOfMonth:dayOfMonth, 
+            hour: hour,
+            minute: minute, 
+            second: second, 
+            timeZone: TimeZone.load("UTC")
+        )
 
         return time
     }
 
-    private static func getTime(time: Int64): Time {
-        let standardTime = Time(1970,Month.of(1),1,loc: Location.load("UTC"))
-        return standardTime + Duration.millisecond(time)
+    private static func getTime(time: Int64): DateTime {
+        let standardTime = DateTime.of(year:1970,month:Month.of(1),dayOfMonth:1,timeZone: TimeZone.load("UTC"))
+        return standardTime + Duration.millisecond * time
     }
 
     private static func IndexOfMonthDay(s: String): Int64 {
@@ -403,7 +419,7 @@ public class CookieUtil {
             } else {
                 return parsed
             }
-        } catch (e: ConvertException | IllegalArgumentException) {
+        } catch (e: Exception) {
             match (Regex("-?\\d+").matches(s)) {
                 case Some(data) =>
                     if (s.startsWith("-")) {
@@ -463,7 +479,7 @@ public class CookieUtil {
         return (arr, zone, false)
     }
 
-    @overflowWrapping
+    @OverflowWrapping
     static func parseIPv6(str: String): (Array<UInt8>, Bool) {
         var s = str
         var ip = Array<UInt8>(SOCK_ADDR_IPV6_LEN, item: 0)
@@ -485,7 +501,7 @@ public class CookieUtil {
                 return (pk, true)
             }
 
-            if (c < s.size && s.charAt(c) == '.') {
+            if (c < s.size && s[c] == '.') {
                 if (ellipsis < 0 && i != (SOCK_ADDR_IPV6_LEN - SOCK_ADDR_IPV4_LEN)) {
                     return (pk, true)
                 }
@@ -511,11 +527,11 @@ public class CookieUtil {
             if (s.size == 0) {
                 break
             }
-            if (s.charAt(0) != ':' || s.size == 1) {
+            if (s[0] != ':' || s.size == 1) {
                 return (pk, true)
             }
             s = s.substring(1)
-            if (s.charAt(0) == ':') {
+            if (s[0] == ':') {
                 if (ellipsis >= 0) {
                     return (pk, true)
                 }
@@ -595,7 +611,7 @@ public class CookieUtil {
     }
 }
 
-func getTimeStamp(time: Time): Int64 {
-    let standardTime = Time(1970,Month.of(1),1,loc: Location.load("UTC"))
-    return (time - standardTime).milliseconds()
+func getTimeStamp(time: DateTime): Int64 {
+    let standardTime = DateTime.of(year:1970,month:Month.of(1),dayOfMonth:1,timeZone: TimeZone.load("UTC"))
+    return (time - standardTime).toMilliseconds()
 }

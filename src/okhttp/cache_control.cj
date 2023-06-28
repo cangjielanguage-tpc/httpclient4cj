@@ -262,14 +262,14 @@ public class CacheControl <: ToString {
                 pos = Util.skipUntil(value, pos, "=,;")
                 let directive: String = value.substring(tokenStart, pos - tokenStart).trim()
                 var parameter: String = ""
-                if (pos == value.size || value.charAt(pos) == ',' || value.charAt(pos) == ';') {
+                if (pos == value.size || value[pos] == ',' || value[pos] == ';') {
                     pos++ // consume ',' or ';' (if necessary)
                     parameter = ""
                 } else {
                     pos++ // consume '='
                     pos = Util.skipWhitespace(value, pos)
 
-                    if (pos < value.size && value.charAt(pos) == '\"') {
+                    if (pos < value.size && value[pos] == '\"') {
                         pos++ // consume '"' open quote
                         let parameterStart: Int64 = pos
                         pos = Util.skipUntil(value, pos, "\"")

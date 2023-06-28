@@ -9,6 +9,7 @@ from net import http.*
 from std import socket.*
 from std import io.*
 from std import sync.*
+
 var port: UInt16 = 0
 var num = Int64(0)
 
@@ -16,7 +17,7 @@ main() {
     spawn {
         serve()
     }
-    sleep(1000*1000*1000)
+    sleep(Duration.second)
     let client: OkHttpClient= OkHttpClient.builder()//.addNetworkInterceptor(MyInterceptor1())
                                         .build()
     client.getDispatcher().setIdleCallback( { => println("===================di idle======================")})
@@ -27,7 +28,7 @@ main() {
 
     let response: okhttp.Response = client.newCall(request).execute()
      println(client.getDispatcher().runningCallsCount())
-    // sleep(1000*1000*1000*5)
+    // sleep(Duration.second*5)
      println("num = ${num}")
 }
 

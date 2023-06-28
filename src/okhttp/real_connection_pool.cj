@@ -31,7 +31,7 @@ public class ConnectionPool {
      * @param maxIdleConnections of Int64
      * @since 0.29.3
      */
-    public init(maxIdleConnections!: Int64 = 5, keepAliveDurationNs!: Duration = Duration.minute(5)) {
+    public init(maxIdleConnections!: Int64 = 5, keepAliveDurationNs!: Duration = Duration.minute*5) {
         this.maxIdleConnections = maxIdleConnections
         this.keepAliveDurationNs = keepAliveDurationNs
     }
@@ -163,21 +163,21 @@ public class ConnectionPool {
     func spawnCleanup() {
         spawn {
            while (true) {
-                let waitNanos = cleanup(Time.now())
+                let waitNanos = cleanup(DateTime.now())
                 if (waitNanos == -1) {
                     return
                 }
                 synchronized (mutex) {
                     if (waitNanos > 0) {
-                        this.mutex.wait(timeout: UInt64(waitNanos))
+                        this.mutex.wait(timeout: Duration.nanosecond * waitNanos)
                     }
                 }
             }
         }
     }
 
-    func cleanup(now: Time): Int64{
-        var longestIdleDurationNs: Duration = Duration.nanosecond(0)
+    func cleanup(now: DateTime): Int64{
+        var longestIdleDurationNs: Duration = Duration.nanosecond*0
         var idleConnectionCount = 0
         var inUseConnectionCount = 0
         var longestIdleConnection: Option<Connection> = None
@@ -211,9 +211,9 @@ public class ConnectionPool {
                 connections.remove(remove)
             } else if (idleConnectionCount > 0) {
                  // wait for next time
-                 return (keepAliveDurationNs - longestIdleDurationNs).nanoseconds()
+                 return (keepAliveDurationNs - longestIdleDurationNs).toNanoseconds()
             } else if (inUseConnectionCount > 0) {
-                return keepAliveDurationNs.nanoseconds()
+                return keepAliveDurationNs.toNanoseconds()
             } else {
                 cleanupRunning = false
                 return -1
@@ -228,7 +228,7 @@ public class ConnectionPool {
         return 0
     }
 
-    private func pruneAndGetAllocationCount(connection: Connection, now: Time): Int64 {
+    private func pruneAndGetAllocationCount(connection: Connection, now: DateTime): Int64 {
         let transmitters = connection.transmitters
         let indexArray = ArrayList<Int64>()
 

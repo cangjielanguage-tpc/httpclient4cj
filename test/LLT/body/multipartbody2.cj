@@ -9,13 +9,15 @@ from net import http.*
 from std import io.*
 from std import socket.*
 from std import fs.*
+from std import sync.sleep
+from std import time.*
 
 var port: UInt16 = 0
 main() {
     spawn {
         serve()
     }
-    sleep(1000*1000*1000)
+    sleep(Duration.second)
     let body = RealRequestBody.create(MediaType.get("application/json"),File("./body.text",OpenOption.Open(true,false)))
     let body2 = RealRequestBody.create(MediaType.get("application/json"),File("./body2.text",OpenOption.Open(true,false)))
     let mu = MultipartBody.builder().

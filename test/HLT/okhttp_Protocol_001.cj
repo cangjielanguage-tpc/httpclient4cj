@@ -76,7 +76,7 @@ public class okhttp_Protocol_001{
 
         var exc : String = ""
         try {
-            let protocol_15 = Protocol.get("ABC")
+            Protocol.get("ABC")
         } catch(e: Exception) {
             exc = e.message
         }

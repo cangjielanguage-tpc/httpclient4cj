@@ -90,8 +90,8 @@ class RouteSelector {
 
 
         let url = address.getUrl()
-        var socketHost = url.hostname()
-        let port:UInt16 = match(UInt16.tryParse(url.port())) {
+        var socketHost = url.hostName
+        let port:UInt16 = match(UInt16.tryParse(url.port)) {
             case Some(v) => v
             case None =>
                 if (url.toString().startsWith("https")) {

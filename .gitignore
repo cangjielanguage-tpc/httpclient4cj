@@ -15,8 +15,12 @@ module-resolve.json
 *.gcno
 lib
 cryptocj
+cryptocj1
 test1
 unittest
 log
 report
 tmp
+.cjpm-history
+module-lock.json
+temp_ci_lib/

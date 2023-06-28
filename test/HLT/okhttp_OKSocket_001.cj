@@ -11,6 +11,7 @@ from std import socket.*
 from encoding import url.*
 from net import tls.*
 from std import core.*
+from std import sync.sleep
 
 @Test
 public class okhttp_OKSocket_001{
@@ -33,7 +34,7 @@ public class okhttp_OKSocket_001{
     spawn {
         serve()
     }
-    sleep(1000*1000*1000)
+    sleep(Duration.second)
     var httpRq: http.Request = http.Request(GET,"http://127.0.0.1:${port}/1234")
     httpRq.header.add("Content-Type","multipart/form-data")
 

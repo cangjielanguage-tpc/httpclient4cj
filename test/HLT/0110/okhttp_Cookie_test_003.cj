@@ -12,6 +12,7 @@ from encoding import url.*
 from net import tls.*
 from std import core.*
 from std import collection.*
+from std import sync.sleep
 
 @Test
 public class okhttp_Cookie_Test_003{
@@ -26,7 +27,7 @@ public class okhttp_Cookie_Test_003{
         spawn {
             serve()
         }
-        sleep(1000*1000*1000)
+        sleep(Duration.second)
         let url: URL = URL.parse("http://127.0.0.1:${port}/1234")
 
         let jar = getSimpleCookieJar()
@@ -59,7 +60,7 @@ public class okhttp_Cookie_Test_003{
     // public func loadForRequest(url: URL): Array<Cookie>
     @TestCase
     func okhttp_Cookie_Test_017(): Unit {
-        let url: URL = URL.parseRequestURI("http://www.nisohbfahoiaf.com/")
+        let url: URL = URL.parse("http://www.nisohbfahoiaf.com/")
         try {
             let jar = getSimpleCookieJar()
             jar.saveFromResponse(url, [Cookie("BD_HOME", "1"), Cookie("BD_UPN", "12314753")])
@@ -76,9 +77,9 @@ public class okhttp_Cookie_Test_003{
         
         try {
             let jar = getSimpleCookieJar()
-            jar.saveFromResponse(URL.parseRequestURI("http://example.com/foo/bar/baz"), [Cookie("BD_HOME", "1"), Cookie("BD_UPN", "12314753")])
+            jar.saveFromResponse(URL.parse("http://example.com/foo/bar/baz"), [Cookie("BD_HOME", "1"), Cookie("BD_UPN", "12314753")])
             let client: OkHttpClient= OkHttpClient.builder().cookieJar(jar).build()
-            let loadCookies: Array<Cookie> = client.getCookieJar().loadForRequest(URL.parseRequestURI("http://www.nisohbfahoiaf.com/"))
+            let loadCookies: Array<Cookie> = client.getCookieJar().loadForRequest(URL.parse("http://www.nisohbfahoiaf.com/"))
             @Expect(loadCookies.size, 0) 
         } catch (e: Exception) {
             @Expect(e is NoneValueException)

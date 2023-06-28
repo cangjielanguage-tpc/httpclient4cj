@@ -9,6 +9,7 @@ from net import tls.*
 from std import socket.*
 from std import time.*
 from std import io.*
+from std import sync.sleep
 
 //创建h2conn 和 stream，发送data 帧 以及trailers的header 帧, header 帧由于缺少数据对端接受失败，关闭sink时因 stream已reset 导致关闭失败
 
@@ -34,7 +35,7 @@ main (){
     trailers.set("test", "ttt")
     stream.enqueueTrailers(trailers)
     formBody.writeTo(sink)
-    sleep(1000*1000*1000)
+    sleep(Duration.second)
     try {
         sink.close()
     } catch (e: Exception) {

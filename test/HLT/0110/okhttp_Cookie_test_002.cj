@@ -25,12 +25,12 @@ public class okhttp_Cookie_Test_002{
         header.add("Set-Cookie", cookieString_01) 
         header.add("Set-Cookie", cookieString_02)
 
-        let cookieUtil = CookieUtil.parseAll(URL.parseRequestURI("http://example.com/foo/bar/baz"), header)
+        let cookieUtil = CookieUtil.parseAll(URL.parse("http://example.com/foo/bar/baz"), header)
         println("cookieUtil")
         @Expect(cookieUtil.get(0).getOrThrow().toString(), cookieString_01)
         @Expect(cookieUtil.get(1).getOrThrow().toString(), cookieString_02)
 
-        let cookieUtil2 = CookieUtil.parseAll(URL.parseRequestURI("http://[::180.101.49.13]/foo/bar/baz"), header)
+        let cookieUtil2 = CookieUtil.parseAll(URL.parse("http://[::180.101.49.13]/foo/bar/baz"), header)
         println("cookieUtil2")
         @Expect(cookieUtil.get(0).getOrThrow().toString(), cookieString_01)
         @Expect(cookieUtil.get(1).getOrThrow().toString(), cookieString_02)
@@ -46,7 +46,7 @@ public class okhttp_Cookie_Test_002{
         header.add("Set-Cookie", cookieString_02)
         
         try {
-            let cookieUtil = CookieUtil.parseAll(URL.parseRequestURI("http://www.nisohbfahoiaf.com/"), header)
+            let cookieUtil = CookieUtil.parseAll(URL.parse("http://www.nisohbfahoiaf.com/"), header)
             @Expect(cookieUtil.get(0).getOrThrow().toString(), cookieString_01)
             @Expect(cookieUtil.get(1).getOrThrow().toString(), cookieString_02)
         } catch (e: Exception) {
@@ -54,7 +54,7 @@ public class okhttp_Cookie_Test_002{
         }
 
         try {
-            let cookieUtil2 = CookieUtil.parseAll(URL.parseRequestURI("http://[FF00::b465:310d]/foo/bar/baz"), header)
+            let cookieUtil2 = CookieUtil.parseAll(URL.parse("http://[FF00::b465:310d]/foo/bar/baz"), header)
             @Expect(cookieUtil2.get(0).getOrThrow().toString(), cookieString_01)
             @Expect(cookieUtil2.get(1).getOrThrow().toString(), cookieString_02)
         } catch (e: Exception) {
@@ -70,7 +70,7 @@ public class okhttp_Cookie_Test_002{
         header.add("content-type", "application/json") 
         header.add("content-type2", "application2/json")
         try {
-            let cookieUtil = CookieUtil.parseAll(URL.parseRequestURI("http://example.com/foo/bar/baz"), header)
+            let cookieUtil = CookieUtil.parseAll(URL.parse("http://example.com/foo/bar/baz"), header)
             println("cookieUtil")
             @Expect(cookieUtil.get(0).getOrThrow().toString(), "")
         } catch (e: Exception) {
@@ -87,20 +87,20 @@ public class okhttp_Cookie_Test_002{
         
         let header_01: http.Header = Header()
         header_01.add("Set-Cookie", cookieString_01) 
-        let cookieUtil_01 = CookieUtil.parseAll(URL.parseRequestURI("http://example.com/foo/bar/baz"), header_01)
+        let cookieUtil_01 = CookieUtil.parseAll(URL.parse("http://example.com/foo/bar/baz"), header_01)
         println("cookieUtil_01")
         @Expect(cookieUtil_01.get(0).getOrThrow().toString(), cookieString_01)
 
         let header_02: http.Header = Header()
         header_02.add("Set-Cookie", cookieString_02) 
-        let cookieUtil_02 = CookieUtil.parseAll(URL.parseRequestURI("http://example.com/foo/bar/baz"), header_02)
+        let cookieUtil_02 = CookieUtil.parseAll(URL.parse("http://example.com/foo/bar/baz"), header_02)
         println("cookieUtil_02")
         @Expect(cookieUtil_02.get(0).getOrThrow().toString(), cookieString_02)
 
         let header_03: http.Header = Header()
         header_03.add("Set-Cookie", cookieString_03)
         try {
-            let cookieUtil_03 = CookieUtil.parseAll(URL.parseRequestURI("http://example.com/foo/bar/baz"), header_03)
+            let cookieUtil_03 = CookieUtil.parseAll(URL.parse("http://example.com/foo/bar/baz"), header_03)
             println("cookieUtil_03")
             @Expect(cookieUtil_03.get(0).getOrThrow().toString(), cookieString_03)
         } catch (e: Exception) {
@@ -124,7 +124,7 @@ public class okhttp_Cookie_Test_002{
         header.add("Set-Cookie", cookieString_02)
         header.add("Set-Cookie", cookieString_03)
 
-        let cookieUtil = CookieUtil.parseAll(URL.parseRequestURI("http://example.com/foo/bar/baz"), header)
+        let cookieUtil = CookieUtil.parseAll(URL.parse("http://example.com/foo/bar/baz"), header)
         println("cookieUtil")
         @Expect(cookieUtil.get(0).getOrThrow().toString(), cookieString_01)
         @Expect(cookieUtil.get(1).getOrThrow().toString(), cookieString_02)
@@ -138,7 +138,7 @@ public class okhttp_Cookie_Test_002{
     @TestCase
     func okhttp_Cookie_Test_015(): Unit {
         let header: http.Header = Header()
-        let cookieUtil = CookieUtil.parseAll(URL.parseRequestURI("http://example.com/foo/bar/baz"), header)
+        let cookieUtil = CookieUtil.parseAll(URL.parse("http://example.com/foo/bar/baz"), header)
         println("cookieUtil")
         @Expect(cookieUtil.size, 0)
     }

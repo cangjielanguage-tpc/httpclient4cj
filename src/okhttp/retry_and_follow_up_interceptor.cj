@@ -228,7 +228,7 @@ public class RetryAndFollowUpInterceptor<: Interceptor {
             return Option<Request>.None
         }
 
-        let url: URL = response.getRequest().getUrl().resolveReference(URL.parseRequestURI(location))
+        let url: URL = response.getRequest().getUrl().resolveURL(URL.parse(location))
         let method: String = response.getRequest().getMethod()
 
         if (url.scheme != response.getRequest().getUrl().scheme && !client.getFollowSslRedirects()) {

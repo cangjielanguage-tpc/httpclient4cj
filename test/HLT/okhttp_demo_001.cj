@@ -12,7 +12,7 @@ from std import socket.*
 from encoding import url.*
 from net import tls.*
 from std import core.*
-
+from std import sync.sleep
 
 @Test
 public class okhttp_demo{
@@ -36,7 +36,7 @@ public class okhttp_demo{
     spawn {
         serve()
     }
-    sleep(1000*1000*1000)
+    sleep(Duration.second)
 
     let cache: CacheControl = CacheControl.builder()
                                 .maxAge(1000)
@@ -102,7 +102,7 @@ public class http_demo{
         spawn {
             serve()
         }
-        sleep(1000*1000*1000)
+        sleep(Duration.second)
         let client = Client()
         var a: http.Response = client.get("http://127.0.0.1:${port}/1234")
         var byteStream = ByteArrayStream()

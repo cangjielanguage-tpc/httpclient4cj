@@ -39,7 +39,7 @@ public class CallServerInterceptor<: Interceptor {
         let request: Request = chain.getRequest()
         let exchange: Exchange = chain.getExchange()
         exchange.writeRequestHeaders(request)
-        let sentRequestMillis = Time.now().unixTimeStamp().milliseconds()
+        let sentRequestMillis = DateTime.now().toUnixTimeStamp().toMilliseconds()
         var responseBuilder: Option<ResponseBuilder> = None
         var responseHeadersStarted = false
 
@@ -91,14 +91,14 @@ public class CallServerInterceptor<: Interceptor {
             response = exchange.readResponseHeaders(false).getOrThrow()
                 .request(request)
                 .sentRequestAtMillis(sentRequestMillis)
-                .receivedResponseAtMillis(Time.now().unixTimeStamp().milliseconds())
+                .receivedResponseAtMillis(DateTime.now().toUnixTimeStamp().toMilliseconds())
                 .build()
         }
 
         response = response.newBuilder()
                   .body(exchange.openResponseBody(response))
                   .sentRequestAtMillis(sentRequestMillis)
-                  .receivedResponseAtMillis(Time.now().unixTimeStamp().milliseconds())
+                  .receivedResponseAtMillis(DateTime.now().toUnixTimeStamp().toMilliseconds())
                   .build()
 
         exchange.responseHeadersEnd(response)
