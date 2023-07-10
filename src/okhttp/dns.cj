@@ -210,7 +210,7 @@ func WSACleanup4cj(): Int32 {
 }
 
 let AI_PASSIVE: Int32 = 0x1
-let AI_ALL: Int32 = 0x100
+let AI_ALL: Int32 = 0x10
 
 func okhttp_SOCKET_GetAddrInfo(net: UInt8, node: CString): CPointer<UInt8> {
     var nullptr = CPointer<UInt8>()
