@@ -5,6 +5,7 @@ from std import io.*
 from okhttp import okhttp.*
 from net import http.*
 from std import socket.*
+from std import collection.*
 from encoding import url.*
 from net import tls.*
 
@@ -24,8 +25,10 @@ main() {
 
     try{
         let response: okhttp.Response = call.execute()
-        let arr = ByteArrayStream()
-         if(client.getCookieJar().loadForRequest(url).size > 0) {
+        println(response.toString())
+        let arr = client.getCookieJar().loadForRequest(url)
+        println("1.2 ${arr |> map{c:Cookie=>c.toString()} |> collectString<String>(delimiter:" ")}")
+         if(arr.size > 0) {
             return 0
          } else {
             return 1

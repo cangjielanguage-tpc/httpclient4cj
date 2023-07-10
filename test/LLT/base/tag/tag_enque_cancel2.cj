@@ -9,13 +9,15 @@ from net import http.*
 from std import socket.*
 from std import io.*
 from std import sync.*
+from std import sync.sleep
+
 var port: UInt16 = 0
 
 main() {
     spawn {
         serve()
     }
-    sleep(1000*1000*1000)
+    sleep(Duration.second)
     let myInterceptor = MyInterceptor()
     let client: OkHttpClient= OkHttpClient.builder().addInterceptor(myInterceptor).build()
     myInterceptor.setClient(client)

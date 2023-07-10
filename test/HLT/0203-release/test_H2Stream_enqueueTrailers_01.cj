@@ -11,6 +11,7 @@ from std import socket.*
 from encoding import url.*
 from net import tls.*
 from std import core.*
+from std import sync.sleep
 
 main():Int64{
     var port:UInt16=36389
@@ -39,6 +40,6 @@ main():Int64{
     h2stream.enqueueTrailers(trailers)
     formBody.writeTo(sink)
     sink.close()//此用例只是触发用例，需要抓包确认用例结果
-    sleep(10*1000*1000*1000)
+    sleep(10*Duration.second)
     0
 }

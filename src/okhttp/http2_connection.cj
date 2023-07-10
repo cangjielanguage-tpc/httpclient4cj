@@ -29,7 +29,7 @@ public class H2Connection {
 
     let hpackEncode: Encoder = Encoder.newEncoder()
 
-    public prop let streamMap: HashMap<UInt32, H2Stream>  { get() {return streams }}
+    public prop streamMap: HashMap<UInt32, H2Stream>  { get() {return streams }}
 
     static let OKHTTP_CLIENT_WINDOW_SIZE = 16 * 1024 * 1024
     var okHttpSettings: Settings = Settings()
@@ -48,7 +48,7 @@ public class H2Connection {
     static let AWAIT_PING = 3
     private var shutdown: Bool = false
     let listener: Option<Connection>
-    var degradedPongDeadline: Int64 = Time.now().unixTimeStamp().milliseconds()
+    var degradedPongDeadline: Int64 = DateTime.now().toUnixTimeStamp().toMilliseconds()
     var unacknowledgedBytesRead = 0
 
     public init(socket: SocketClient, sink: BufferedOutputStream, source: OkBuffer,
@@ -283,7 +283,7 @@ public class H2Connection {
         }
 
         if (degradedPongsReceived < degradedPingsSent &&
-            Time.now().unixTimeStamp().milliseconds() <= degradedPongDeadline) {
+            DateTime.now().toUnixTimeStamp().toMilliseconds() <= degradedPongDeadline) {
             return false
         }
 
@@ -349,7 +349,7 @@ public class H2Connection {
 
     func ping(reply: Bool, payload: Int64, payload2: Int64) {
         if (reply) {
-            degradedPongDeadline = (Time.now() + Duration.second()).unixTimeStamp().milliseconds()
+            degradedPongDeadline = (DateTime.now() + Duration.second).toUnixTimeStamp().toMilliseconds()
             if  (payload == DEGRADED_PING) {
                 degradedPongsReceived++
             } else if (payload == INTERVAL_PING) {

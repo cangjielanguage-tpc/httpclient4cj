@@ -204,7 +204,7 @@ class FramingSink <: Sink {
     var closed: Bool = false
     var finished: Bool = false
 
-    public prop var http2Stream: H2Stream {
+    public mut prop http2Stream: H2Stream {
         get() {return stream.getOrThrow()}
         set(value) {this.stream = value}
     }

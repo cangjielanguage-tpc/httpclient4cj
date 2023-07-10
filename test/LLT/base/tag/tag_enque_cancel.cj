@@ -9,13 +9,15 @@ from net import http.*
 from std import socket.*
 from std import io.*
 from std import sync.*
+from std import sync.sleep
+
 var port: UInt16 = 0
 
 main() {
     spawn {
         serve()
     }
-    sleep(1000*1000*1000)
+    sleep(Duration.second)
     let myInterceptor = MyInterceptor()
     let client: OkHttpClient= OkHttpClient.builder().addInterceptor(myInterceptor).build()
     myInterceptor.setClient(client)
@@ -65,7 +67,7 @@ class MyInterceptor<: Interceptor {
 func serve(){
     let hd = http.Route()
     hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
-        sleep(3000*1000*1000)
+        sleep(3*Duration.second)
         let resp = "Hello from /red".toUtf8Array()
         rws.write(resp)
         return

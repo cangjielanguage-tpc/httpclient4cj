@@ -766,7 +766,7 @@ class Entry {
             for (i in 0..strings.size) {
                 lengths[i] = Int64.parse(strings[i])
             }
-        } catch (e: ConvertException) {
+        } catch (e: Exception) {
              throw HttpException("unexpected journal line: ${strings}")
         }
     }

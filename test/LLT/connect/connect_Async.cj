@@ -4,6 +4,7 @@
 from std import io.*
 from okhttp import okhttp.*
 from std import time.*
+from std import sync.sleep
 
 main() {
     let client: OkHttpClient= OkHttpClient.builder().build()
@@ -12,7 +13,7 @@ main() {
     .header("User-Agent", "OkHttp-Example")
     .build()
     client.newCall(request).enqueue(MyCallbacks())
-    sleep(1000*1000*1000)
+    sleep(Duration.second)
     println(client.getDispatcher().runningCallsCount())
 }
 

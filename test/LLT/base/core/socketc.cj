@@ -9,6 +9,6 @@ from std import time.*
 main() {
     let socket = Socket(TCP,"www.baidu.com", 80)
     let socketC = SocketC(socket)
-    socketC.connect(Duration.millisecond(10000))
+    socketC.connect(Duration.millisecond*10000)
     println(socket.isClosed())
 }

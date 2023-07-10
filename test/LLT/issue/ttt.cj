@@ -19,7 +19,7 @@ main (){
     spawn {
         serve()
     }
-    sleep(1000*1000*1000)
+    sleep(Duration.second)
 
     var client: OkHttpClient = OkHttpClient.builder().build()
     var request: okhttp.Request
@@ -35,7 +35,7 @@ main (){
         index++;
         client.newCall(request).enqueue(MyCallbacks())
     }
-    sleep(1000*1000*1000*30)
+    sleep(Duration.second*30)
 }
 
 func serve() {

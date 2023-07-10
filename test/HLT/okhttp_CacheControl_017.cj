@@ -13,6 +13,7 @@ from encoding import url.*
 from net import tls.*
 from std import core.*
 from std import fs.*
+from std import sync.sleep
 
 class MyInterceptor<: Interceptor {
     
@@ -54,7 +55,7 @@ public class okhttp_CacheControl_017 {
         spawn {
             serve()
         }
-        sleep(1000*1000*1000)
+        sleep(Duration.second)
 
         let cachecontrol: CacheControl = CacheControl.builder()
                             .onlyIfCached()
@@ -129,7 +130,7 @@ public class okhttp_CacheControl_017 {
         println("response.getNetworkResponse() : ${response.getNetworkResponse()}")
         println("response.getCacheResponse() : ${response.getCacheResponse()}")
         @Assert(response.getCacheResponse().toString(),"None")
-        sleep(1000*1000*1000*3)
+        sleep(Duration.second*3)
        
         println("-------------------------------OKHttp-OKHttp-第二次请求----------------------------")
         let request2: okhttp.Request = okhttp.Request.builder()

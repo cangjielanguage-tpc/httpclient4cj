@@ -10,6 +10,7 @@ from net import http.*
 from std import socket.*
 from encoding import url.*
 from net import tls.*  
+from std import sync.sleep
 
 class MyInterceptor<: Interceptor {
     
@@ -43,7 +44,7 @@ public class okhtttp_code_100{
         spawn {
             serve()
         }
-        sleep(1000*1000*1000)
+        sleep(Duration.second)
         var code : Int64 = -1
         try{
             let client: OkHttpClient= OkHttpClient.builder().addNetworkInterceptor(MyInterceptor()).build()

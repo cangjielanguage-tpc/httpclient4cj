@@ -9,13 +9,14 @@ from std import socket.*
 from encoding import url.*
 from net import tls.*
 from std import core.*
+from std import sync.sleep
 
 var port: UInt16 = 0
 main() {
     spawn {
         serve()
     }
-    sleep(1000*1000*1000)
+    sleep(Duration.second)
     let url: URL = URL.parse("http://127.0.0.1:${port}/1234")
     let client: OkHttpClient= OkHttpClient.builder().retryOnConnectionFailure(false).build()
     let request: okhttp.Request = okhttp.Request.builder()

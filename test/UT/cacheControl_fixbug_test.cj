@@ -9,6 +9,7 @@ from std import unittest.testmacro.*
 from std import io.*
 from std import time.*
 from std import socket.*
+from std import sync.sleep
 
 @Test
 public class okhtttp_001{
@@ -33,12 +34,12 @@ public class okhtttp_001{
         spawn {
             serve()
         } 
-        sleep(1000*1000*1000)
+        sleep(Duration.second)
 
         let url: URL = URL.parse("http://127.0.0.1:${port}/index")
 
         let cache: CacheControl = CacheControl.builder()
-                                    .maxAge(Duration.second(1000))
+                                    .maxAge(Duration.second*1000)
                                     .build()
         let body: okhttp.RequestBody = okhttp.RequestBody("Media-Type", "text/html")
         body.get()

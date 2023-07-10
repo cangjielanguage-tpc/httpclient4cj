@@ -13,6 +13,7 @@ from encoding import url.*
 from net import tls.*
 from std import core.*
 from std import fs.*
+from std import sync.sleep
 
 class MyInterceptor<: Interceptor {
     
@@ -23,9 +24,9 @@ class MyInterceptor<: Interceptor {
         var response: okhttp.Response =  chain.proceed(requestBuilder.build())
         let responseBuilder: okhttp.ResponseBuilder = response.newBuilder().request(request)
         func exception(): String{ "exception"}
-        let utctime = Time.now().utc()
+        let utctime = DateTime.nowUTC()
         let utctimestr = utctime.toString(", dd MMM yyyy HH:mm:ss z")
-        let str = "${utctime.weekDay().toString()[0..3]}${utctimestr}"
+        let str = "${utctime.dayOfWeek.toString()[0..3]}${utctimestr}"
         println("str:${str}")
         responseBuilder.header("Date",str)
         return responseBuilder.build()
@@ -58,7 +59,7 @@ public class okhttp_cacheevictAll_001 {
         spawn {
             serve()
         }
-        sleep(1000*1000*1000)
+        sleep(Duration.second)
 
         let cachecontrol: CacheControl = CacheControl.builder()
                                     .maxAge(2000)
@@ -103,7 +104,7 @@ public class okhttp_cacheevictAll_001 {
         println("response.getNetworkResponse() : ${response.getNetworkResponse()}")
         println("response.getCacheResponse() : ${response.getCacheResponse()}")
         @Assert(response.getCacheResponse().toString(),"None")
-        sleep(1000*1000*1000)
+        sleep(Duration.second)
        
         println("-------------------------------OKHttp-OKHttp-第二次请求----------------------------")
         var response2: okhttp.Response = client.newCall(request).execute()

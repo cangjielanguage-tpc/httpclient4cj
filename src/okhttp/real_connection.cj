@@ -34,7 +34,7 @@ public class Connection {
 
     private var h2conn: Option<H2Connection> = None
 
-    var idleAtNanos: Time = Time(0, 0x7fffffffffffffff)
+    var idleAtNanos: DateTime = DateTime.ofEpoch(second:0, nanosecond:999999999)
 
     var successCount: Int64 = 0
 
@@ -126,7 +126,7 @@ public class Connection {
             return false
         }
 
-        if (address.getUrl().host == route.getAddress().getUrl().host) {
+        if (address.getUrl().hostName == route.getAddress().getUrl().hostName) {
             return true
         }
         // HTTP/2.

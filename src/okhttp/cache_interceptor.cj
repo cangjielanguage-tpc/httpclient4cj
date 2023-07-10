@@ -48,7 +48,7 @@ public class CacheInterceptor<: Interceptor {
                 .message("Unsatisfiable Request (only-if-cached)")
                 .body(ResponseBody("", 0, OkBuffer(ByteArrayStream())))
                 .sentRequestAtMillis(-1)
-                .receivedResponseAtMillis(Time.now().unixTimeStamp().milliseconds())
+                .receivedResponseAtMillis(DateTime.now().toUnixTimeStamp().toMilliseconds())
                 .build()
         }
 
@@ -194,14 +194,14 @@ class CacheStrategyFactory {
 
     let request: Request
     let cacheResponse: Option<Response>
-    var servedDate: Option<Time> = Option<Time>.None
+    var servedDate: Option<DateTime> = Option<DateTime>.None
     var servedDateString: String = ""
-    var lastModified: Option<Time> = Option<Time>.None
+    var lastModified: Option<DateTime> = Option<DateTime>.None
     var lastModifiedString: String = ""
-    var expires: Option<Time> = Option<Time>.None
+    var expires: Option<DateTime> = Option<DateTime>.None
     var etag: String = ""
     var ageSeconds: Int64 = 0
-    let nowMillis = Time.now().unixTimeStamp().milliseconds()
+    let nowMillis = DateTime.now().toUnixTimeStamp().toMilliseconds()
     var sentRequestMillis: Int64 = 0
     var receivedResponseMillis: Int64 = 0
 
@@ -338,25 +338,25 @@ class CacheStrategyFactory {
         } else if (has(expires)) {
             let servedMillis = match(servedDate) {
                 case Some(v) =>
-                    v.unixTimeStamp().milliseconds()
+                    v.toUnixTimeStamp().toMilliseconds()
                 case None =>
                     receivedResponseMillis
             }
-            var delta = expires.getOrThrow().unixTimeStamp().milliseconds() - servedMillis
+            var delta = expires.getOrThrow().toUnixTimeStamp().toMilliseconds() - servedMillis
 
             if (delta < 0) {
                 delta = 0
             }
 
             return delta
-        } else if (has(lastModified) && cacheResponse.getOrThrow().getRequest().getUrl().rawQuery == "") {
+        } else if (has(lastModified) && cacheResponse.getOrThrow().getRequest().getUrl().rawQuery == None) {
              let servedMillis = match(servedDate) {
                 case Some(v) =>
-                    v.unixTimeStamp().milliseconds()
+                    v.toUnixTimeStamp().toMilliseconds()
                 case None =>
                     sentRequestMillis
              }
-             var delta = servedMillis - lastModified.getOrThrow().unixTimeStamp().milliseconds()
+             var delta = servedMillis - lastModified.getOrThrow().toUnixTimeStamp().toMilliseconds()
 
              if (delta < 0) {
                  delta = 0
@@ -370,7 +370,7 @@ class CacheStrategyFactory {
     private func cacheResponseAge(): Int64 {
         let apparentReceivedAge = match(servedDate) {
             case Some(v) =>
-                max(0,receivedResponseMillis - v.unixTimeStamp().milliseconds())
+                max(0,receivedResponseMillis - v.toUnixTimeStamp().toMilliseconds())
             case None => 0
         }
 

@@ -9,13 +9,14 @@ from std import socket.*
 from encoding import url.*
 from net import tls.*
 from std import core.*
+from std import sync.sleep
 
 var port: UInt16 = 0
 main() {
     spawn {
         serve()
     }
-    sleep(1000*1000*1000)
+    sleep(Duration.second)
     //http://127.0.0.1:${port}/1234
     //http://www.zhihu.com
     //http://www.baidu.com/index.html

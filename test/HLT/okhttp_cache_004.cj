@@ -12,6 +12,7 @@ from std import socket.*
 from encoding import url.*
 from net import tls.*
 from std import core.*
+from std import sync.sleep
 
 class MyInterceptor<: Interceptor {
     
@@ -50,7 +51,7 @@ public class okhttp_cache_004 {
         spawn {
             serve()
         }
-        sleep(1000*1000*1000)
+        sleep(Duration.second)
         let cache: Cache = Cache("../../tmp", 10 * 1024 * 1024)
         let client: OkHttpClient= OkHttpClient.builder().cache(cache)
                                         .addNetworkInterceptor(MyInterceptor()).build()

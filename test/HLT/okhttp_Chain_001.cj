@@ -12,7 +12,7 @@ from std import socket.*
 from encoding import url.*
 from net import tls.*
 from std import core.*
-
+from std import sync.sleep
 
 class MyInterceptor1<: Interceptor {
     
@@ -68,7 +68,7 @@ public class okhttp_Chain_001{
     spawn {
         serve()
     }
-    sleep(1000*1000*1000)
+    sleep(Duration.second)
     let client: OkHttpClient= OkHttpClient.builder().addNetworkInterceptor(MyInterceptor1())
                                                     .addNetworkInterceptor(MyInterceptor2())
                                                     .addNetworkInterceptor(MyInterceptor3())

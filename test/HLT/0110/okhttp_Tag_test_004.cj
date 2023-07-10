@@ -11,6 +11,7 @@ from std import socket.*
 from encoding import url.*
 from net import tls.*
 from std import core.*
+from std import sync.sleep
 
 @Test
 public class okhttp_Tag_Test_004{
@@ -21,7 +22,7 @@ public class okhttp_Tag_Test_004{
         spawn {
             serve()
         }
-        sleep(1000*1000*1000)
+        sleep(Duration.second)
 
         var tags = ["tag_test_01", "tag_test_02", "tag_test_03", "tag_test_04", "tag_test_05"]
         let request_01: okhttp.Request = okhttp.Request.builder()
@@ -70,7 +71,7 @@ public class okhttp_Tag_Test_004{
     func serve(){
         let hd = http.Route()
         hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
-            sleep(1000*1000*1000)
+            sleep(Duration.second)
             let resp = "Hello from /red".toUtf8Array()
             rws.write(resp)
             return

@@ -9,9 +9,9 @@ from std import socket.*
 from net import http.*
 
 main (){
-    let client: OkHttpClient= OkHttpClient.builder().connectTimeout(Duration.millisecond(100))
+    let client: OkHttpClient= OkHttpClient.builder().connectTimeout(Duration.millisecond*100)
     .addNetworkInterceptor(MyInterceptor())
-    .readTimeout(Duration.millisecond(1000)).writeTimeout(Duration.millisecond(1000)).build()
+    .readTimeout(Duration.second).writeTimeout(Duration.second).build()
     let request= okhttp.Request.builder().url("http://36.152.44.95/index.html")
     .header("User-Agent", "OkHttp-Example")
     .build()

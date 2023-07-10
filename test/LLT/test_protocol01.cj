@@ -10,6 +10,7 @@ from encoding import url.*
 from net import tls.*
 from std import core.*
 from std import fs.*
+from std import sync.sleep
 
 var port: UInt16 = 1504
 var sev_cache_control = "max-age=20000"
@@ -52,7 +53,7 @@ main() {
     spawn {
         serve()
     }
-    sleep(1000 * 1000 * 1000)
+    sleep(Duration.second)
 
     let cachecontrol: CacheControl = CacheControl.builder().maxAge(2000).build()
     let cache: Cache = Cache("./cc", 10 * 1024 * 1024)
@@ -67,7 +68,7 @@ main() {
         println(nm)
         println(vl)
     }
-    sleep(1000 * 1000 * 1000)
+    sleep(Duration.second)
 
     println(
         "-------------------------------OKHttp-OKHttp-第五次请求-更换客户端对象 缓存对象---------------------------"

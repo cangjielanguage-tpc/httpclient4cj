@@ -10,10 +10,11 @@ public func resolveDomain(net: SocketNet, domain: String): ArrayList<(SocketAddr
     var protocol = match (net) {
         case TCP => AI_IPPROTO_TCP
         case UDP => AI_IPPROTO_UDP
+        case _ => throw HttpException("parse net = ${net} fail ")
     }
-    var domainName = CString(domain)
+    var domainName = unsafe{ LibC.mallocCString(domain) }
     var ip = okhttp_SOCKET_GetAddrInfo(protocol, domainName)
-    unsafe { domainName.free() }
+    unsafe { LibC.free(domainName) }
     if (ip.isNull()) {
         throw HttpException("parse domain = ${domain} fail ")
     }
@@ -28,14 +29,15 @@ public func resolveDomain(net: SocketNet, domain: String): ArrayList<(SocketAddr
             unsafe { free(ip) }
             throw HttpException("parse domain = ${domain} fail ")
         }
-        var ips = Array<UInt8>(sz, item: 0)
+        let ips = Array<UInt8>(sz, item: 0)
         for (i in 0..sz) {
             ips[i] = unsafe { ip.read(i + index)}
         }
         index += sz
         match {
             case sz == SOCK_ADDR_IPV4_LEN => arr.append((IPv4, ips))
-            case _ => arr.append((IPv6, ips))
+            case sz == SOCK_ADDR_IPV6_LEN => arr.append((IPv6, ips))
+            case _ => ()
         }
     }
     unsafe { free(ip) }

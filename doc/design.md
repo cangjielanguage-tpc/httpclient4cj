@@ -699,7 +699,7 @@ HTTP2错误码， 从Reset_Stream帧或GOAway帧中获取
 
 | 成员函数                | 入参                                                                                    | 返回值    | 作用描述                                                                     |
 |---------------------|---------------------------------------------------------------------------------------|--------|--------------------------------------------------------------------------|
-| init                | maxIdleConnections!: Int64 = 5, keepAliveDurationNs!: Duration = Duration.minute(5)   | 无      | maxIdleConnections 最大空闲连接数, 默认为5 keepAliveDurationNs 连接最大空闲保持存活时间 默认为5分钟 |
+| init                | maxIdleConnections!: Int64 = 5, keepAliveDurationNs!: Duration = Duration.minute*5   | 无      | maxIdleConnections 最大空闲连接数, 默认为5 keepAliveDurationNs 连接最大空闲保持存活时间 默认为5分钟 |
 | idleConnectionCount | 无                                                                                     | Int64  | 获取当前空闲连接数                                                                |
 | evictAll            | 无                                                                                     | Unit   | 移除并关闭所有空闲连接                                                              |
 | connectFailed       | failedRoute: Route                                                                    | Unit   | 记录连接失败的路由                                                                |
@@ -848,7 +848,7 @@ main() {
     let request: Request = Request.builder().url("http://36.152.44.95/index.html")
     .header("User-Agent", "OkHttp-Example").build()
     client.newCall(request).enqueue(MyCallbacks())
-    sleep(1000*1000*1000)
+    sleep(Duration.second)
 }
 
 public class MyCallbacks <: Callback {
@@ -881,7 +881,7 @@ main() {
     spawn {
         serve()
     }
-    sleep(1000*1000*1000)
+    sleep(Duration.second)
     let client: OkHttpClient= OkHttpClient.builder().build()
     let request: okhttp.Request = okhttp.Request.builder()
                                     .url("http://127.0.0.1:${port}/1234")

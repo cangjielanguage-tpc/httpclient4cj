@@ -11,9 +11,9 @@ main() {
     let forceNet = CacheControl.FORCE_CACHE //强制使用缓存的缓存控制
     let cache: Cache = Cache("./cacheccccccc", 10 * 1024 * 1024)
     let client: OkHttpClient= OkHttpClient.builder()
-        .connectTimeout(Duration.minute(1))
-        .readTimeout(Duration.minute(1))
-        .writeTimeout(Duration.minute(1))
+        .connectTimeout(Duration.minute*1)
+        .readTimeout(Duration.minute*1)
+        .writeTimeout(Duration.minute*1)
         .cache(cache).build()
     let request = okhttp.Request.builder()
             .cacheControl(forceNet)

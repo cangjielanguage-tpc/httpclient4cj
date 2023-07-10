@@ -7,13 +7,14 @@ from net import http.*
 from std import io.*
 from std import time.*
 from std import socket.*
+from std import sync.sleep
 
 var port: UInt16 = 0
 main() {
     spawn {
         serve()
     }
-    sleep(1000*1000*1000)
+    sleep(Duration.second)
 
     let cache: CacheControl = CacheControl.builder()
                                 .maxAge(1000)

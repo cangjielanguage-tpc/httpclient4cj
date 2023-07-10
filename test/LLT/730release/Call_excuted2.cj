@@ -4,7 +4,7 @@
 from std import io.*
 from okhttp import okhttp.*
 from std import time.*
-
+from std import sync.sleep
 
 main() {
     let client: OkHttpClient= OkHttpClient.builder().build()
@@ -18,6 +18,6 @@ main() {
     } catch (e: Exception) {
         return 0
     }
-    sleep(1000*1000*1000)
+    sleep(Duration.second)
     return 1
 }

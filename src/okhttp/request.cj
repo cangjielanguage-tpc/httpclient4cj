@@ -129,7 +129,7 @@ public class Request <: ToString {
      }
 
      public func toString(): String {
-        return "Request{method= ${method}, url= ${url.toString()}"
+        return "Request{method= ${method}, url= ${url.toString()}}"
      }
 
     /**

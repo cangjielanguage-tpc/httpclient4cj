@@ -6,13 +6,15 @@ from std import collection.*
 from net import http.*
 from std import io.*
 from std import socket.*
+from std import sync.sleep
+from std import time.*
 
 var port: UInt16 = 0
 main() {
     spawn {
         serve()
     }
-    sleep(1000*1000*1000)
+    sleep(Duration.second)
     let client: OkHttpClient= OkHttpClient.builder().build()
     let request: okhttp.Request = okhttp.Request.builder()
                                     .url("http://127.0.0.1:${port}/1234")

@@ -9,6 +9,7 @@ from net import tls.*
 from std import socket.*
 from std import time.*
 from std import io.*
+from std import sync.sleep
 
 //创建h2conn 和 stream，在start() 调用前发送settings帧， 发送goAway帧
 
@@ -33,6 +34,6 @@ main (){
     h2conn.setSettings(s)
     let stream = h2conn.newStream(request)
     stream.closeLater(ErrorCode.INTERNAL_ERROR)
-    sleep(1000*1000*1000*10)
+    sleep(Duration.second*10)
     return 0
 }

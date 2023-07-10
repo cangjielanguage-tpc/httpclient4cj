@@ -11,6 +11,7 @@ from std import socket.*
 from encoding import url.*
 from net import tls.*
 from std import core.*
+from std import sync.sleep
 
 @Test
 public class okhttp_okhttpClient_001{
@@ -34,7 +35,7 @@ public class okhttp_okhttpClient_001{
         spawn {
             serve()
         }
-        sleep(1000*1000*1000)
+        sleep(Duration.second)
         var exe = ""
         let cache: CacheControl = CacheControl.builder()
                                     .maxAge(1000)

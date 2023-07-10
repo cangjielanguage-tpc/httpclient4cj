@@ -18,6 +18,8 @@ public class okhttp_RequestBody_006{
 
     @TestCase //test RealRequestBody
     func okhttp_RequestBody_006(): Unit {
+        println(Directory(".").info.path)
+        
         var file: File = File("../../RealRequestBody.html",OpenOption.Open(true,true))
         let request: okhttp.Request = okhttp.Request.builder()
                                         .method("POST",body: RealRequestBody.create(MediaType.get("application/json"),file))

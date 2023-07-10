@@ -57,7 +57,7 @@ public class BridgeInterceptor<: Interceptor {
             case _ => ()
         }
         if (request.getHeader("Host", "") == "") {
-            requestBuilder.header("Host", request.getUrl().hostname())
+            requestBuilder.header("Host", request.getUrl().hostName)
         }
         if (request.getHeader("Connection", "") == "") {
             requestBuilder.header("Connection", "Keep-Alive")

@@ -13,6 +13,7 @@ from encoding import url.*
 from net import tls.*
 from std import core.*
 from std import log.*
+from std import sync.sleep
 
 public var port:UInt16=36389
 
@@ -44,6 +45,6 @@ public class okhttp_H2Connection_01{
         h2conn.flush()
         @Assert(h2conn.isHealthy(),true)
         @Assert(h2stream.isOpen(),true)
-        sleep(5*1000*1000*1000)
+        sleep(5*Duration.second)
     }
 }

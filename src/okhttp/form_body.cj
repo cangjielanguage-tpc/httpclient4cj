@@ -29,12 +29,12 @@ public class FormBody <: RequestBody {
     }
 
     public func getContentLength(): Int64 {
-        return form.encode().size
+        return form.toEncodeString().size
 
     }
 
     public func writeTo(sink: Sink): Unit {
-       sink.write(form.encode().toUtf8Array())
+       sink.write(form.toEncodeString().toUtf8Array())
     }
 
     public static func builder(): FormBodyBuilder {
@@ -43,7 +43,7 @@ public class FormBody <: RequestBody {
 
     public func get(): InputStream {
         let arr = ByteArrayStream()
-        arr.write(form.encode().toUtf8Array())
+        arr.write(form.toEncodeString().toUtf8Array())
         return arr
     }
 }

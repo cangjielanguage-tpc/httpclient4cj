@@ -2,8 +2,8 @@ package okhttp
 
 from std import format.*
 
-@when[os != "windows"]
- @c
+@When[os != "windows"]
+@C
 struct addrinfo {
     var ai_flags: Int32 = 0
     var ai_family: Int32 = 0
@@ -11,30 +11,30 @@ struct addrinfo {
     var ai_protocol: Int32 = 0
     var ai_addrlen: Int32 = 0
     var ai_addr: CPointer<sockaddr_in> = CPointer<sockaddr_in>()
-    var ai_canonname: CPointer<Char> = CPointer<Char>()
+    var ai_canonname: CPointer<UInt8> = CPointer<UInt8>()
     var ai_next: CPointer<addrinfo> = CPointer<addrinfo>()
 }
 
-@when[os == "windows"]
- @c
+@When[os == "windows"]
+@C
 struct addrinfo {
     var ai_flags: Int32 = 0
     var ai_family: Int32 = 0
     var ai_socktype: Int32 = 0
     var ai_protocol: Int32 = 0
     var ai_addrlen: UInt64 = 0
-    var ai_canonname: CPointer<Char> = CPointer<Char>()
+    var ai_canonname: CPointer<UInt8> = CPointer<UInt8>()
     var ai_addr: CPointer<sockaddr_in> = CPointer<sockaddr_in>()
     var ai_next: CPointer<addrinfo> = CPointer<addrinfo>()
 }
 
-@c
+@C
 struct sockaddr {
 	var sa_family: UInt16 = 0
 	var sa_data: CPointer<Int8> = CPointer<Int8>()
 }
 
-@c
+@C
 struct sockaddr_in {
   var sin_family: Int16 = 0
   var sin_port: UInt16 = 0
@@ -42,7 +42,7 @@ struct sockaddr_in {
   var sin_zero: UInt64 = 0
 }
 
-@c
+@C
 struct in6_addr {
     var u6_addr8_1: UInt8 = 0
     var u6_addr8_2: UInt8 = 0
@@ -62,7 +62,7 @@ struct in6_addr {
     var u6_addr8_16: UInt8 = 0
 }
 
-@c
+@C
 struct sockaddr_in6 {
     var sin6_family: Int16 = 0
     var sin6_port: UInt16 = 0
@@ -72,23 +72,23 @@ struct sockaddr_in6 {
 }
 
 foreign {
-    func getaddrinfo(node: CPointer<UInt8>, service: CPointer<Char>, hints: CPointer<addrinfo>, res: CPointer<CPointer<addrinfo>>): Int32
+    func getaddrinfo(node: CPointer<UInt8>, service: CPointer<UInt8>, hints: CPointer<addrinfo>, res: CPointer<CPointer<addrinfo>>): Int32
     func freeaddrinfo(pAddrInfo: CPointer<addrinfo>): Unit
     func malloc(size: Int64): CPointer<Int8>
     func free(ptr: CPointer<UInt8>): Unit
-@when[os == "windows"]
+@When[os == "windows"]
     func WSAStartup(wVersionRequested: UInt16, lpWSAData: CPointer<UInt8>): Int32
-@when[os == "windows"]
+@When[os == "windows"]
     func WSACleanup(): Int32
 }
 
 
 let AF_INET: Int32 = 2
 
-@when[os == "windows"]
+@When[os == "windows"]
 let AF_INET6: Int32 = 23
 
-@when[os != "windows"]
+@When[os != "windows"]
 let AF_INET6: Int32 = 10
 
 func okhttp_SOCKET_ConvertAddrPtr(res: CPointer<addrinfo>): CPointer<UInt8> {
@@ -179,7 +179,7 @@ func okhttp_SOCKET_ConvertAddrPtr(res: CPointer<addrinfo>): CPointer<UInt8> {
     return nullptr
 }
 
-@when[os == "windows"]
+@When[os == "windows"]
 func WSAStartup4cj(): Int32 {
     var wVersionRequested: UInt16 = UInt16(2 & 0xff | (2 & 0xff) << 8)
     var wsaData = unsafe { CPointer<UInt8>(malloc(408)) }
@@ -194,17 +194,17 @@ func WSAStartup4cj(): Int32 {
     return ret
 }
 
-@when[os != "windows"]
+@When[os != "windows"]
 func WSAStartup4cj(): Int32 {
     return 0
 }
 
-@when[os == "windows"]
+@When[os == "windows"]
 func WSACleanup4cj(): Int32 {
     unsafe { WSACleanup() }
 }
 
-@when[os != "windows"]
+@When[os != "windows"]
 func WSACleanup4cj(): Int32 {
     0
 }
@@ -214,7 +214,7 @@ let AI_ALL: Int32 = 0x100
 
 func okhttp_SOCKET_GetAddrInfo(net: UInt8, node: CString): CPointer<UInt8> {
     var nullptr = CPointer<UInt8>()
-    var service = CPointer<Char>()
+    var service = CPointer<UInt8>()
 
     var ret = WSAStartup4cj()
     if (ret != 0) {

@@ -126,7 +126,7 @@ public class Transmitter {
         this.connection = Option<Connection>.None
 
         if (arr.isEmpty()) {
-           released.idleAtNanos = Time.now()
+           released.idleAtNanos = DateTime.now()
            if (connectionPool.connectionBecameIdle(released)) {
                return released.getSocket()
            }
@@ -203,7 +203,7 @@ public class Transmitter {
      * @since 0.29.3
      */
      func newExchange(chain: Chain, doExtensiveHealthChecks: Bool): Exchange {
-        let time1 = Time.now()
+        let time1 = DateTime.now()
         let finder: ExchangeFinder = exchangeFinder.getOrThrow()
         let exchangeCodec: ExchangeCodec = finder.find(client, chain, doExtensiveHealthChecks)
         let result: Exchange = Exchange(this, call, finder, exchangeCodec, eventListener)
@@ -212,7 +212,7 @@ public class Transmitter {
             this.exchangeRequestDone = false
             this.exchangeResponseDone = false
         }
-        let time2 = Time.now()
+        let time2 = DateTime.now()
         return result
     }
 

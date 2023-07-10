@@ -13,6 +13,7 @@ from encoding import url.*
 from net import tls.*
 from std import core.*
 from std import fs.*
+from std import sync.sleep
 
 @Test
 public class okhttp_Request_method_010{
@@ -37,7 +38,7 @@ public class okhttp_Request_method_010{
     spawn {
         serve()
     }
-    sleep(1000*1000*1000)
+    sleep(Duration.second)
     let client: OkHttpClient= OkHttpClient.builder().build()
     let request: okhttp.Request = okhttp.Request.builder()
                                     .url("http://127.0.0.1:${port}/1234")
@@ -47,8 +48,8 @@ public class okhttp_Request_method_010{
     var response: okhttp.Response = call.execute()
 
     print("log flush", flush:true)
-    sleep(1000*1000*1000*1)
-    var filename = "../../log/split_log/HLT.okhttp_Request_method_010.cj.log"
+    sleep(Duration.second)
+    var filename = "../../../log/split_log/test.HLT.okhttp_Request_method_010.cj.log"
     var bytearry = File.readFrom(filename)
     var str = String.fromUtf8(bytearry)
 

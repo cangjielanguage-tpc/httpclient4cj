@@ -13,6 +13,7 @@ from encoding import url.*
 from net import tls.*
 from std import core.*
 from std import fs.*
+from std import sync.sleep
 
 class MyInterceptor<: Interceptor {
     
@@ -22,10 +23,10 @@ class MyInterceptor<: Interceptor {
         let requestBuilder: okhttp.RequestBuilder  = request.newBuilder()
         var response: okhttp.Response =  chain.proceed(requestBuilder.build())
         let responseBuilder: okhttp.ResponseBuilder = response.newBuilder().request(request)
-        func exception(): String{ "exception"}
-        let utctime = Time.now().utc()
+        // func exception(): String{ "exception"}
+        let utctime = DateTime.nowUTC()
         let utctimestr = utctime.toString(", dd MMM yyyy HH:mm:ss z")
-        let str = "${utctime.weekDay().toString()[0..3]}${utctimestr}"
+        let str = "${utctime.dayOfWeek.toString()[0..3]}${utctimestr}"
         println("str:${str}")
         responseBuilder.header("Date",str)
         return responseBuilder.build()
@@ -41,6 +42,7 @@ public class okhttp_cacheevictAll_002 {
     func serve(){
         let hd = http.Route() 
         hd.handle("/1234567", { rws: http.ResponseWriteStream, req: http.Request =>
+            req
             let resp = "Hello from /red".toUtf8Array()
             rws.header().add("Last-Modified", "Tue, 27 May 2014 02:35:47 GMT")
             rws.header().add("cache-control", sev_cache_control) 
@@ -58,7 +60,7 @@ public class okhttp_cacheevictAll_002 {
         spawn {
             serve()
         }
-        sleep(1000*1000*1000)
+        sleep(Duration.second)
 
         let cachecontrol: CacheControl = CacheControl.builder()
                                     .maxAge(2000)
@@ -103,7 +105,7 @@ public class okhttp_cacheevictAll_002 {
         println("response.getNetworkResponse() : ${response.getNetworkResponse()}")
         println("response.getCacheResponse() : ${response.getCacheResponse()}")
         @Assert(response.getCacheResponse().toString(),"None")
-        sleep(1000*1000*1000)
+        sleep(Duration.second)
        
         println("-------------------------------OKHttp-OKHttp-第二次请求----------------------------")
         var response2: okhttp.Response = client.newCall(request).execute()
@@ -139,14 +141,14 @@ public class okhttp_cacheevictAll_002 {
         @Assert(body,body2)
         println("-------------------------------OKHttp-OKHttp-第三次请求-更换服务器---------------------------")
         var response_3: okhttp.Response = client.newCall(request2).execute()
-        var body3 = response_3.getBody().getOrThrow().getString()
+        response_3.getBody().getOrThrow().getString()
 
         println("response_3.getNetworkResponse() : ${response_3.getNetworkResponse()}")
         println("response_3.getCacheResponse() : ${response_3.getCacheResponse()}")
 
         println("-------------------------------OKHttp-OKHttp-第四次请求-同第三次服务器---------------------------")
         var response_4: okhttp.Response = client.newCall(request2).execute()
-        var body4 = response_4.getBody().getOrThrow().getString()
+        response_4.getBody().getOrThrow().getString()
 
         println("response_4.getNetworkResponse() : ${response_4.getNetworkResponse()}")
         println("response_4.getCacheResponse() : ${response_4.getCacheResponse()}")
@@ -158,7 +160,7 @@ public class okhttp_cacheevictAll_002 {
             let client2: OkHttpClient= OkHttpClient.builder().cache(cache3).addNetworkInterceptor(MyInterceptor()).build()
             
             var response_5: okhttp.Response = client2.newCall(request2).execute()
-            var body5 = response_5.getBody().getOrThrow().getString()
+            response_5.getBody().getOrThrow().getString()
         } catch (e : Exception){
             exc = e.message
         }
@@ -169,7 +171,7 @@ public class okhttp_cacheevictAll_002 {
         let client3: OkHttpClient= OkHttpClient.builder().cache(cache4).addNetworkInterceptor(MyInterceptor()).build()
         
         var response_6: okhttp.Response = client3.newCall(request2).execute()
-        var body6 = response_6.getBody().getOrThrow().getString()
+        response_6.getBody().getOrThrow().getString()
 
         println("response_6.getNetworkResponse() : ${response_6.getNetworkResponse()}")
         println("response_6.getCacheResponse() : ${response_6.getCacheResponse()}")
