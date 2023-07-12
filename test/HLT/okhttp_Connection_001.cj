@@ -31,6 +31,7 @@ class MyInterceptor<: Interceptor {
         chain.getConnection().getOrThrow().noExchanges() // test noExchanges
         chain.getConnection().getOrThrow().onSettings(h2conn) // test onSettings
         func exception(): String{ "exception"}
+        exception()
         return responseBuilder.build()
     }
 }
@@ -41,7 +42,8 @@ public class okhttp_Connection_001 {
     
     func serve(){
         let hd = http.Route() 
-        hd.handle("/1234567", { rws: http.ResponseWriteStream, req: http.Request =>
+        hd.handle("/1234567", { rws: ResponseWriteStream, req: http.Request =>
+            req.url
             let resp = "Hello from /red".toUtf8Array()
             rws.header().add("Last-Modified", "Tue, 27 May 2014 02:35:47 GMT")
             rws.header().add("cache-control", "no-cache") 
@@ -70,7 +72,7 @@ public class okhttp_Connection_001 {
                                         .build()
         println("-------------------------------OKHttp-第一次请求----------------------------")
         var response: okhttp.Response = client.newCall(request).execute()
-        var body = response.getBody().getOrThrow().getString()
+        response.getBody().getOrThrow().getString()
         var response_heads: http.Header = response.getHeaders()
         
         for ((nm,vl) in response_heads) {
@@ -80,8 +82,8 @@ public class okhttp_Connection_001 {
 
         var sOrN_cache : Bool = true
         match (client.getCache()) {
-            case Some(md) => sOrN_cache = false
             case None => sOrN_cache = true
+            case _ => sOrN_cache = false
         }
         println("client.getCache() is None? ${sOrN_cache}")
         @Assert(sOrN_cache,false) 

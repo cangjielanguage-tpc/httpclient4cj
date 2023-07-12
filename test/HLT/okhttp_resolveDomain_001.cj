@@ -19,7 +19,8 @@ public class okhttp_resolveDomain_001 {
     var port: UInt16 = 0
     func serve(){
         let hd = http.Route()
-        hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
+        hd.handle("/1234", { rws: ResponseWriteStream, req: http.Request =>
+            req.url
             let resp = "hello".toUtf8Array()
             rws.write(resp)
             return

@@ -40,7 +40,7 @@ public class okhttp_Request_method_002{
             let request: okhttp.Request = okhttp.Request.builder()
                                             .method("PUT")
                                             .build()
-            var request_method = request.getMethod()
+            request.getMethod()
         } catch (e : Exception) {
             println("e.message = ${e.message}")
             exception = e.message

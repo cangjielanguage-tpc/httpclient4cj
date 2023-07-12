@@ -41,7 +41,8 @@ public class okhttp_cacheevictAll_002 {
     var sev_cache_control = "max-age=20000"
     func serve(){
         let hd = http.Route() 
-        hd.handle("/1234567", { rws: http.ResponseWriteStream, req: http.Request =>
+        hd.handle("/1234567", { rws: ResponseWriteStream, req: http.Request =>
+            req.url
             req
             let resp = "Hello from /red".toUtf8Array()
             rws.header().add("Last-Modified", "Tue, 27 May 2014 02:35:47 GMT")
@@ -87,8 +88,8 @@ public class okhttp_cacheevictAll_002 {
 
         var sOrN_cache : Bool = true
         match (client.getCache()) {
-            case Some(md) => sOrN_cache = false
             case None => sOrN_cache = true
+            case _ => sOrN_cache = false
         }
         println("client.getCache() is None? ${sOrN_cache}")
         @Assert(sOrN_cache,false) 
@@ -118,8 +119,8 @@ public class okhttp_cacheevictAll_002 {
 
         var sOrN_cache2 : Bool = true
         match (client.getCache()) {
-            case Some(md) => sOrN_cache2 = false
             case None => sOrN_cache2 = true
+            case _ => sOrN_cache2 = false
         }
 
         println("client2.getCache() is None? ${sOrN_cache2}")

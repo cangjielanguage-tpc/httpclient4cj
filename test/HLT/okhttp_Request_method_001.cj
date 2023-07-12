@@ -34,7 +34,7 @@ public class okhttp_Request_method_001{
             let request: okhttp.Request = okhttp.Request.builder()
                                             .method("GET",body:body)
                                             .build()
-            var request_method = request.getMethod()
+            request.getMethod()
             
         } catch (e : Exception) {
             println("e.message = ${e.message}")

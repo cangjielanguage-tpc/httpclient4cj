@@ -32,6 +32,7 @@ class MyInterceptor<: Interceptor {
         println("hasConnection:${transmitter.hasConnection()}")
         println("hasExchange:${transmitter.hasExchange()}")
         func exception(): String{ "exception"}
+        exception()
         println("--------------------------------intercept-----------------------------")
         return responseBuilder.build()
     }
@@ -42,7 +43,8 @@ public class okhttp_Transmitter_002 {
 
     func serve(){
         let hd = http.Route() 
-        hd.handle("/1234567", { rws: http.ResponseWriteStream, req: http.Request =>
+        hd.handle("/1234567", { rws: ResponseWriteStream, req: http.Request =>
+            req.url
             let resp = "Hello from /red".toUtf8Array()
             rws.header().add("Last-Modified", "Tue, 27 May 2014 02:35:47 GMT")
             rws.header().add("cache-control", "no-cache") 
@@ -70,7 +72,7 @@ public class okhttp_Transmitter_002 {
                                         .method("GET")
                                         .build()
         var response: okhttp.Response = client.newCall(request).execute()
-        var body = response.getBody().getOrThrow().getString()
+        response.getBody().getOrThrow().getString()
         var response_heads: http.Header = response.getHeaders()
         
         for ((nm,vl) in response_heads) {
@@ -80,8 +82,8 @@ public class okhttp_Transmitter_002 {
 
         var sOrN_cache : Bool = true
         match (client.getCache()) {
-            case Some(md) => sOrN_cache = false
             case None => sOrN_cache = true
+            case _ => sOrN_cache = false
         }
         println("client.getCache() is None? ${sOrN_cache}")
     }

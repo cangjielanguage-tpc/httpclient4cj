@@ -78,7 +78,8 @@ public class okhttp_Cookie_Test_004{
 
     func serve() {
         let hd = http.Route()
-        hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
+        hd.handle("/1234", { rws: ResponseWriteStream, req: http.Request =>
+            req.url
             let resp = "Hello from /red".toUtf8Array()
             rws.write(resp)
             rws.header().add("test", "test")

@@ -34,7 +34,8 @@ public class okhttp_cache_009 {
     var sev_cache_control = "max-age=200"
     func serve(){
         let hd = http.Route() 
-        hd.handle("/1234567", { rws: http.ResponseWriteStream, req: http.Request =>
+        hd.handle("/1234567", { rws: ResponseWriteStream, req: http.Request =>
+            req.url
             req
             let resp = "Hello from /red".toUtf8Array()
             rws.header().add("Last-Modified", "Tue, 27 May 2014 02:35:47 GMT")

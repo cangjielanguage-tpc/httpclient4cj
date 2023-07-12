@@ -18,8 +18,8 @@ class MyInterceptor1<: Interceptor {
     
     public func intercept(chain: Chain): okhttp.Response {
         let request: okhttp.Request = chain.getRequest()
-        let requestBuilder: okhttp.RequestBuilder  = request.newBuilder()
-        let header: Header = request.getHeaders()
+        request.newBuilder()
+        request.getHeaders()
         okhttp_Chain_001.check1 = "MyInterceptor1 called "
         return chain.proceed(request)
     }
@@ -28,8 +28,8 @@ class MyInterceptor2<: Interceptor {
     
     public func intercept(chain: Chain): okhttp.Response {
         let request: okhttp.Request = chain.getRequest()
-        let requestBuilder: okhttp.RequestBuilder  = request.newBuilder()
-        let header: Header = request.getHeaders()
+        request.newBuilder()
+        request.getHeaders()
         okhttp_Chain_001.check2 = "MyInterceptor2 called "
         return chain.proceed(request)
     }
@@ -38,8 +38,8 @@ class MyInterceptor3<: Interceptor {
     
     public func intercept(chain: Chain): okhttp.Response {
         let request: okhttp.Request = chain.getRequest()
-        let requestBuilder: okhttp.RequestBuilder  = request.newBuilder()
-        let header: Header = request.getHeaders()
+        request.newBuilder()
+        request.getHeaders()
         okhttp_Chain_001.check3 = "MyInterceptor3 called "
         return chain.proceed(request)
     }
@@ -53,7 +53,8 @@ public class okhttp_Chain_001{
     var port: UInt16 = 0
     func serve(){
         let hd = http.Route()
-        hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
+        hd.handle("/1234", { rws: ResponseWriteStream, req: http.Request =>
+            req.url
             let resp = "Hello from /red".toUtf8Array()
             rws.write(resp)
             return
@@ -78,7 +79,7 @@ public class okhttp_Chain_001{
                                     .url("http://127.0.0.1:${port}/1234")
                                     .method("GET")//加body
                                     .build()
-    let response: okhttp.Response = client.newCall(request).execute()
+    client.newCall(request).execute()
     @Assert(check1,"MyInterceptor1 called ")
     @Assert(check2,"MyInterceptor2 called ")
     @Assert(check3,"MyInterceptor3 called ")

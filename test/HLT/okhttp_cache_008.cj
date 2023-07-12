@@ -23,6 +23,7 @@ class MyInterceptor<: Interceptor {
         var response: okhttp.Response =  chain.proceed(requestBuilder.build())
         let responseBuilder: okhttp.ResponseBuilder = response.newBuilder().request(request)
         func exception(): String{ "exception"}
+        exception()
         return responseBuilder.build()
     }
 }
@@ -34,7 +35,8 @@ public class okhttp_cache_008 {
     var sev_cache_control = "max-age=200"
     func serve(){
         let hd = http.Route() 
-        hd.handle("/1234567", { rws: http.ResponseWriteStream, req: http.Request =>
+        hd.handle("/1234567", { rws: ResponseWriteStream, req: http.Request =>
+            req.url
             let resp = "Hello from /red".toUtf8Array()
             rws.header().add("Last-Modified", "Tue, 27 May 2014 02:35:47 GMT")
             rws.header().add("cache-control", sev_cache_control) 
@@ -66,7 +68,7 @@ public class okhttp_cache_008 {
                                         .build()
         println("-------------------------------OKHttp-第一次请求----------------------------")
         var response: okhttp.Response = client.newCall(request).execute()
-        var body = response.getBody().getOrThrow().getString()
+        response.getBody().getOrThrow().getString()
         var response_heads: http.Header = response.getHeaders()
         
         for ((nm,vl) in response_heads) {
@@ -116,7 +118,7 @@ public class okhttp_cache_008 {
             println(nm)
             println(vl)
         }
-        var body2 = response2.getBody().getOrThrow().getString()
+        response2.getBody().getOrThrow().getString()
         println("request2.getMethod() = ${request2.getMethod()}")
         println("request2.getCacheControl() = ${request2.getCacheControl()}")
 

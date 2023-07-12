@@ -22,6 +22,7 @@ class MyInterceptor<: Interceptor {
         var response: okhttp.Response =  chain.proceed(requestBuilder.build())
         let responseBuilder: okhttp.ResponseBuilder = response.newBuilder().request(request)
         func exception(): String{ "exception"}
+        exception()
         return responseBuilder.build()
     }
 }
@@ -32,7 +33,8 @@ public class okhttp_cache_002 {
     var port: UInt16 = 0
     func serve(){
         let hd = http.Route() 
-        hd.handle("/1234567", { rws: http.ResponseWriteStream, req: http.Request =>
+        hd.handle("/1234567", { rws: ResponseWriteStream, req: http.Request =>
+            req.url
             let resp = "Hello from /red".toUtf8Array()
             rws.header().add("Last-Modified", "Tue, 27 May 2014 02:35:47 GMT")
             rws.write(resp)
@@ -59,13 +61,13 @@ public class okhttp_cache_002 {
                                         .method("GET")
                                         .build()
         var response: okhttp.Response = client.newCall(request).execute()
-        var body = response.getBody().getOrThrow().getString()
-        var response_heads: http.Header = response.getHeaders()
+        response.getBody().getOrThrow().getString()
+        response.getHeaders()
         
         var sOrN_cache : Bool = false
         match (client.getCache()) {
-            case Some(md) => sOrN_cache = false
             case None => sOrN_cache = true
+            case _ => sOrN_cache = false
         }
 
         println("client.getCache() is None? ${sOrN_cache}")

@@ -28,6 +28,7 @@ public class okhtttp_code_100{
         let hd = http.Route()
         hd.handle("/1235", { rws: ResponseWriteStream, req: http.Request =>
             // rws.writeStatusCode(HttpStatusCode.STATUS_CONTINUE)
+            req.url
             let resp = "".toUtf8Array()
             rws.write(resp)
             return

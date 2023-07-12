@@ -20,7 +20,7 @@ public class okhttp_StatusLine_007 {
     func okhttp_StatusLine_007(): Unit {
         var exc = ""
         try{
-            var stl = StatusLine.parse("200 OK")
+            StatusLine.parse("200 OK")
         } catch (e:Exception) {
             exc = e.message
         }

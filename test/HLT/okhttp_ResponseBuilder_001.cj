@@ -19,7 +19,7 @@ class MyInterceptor<: Interceptor {
     public func intercept(chain: Chain): okhttp.Response {
         let request: okhttp.Request = chain.getRequest()
         let requestBuilder: okhttp.RequestBuilder  = request.newBuilder()
-        let header: Header = request.getHeaders()
+        request.getHeaders()
         var response: okhttp.Response =  chain.proceed(requestBuilder.build())
         let responseBuilder: okhttp.ResponseBuilder = response.newBuilder().request(request)
         responseBuilder.header("name1","value1")
@@ -28,6 +28,7 @@ class MyInterceptor<: Interceptor {
         responseBuilder.addHeader("name4","value4")
         responseBuilder.removeHeader("name4")
         func exception(): String{ "exception"}
+        exception()
         return responseBuilder.build()
     }
 }
@@ -37,7 +38,8 @@ public class okhttp_ResponseBuilder_001{
     var port: UInt16 = 0
     func serve(){
         let hd = http.Route()
-        hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
+        hd.handle("/1234", { rws: ResponseWriteStream, req: http.Request =>
+            req.url
             let resp = "Hello from /red".toUtf8Array()
             rws.write(resp)
             return
