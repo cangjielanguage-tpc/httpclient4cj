@@ -1,11 +1,11 @@
-// 3rd_party_lib:okhttp/build/okhttp
-// 3rd_party_lib:okhttp/ci_lib/cryptocj
+// 3rd_party_lib:httpclient4cj/build/httpclient4cj
+// 3rd_party_lib:httpclient4cj/ci_lib/cryptocj
 // data_file:image.png
 
 from std import unittest.*
 from std import unittest.testmacro.*
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from net import http.*
 from std import socket.*
@@ -26,10 +26,10 @@ public class okhttp_EventListener_test_001{
             serve()
         }
         sleep(Duration.second)
-        let request_01: okhttp.Request = okhttp.Request.builder()
+        let request_01: httpclient4cj.Request = httpclient4cj.Request.builder()
                                         .url("http://127.0.0.1:${port}/1234")
                                         .build()
-        let client: OkHttpClient= OkHttpClient.builder().eventListener(MyEventListener()).build()
+        let client: HttpClient= HttpClient.builder().eventListener(MyEventListener()).build()
         client.newCall(request_01).enqueue(MyCallbacks())
         sleep(10*Duration.second)
     }
@@ -40,10 +40,10 @@ public class okhttp_EventListener_test_001{
             serve()
         }
         sleep(Duration.second)
-        let request_01: okhttp.Request = okhttp.Request.builder()
+        let request_01: httpclient4cj.Request = httpclient4cj.Request.builder()
                                         .url("https://1.0.0.1:${port}/1234")
                                         .build()
-        let client: OkHttpClient= OkHttpClient.builder().eventListener(MyEventListener()).build()
+        let client: HttpClient= HttpClient.builder().eventListener(MyEventListener()).build()
         client.newCall(request_01).enqueue(MyCallbacks())
         sleep(10*Duration.second)
     }
@@ -61,11 +61,11 @@ public class okhttp_EventListener_test_001{
             .addFormDataPart("name", "aaa")
             .addFormDataPart("image", "image.png", body_image)
             .build()
-        let request: okhttp.Request = okhttp.Request.builder()
+        let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                         .url("http://127.0.0.1:${port}/1234")
                                         .method("POST", body: multipartBody)
                                         .build()
-        let client: OkHttpClient= OkHttpClient.builder().eventListener(MyEventListener()).build()
+        let client: HttpClient= HttpClient.builder().eventListener(MyEventListener()).build()
         let response = client.newCall(request).enqueue(MyCallbacks())
         sleep(10*Duration.second)
     }
@@ -92,7 +92,7 @@ public class MyCallbacks <: Callback {
         println("${e.message}")
     }
 
-    public func onResponse(call: Call,  response: okhttp.Response): Unit{
+    public func onResponse(call: Call,  response: httpclient4cj.Response): Unit{
         println("success")
     }
 }
@@ -110,7 +110,7 @@ public class MyEventListener <: EventListener {
         println("MyEventListener: dnsStart()")
     }
 
-    public func dnsEnd(call: Call, domainName: String, allRoutes: ArrayList<okhttp.Route>): Unit {
+    public func dnsEnd(call: Call, domainName: String, allRoutes: ArrayList<httpclient4cj.Route>): Unit {
         println("MyEventListener: dnsEnd()")
     }
 
@@ -130,7 +130,7 @@ public class MyEventListener <: EventListener {
         println("MyEventListener: secureConnectEnd()")
     }
 
-    public func connectFailed(call: Call, socketAddress: SocketAddress, protocol: Protocol, e: okhttp.HttpException ): Unit {
+    public func connectFailed(call: Call, socketAddress: SocketAddress, protocol: Protocol, e: httpclient4cj.HttpException ): Unit {
         println("MyEventListener: connectFailed()")
     }
 
@@ -150,7 +150,7 @@ public class MyEventListener <: EventListener {
         println("MyEventListener: requestBodyEnd()")
     }
 
-    public func requestFailed(call: Call, e: okhttp.HttpException): Unit {
+    public func requestFailed(call: Call, e: httpclient4cj.HttpException): Unit {
         println("MyEventListener: requestFailed()")
     }
 
@@ -158,7 +158,7 @@ public class MyEventListener <: EventListener {
         println("MyEventListener: responseHeadersStart()")
     }
 
-    public func responseHeadersEnd(call: Call, response: okhttp.Response): Unit {
+    public func responseHeadersEnd(call: Call, response: httpclient4cj.Response): Unit {
         println("MyEventListener: responseHeadersEnd()")
     }
 
@@ -170,7 +170,7 @@ public class MyEventListener <: EventListener {
         println("MyEventListener: responseBodyEnd()")
     }
 
-    public func responseFailed(call: Call, e: okhttp.HttpException): Unit {
+    public func responseFailed(call: Call, e: httpclient4cj.HttpException): Unit {
         println("MyEventListener: responseFailed()")
     }
 }

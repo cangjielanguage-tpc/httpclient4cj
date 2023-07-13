@@ -1,7 +1,7 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from net import http.*
 from std import collection.*
 from encoding import url.*
@@ -21,13 +21,13 @@ main (){
     }
     sleep(Duration.second)
 
-    var client: OkHttpClient = OkHttpClient.builder().build()
-    var request: okhttp.Request
-    var response: okhttp.Response
+    var client: HttpClient = HttpClient.builder().build()
+    var request: httpclient4cj.Request
+    var response: httpclient4cj.Response
 
     var index:Int64
     // test case 4：enqueue请求 访问仓颉server端 http://127.0.0.1:${port}/1234
-    request = okhttp.Request.builder()
+    request = httpclient4cj.Request.builder()
                         .url("http://127.0.0.1:${port}/1234")
                         .build()
     index = 0
@@ -58,7 +58,7 @@ public class MyCallbacks <: Callback {
     public func onFailure(call: Call,  e: Exception): Unit{
         print("failed ")
     }
-    public func onResponse(call: Call,  response: okhttp.Response): Unit{
+    public func onResponse(call: Call,  response: httpclient4cj.Response): Unit{
         i.fetchAdd(1)
         print("${i.load() }")
     }

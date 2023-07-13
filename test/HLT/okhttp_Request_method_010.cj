@@ -1,11 +1,11 @@
-// 3rd_party_lib:okhttp/build/okhttp
-// 3rd_party_lib:okhttp/ci_lib/cryptocj
+// 3rd_party_lib:httpclient4cj/build/httpclient4cj
+// 3rd_party_lib:httpclient4cj/ci_lib/cryptocj
 
 
 from std import unittest.*
 from std import unittest.testmacro.*
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from net import http.*
 from std import socket.*
@@ -45,8 +45,8 @@ public class okhttp_Request_method_010{
     var f1 = dup(1)
     dup2(f, 1)
 
-    let client: OkHttpClient= OkHttpClient.builder().build()
-    let request: okhttp.Request = okhttp.Request.builder()
+    let client: HttpClient= HttpClient.builder().build()
+    let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                     .url("http://127.0.0.1:${port}/1234")
                                     .method("abc")
                                     .build()

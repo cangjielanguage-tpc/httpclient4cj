@@ -1,18 +1,18 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 
 main() {
     let forceNet = CacheControl.FORCE_NETWORK //强制网络的缓存控制
     let cache: Cache = Cache("./cacheccccccc", 10 * 1024 * 1024)
-    let client: OkHttpClient= OkHttpClient.builder().cache(cache).build()
-    let request1 = okhttp.Request.builder()
+    let client: HttpClient= HttpClient.builder().cache(cache).build()
+    let request1 = httpclient4cj.Request.builder()
             .cacheControl(forceNet)
             .url("http://okhttp:50067/get")
             .method("GET")
             .build()
-    let request2 = okhttp.Request.builder()
+    let request2 = httpclient4cj.Request.builder()
             .cacheControl(forceNet)
             .url("http://okhttp:50067/get")
             .method("GET")

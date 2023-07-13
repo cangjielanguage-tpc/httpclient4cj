@@ -42,7 +42,7 @@ apache 2.0 License
 | build     | 无   | T        | 创建出核心类。  |
 
 
-#### class OkhttpClient
+#### class HttpClient
 
 Call的工厂类，可用于发送 HTTP 请求并读取其响应，外观形式上等同于http客户端，每个客户端都拥有自己的连接池和线程池。重用连接可减少延迟并节省内存。
 
@@ -68,32 +68,32 @@ Call的工厂类，可用于发送 HTTP 请求并读取其响应，外观形式�
 
 | 静态函数      | 入参   | 返回值                  | 作用描述                      |
 |-----------|------|----------------------|---------------------------|
-| builder   | 无    | OkHttpClientBuilder  | 创建 OkHttpClient 的Builder  |
+| builder   | 无    | HttpClientBuilder  | 创建 HttpClient 的Builder  |
 
 
-#### class okhttpClientBuilder
+#### class HttpClientBuilder
 
-用于创建okhttpClient，用户通过链式调用配置其属性
+用于创建HttpClient，用户通过链式调用配置其属性
 
 | 成员函数                     | 入参                                                              | 返回值                 | 作用描述                                                                                      |
 |--------------------------|-----------------------------------------------------------------|---------------------|-------------------------------------------------------------------------------------------|
-| build                    | 无                                                               | OkHttpClient        | 通过配置项创建出核心类 OkHttpClient                                                                  |
-| dispatcher               | dispatcher: Dispatcher                                          | OkHttpClientBuilder | 配置个性化的请求分发器                                                                               |
-| followRedirects          | followRedirects: Bool                                           | OkHttpClientBuilder | 配置是否允许重定向, 默认为true                                                                        |
-| retryOnConnectionFailure | retryOnConnectionFailure: Bool                                  | OkHttpClientBuilder | 配置连接失败是否允许重试,默认为true                                                                      |
-| connectionPool           | connectionPool: Option\<ConnectionPool\>                        | OkHttpClientBuilder | 配置客户端使用个性化的连接池对象 ，默认最大空闲数为5，最大空闲时间为5分钟                                                    |
-| addInterceptor           | interceptor: Interceptor                                        | OkHttpClientBuilder | 添加用户自定义的连接前处理的拦截器                                                                         |
-| addNetworkInterceptor    | interceptor: Interceptor                                        | OkHttpClientBuilder | 添加用户自定义的连接后处理的拦截器                                                                         |
-| connectTimeout           | connectTimeout: Duration                                        | OkHttpClientBuilder | 配置连接超时时间                                                                                  |
-| readTimeout              | readTimeout: Duration                                           | OkHttpClientBuilder | 配置读取连接超时时间                                                                                |
-| cookieJar                | cookieJar: CookieJar                                            | OkHttpClientBuilder | 配置cookieJar，默认使用cookieJar不保存cookie，也无法获取cookie，可以使用全局函数getSimpleCookieJar获取轻量的cookieJar对象 |
-| writeTimeout             | writeTimeout: Duration                                          | OkHttpClientBuilder | 配置读取连接超时时间                                                                                |
-| protocols                | protocols: ArrayList\<String\>                                  | OkHttpClientBuilder | 参数 protocols 使用协议的集合, 支持 http/1.1, http2 以及 h2_prior_knowledge                            |
-| tlsConfig                | path: String                                                    | OkHttpClientBuilder | 开启tls, 配置tls 的 CA证书路径                                                                     |
-| authenticator            | authenticator: (Option\<Route\>, Response) -> Option\<Request\> | OkHttpClientBuilder | 开启鉴权配置 (如果 code 返回 401 则需要鉴权配置), 如果lambda返回None则不再进行重试, 否则进行鉴权配置后重试请求                     |
-| followSslRedirects       | followSslRedirects: Bool                                        | OkHttpClientBuilder | 配置是否允许跨协议进行重定向                                                                            |
-| eventListener            | listener: EventListener                                         | OkHttpClientBuilder | 配置自定义事件监听器                                                                                |
-| cache                    | cache: Option\<Cache\>                                          | OkHttpClientBuilder | 配置使用缓存                                                                                    |
+| build                    | 无                                                               | HttpClient        | 通过配置项创建出核心类 HttpClient                                                                  |
+| dispatcher               | dispatcher: Dispatcher                                          | HttpClientBuilder | 配置个性化的请求分发器                                                                               |
+| followRedirects          | followRedirects: Bool                                           | HttpClientBuilder | 配置是否允许重定向, 默认为true                                                                        |
+| retryOnConnectionFailure | retryOnConnectionFailure: Bool                                  | HttpClientBuilder | 配置连接失败是否允许重试,默认为true                                                                      |
+| connectionPool           | connectionPool: Option\<ConnectionPool\>                        | HttpClientBuilder | 配置客户端使用个性化的连接池对象 ，默认最大空闲数为5，最大空闲时间为5分钟                                                    |
+| addInterceptor           | interceptor: Interceptor                                        | HttpClientBuilder | 添加用户自定义的连接前处理的拦截器                                                                         |
+| addNetworkInterceptor    | interceptor: Interceptor                                        | HttpClientBuilder | 添加用户自定义的连接后处理的拦截器                                                                         |
+| connectTimeout           | connectTimeout: Duration                                        | HttpClientBuilder | 配置连接超时时间                                                                                  |
+| readTimeout              | readTimeout: Duration                                           | HttpClientBuilder | 配置读取连接超时时间                                                                                |
+| cookieJar                | cookieJar: CookieJar                                            | HttpClientBuilder | 配置cookieJar，默认使用cookieJar不保存cookie，也无法获取cookie，可以使用全局函数getSimpleCookieJar获取轻量的cookieJar对象 |
+| writeTimeout             | writeTimeout: Duration                                          | HttpClientBuilder | 配置读取连接超时时间                                                                                |
+| protocols                | protocols: ArrayList\<String\>                                  | HttpClientBuilder | 参数 protocols 使用协议的集合, 支持 http/1.1, http2 以及 h2_prior_knowledge                            |
+| tlsConfig                | path: String                                                    | HttpClientBuilder | 开启tls, 配置tls 的 CA证书路径                                                                     |
+| authenticator            | authenticator: (Option\<Route\>, Response) -> Option\<Request\> | HttpClientBuilder | 开启鉴权配置 (如果 code 返回 401 则需要鉴权配置), 如果lambda返回None则不再进行重试, 否则进行鉴权配置后重试请求                     |
+| followSslRedirects       | followSslRedirects: Bool                                        | HttpClientBuilder | 配置是否允许跨协议进行重定向                                                                            |
+| eventListener            | listener: EventListener                                         | HttpClientBuilder | 配置自定义事件监听器                                                                                |
+| cache                    | cache: Option\<Cache\>                                          | HttpClientBuilder | 配置使用缓存                                                                                    |
 
 #### interface Call
 
@@ -481,11 +481,11 @@ form表单格式的请求体
 
 #### class Transmitter
 
-OkHttp应用程序和网络层之间的桥梁。此类用于暴露出应用层中原始的连接、请求、响应和流数据
+HttpClient应用程序和网络层之间的桥梁。此类用于暴露出应用层中原始的连接、请求、响应和流数据
 
 | 成员函数                       | 入参                                 | 返回值    | 作用描述                               |
 |----------------------------|------------------------------------|--------|------------------------------------|
-| init                       | client: OkHttpClient, call: Call   | 无      | client 客户端配置对象, call 请求的增强         |
+| init                       | client: HttpClient, call: Call   | 无      | client 客户端配置对象, call 请求的增强         |
 | cancel                     | 无                                  | Unit   | 关闭socket                           |
 | isCanceled                 | 无                                  | Unit   | 是否已经关闭                             |
 | prepareToConnect           | request: Request                   | Unit   | 进行准备连接前必要的初始化 如果已经进行过连接，可以复用则不再初始化 |
@@ -539,7 +539,7 @@ OkHttp应用程序和网络层之间的桥梁。此类用于暴露出应用层�
 
 | 成员函数   | 入参                                                                                              | 返回值       | 作用描述                |
 |--------|-------------------------------------------------------------------------------------------------|-----------|---------------------|
-| init   | client: OkHttpClient, realConnection: Connection, source: OkBuffer, sink: BufferedOutputStream  | 无         | 构造器                 |
+| init   | client: HttpClient, realConnection: Connection, source: OkBuffer, sink: BufferedOutputStream  | 无         | 构造器                 |
 
 #### class Http2ExchangeCodec <: ExchangeCodec
 
@@ -547,7 +547,7 @@ OkHttp应用程序和网络层之间的桥梁。此类用于暴露出应用层�
 
 | 成员函数 | 入参                                                                                 | 返回值         | 作用描述                |
 |------|------------------------------------------------------------------------------------|-------------|---------------------|
-| init | client: OkHttpClient, realConnection: Connection, http2Connection: H2Connection    | 无           | 构造器                 |
+| init | client: HttpClient, realConnection: Connection, http2Connection: H2Connection    | 无           | 构造器                 |
 
 
 | 静态函数                 | 入参                                      | 返回值              | 作用描述                                            |
@@ -823,12 +823,12 @@ HTTP2错误码， 从Reset_Stream帧或GOAway帧中获取
 #### 同步请求
 
 ```cangjie
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 
 main() {
-    let client: OkHttpClient= OkHttpClient.builder().build()
+    let client: HttpClient= HttpClient.builder().build()
     let request: Request = Request.builder().url("http://36.152.44.95/index.html")
-    .header("User-Agent", "OkHttp-Example").build()
+    .header("User-Agent", "Httpclient4cj-Example").build()
     let response: Response = client.newCall(request).execute()
     println(response.isSuccess())
 }
@@ -841,12 +841,12 @@ success
 
 #### 异步请求
 ```cangjie
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 
 main() {
-    let client: OkHttpClient= OkHttpClient.builder().build()
+    let client: HttpClient= HttpClient.builder().build()
     let request: Request = Request.builder().url("http://36.152.44.95/index.html")
-    .header("User-Agent", "OkHttp-Example").build()
+    .header("User-Agent", "Httpclient4cj-Example").build()
     client.newCall(request).enqueue(MyCallbacks())
     sleep(Duration.second)
 }
@@ -870,7 +870,7 @@ success
 #### chunked分块传输请求
 ```
 
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import collection.*
 from net import http.*
 from std import io.*
@@ -882,12 +882,12 @@ main() {
         serve()
     }
     sleep(Duration.second)
-    let client: OkHttpClient= OkHttpClient.builder().build()
-    let request: okhttp.Request = okhttp.Request.builder()
+    let client: HttpClient= HttpClient.builder().build()
+    let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                     .url("http://127.0.0.1:${port}/1234")
                                     .method("POST", body: MyRequestBody())
                                     .build()
-    let response: okhttp.Response = client.newCall(request).execute()
+    let response: httpclient4cj.Response = client.newCall(request).execute()
     println(response.toString())
     if(response.getBody()?.isClosed() ?? true) {
         return 1

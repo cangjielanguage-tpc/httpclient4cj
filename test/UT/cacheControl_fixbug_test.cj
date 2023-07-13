@@ -1,5 +1,5 @@
 
-package okhttp
+package httpclient4cj
 from net import http.* as http3.*
 from std import collection.*
 from encoding import url.*
@@ -41,7 +41,7 @@ public class okhtttp_001{
         let cache: CacheControl = CacheControl.builder()
                                     .maxAge(Duration.second*1000)
                                     .build()
-        let body: okhttp.RequestBody = okhttp.RequestBody("Media-Type", "text/html")
+        let body: httpclient4cj.RequestBody = httpclient4cj.RequestBody("Media-Type", "text/html")
         body.get()
 
         let resBodyCt = body.contentType()
@@ -53,8 +53,8 @@ public class okhtttp_001{
         head.add("content-type", "application/json") 
         head.add("content-type2", "application2/json")
         
-        let client: OkHttpClient= OkHttpClient.builder().build()
-        let request: okhttp.Request = okhttp.Request.builder()
+        let client: HttpClient= HttpClient.builder().build()
+        let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                         .url(url)
                                         .method("GET")
                                         .body(body)
@@ -66,7 +66,7 @@ public class okhtttp_001{
         let resCon = request.getCacheControl().getOrThrow().toString()
 
         let call = client.newCall(request)
-        let response: okhttp.Response = call.execute()
+        let response: httpclient4cj.Response = call.execute()
         let responseCache = response.getCacheControl().getOrThrow().toString()
         var response_body:Array<Byte> = response.getBody().getOrThrow().getSource().readToEnd()
         var str = String.fromUtf8(response_body)

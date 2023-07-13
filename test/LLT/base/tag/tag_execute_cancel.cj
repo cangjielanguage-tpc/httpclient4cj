@@ -1,7 +1,7 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import collection.*
 from std import time.*
 from std import runtime.*
@@ -19,12 +19,12 @@ main() {
     }
     sleep(Duration.second)
     let myInterceptor = MyInterceptor()
-    let client: OkHttpClient= OkHttpClient.builder().addInterceptor(myInterceptor).build()
+    let client: HttpClient= HttpClient.builder().addInterceptor(myInterceptor).build()
     myInterceptor.setClient(client)
 
     try{
         for(i in 0..10) {
-            let request: okhttp.Request = okhttp.Request.builder()
+            let request: httpclient4cj.Request = httpclient4cj.Request.builder()
             .url("http://127.0.0.1:${port}/1234")
             .tag("test${i}")
             .build()
@@ -38,12 +38,12 @@ main() {
 
 
 class MyInterceptor<: Interceptor {
-    var client: Option<OkHttpClient> = Option<OkHttpClient>.None
-     public func setClient(client: OkHttpClient) {
+    var client: Option<HttpClient> = Option<HttpClient>.None
+     public func setClient(client: HttpClient) {
         this.client = client
      }
 
-     public func intercept(chain: Chain): okhttp.Response {
+     public func intercept(chain: Chain): httpclient4cj.Response {
         let dispatcher = client.getOrThrow().getDispatcher()
         let run = dispatcher.runningCalls()
         println(run.size)

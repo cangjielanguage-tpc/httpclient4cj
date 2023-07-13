@@ -2,7 +2,7 @@
 // EXEC: ./main
 
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from net import http.*
 from std import socket.*
 from std import collection.*
@@ -16,15 +16,15 @@ main() {
     // setCookie = _xsrf=287715ac-ba37-4b68-9311-666c13ba7705; path=/; domain=.zhihu.com
     //setCookie = KLBRSID=af132c66e9ed2b57686ff5c489976b91|1665456289|1665456289; Path=/
     let url: URL = URL.parse("https://www.zhihu.com")
-    let client: OkHttpClient= OkHttpClient.builder().cookieJar(getSimpleCookieJar())
+    let client: HttpClient= HttpClient.builder().cookieJar(getSimpleCookieJar())
     .build()
-    let request: okhttp.Request = okhttp.Request.builder()
+    let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                     .url(url)
                                     .build()
     let call = client.newCall(request)
 
     try{
-        let response: okhttp.Response = call.execute()
+        let response: httpclient4cj.Response = call.execute()
         println(response.toString())
         let arr = client.getCookieJar().loadForRequest(url)
         println("1.2 ${arr |> map{c:Cookie=>c.toString()} |> collectString<String>(delimiter:" ")}")

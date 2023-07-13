@@ -1,11 +1,11 @@
-// 3rd_party_lib:okhttp/build/okhttp
-// 3rd_party_lib:okhttp/ci_lib/cryptocj
+// 3rd_party_lib:httpclient4cj/build/httpclient4cj
+// 3rd_party_lib:httpclient4cj/ci_lib/cryptocj
 
 
 from std import unittest.*
 from std import unittest.testmacro.*
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from net import http.*
 from std import socket.*
@@ -18,7 +18,7 @@ public class okhttp_Request_method_007{
 
     @TestCase
     func okhttp_Request_method_007(): Unit {
-        let request: okhttp.Request = okhttp.Request.builder()
+        let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                         .method("DELETE")
                                         .build()
         var request_method = request.getMethod()
@@ -28,8 +28,8 @@ public class okhttp_Request_method_007{
     }
     @TestCase
     func okhttp_Request_method_007_body(): Unit {
-        let body: okhttp.RequestBody = okhttp.RealRequestBody.create(MediaType.get("application/json; charset=utf-8"), "hello".toUtf8Array())
-        let request: okhttp.Request = okhttp.Request.builder()
+        let body: httpclient4cj.RequestBody = httpclient4cj.RealRequestBody.create(MediaType.get("application/json; charset=utf-8"), "hello".toUtf8Array())
+        let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                         .method("DELETE",body:body)
                                         .build()
         var request_method = request.getMethod()

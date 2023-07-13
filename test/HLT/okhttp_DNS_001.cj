@@ -1,11 +1,11 @@
-// 3rd_party_lib:okhttp/build/okhttp
-// 3rd_party_lib:okhttp/ci_lib/cryptocj
+// 3rd_party_lib:httpclient4cj/build/httpclient4cj
+// 3rd_party_lib:httpclient4cj/ci_lib/cryptocj
 
 
 from std import unittest.*
 from std import unittest.testmacro.*
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from net import http.*
 from std import socket.*
@@ -22,15 +22,15 @@ public class okhttp_DNS_001{
     let cache: CacheControl = CacheControl.builder()
                                 .maxAge(1000)
                                 .build()
-    let client: OkHttpClient= OkHttpClient.builder().build()
-    // let body: okhttp.RequestBody = okhttp.RequestBody("Media-Type", "text/html")
-    let request: okhttp.Request = okhttp.Request.builder()
+    let client: HttpClient= HttpClient.builder().build()
+    // let body: httpclient4cj.RequestBody = httpclient4cj.RequestBody("Media-Type", "text/html")
+    let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                     .url("http://www.baidu.com/index.html")
                                     .method("GET")//加body
                                     .cacheControl(cache)
                                     .build()
     var call = client.newCall(request)
-    var response: okhttp.Response = call.execute()
+    var response: httpclient4cj.Response = call.execute()
     var response_protocol = response.getProtocol().toString()
     var response_code : Int64 = response.getCode()
     var response_Message = response.getMessage()

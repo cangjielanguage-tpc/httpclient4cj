@@ -1,11 +1,11 @@
-// 3rd_party_lib:okhttp/build/okhttp
-// 3rd_party_lib:okhttp/ci_lib/cryptocj
+// 3rd_party_lib:httpclient4cj/build/httpclient4cj
+// 3rd_party_lib:httpclient4cj/ci_lib/cryptocj
 // data_file:body.text
 
 from std import unittest.*
 from std import unittest.testmacro.*
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from net import http.*
 from std import socket.*
@@ -32,12 +32,12 @@ public class okhttp_MediaType_test_004{
             .addFormDataPart("name", "aaa")
             .addFormDataPart("file", "body.text", body)
             .build()
-        let client: OkHttpClient= OkHttpClient.builder().build()
-        let request: okhttp.Request = okhttp.Request.builder()
+        let client: HttpClient= HttpClient.builder().build()
+        let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                         .url("http://127.0.0.1:${port}/1234")
                                         .method("POST", body: multipartBody)
                                         .build()
-        let response: okhttp.Response = client.newCall(request).execute()
+        let response: httpclient4cj.Response = client.newCall(request).execute()
         println(response.toString())
         let responseType = response.getBody().getOrThrow().getContentType() 
         match (responseType) {

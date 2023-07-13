@@ -2,14 +2,14 @@
 // EXEC: ./main
 
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 
 
 main() {
     try{
-        let client: OkHttpClient=
-        OkHttpClient.builder().tlsConfig("").build()
+        let client: HttpClient=
+        HttpClient.builder().tlsConfig("").build()
     }catch(e: Exception) {
         return 1
     }

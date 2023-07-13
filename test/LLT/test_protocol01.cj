@@ -2,7 +2,7 @@
 // EXEC: ./main
 from std import io.*
 from std import collection.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from net import http.*
 from std import socket.*
@@ -34,12 +34,12 @@ func serve() {
     server.serve(socket)
 }
 class MyInterceptor <: Interceptor {
-    public func intercept(chain: Chain): okhttp.Response {
+    public func intercept(chain: Chain): httpclient4cj.Response {
         println("-------------------------------is Network----------------------------")
-        let request: okhttp.Request = chain.getRequest()
-        let requestBuilder: okhttp.RequestBuilder = request.newBuilder()
-        var response: okhttp.Response = chain.proceed(requestBuilder.build())
-        let responseBuilder: okhttp.ResponseBuilder = response.newBuilder().request(request)
+        let request: httpclient4cj.Request = chain.getRequest()
+        let requestBuilder: httpclient4cj.RequestBuilder = request.newBuilder()
+        var response: httpclient4cj.Response = chain.proceed(requestBuilder.build())
+        let responseBuilder: httpclient4cj.ResponseBuilder = response.newBuilder().request(request)
         responseBuilder.header("Date", "Thu, 23 Feb 2023 16:23:49 GMT")
         func exception(): String {
             "exception"
@@ -57,10 +57,10 @@ main() {
 
     let cachecontrol: CacheControl = CacheControl.builder().maxAge(2000).build()
     let cache: Cache = Cache("./cc", 10 * 1024 * 1024)
-    let client: OkHttpClient = OkHttpClient.builder().cache(cache).build()
-    let request: okhttp.Request = okhttp.Request.builder().url("http://127.0.0.1:${port}/1234567").build()
+    let client: HttpClient = HttpClient.builder().cache(cache).build()
+    let request: httpclient4cj.Request = httpclient4cj.Request.builder().url("http://127.0.0.1:${port}/1234567").build()
     println("-------------------------------OKHttp-第一次请求----------------------------")
-    var response: okhttp.Response = client.newCall(request).execute()
+    var response: httpclient4cj.Response = client.newCall(request).execute()
     var body = response.getBody().getOrThrow().getString()
     var response_heads: http.Header = response.getHeaders()
 
@@ -75,7 +75,7 @@ main() {
     )
     try {
         let cache3: Cache = Cache("./cc", 10 * 1024 * 1024)
-        let client2: OkHttpClient = OkHttpClient.builder().cache(cache3).build()
+        let client2: HttpClient = HttpClient.builder().cache(cache3).build()
         cache3.delete()
     } catch (e: IllegalStateException) {
         println(e.message)
@@ -85,8 +85,8 @@ main() {
 
     try {
         let cache2: Cache = Cache("./cc", 10 * 1024 * 1024)
-        let client2: OkHttpClient = OkHttpClient.builder().cache(cache2).build()
-        let req2 = okhttp.Request.builder().url("http://127.0.0.1:${port}/1234567").build()
+        let client2: HttpClient = HttpClient.builder().cache(cache2).build()
+        let req2 = httpclient4cj.Request.builder().url("http://127.0.0.1:${port}/1234567").build()
         client2.newCall(request).execute().getBody().getOrThrow().getString()
         cache2.urls() |> forEach<String>(println)
         cache2.delete()

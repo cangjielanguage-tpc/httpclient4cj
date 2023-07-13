@@ -1,11 +1,11 @@
-// 3rd_party_lib:okhttp/build/okhttp
-// 3rd_party_lib:okhttp/ci_lib/cryptocj
+// 3rd_party_lib:httpclient4cj/build/httpclient4cj
+// 3rd_party_lib:httpclient4cj/ci_lib/cryptocj
 
 
 from std import unittest.*
 from std import unittest.testmacro.*
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from net import http.*
 from std import socket.*
@@ -16,8 +16,8 @@ from std import sync.sleep
 
 class MyInterceptor1<: Interceptor {
     
-    public func intercept(chain: Chain): okhttp.Response {
-        let request: okhttp.Request = chain.getRequest()
+    public func intercept(chain: Chain): httpclient4cj.Response {
+        let request: httpclient4cj.Request = chain.getRequest()
         request.newBuilder()
         request.getHeaders()
         okhttp_Chain_002.check1 = "MyInterceptor1 called "
@@ -26,18 +26,18 @@ class MyInterceptor1<: Interceptor {
 }
 class MyInterceptor2<: Interceptor {
     
-    public func intercept(chain: Chain): okhttp.Response {
-        let request: okhttp.Request = chain.getRequest()
+    public func intercept(chain: Chain): httpclient4cj.Response {
+        let request: httpclient4cj.Request = chain.getRequest()
         request.newBuilder()
         request.getHeaders()
         okhttp_Chain_002.check2 = "MyInterceptor2 called "
-        return okhttp.Response.builder().build()
+        return httpclient4cj.Response.builder().build()
     }
 }
 class MyInterceptor3<: Interceptor {
     
-    public func intercept(chain: Chain): okhttp.Response {
-        let request: okhttp.Request = chain.getRequest()
+    public func intercept(chain: Chain): httpclient4cj.Response {
+        let request: httpclient4cj.Request = chain.getRequest()
         request.newBuilder()
         request.getHeaders()
         okhttp_Chain_002.check3 = "MyInterceptor3 called "
@@ -70,12 +70,12 @@ public class okhttp_Chain_002{
         serve()
     }
     sleep(Duration.second)
-    let client: OkHttpClient= OkHttpClient.builder().addNetworkInterceptor(MyInterceptor1())
+    let client: HttpClient= HttpClient.builder().addNetworkInterceptor(MyInterceptor1())
                                                     .addNetworkInterceptor(MyInterceptor2())
                                                     .addNetworkInterceptor(MyInterceptor3())
                                           .build()
-    // let body: okhttp.RequestBody = okhttp.RequestBody("Media-Type", "text/html")
-    let request: okhttp.Request = okhttp.Request.builder()
+    // let body: httpclient4cj.RequestBody = httpclient4cj.RequestBody("Media-Type", "text/html")
+    let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                     .url("http://127.0.0.1:${port}/1234")
                                     .method("GET")//加body
                                     // .body(body)

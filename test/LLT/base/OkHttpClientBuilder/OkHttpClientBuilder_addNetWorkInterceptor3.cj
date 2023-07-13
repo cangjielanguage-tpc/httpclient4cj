@@ -2,17 +2,17 @@
 // EXEC: ./main
 
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from std import collection.*
 from std import socket.*
 from net import http.*
 
 main (){
-    let client: OkHttpClient= OkHttpClient.builder().connectTimeout(Duration.millisecond*100)
+    let client: HttpClient= HttpClient.builder().connectTimeout(Duration.millisecond*100)
     .addNetworkInterceptor(MyInterceptor())
     .readTimeout(Duration.second).writeTimeout(Duration.second).build()
-    let request= okhttp.Request.builder().url("http://36.152.44.95/index.html")
+    let request= httpclient4cj.Request.builder().url("http://36.152.44.95/index.html")
     .header("User-Agent", "OkHttp-Example")
     .build()
     let response = client.newCall(request).execute()
@@ -20,7 +20,7 @@ main (){
 }
 
 class MyInterceptor<: Interceptor {
-     public func intercept(chain: Chain): okhttp.Response {
+     public func intercept(chain: Chain): httpclient4cj.Response {
         let request = chain.getRequest()
         let conn = chain.getConnection()
         conn?.getSocket()

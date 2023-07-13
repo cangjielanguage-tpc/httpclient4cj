@@ -1,11 +1,11 @@
-// 3rd_party_lib:okhttp/build/okhttp
-// 3rd_party_lib:okhttp/ci_lib/cryptocj
+// 3rd_party_lib:httpclient4cj/build/httpclient4cj
+// 3rd_party_lib:httpclient4cj/ci_lib/cryptocj
 
 
 from std import unittest.*
 from std import unittest.testmacro.*
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from net import http.*
 from std import socket.*
@@ -39,13 +39,13 @@ public class okhtttp_code_404{
         }
     sleep(Duration.second)
 
-    let client: OkHttpClient= OkHttpClient.builder().build()
-    let request: okhttp.Request = okhttp.Request.builder()
+    let client: HttpClient= HttpClient.builder().build()
+    let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                     .url("http://127.0.0.1:${port}/d1234A+!")
                                     .method("GET")
                                     .build()
     let call = client.newCall(request)
-    let response: okhttp.Response = call.execute()
+    let response: httpclient4cj.Response = call.execute()
     let code : Int64 = response.getCode() 
 
     @Assert(code, Int64(404))

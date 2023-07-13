@@ -1,4 +1,4 @@
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from encoding import url.*
 from std import collection.*
@@ -6,7 +6,7 @@ from std import collection.*
 main() {
     let url = URL.parse("https://www.taobao.com")
 
-    let client: OkHttpClient= OkHttpClient.builder()
+    let client: HttpClient= HttpClient.builder()
     //.tlsConfig("./jjd.cer")//需要用户自己配置CA证书验证公钥,如果不配置CA证书将不进行服务端证书校验,将使用不安全的连接
     //H2_PRIOR_KNOWLEDGE 使用明文http2协议, 不支持https
     //.protocols(ArrayList<String>([Protocol.get("H2_PRIOR_KNOWLEDGE").toString()]))

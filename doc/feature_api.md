@@ -1,4 +1,4 @@
-# okhttp
+# httpclient4cj
 
 ## 功能
 
@@ -18,7 +18,7 @@ public func build(): T
 
 ```
 
-#### class OkhttpClient
+#### class HttpClient
 
 Call的工厂类，可用于发送 HTTP 请求并读取其响应，外观形式上等同于http客户端，每个客户端都拥有自己的连接池和线程池。重用连接可减少延迟并节省内存。
 
@@ -111,123 +111,123 @@ public func getEventListener(): EventListener
 public func getCache(): Option<Cache>
 
 /*
- * 创建 OkHttpClient 的 Builder
- * @return OkHttpClientBuilder
+ * 创建 HttpClient 的 Builder
+ * @return HttpClientBuilder
  */
-public static func builder(): OkHttpClientBuilder
+public static func builder(): HttpClientBuilder
 
 
 ```
 
-#### class okhttpClientBuilder
+#### class HttpClientBuilder
 
-用于创建okhttpClient，用户通过链式调用配置其属性
+用于创建HttpClient，用户通过链式调用配置其属性
 
 ```
 /*
- * 通过配置项创建出核心类 OkHttpClient
- * @return OkHttpClient
+ * 通过配置项创建出核心类 HttpClient
+ * @return HttpClient
  */
-public func build(): OkHttpClient
+public func build(): HttpClient
 /*
  * 配置个性化的请求分发器
  * @param dispatcher: Dispatcher
- * @return OkHttpClientBuilder
+ * @return HttpClientBuilder
  */
-public func dispatcher(dispatcher: Dispatcher): OkHttpClientBuilder
+public func dispatcher(dispatcher: Dispatcher): HttpClientBuilder
 /*
  * 配置是否允许重定向, 默认为true
  * @param followRedirects: Bool
- * @return OkHttpClientBuilder
+ * @return HttpClientBuilder
  */
-public func followRedirects(followRedirects: Bool): OkHttpClientBuilder
+public func followRedirects(followRedirects: Bool): HttpClientBuilder
 /*
  * 配置连接失败是否允许重试,默认为true
  * @param retryOnConnectionFailure: Bool
- * @return OkHttpClientBuilder
+ * @return HttpClientBuilder
  */
-public func retryOnConnectionFailure(retryOnConnectionFailure: Bool): OkHttpClientBuilder
+public func retryOnConnectionFailure(retryOnConnectionFailure: Bool): HttpClientBuilder
 /*
  * 配置客户端使用个性化的连接池对象 ，默认最大空闲数为5，最大空闲时间为5分钟
  * @param connectionPool: Option<ConnectionPool>
- * @return OkHttpClientBuilder
+ * @return HttpClientBuilder
  */
-public func connectionPool(connectionPool: Option<ConnectionPool>): OkHttpClientBuilder
+public func connectionPool(connectionPool: Option<ConnectionPool>): HttpClientBuilder
 /*
  * 添加用户自定义的连接前处理的拦截器
  * @param interceptor: Interceptor
- * @return OkHttpClientBuilder
+ * @return HttpClientBuilder
  */
-public func addInterceptor(interceptor: Interceptor): OkHttpClientBuilder
+public func addInterceptor(interceptor: Interceptor): HttpClientBuilder
 /*
  * 添加用户自定义的连接后处理的拦截器
  * @param interceptor: Interceptor
- * @return OkHttpClientBuilder
+ * @return HttpClientBuilder
  */
-public func addNetworkInterceptor(interceptor: Interceptor): OkHttpClientBuilder
+public func addNetworkInterceptor(interceptor: Interceptor): HttpClientBuilder
 /*
  * 配置连接超时时间
  * @param connectTimeout: Duration
- * @return OkHttpClientBuilder
+ * @return HttpClientBuilder
  */
-public func connectTimeout(connectTimeout: Duration): OkHttpClientBuilder
+public func connectTimeout(connectTimeout: Duration): HttpClientBuilder
 /*
  * 配置读取连接超时时间
  * @param readTimeout: Duration
- * @return OkHttpClientBuilder
+ * @return HttpClientBuilder
  */
-public func readTimeout(readTimeout: Duration): OkHttpClientBuilder
+public func readTimeout(readTimeout: Duration): HttpClientBuilder
 /*
  * 配置cookieJar，默认使用cookieJar不保存cookie，也无法获取cookie，可以使用全局函数getSimpleCookieJar获取轻量的cookieJar对象
  * @param cookieJar: CookieJar
- * @return OkHttpClientBuilder
+ * @return HttpClientBuilder
  */
-public func cookieJar(cookieJar: CookieJar): OkHttpClientBuilder
+public func cookieJar(cookieJar: CookieJar): HttpClientBuilder
 /*
  * 配置读取连接超时时间
  * @param writeTimeout: Duration
- * @return OkHttpClientBuilder
+ * @return HttpClientBuilder
  */
-public func writeTimeout(writeTimeout: Duration): OkHttpClientBuilder
+public func writeTimeout(writeTimeout: Duration): HttpClientBuilder
 /*
  * 参数 protocols 使用协议的集合, 支持 http/1.1, http2 以及 h2_prior_knowledge
  * @param protocols: ArrayList<String>
- * @return OkHttpClientBuilder
+ * @return HttpClientBuilder
  * @throw IllegalArgumentException  http/1.1和h2_prior_knowledge必须且之只能存在一个，h2_prior_knowledge不能使用其他协议
  * 不能使用http1.0 不能为空
  */
-public func protocols(protocols: ArrayList<String>): OkHttpClientBuilder
+public func protocols(protocols: ArrayList<String>): HttpClientBuilder
 /*
  * 开启tls, 配置tls 的 CA证书路径
  * @param path: String
- * @return OkHttpClientBuilder
+ * @return HttpClientBuilder
  */
-public func tlsConfig(path: String): OkHttpClientBuilder
+public func tlsConfig(path: String): HttpClientBuilder
 /*
  * 开启鉴权配置 (如果 code 返回 401 则需要鉴权配置), 如果lambda返回None则不再进行重试, 否则进行鉴权配置后重试请求
  * @param authenticator: (Option<Route>
  * @param Response) -> Option<Request>
- * @return OkHttpClientBuilder
+ * @return HttpClientBuilder
  */
-public func authenticator(authenticator: (Option<Route>, Response) -> Option<Request>): OkHttpClientBuilder
+public func authenticator(authenticator: (Option<Route>, Response) -> Option<Request>): HttpClientBuilder
 /*
  * 配置是否允许跨协议进行重定向
  * @param followSslRedirects: Bool
- * @return OkHttpClientBuilder
+ * @return HttpClientBuilder
  */
-public func followSslRedirects(followSslRedirects: Bool): OkHttpClientBuilder
+public func followSslRedirects(followSslRedirects: Bool): HttpClientBuilder
 /*
  * 配置自定义事件监听器
  * @param listener: EventListener
- * @return OkHttpClientBuilder
+ * @return HttpClientBuilder
  */
-public func eventListener(listener: EventListener): OkHttpClientBuilder
+public func eventListener(listener: EventListener): HttpClientBuilder
 /*
  * 配置使用缓存，默认不开启缓存功能
  * @param cache: Option<Cache>
- * @return OkHttpClientBuilder
+ * @return HttpClientBuilder
  */
-public func cache(cache: Option<Cache>): OkHttpClientBuilder
+public func cache(cache: Option<Cache>): HttpClientBuilder
 
 ```
 
@@ -1450,15 +1450,15 @@ public static func get(protocol: String): Protocol
 
 #### class Transmitter
 
-OkHttp应用程序和网络层之间的桥梁。此类用于暴露出应用层中原始的连接、请求、响应和流数据
+HttpClient应用程序和网络层之间的桥梁。此类用于暴露出应用层中原始的连接、请求、响应和流数据
 
 ```
 /*
  * client 客户端配置对象, call 请求的增强
- * @param client: OkHttpClient
+ * @param client: HttpClient
  * @param call: Call
  */
-public init(client: OkHttpClient, call: Call) 
+public init(client: HttpClient, call: Call) 
 /*
  * 关闭socket
  */
@@ -1649,12 +1649,12 @@ public func finishRequest(): Unit
 ```
 /*
  * 构造器
- * @param client: OkHttpClient
+ * @param client: HttpClient
  * @param realConnection: Connection
  * @param source: OkBuffer
  * @param sink: BufferedOutputStream
  */
-public init(client: OkHttpClient, realConnection: Connection, source: OkBuffer, sink: BufferedOutputStream) 
+public init(client: HttpClient, realConnection: Connection, source: OkBuffer, sink: BufferedOutputStream) 
 /*
  * flush request
  */
@@ -1724,11 +1724,11 @@ public func cancel(): Unit
 ```
 /*
  * 构造器
- * @param client: OkHttpClient
+ * @param client: HttpClient
  * @param realConnection: Connection
  * @param http2Connection: H2Connection
  */
-public init(client: OkHttpClient, realConnection: Connection, http2Connection: H2Connection) 
+public init(client: HttpClient, realConnection: Connection, http2Connection: H2Connection) 
 /*
  * 获取Header
  * @param expectContinue: Bool

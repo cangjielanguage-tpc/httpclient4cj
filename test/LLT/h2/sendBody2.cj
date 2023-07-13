@@ -2,7 +2,7 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from net import http.*
 from std import collection.*
 from encoding import url.*
@@ -18,16 +18,16 @@ main (){
     addFormDataPart("name", "lyk").
     addFormDataPart("age", "18").
     addFormDataPart("file1", "body.text", body).build()
-    let client = OkHttpClient.builder()
+    let client = HttpClient.builder()
     .protocols(ArrayList<String>([Protocol.get("H2_PRIOR_KNOWLEDGE").toString()])).build()
-    let request: okhttp.Request = okhttp.Request.builder().url("http://127.0.0.1:50066/cangjie_test-1.0-SNAPSHOT/put")
+    let request: httpclient4cj.Request = httpclient4cj.Request.builder().url("http://127.0.0.1:50066/cangjie_test-1.0-SNAPSHOT/put")
     .method("POST", body: mu)
     .header(Header())
     .header("User-Agent", "OkHttp-Example")
     .build()
 
     for (i in 0..10) {
-         let response: okhttp.Response = client.newCall(request).execute()
+         let response: httpclient4cj.Response = client.newCall(request).execute()
     }
     if(client.getConnectionPool().getOrThrow().connectionCount()==1){
         return 0

@@ -3,7 +3,7 @@
 from std import unittest.*
 from std import unittest.testmacro.*
 from net import tls.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 
 main(): Int64 {
     TlsTest().tlsconfig()
@@ -16,7 +16,7 @@ public class TlsTest {
     public func tlsconfig(): Unit {
         var cfg = TlsClientConfig("../data/test.cer")
         cfg.verifyMode = TlsClientVerifyMode.VerifyNone
-        let client: OkHttpClient = OkHttpClient.builder().tlsConfig(cfg).build()
+        let client: HttpClient = HttpClient.builder().tlsConfig(cfg).build()
         let mycfg = client.getTlsConfig().getOrThrow()
         @Assert(mycfg.caFile, "../data/test.cer")
         match (mycfg.verifyMode) {

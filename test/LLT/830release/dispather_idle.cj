@@ -2,7 +2,7 @@
 // EXEC: ./main
 
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from net import http.*
 from std import socket.*
@@ -20,14 +20,14 @@ main() {
     let d = Dispatcher()
     d.setIdleCallback({=> println("123")})
     let url: URL = URL.parse("http://127.0.0.1:${port}/1234")
-    let client: OkHttpClient= OkHttpClient.builder().dispatcher(d).build()
-    let request: okhttp.Request = okhttp.Request.builder()
+    let client: HttpClient= HttpClient.builder().dispatcher(d).build()
+    let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                     .url(url)
                                     .header("Accept-Encoding","")
                                     .build()
     let call = client.newCall(request)
 
-    let response: okhttp.Response = call.execute()
+    let response: httpclient4cj.Response = call.execute()
     match (response.getBody()) {
         case Some(b) =>
             b.getContentType()

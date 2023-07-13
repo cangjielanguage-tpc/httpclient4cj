@@ -1,11 +1,11 @@
-// 3rd_party_lib:okhttp/build/okhttp
-// 3rd_party_lib:okhttp/ci_lib/cryptocj
+// 3rd_party_lib:httpclient4cj/build/httpclient4cj
+// 3rd_party_lib:httpclient4cj/ci_lib/cryptocj
 
 
 from std import unittest.*
 from std import unittest.testmacro.*
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from net import http.*
 from std import socket.*
@@ -42,14 +42,14 @@ public class okhttp_ResponseBody_002{
     let cache: CacheControl = CacheControl.builder()
                                 .maxAge(1000)
                                 .build()
-    let client: OkHttpClient= OkHttpClient.builder().build()
-    let request: okhttp.Request = okhttp.Request.builder()
+    let client: HttpClient= HttpClient.builder().build()
+    let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                     .url("http://127.0.0.1:${port}/1234")
                                     .method("GET")
                                     .cacheControl(cache)
                                     .build()
     var call = client.newCall(request)
-    var response: okhttp.Response = call.execute()
+    var response: httpclient4cj.Response = call.execute()
     var responsebody = response.getBody().getOrThrow().getString()
     println("responsebody = ${responsebody}")
 

@@ -2,7 +2,7 @@
 // EXEC: ./main
 
 
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from encoding import url.*
 from net import http.*
 

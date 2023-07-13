@@ -3,7 +3,7 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import collection.*
 from net import http.*
 from std import io.*
@@ -25,12 +25,12 @@ main() {
     addFormDataPart("age", "18").
     addFormDataPart("file1", "body.text", body).
     addFormDataPart("file2", "body2.text", body2).build()
-    let client: OkHttpClient= OkHttpClient.builder().build()
-    let request: okhttp.Request = okhttp.Request.builder()
+    let client: HttpClient= HttpClient.builder().build()
+    let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                     .url("http://127.0.0.1:${port}/1234")
                                     .method("POST", body: mu)
                                     .build()
-    let response: okhttp.Response = client.newCall(request).execute()
+    let response: httpclient4cj.Response = client.newCall(request).execute()
     println(response.toString())
     if(response.getBody()?.isClosed() ?? true) {
         return 1

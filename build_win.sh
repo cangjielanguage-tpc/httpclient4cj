@@ -13,9 +13,9 @@ fi
 ./configure
 make
 
-# okhttp
+# httpclient4cj
 cd  ${dns_path}/
-echo start build okhttp
-cpm build -V
-cp ${dns_path}/lib/*.dll ${dns_path}/build/okhttp/
-echo end build okhttp
+echo start build httpclient4cj
+cjpm build -V
+cp ${dns_path}/lib/*.dll ${dns_path}/build/httpclient4cj/
+echo end build httpclient4cj

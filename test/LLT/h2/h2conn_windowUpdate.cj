@@ -1,7 +1,7 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from net import http.*
 from std import collection.*
 from encoding import url.*
@@ -22,7 +22,7 @@ main (){
      addFormDataPart("name", "lyk").
      addFormDataPart("age", "18").
      addFormDataPart("file1", "body.text", body).build()
-     let request: okhttp.Request = okhttp.Request.builder().url("http://127.0.0.1:50066/cangjie_test-1.0-SNAPSHOT/post")
+     let request: httpclient4cj.Request = httpclient4cj.Request.builder().url("http://127.0.0.1:50066/cangjie_test-1.0-SNAPSHOT/post")
     //.header("User-Agent", "OkHttp-Example")
     //未使用拦截器手动添加请求头
     .header("content-type",mu.contentType().getOrThrow().toString())

@@ -1,13 +1,13 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 
 //删除缓存文件
 main() {
     let cache: Cache = Cache("./cacheccccccc", 10 * 1024 * 1024)
-    let client: OkHttpClient= OkHttpClient.builder().cache(cache).build()
-    let request = okhttp.Request.builder()
+    let client: HttpClient= HttpClient.builder().cache(cache).build()
+    let request = httpclient4cj.Request.builder()
             .url("http://okhttp:50067/anything")
             .build()
 

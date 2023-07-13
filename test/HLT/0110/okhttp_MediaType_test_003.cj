@@ -1,11 +1,11 @@
-// 3rd_party_lib:okhttp/build/okhttp
-// 3rd_party_lib:okhttp/ci_lib/cryptocj
+// 3rd_party_lib:httpclient4cj/build/httpclient4cj
+// 3rd_party_lib:httpclient4cj/ci_lib/cryptocj
 // data_file:body.text
 
 from std import unittest.*
 from std import unittest.testmacro.*
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from net import http.*
 from std import socket.*
@@ -107,7 +107,7 @@ public class okhttp_MediaType_test_003{
     @TestCase
     func okhttp_MediaType_RealRequestBody_test_029(): Unit {
         var body_01 = RealRequestBody.create(MediaType.get("application/HTML"),"hello".toUtf8Array())
-        var request_01: okhttp.Request = okhttp.Request.builder().method("POST",body:body_01).build()
+        var request_01: httpclient4cj.Request = httpclient4cj.Request.builder().method("POST",body:body_01).build()
         var body_Type_01 = request_01.getBody().getOrThrow().contentType()
         match (body_Type_01) {
             case Some(contentType) =>
@@ -128,7 +128,7 @@ public class okhttp_MediaType_test_003{
         var body_02 = RealRequestBody.create(MediaType.get("application/json"),File("./body.text",OpenOption.Open(true,false)))
         var byteArray = Array<Byte>(body_02.getContentLength(), item: 0)
         body_02.get().read(byteArray)
-        var request_02: okhttp.Request = okhttp.Request.builder().method("POST",body:body_02).build()
+        var request_02: httpclient4cj.Request = httpclient4cj.Request.builder().method("POST",body:body_02).build()
         var body_Type_02 = request_02.getBody().getOrThrow().contentType()
         match (body_Type_02) {
             case Some(contentType) =>

@@ -1,7 +1,7 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import io.*
 from net import http.*
 from std import socket.*
@@ -27,9 +27,9 @@ main(){
   let header: http.Header = Header()
   header.add("aaa", "application/json")
   header.add("aaa", "application2/json")
- let client = OkHttpClient.builder().protocols(proArray).build()
- let request: okhttp.Request = okhttp.Request.builder().url(mUrl).header(header).method("POST",body:requestBody).build()
- let response: okhttp.Response = client.newCall(request).execute()
+ let client = HttpClient.builder().protocols(proArray).build()
+ let request: httpclient4cj.Request = httpclient4cj.Request.builder().url(mUrl).header(header).method("POST",body:requestBody).build()
+ let response: httpclient4cj.Response = client.newCall(request).execute()
  match(response.getBody()){
     case Some(v) =>
     print("true成功")

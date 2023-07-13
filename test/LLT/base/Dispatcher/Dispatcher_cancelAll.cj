@@ -1,7 +1,7 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import io.*
 
 main () {
@@ -10,13 +10,13 @@ main () {
     d.setMaxRequests(5)
     d.setMaxRequestsPerHost(5)
     HttpException("Test")
-    let client = OkHttpClient.builder()
+    let client = HttpClient.builder()
     .dispatcher(d).build()
-    let request: okhttp.Request = okhttp.Request.builder()
+    let request: httpclient4cj.Request = httpclient4cj.Request.builder()
     .url("http://36.152.44.95/index.html")
     .header("User-Agent", "OkHttp-Example")
     .build()
-    let response: okhttp.Response = client.newCall(request).execute()
+    let response: httpclient4cj.Response = client.newCall(request).execute()
     println(d.getMaxRequests())
     println(d.getMaxRequestsPerHost())
     d.cancelAll()

@@ -1,7 +1,7 @@
 {
   "cjc_version": "0.39.4",
   "organization": "cangjie",
-  "name": "okhttp",
+  "name": "httpclient4cj",
   "description": "nothing here",
   "version": "0.0.6",
   "requires": {
@@ -20,5 +20,5 @@
     "package_option": {}
   },
   "output_type": "dynamic",
-  "command_option": "-O2 --error-count-limit all"
+  "command_option": "-O2"
 }

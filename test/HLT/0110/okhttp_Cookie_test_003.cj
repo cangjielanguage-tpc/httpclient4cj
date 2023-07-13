@@ -1,10 +1,10 @@
-// 3rd_party_lib:okhttp/build/okhttp
-// 3rd_party_lib:okhttp/ci_lib/cryptocj
+// 3rd_party_lib:httpclient4cj/build/httpclient4cj
+// 3rd_party_lib:httpclient4cj/ci_lib/cryptocj
 
 from std import unittest.*
 from std import unittest.testmacro.*
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from net import http.*
 from std import socket.*
@@ -32,13 +32,13 @@ public class okhttp_Cookie_Test_003{
 
         let jar = getSimpleCookieJar()
         jar.saveFromResponse(url, [Cookie("BD_HOME", "1"), Cookie("BD_UPN", "12314753")])
-        let client: OkHttpClient= OkHttpClient.builder().cookieJar(jar).build()
-        let request: okhttp.Request = okhttp.Request.builder()
+        let client: HttpClient= HttpClient.builder().cookieJar(jar).build()
+        let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                         .url(url)
                                         .build()
         let call = client.newCall(request)
         try{
-            let response: okhttp.Response = call.execute()
+            let response: httpclient4cj.Response = call.execute()
             let header: http.Header = response.getHeaders()
             let cookieUtil = CookieUtil.parseAll(url, header)
             println("cookieUtil")
@@ -64,8 +64,8 @@ public class okhttp_Cookie_Test_003{
         try {
             let jar = getSimpleCookieJar()
             jar.saveFromResponse(url, [Cookie("BD_HOME", "1"), Cookie("BD_UPN", "12314753")])
-            let client: OkHttpClient= OkHttpClient.builder().cookieJar(jar).build()
-            let request: okhttp.Request = okhttp.Request.builder()
+            let client: HttpClient= HttpClient.builder().cookieJar(jar).build()
+            let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                             .url(url)
                                             .build()
             let call = client.newCall(request)
@@ -78,7 +78,7 @@ public class okhttp_Cookie_Test_003{
         try {
             let jar = getSimpleCookieJar()
             jar.saveFromResponse(URL.parse("http://example.com/foo/bar/baz"), [Cookie("BD_HOME", "1"), Cookie("BD_UPN", "12314753")])
-            let client: OkHttpClient= OkHttpClient.builder().cookieJar(jar).build()
+            let client: HttpClient= HttpClient.builder().cookieJar(jar).build()
             let loadCookies: Array<Cookie> = client.getCookieJar().loadForRequest(URL.parse("http://www.nisohbfahoiaf.com/"))
             @Expect(loadCookies.size, 0) 
         } catch (e: Exception) {

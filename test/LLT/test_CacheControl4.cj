@@ -3,7 +3,7 @@
 from std import unittest.*
 from std import unittest.testmacro.*
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from net import http.*
 from std import socket.*
@@ -49,13 +49,13 @@ main() {
     }
     sleep(Duration.second)
     let cache: Cache = Cache("./okhttp_cache_001", 10 * 1024 * 1024)
-    let client: OkHttpClient = OkHttpClient.builder().cache(cache).build()
-    let request: okhttp.Request = okhttp.Request.builder().url("http://127.0.0.1:${port}/1").method("GET").build()
+    let client: HttpClient = HttpClient.builder().cache(cache).build()
+    let request: httpclient4cj.Request = httpclient4cj.Request.builder().url("http://127.0.0.1:${port}/1").method("GET").build()
     
     try{
         let cache1: Cache = Cache("./okhttp_cache_001", 10 * 1024 * 1024)
-        // let client1: OkHttpClient = OkHttpClient.builder().cache(cache1).build()
-        // let request1: okhttp.Request = okhttp.Request.builder().url("http://127.0.0.1:${port}/2").method("GET").build()
+        // let client1: HttpClient = HttpClient.builder().cache(cache1).build()
+        // let request1: httpclient4cj.Request = httpclient4cj.Request.builder().url("http://127.0.0.1:${port}/2").method("GET").build()
         // let res1 = client1.newCall(request1).execute().getBody().getOrThrow().getString()
         // println(res1)
     }catch(e:IllegalStateException){
