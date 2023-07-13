@@ -37,7 +37,7 @@ public class okhttp_OkGzipSource_002 {
         var response: okhttp.Response = call.execute()
         var response_protocol = response.getProtocol().toString()
         var response_code : Int64 = response.getCode()
-        var response_Message = response.getMessage()
+        response.getMessage()
         var response_isSuccess:Bool= response.isSuccess()
         var response_heads = response.getHeaders()
         var response_body = response.getBody().getOrThrow().getString()

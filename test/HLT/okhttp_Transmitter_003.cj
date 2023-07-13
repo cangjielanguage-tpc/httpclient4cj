@@ -34,6 +34,7 @@ class MyInterceptor<: Interceptor {
         println("hasExchange:${transmitter.hasExchange()}")
         @Assert(transmitter.hasExchange(),false) 
         func exception(): String{ "exception"}
+        exception()
         println("--------------------------------intercept-----------------------------")
         return responseBuilder.build()
     }
@@ -44,7 +45,8 @@ public class okhttp_Transmitter_003 {
 
     func serve(){
         let hd = http.Route() 
-        hd.handle("/1234567", { rws: http.ResponseWriteStream, req: http.Request =>
+        hd.handle("/1234567", { rws: ResponseWriteStream, req: http.Request =>
+            req.url
             let resp = "Hello from /red".toUtf8Array()
             rws.header().add("Last-Modified", "Tue, 27 May 2014 02:35:47 GMT")
             rws.header().add("cache-control", "no-cache") 
@@ -71,6 +73,6 @@ public class okhttp_Transmitter_003 {
                                         .url("http://127.0.0.1:${port}/1234567")
                                         .method("GET")
                                         .build()
-        var response: okhttp.Response = client.newCall(request).execute()
+        client.newCall(request).execute()
     }
 }

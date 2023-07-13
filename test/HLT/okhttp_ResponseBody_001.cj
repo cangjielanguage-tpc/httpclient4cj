@@ -20,7 +20,8 @@ public class okhttp_ResponseBody_001{
     var port: UInt16 = 0
     func serve(){
         let hd = http.Route()
-        hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
+        hd.handle("/1234", { rws: ResponseWriteStream, req: http.Request =>
+            req.url
             let resp = "Hello from /red".toUtf8Array()
             rws.write(resp)
             return
@@ -38,9 +39,6 @@ public class okhttp_ResponseBody_001{
     }
     sleep(Duration.second)
 
-    let cache: CacheControl = CacheControl.builder()
-                                .maxAge(1000)
-                                .build()
     let client: OkHttpClient= OkHttpClient.builder().build()
     let request: okhttp.Request = okhttp.Request.builder()
                                     .url("http://127.0.0.1:${port}/1234")

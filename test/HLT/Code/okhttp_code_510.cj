@@ -19,6 +19,7 @@ public class okhtttp_code_510{
     func serve(){
         let hd = http.Route()
         hd.handle("/d1234A+!", { rws: ResponseWriteStream, req: http.Request =>
+            req.url
             rws.writeStatusCode(510)
             let resp = "Hello from /red".toUtf8Array()
             rws.write(resp)

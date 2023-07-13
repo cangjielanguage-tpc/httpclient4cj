@@ -55,7 +55,8 @@ public class okhttp_MediaType_test_004{
 
     func serve() {
         let hd = http.Route()
-        hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
+        hd.handle("/1234", { rws: ResponseWriteStream, req: http.Request =>
+            req.url
             let resp = "Hello from /red".toUtf8Array()
             rws.write(resp)
             println("***---****")

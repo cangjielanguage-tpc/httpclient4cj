@@ -72,7 +72,8 @@ public class okhttp_EventListener_test_001{
 
     func serve(){
         let hd = http.Route()
-        hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
+        hd.handle("/1234", { rws: ResponseWriteStream, req: http.Request =>
+            req.url
             sleep(Duration.second)
             let resp = "Hello from /red".toUtf8Array()
             rws.write(resp)

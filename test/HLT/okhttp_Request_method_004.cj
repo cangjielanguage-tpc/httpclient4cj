@@ -18,7 +18,7 @@ public class okhttp_Request_method_004{
 
     @TestCase
     func okhttp_Request_method_004(): Unit {
-        let body: okhttp.RequestBody = okhttp.RealRequestBody.create(MediaType.get("application/json; charset=utf-8"), "hello".toUtf8Array())
+        
         let request: okhttp.Request = okhttp.Request.builder()
                                         .method("HEAD")
                                         .build()
@@ -35,7 +35,7 @@ public class okhttp_Request_method_004{
             let request: okhttp.Request = okhttp.Request.builder()
                                             .method("HEAD",body:body)
                                             .build()
-            var request_method = request.getMethod()
+            request.getMethod()
             
         } catch (e : Exception) {
             println("e.message = ${e.message}")

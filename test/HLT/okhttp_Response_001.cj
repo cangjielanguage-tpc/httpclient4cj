@@ -20,7 +20,8 @@ public class okhttp_Response_001{
     var port: UInt16 = 0
     func serve(){
         let hd = http.Route()
-        hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
+        hd.handle("/1234", { rws: ResponseWriteStream, req: http.Request =>
+            req.url
             let resp = "Hello from /red".toUtf8Array()
             rws.write(resp)
             return
@@ -49,7 +50,7 @@ public class okhttp_Response_001{
                                     .build()
     var call = client.newCall(request)
     var response: okhttp.Response = call.execute()
-    var request2: okhttp.Request = response.getRequest()
+    response.getRequest()
     var response_heads: http.Header = response.getHeaders()
     var response_protocol = response.getProtocol().toString()
     var response_code : Int64 = response.getCode()

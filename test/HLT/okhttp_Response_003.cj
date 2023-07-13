@@ -20,7 +20,8 @@ public class okhttp_Response_003{
     var port: UInt16 = 0
     func serve(){
         let hd = http.Route()
-        hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
+        hd.handle("/1234", { rws: ResponseWriteStream, req: http.Request =>
+            req.url
             let resp = "Hello from /red".toUtf8Array()
             rws.write(resp)
             return
@@ -42,25 +43,20 @@ public class okhttp_Response_003{
                                 .maxAge(1000)
                                 .build()
     let client: OkHttpClient= OkHttpClient.builder().build()
-    // let body: okhttp.RequestBody = okhttp.RequestBody("Media-Type", "text/html")
     let request: okhttp.Request = okhttp.Request.builder()
                                     .url("http://127.0.0.1:${port}/1234")
                                     .method("GET")
                                     .cacheControl(cache)
-                                    // .body(body)
                                     .build()
     var call = client.newCall(request)
     var response: okhttp.Response = call.execute()
     var request2: okhttp.Request = response.getRequest()
-    var response_heads: http.Header = response.getHeaders()
-    // var response_body:Array<Byte> = response.getBody().getOrThrow().getSource().readToEnd()
-    // var str =String.fromUtf8(response_body)
-    var response_protocol = response.getProtocol().toString()
-    var response_code : Int64 = response.getCode()
-    var response_isSuccess:Bool= response.isSuccess()
-    var responseStr = response.toString()
-    // println("response_body")
-    // println(str)
+    response.getHeaders()
+    response.getProtocol().toString()
+    response.getCode()
+    response.isSuccess()
+    response.toString()
+
    
     @Assert(request2.getUrl().toString(),request.getUrl().toString())
 

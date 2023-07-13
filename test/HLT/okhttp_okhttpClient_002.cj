@@ -19,7 +19,8 @@ public class okhttp_okhttpClient_002 {
     var port: UInt16 = 0
     func serve(){
         let hd = http.Route()
-        hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
+        hd.handle("/1234", { rws: ResponseWriteStream, req: http.Request =>
+            req.url
             let resp = "hello".toUtf8Array()
             rws.write(resp)
             return
@@ -36,7 +37,6 @@ public class okhttp_okhttpClient_002 {
             serve()
         }
         sleep(Duration.second)
-        var exe = ""
         let cache: CacheControl = CacheControl.builder()
                                     .maxAge(1000)
                                     .build()
@@ -51,7 +51,7 @@ public class okhttp_okhttpClient_002 {
                                         .cacheControl(cache)
                                         .build()
         var call = client.newCall(request)
-        var response: okhttp.Response = call.execute()
+        call.execute()
 
         println(client.getTlsConfig().getOrThrow().certificateChainFile)
         @Assert(client.getTlsConfig().getOrThrow().certificateChainFile, "")

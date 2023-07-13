@@ -19,7 +19,8 @@ public class okhttp_ResponseBody_004{
     var port: UInt16 = 0
     func serve(){
         let hd = http.Route()
-        hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
+        hd.handle("/1234", { rws: ResponseWriteStream, req: http.Request =>
+            req.url
             let resp = "".toUtf8Array()
             rws.write(resp)
             return
@@ -48,7 +49,7 @@ public class okhttp_ResponseBody_004{
                                     .build()
     var call = client.newCall(request)
     var response: okhttp.Response = call.execute()
-    var response_heads: http.Header = response.getHeaders()   
+    response.getHeaders()   
     var response_body = response.getBody().getOrThrow().getString()
     var response_bodyContentLength  = response.getBody().getOrThrow().getContentLength()
     var response_bodyContentType : String  = response.getBody().getOrThrow().getContentType().getOrThrow().toString()

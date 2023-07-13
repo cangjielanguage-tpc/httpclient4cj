@@ -39,7 +39,7 @@ public class okhttp_Request_method_005{
             let request: okhttp.Request = okhttp.Request.builder()
                                             .method("PATCH")
                                             .build()
-            var request_method = request.getMethod()
+            request.getMethod()
         } catch (e : Exception) {
             println("e.message = ${e.message}")
             exception = e.message
