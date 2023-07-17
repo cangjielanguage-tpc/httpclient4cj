@@ -5,10 +5,10 @@
   "description": "nothing here",
   "version": "0.0.6",
   "requires": {
-    "cryptocj": {
+    "crypto4cj": {
       "organization": "cangjie",
       "version": "0.0.6",
-      "path": "./cryptocj"
+      "path": "./crypto4cj"
     }
   },
   "foreign_requires": {},
