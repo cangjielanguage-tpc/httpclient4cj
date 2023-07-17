@@ -1,7 +1,7 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 
 from net import http.*
 from std import io.*
@@ -14,8 +14,8 @@ var port: UInt16 = 0
 main() {
 
     let cache: Cache = Cache("./cacheccccccc", 10 * 1024 * 1024)
-    let client: OkHttpClient= OkHttpClient.builder().cache(cache).build()
-    let request: okhttp.Request = okhttp.Request.builder()
+    let client: HttpClient= HttpClient.builder().cache(cache).build()
+    let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                     //.url("http://127.0.0.1:8080/cangjie_test-1.0-SNAPSHOT/hello")
                                     .url("http://okhttp:50067/anything")
                                     .method("GET")

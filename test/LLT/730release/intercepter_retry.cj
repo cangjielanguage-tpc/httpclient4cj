@@ -2,7 +2,7 @@
 // EXEC: ./main
 
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from net import http.*
 from std import socket.*
@@ -25,13 +25,13 @@ main() {
     //http://www.weather.com.cn/data/sk/101010100.html
     //http://wjhsh.net/Jimc-p-10250861.html
     let url: URL = URL.parse("http://www.weather.com.cn/data/sk/101010100.html")
-    let client: OkHttpClient= OkHttpClient.builder().build()
-    let request: okhttp.Request = okhttp.Request.builder()
+    let client: HttpClient= HttpClient.builder().build()
+    let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                     .url(url)
                                     .build()
     let call = client.newCall(request)
     try{
-        let response: okhttp.Response = call.execute()
+        let response: httpclient4cj.Response = call.execute()
         println(response.toString())
         println(response.getBody().getOrThrow().getContentLength())
         //println(response.getBody().getOrThrow().getString())

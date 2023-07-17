@@ -1,10 +1,10 @@
-// 3rd_party_lib:okhttp/build/okhttp
-// 3rd_party_lib:okhttp/ci_lib/cryptocj
+// 3rd_party_lib:httpclient4cj/build/httpclient4cj
+// 3rd_party_lib:httpclient4cj/ci_lib/cryptocj
 
 from std import unittest.*
 from std import unittest.testmacro.*
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from net import http.*
 from std import socket.*
@@ -14,9 +14,9 @@ from std import sync.sleep
 
 class MyInterceptor<: Interceptor {
     
-    public func intercept(chain: Chain): okhttp.Response {
-        let request: okhttp.Request = chain.getRequest()
-        var response:okhttp.Response = chain.proceed(request)
+    public func intercept(chain: Chain): httpclient4cj.Response {
+        let request: httpclient4cj.Request = chain.getRequest()
+        var response:httpclient4cj.Response = chain.proceed(request)
         return response.newBuilder().code(100).build()
     }
 }
@@ -48,13 +48,13 @@ public class okhtttp_code_100{
         sleep(Duration.second)
         var code : Int64 = -1
         try{
-            let client: OkHttpClient= OkHttpClient.builder().addNetworkInterceptor(MyInterceptor()).build()
-            let request: okhttp.Request = okhttp.Request.builder()
+            let client: HttpClient= HttpClient.builder().addNetworkInterceptor(MyInterceptor()).build()
+            let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                             .url("http://127.0.0.1:${port}/1235")
                                             .method("GET")
                                             .build()
             let call = client.newCall(request)
-            let response: okhttp.Response = call.execute()
+            let response: httpclient4cj.Response = call.execute()
             code = response.getCode() 
         } catch (e:Exception){
             println(e.message)

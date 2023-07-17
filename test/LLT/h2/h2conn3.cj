@@ -1,7 +1,7 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from net import http.*
 from std import collection.*
 from encoding import url.*
@@ -15,7 +15,7 @@ from std import sync.sleep
 
 main (){
 
-     let request: okhttp.Request = okhttp.Request.builder().url("http://127.0.0.1:50066/cangjie_test-1.0-SNAPSHOT/hello")
+     let request: httpclient4cj.Request = httpclient4cj.Request.builder().url("http://127.0.0.1:50066/cangjie_test-1.0-SNAPSHOT/hello")
     .header("User-Agent", "OkHttp-Example")
     .build()
     let soc = Socket(TCP,"127.0.0.1", 50066)

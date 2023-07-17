@@ -1,11 +1,11 @@
-// 3rd_party_lib:okhttp/build/okhttp
-// 3rd_party_lib:okhttp/ci_lib/cryptocj
+// 3rd_party_lib:httpclient4cj/build/httpclient4cj
+// 3rd_party_lib:httpclient4cj/ci_lib/cryptocj
 
 
 from std import unittest.*
 from std import unittest.testmacro.*
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from net import http.*
 from std import socket.*
@@ -16,12 +16,12 @@ from std import sync.sleep
 
 class MyInterceptor<: Interceptor {
     
-    public func intercept(chain: Chain): okhttp.Response {
-        let request: okhttp.Request = chain.getRequest()
-        let requestBuilder: okhttp.RequestBuilder  = request.newBuilder()
+    public func intercept(chain: Chain): httpclient4cj.Response {
+        let request: httpclient4cj.Request = chain.getRequest()
+        let requestBuilder: httpclient4cj.RequestBuilder  = request.newBuilder()
         request.getHeaders()
-        var response: okhttp.Response =  chain.proceed(requestBuilder.build())
-        let responseBuilder: okhttp.ResponseBuilder = response.newBuilder().request(request)
+        var response: httpclient4cj.Response =  chain.proceed(requestBuilder.build())
+        let responseBuilder: httpclient4cj.ResponseBuilder = response.newBuilder().request(request)
         responseBuilder.header("name1","value1")
         responseBuilder.header("name1","value2")
         responseBuilder.addHeader("name3","value3")
@@ -55,13 +55,13 @@ public class okhttp_ResponseBuilder_001{
         serve()
     }
     sleep(Duration.second)
-    let client: OkHttpClient= OkHttpClient.builder().addNetworkInterceptor(MyInterceptor())
+    let client: HttpClient= HttpClient.builder().addNetworkInterceptor(MyInterceptor())
                                           .build()
-    let request: okhttp.Request = okhttp.Request.builder()
+    let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                     .url("http://127.0.0.1:${port}/1234")
                                     .method("GET")
                                     .build()
-    let response: okhttp.Response = client.newCall(request).execute()
+    let response: httpclient4cj.Response = client.newCall(request).execute()
     func exception(): String{ "exception"}
     @Assert(response.getHeader("name1"),"value2")
     @Assert(response.getHeader("name3"),"value3")

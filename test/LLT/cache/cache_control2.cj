@@ -1,7 +1,7 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 
 
@@ -10,12 +10,12 @@ var port: UInt16 = 0
 main() {
     let forceNet = CacheControl.FORCE_CACHE //强制使用缓存的缓存控制
     let cache: Cache = Cache("./cacheccccccc", 10 * 1024 * 1024)
-    let client: OkHttpClient= OkHttpClient.builder()
+    let client: HttpClient= HttpClient.builder()
         .connectTimeout(Duration.minute*1)
         .readTimeout(Duration.minute*1)
         .writeTimeout(Duration.minute*1)
         .cache(cache).build()
-    let request = okhttp.Request.builder()
+    let request = httpclient4cj.Request.builder()
             .cacheControl(forceNet)
             .url("http://okhttp:50067/cache")
             .build()

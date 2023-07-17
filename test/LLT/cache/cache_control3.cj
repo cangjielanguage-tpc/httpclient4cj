@@ -2,7 +2,7 @@
 // EXEC: ./main
 
 from std import time.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 
 
 //第一次走网络不使用缓存，第二次缓存不走网络(此时应该只生成tmp文件,cache只保存在内存中)
@@ -17,7 +17,7 @@ main() {
         .noTransform()//禁止转码
         .immutable().build()
     let cache: Cache = Cache("./cacheccccccc", 10 * 1024 * 1024)
-    let client: OkHttpClient= OkHttpClient.builder()
+    let client: HttpClient= HttpClient.builder()
         .connectTimeout(Duration.minute*1)
         .readTimeout(Duration.minute*1)
         .writeTimeout(Duration.minute*1)
@@ -25,7 +25,7 @@ main() {
         .build()
 
     /*request1*/
-    let request = okhttp.Request.builder()
+    let request = httpclient4cj.Request.builder()
             .url("http://okhttp:50067/cache/1000")
             .method("GET")
             .build()

@@ -1,7 +1,7 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 
 //Last-Modified: Tue, 27 May 2014 02:35:47 GMT
@@ -11,7 +11,7 @@ from std import time.*
 //（请求头部中的If-None-Match ），如果和ETAg不同，则返回最新资源，HTTP 200 OK，否则 说明资源无新修改，响应 HTTP 304 (，拦截器自动添加走缓存)
 main() {
     let cache: Cache = Cache("./cacheccccccc", 10 * 1024 * 1024)
-    let client: OkHttpClient= OkHttpClient.builder()
+    let client: HttpClient= HttpClient.builder()
         .connectTimeout(Duration.minute*1)
         .readTimeout(Duration.minute*1)
         .writeTimeout(Duration.minute*1)
@@ -19,7 +19,7 @@ main() {
         .build()
 
     /*request1*/
-    let request = okhttp.Request.builder()
+    let request = httpclient4cj.Request.builder()
             .url("http://okhttp:50067/etag/5383fa03-6df")
             // .header("If-None-Match","5383fa03-6df")
             .build()
@@ -38,7 +38,7 @@ main() {
     }
 
     /*request2*/
-    let request2 = okhttp.Request.builder()
+    let request2 = httpclient4cj.Request.builder()
         .url("http://okhttp:50067/etag/5383fa03-6df")
         .header("If-None-Match","5383fa03-6df")
         .build()

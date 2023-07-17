@@ -2,13 +2,13 @@
 // EXEC: ./main
 
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from std import sync.sleep
 
 var asyncCount = 0;
 main() {
-    let client: OkHttpClient= OkHttpClient.builder().build()
+    let client: HttpClient= HttpClient.builder().build()
     let request2: Request = Request.builder().url("http://44.152.44.95/index.html")
     .header("User-Agent", "OkHttp-Example")
     .build()

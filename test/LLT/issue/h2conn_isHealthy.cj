@@ -1,7 +1,7 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import  collection.*
 from std import io.*
 from std import time.*
@@ -18,7 +18,7 @@ main (){
                          .add("password", "123456")
                          .add("host","%6D")
                          .build()
-     let request = okhttp.Request.builder().url("http://127.0.0.1:50066/cangjie_test-1.0-SNAPSHOT/hello")
+     let request = httpclient4cj.Request.builder().url("http://127.0.0.1:50066/cangjie_test-1.0-SNAPSHOT/hello")
                                          .header("User-Agent", "OkHttp-Example").put(formBody)
                                          .header("content-type",formBody.contentType().getOrThrow().toString())
                                          .build()

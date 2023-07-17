@@ -1,7 +1,7 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import collection.*
 from std import time.*
 from std import runtime.*
@@ -12,7 +12,7 @@ from std import sync.*
 var port: UInt16 = 0
 
 main() {
-    let request: okhttp.Request = okhttp.Request.builder()
+    let request: httpclient4cj.Request = httpclient4cj.Request.builder()
     .url("http://127.0.0.1:${port}/1234")
     .tag("test")
     .build()

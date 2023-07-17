@@ -1,7 +1,7 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import sync.sleep
 from std import time.*
 
@@ -11,8 +11,8 @@ from std import time.*
 //（Last-Modified），如果不同，则返回最新资源，HTTP 200 OK，否则 说明资源无新修改，响应 HTTP 304 (用户手动添加不走缓存, 拦截器自动添加走缓存)
 main() {
     let cache: Cache = Cache("./cacheccccccc", 10 * 1024 * 1024)
-    let client: OkHttpClient= OkHttpClient.builder().cache(cache).build()
-    let request = okhttp.Request.builder()
+    let client: HttpClient= HttpClient.builder().cache(cache).build()
+    let request = httpclient4cj.Request.builder()
             .url("http://okhttp:50067/cache")
             .build()
 
@@ -32,7 +32,7 @@ main() {
 
     sleep(Duration.second)//休眠一秒保证缓存失效
 
-    let request2 = okhttp.Request.builder()
+    let request2 = httpclient4cj.Request.builder()
         .url("http://okhttp:50067/cache")
         .cacheControl(CacheControl.builder().maxAge(1).build()) //设置缓存有效时间不足，触发协商缓存
         .build()

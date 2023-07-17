@@ -1,7 +1,7 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 
 //Last-Modified: Tue, 27 May 2014 02:35:47 GMT
@@ -10,13 +10,13 @@ from std import time.*
 //（Last-Modified），如果不同，则返回最新资源，HTTP 200 OK，否则 说明资源无新修改，响应 HTTP 304 (用户手动添加不走缓存，拦截器自动添加走缓存)
 main() {
     let cache: Cache = Cache("./cacheccccccc", 10 * 1024 * 1024)
-    let client: OkHttpClient= OkHttpClient.builder()
+    let client: HttpClient= HttpClient.builder()
         .cache(cache)
         .connectTimeout(Duration.minute*1)
         .readTimeout(Duration.minute*1)
         .writeTimeout(Duration.minute*1)
         .build()
-    let request = okhttp.Request.builder()
+    let request = httpclient4cj.Request.builder()
             .url("http://okhttp:50067/cache")
             // .header("If-Modified-Since","Tue, 27 May 2022 02:35:47 GMT")
             .build()
@@ -35,7 +35,7 @@ main() {
         case Some(v) => false
         case None => true
     }
-    let request2 = okhttp.Request.builder()
+    let request2 = httpclient4cj.Request.builder()
         .url("http://okhttp:50067/cache")
         .header("If-Modified-Since","Tue, 27 May 2014 02:35:47 GMT")
         .build()

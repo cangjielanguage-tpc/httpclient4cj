@@ -1,10 +1,10 @@
-// 3rd_party_lib:okhttp/build/okhttp
-// 3rd_party_lib:okhttp/ci_lib/cryptocj
+// 3rd_party_lib:httpclient4cj/build/httpclient4cj
+// 3rd_party_lib:httpclient4cj/ci_lib/cryptocj
 
 from std import unittest.*
 from std import unittest.testmacro.*
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from net import http.*
 from std import socket.*
@@ -17,15 +17,15 @@ from std import sync.sleep
 var port: UInt16 = 0
 class MyInterceptor<: Interceptor {
     
-    public func intercept(chain: Chain): okhttp.Response {
+    public func intercept(chain: Chain): httpclient4cj.Response {
         println("--------------------------------intercept-----------------------------")
         
         var transmitter = chain.getTransmitter()
-        let request: okhttp.Request = chain.getRequest()
+        let request: httpclient4cj.Request = chain.getRequest()
         transmitter.prepareToConnect(request)
-        let requestBuilder: okhttp.RequestBuilder  = request.newBuilder()
-        var response: okhttp.Response =  chain.proceed(requestBuilder.build())
-        let responseBuilder: okhttp.ResponseBuilder = response.newBuilder().request(request)
+        let requestBuilder: httpclient4cj.RequestBuilder  = request.newBuilder()
+        var response: httpclient4cj.Response =  chain.proceed(requestBuilder.build())
+        let responseBuilder: httpclient4cj.ResponseBuilder = response.newBuilder().request(request)
         println("hasConnection:${transmitter.hasConnection()}")
         println("hasExchange:${transmitter.hasExchange()}")
         @Assert(transmitter.hasExchange(),true) 
@@ -68,8 +68,8 @@ public class okhttp_Transmitter_003 {
         sleep(Duration.second)
 
         let cache: Cache = Cache("./okhttp_CacheControl_004", 10 * 1024 * 1024)
-        let client: OkHttpClient= OkHttpClient.builder().cache(cache).addNetworkInterceptor(MyInterceptor()).build()
-        let request: okhttp.Request = okhttp.Request.builder()
+        let client: HttpClient= HttpClient.builder().cache(cache).addNetworkInterceptor(MyInterceptor()).build()
+        let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                         .url("http://127.0.0.1:${port}/1234567")
                                         .method("GET")
                                         .build()

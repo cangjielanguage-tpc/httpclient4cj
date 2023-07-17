@@ -1,7 +1,7 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 
 from net import http.*
 from std import io.*
@@ -19,14 +19,14 @@ main() {
     let cache: CacheControl = CacheControl.builder()
                                 .maxAge(1000)
                                 .build()
-    let client: OkHttpClient= OkHttpClient.builder().build()
-    let request: okhttp.Request = okhttp.Request.builder()
+    let client: HttpClient= HttpClient.builder().build()
+    let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                     .url("http://127.0.0.1:50066/cangjie_test-1.0-SNAPSHOT/hello")
                                     .method("GET")
                                     .cacheControl(cache)
                                     .build()
     let call = client.newCall(request)
-    let response: okhttp.Response = call.execute()
+    let response: httpclient4cj.Response = call.execute()
     return 0
 }
 

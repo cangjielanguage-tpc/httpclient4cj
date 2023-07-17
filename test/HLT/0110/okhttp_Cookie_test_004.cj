@@ -1,10 +1,10 @@
-// 3rd_party_lib:okhttp/build/okhttp
-// 3rd_party_lib:okhttp/ci_lib/cryptocj
+// 3rd_party_lib:httpclient4cj/build/httpclient4cj
+// 3rd_party_lib:httpclient4cj/ci_lib/cryptocj
 
 from std import unittest.*
 from std import unittest.testmacro.*
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from net import http.*
 from std import socket.*
@@ -24,7 +24,7 @@ public class okhttp_Cookie_Test_004{
         let url: URL = URL.parse("http://example.com/foo/bar/baz")
         let jar = getSimpleCookieJar()
         jar.saveFromResponse(url, [])
-        let client: OkHttpClient= OkHttpClient.builder().cookieJar(jar).build()
+        let client: HttpClient= HttpClient.builder().cookieJar(jar).build()
         let loadCookies: Array<Cookie> = client.getCookieJar().loadForRequest(url)
         @Expect(loadCookies.size, 0) 
     }
@@ -36,13 +36,13 @@ public class okhttp_Cookie_Test_004{
         let url: URL = URL.parse("http://127.0.0.1:${port}/1234")
         let jar = getSimpleCookieJar()
         jar.saveFromResponse(url, [Cookie("BD_HOME", "1")])
-        let client: OkHttpClient= OkHttpClient.builder().cookieJar(jar).build()
+        let client: HttpClient= HttpClient.builder().cookieJar(jar).build()
         let loadCookies: Array<Cookie> = client.getCookieJar().loadForRequest(url)
         @Expect(loadCookies.size, 1) 
         @Expect(loadCookies[0].toString(), "BD_HOME=1")
 
         jar.saveFromResponse(url, [Cookie("BD_HOME", "1"), Cookie("BD_UPN", "12314753")])
-        let client2: OkHttpClient= OkHttpClient.builder().cookieJar(jar).build()
+        let client2: HttpClient= HttpClient.builder().cookieJar(jar).build()
         let loadCookies2: Array<Cookie> = client.getCookieJar().loadForRequest(url)
         @Expect(loadCookies2.size, 2) 
         @Expect(loadCookies2[0].toString(), "BD_UPN=12314753")
@@ -58,18 +58,18 @@ public class okhttp_Cookie_Test_004{
         let url: URL = URL.parse("http://127.0.0.1:${port}/1234")
         let jar = getSimpleCookieJar()
         jar.saveFromResponse(url, [Cookie("BD_HOME", "1"), Cookie("BD_UPN", "12314753")])
-        let client: OkHttpClient= OkHttpClient.builder().cookieJar(jar).build()
+        let client: HttpClient= HttpClient.builder().cookieJar(jar).build()
         let loadCookies: Array<Cookie> = client.getCookieJar().loadForRequest(url)
         @Expect(loadCookies.size, 2) 
         @Expect(loadCookies[0].toString(), "BD_UPN=12314753")
         @Expect(loadCookies[1].toString(), "BD_HOME=1")
     }
 
-    // 构建 okhttpClientBuilder 时不设置 cookieJar 验证是否自动使用了 NoCookieJar
+    // 构建 httpClientBuilder 时不设置 cookieJar 验证是否自动使用了 NoCookieJar
     @TestCase
     func okhttp_Cookie_Test_021(): Unit { //半手动用例, 在源码中加入了打印语句确认调用成功
         let url: URL = URL.parse("http://127.0.0.1:${port}/1234")
-        let client: OkHttpClient= OkHttpClient.builder().build()
+        let client: HttpClient= HttpClient.builder().build()
         let jar = client.getCookieJar()
         let loadCookies: Array<Cookie> = jar.loadForRequest(url)
         @Expect(loadCookies.size, 0) 

@@ -1,5 +1,5 @@
 <div align="center">
-<h1>OkHttp</h1>
+<h1>Httpclient4cj</h1>
 </div>
 
 <p align="center">
@@ -12,7 +12,7 @@
 
 ## <img alt="" src="./doc/assets/readme-icon-introduction.png" style="display: inline-block;" width=3%/>介绍
 
-OkHttp 是一个高效的 HTTP 客户端, 代码参考: https://github.com/square/okhttp/tree/parent-3.14.9
+Httpclient4cj 是一个高效的 HTTP 客户端, 代码参考: https://github.com/square/okhttp/tree/parent-3.14.9
 
 ## 特性
 
@@ -53,7 +53,7 @@ OkHttp 是一个高效的 HTTP 客户端, 代码参考: https://github.com/squar
 ├── inclue
 │   └── dns.c
 ├── src
-│   └── okhttp
+│   └── httpclient4cj
 │      ├── address.cj
 │      ├── bridge_interceptor.cj
 │      ├── cache_control.cj
@@ -88,8 +88,8 @@ OkHttp 是一个高效的 HTTP 客户端, 代码参考: https://github.com/squar
 │      ├── multipart_body.cj
 │      ├── ok_buffer.cj
 │      ├── ok_gzip_source.cj
-│      ├── ok_http_client.cj
-│      ├── ok_http_client_builder.cj
+│      ├── http_client.cj
+│      ├── http_client_builder.cj
 │      ├── ok_socket.cj
 │      ├── protocol.cj
 │      ├── queue.cj
@@ -165,11 +165,11 @@ OkHttp 是一个高效的 HTTP 客户端, 代码参考: https://github.com/squar
 ### 获取HttpClient对象并配置超时时间
 
 ```canjie
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 
 main (){
-    let client: OkHttpClient= OkHttpClient.builder()
+    let client: HttpClient= HttpClient.builder()
     .connectTimeout(Duration.second)
     .readTimeout(Duration.second)
     .writeTimeout(Duration.second).build()
@@ -180,14 +180,14 @@ main (){
 ### 同步 GET 请求方法示例
 
 ```canjie
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from encoding import url.*
 
 main() {
     let url = URL.parse("https://postman-echo.com/get?foo1=bar1&foo2=bar2")
 
-    let client: OkHttpClient= OkHttpClient.builder()
+    let client: HttpClient= HttpClient.builder()
     .connectTimeout(Duration.second)
     .readTimeout(Duration.second)
     .writeTimeout(Duration.second)
@@ -205,11 +205,11 @@ main() {
 
 ```cangjie
 
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 
 main() {
-   let client: OkHttpClient = OkHttpClient.builder()
+   let client: HttpClient = HttpClient.builder()
     .connectTimeout(Duration.second)
     .readTimeout(Duration.second)
     .writeTimeout(Duration.second)
@@ -228,11 +228,11 @@ main() {
 ### 同步 Post 发送文件内容
 
 ```cangjie
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from std import fs.*
 main() {
-   let client: OkHttpClient= OkHttpClient.builder()
+   let client: HttpClient= HttpClient.builder()
     .connectTimeout(Duration.second)
     .readTimeout(Duration.second)
     .writeTimeout(Duration.second)
@@ -242,11 +242,11 @@ main() {
     File.writeTo("./body.txt", arr)
     let file = File("./body.txt", OpenOption.Open(true, false))
     let body = RealRequestBody.create(MediaType.get("text/plain"),file)
-    let request: okhttp.Request = okhttp.Request.builder()
+    let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                   .url("https://postman-echo.com/post")
                                   .post(body)
                                   .build()
-    let response: okhttp.Response = client.newCall(request).execute()
+    let response: httpclient4cj.Response = client.newCall(request).execute()
     println(response.getBody().getOrThrow().getString())
     File.delete("./body.txt")
     return 0
@@ -255,12 +255,12 @@ main() {
 ### multipart 发送数据以及多上传文件
 
 ```cangjie
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from std import fs.*
 
 main() {
-    let client: OkHttpClient= OkHttpClient.builder()
+    let client: HttpClient= HttpClient.builder()
             .connectTimeout(Duration.second)
             .readTimeout(Duration.second)
             .writeTimeout(Duration.second)
@@ -283,7 +283,7 @@ main() {
                     .url("https://postman-echo.com/post")
                     .post(mu)
                     .build()
-    let response: okhttp.Response = client.newCall(request).execute()
+    let response: httpclient4cj.Response = client.newCall(request).execute()
     println(response.getBody().getOrThrow().getString())
     File.delete("./body1.txt")
     File.delete("./body2.txt")
@@ -293,14 +293,14 @@ main() {
 
 ### chunked分块传输请求
 ```cangjie
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from std import io.*
 
 main() {
 
-    let client: OkHttpClient= OkHttpClient.builder().build()
-    let request= okhttp.Request.builder()
+    let client: HttpClient= HttpClient.builder().build()
+    let request= httpclient4cj.Request.builder()
                 .url("https://postman-echo.com/post")
                 .post(MyRequestBody())
                 .build()
@@ -333,18 +333,18 @@ class MyRequestBody <:RequestBody {
 ### 异步请求以及回调
 
 ```
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 
 main() {
-     let client: OkHttpClient= OkHttpClient.builder()
+     let client: HttpClient= HttpClient.builder()
                     .connectTimeout(Duration.second)
                     .readTimeout(Duration.second)
                     .writeTimeout(Duration.second)
                     .build()
 
     let request = Request.builder().url("https://www.baidu.com")
-                    .header("User-Agent", "OkHttp-Example")
+                    .header("User-Agent", "Httpclient4cj-Example")
                     .build()
 
     for (i in 0..5) {
@@ -371,12 +371,12 @@ public class MyCallbacks <: Callback {
 ### 拦截器使用
 
 ```cangjie
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 
 
 main (){
-    let client: OkHttpClient= OkHttpClient.builder()
+    let client: HttpClient= HttpClient.builder()
                 .addNetworkInterceptor(MyInterceptor())//添加拦截器
                 .connectTimeout(Duration.second)
                 .readTimeout(Duration.second)
@@ -389,7 +389,7 @@ main (){
 }
 //自定义拦截器打印route地址
 class MyInterceptor<: Interceptor {
-     public func intercept(chain: Chain): okhttp.Response {
+     public func intercept(chain: Chain): httpclient4cj.Response {
         let conn = chain.getConnection().getOrThrow()
         println("route = ${conn.getRoute().getInetSocketAddress()}")
         return chain.proceed(chain.getRequest())
@@ -400,23 +400,23 @@ class MyInterceptor<: Interceptor {
 ### cookie管理
 
 ```cangjie
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from encoding import url.*
 from std import time.*
 
 main() {
     let url: URL = URL.parse("https://www.zhihu.com")
     let jar = getSimpleCookieJar()
-    let client: OkHttpClient = OkHttpClient.builder().cookieJar(jar)
+    let client: HttpClient = HttpClient.builder().cookieJar(jar)
                             .connectTimeout(Duration.second)
                             .readTimeout(Duration.second)
                             .writeTimeout(Duration.second)
                             .build()
-    let request = okhttp.Request.builder().url(url).build()
+    let request = httpclient4cj.Request.builder().url(url).build()
     let call = client.newCall(request)
 
 
-    let response: okhttp.Response = call.execute()
+    let response: httpclient4cj.Response = call.execute()
     for (cookie in client.getCookieJar().loadForRequest(url)) {
         println(cookie.toString())
     }
@@ -428,7 +428,7 @@ main() {
 ### 监听器使用
 
 ```cangjie
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from encoding import url.*
 from std import socket.*
@@ -438,7 +438,7 @@ from std import collection.*
 main() {
     let url = URL.parse("https://postman-echo.com/get?foo1=bar1&foo2=bar2")
 
-    let client: OkHttpClient= OkHttpClient.builder()
+    let client: HttpClient= HttpClient.builder()
     .eventListener(MyEventListener())
     .connectTimeout(Duration.second)
     .readTimeout(Duration.second)
@@ -536,7 +536,7 @@ class MyEventListener <: EventListener {
 ### 使用http2协议
 
 ```cangjie
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from encoding import url.*
 from std import collection.*
@@ -544,7 +544,7 @@ from std import collection.*
 main() {
     let url = URL.parse("https://www.taobao.com")
 
-    let client: OkHttpClient= OkHttpClient.builder()
+    let client: HttpClient= HttpClient.builder()
     .tlsConfig("./jjd.cer")//需要用户自己配置CA证书验证公钥,如果不配置CA证书将不进行服务端证书校验,将使用不安全的连接
     //H2_PRIOR_KNOWLEDGE 使用明文http2协议, 不支持https
     //.protocols(ArrayList<String>([Protocol.get("H2_PRIOR_KNOWLEDGE").toString()]))

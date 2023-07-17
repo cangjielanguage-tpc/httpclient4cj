@@ -3,7 +3,7 @@
 
 from net import http.*
 from std import socket.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import io.*
 from std import time.*
 main() {

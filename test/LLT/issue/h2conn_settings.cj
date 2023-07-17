@@ -2,7 +2,7 @@
 // EXEC: ./main
 
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from net import http.*
 from std import socket.*
@@ -21,7 +21,7 @@ main () {
                         .add("password", "123456")
                         .add("host","%6D")
                         .build()
-    let request: okhttp.Request = okhttp.Request.builder().url("http://127.0.0.1:${port}/cangjie_test-1.0-SNAPSHOT/put")
+    let request: httpclient4cj.Request = httpclient4cj.Request.builder().url("http://127.0.0.1:${port}/cangjie_test-1.0-SNAPSHOT/put")
                          .header("User-Agent", "OkHttp-Example").put(formBody)
                         .header("content-type",formBody.contentType().getOrThrow().toString())
                         .build()

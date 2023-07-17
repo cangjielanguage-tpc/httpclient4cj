@@ -1,7 +1,7 @@
-# okhttp
+# httpclient4cj
 
 #### Description
-仓颉版okhttp
+仓颉版httpclient
 
 #### Software Architecture
 Software architecture description

@@ -1,11 +1,11 @@
-// 3rd_party_lib:okhttp/build/okhttp
-// 3rd_party_lib:okhttp/ci_lib/cryptocj
+// 3rd_party_lib:httpclient4cj/build/httpclient4cj
+// 3rd_party_lib:httpclient4cj/ci_lib/cryptocj
 
 
 from std import unittest.*
 from std import unittest.testmacro.*
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from net import http.*
 from std import socket.*
@@ -25,7 +25,7 @@ public class okhttp_H2Stream_01{
                             .add("password", "123456")
                             .add("host","%6D")
                             .build()
-        let request: okhttp.Request = okhttp.Request.builder().url("http://127.0.0.1:${port}/foo")
+        let request: httpclient4cj.Request = httpclient4cj.Request.builder().url("http://127.0.0.1:${port}/foo")
                                                             .header("User-Agent", "OkHttp-Example").put(formBody)
                                                             .header("content-type",formBody.contentType().getOrThrow().toString())
                                                             .build()

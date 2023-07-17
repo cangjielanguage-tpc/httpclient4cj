@@ -2,7 +2,7 @@
 // EXEC: ./main
 
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from net import http.*
 from std import socket.*
@@ -23,14 +23,14 @@ main() {
                 .add("host","%6D")
                 .build()
     let url: URL = URL.parse("http://127.0.0.1:${port}/1234")
-    let client: OkHttpClient= OkHttpClient.builder().build()
-    let request: okhttp.Request = okhttp.Request.builder()
+    let client: HttpClient= HttpClient.builder().build()
+    let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                     .url(url)
                                     .delete(Option<RequestBody>.Some(formBody))
                                     .build()
     let call = client.newCall(request)
     try{
-        let response: okhttp.Response = call.execute()
+        let response: httpclient4cj.Response = call.execute()
     }catch (e: Exception) {
         return 1
     }

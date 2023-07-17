@@ -1,7 +1,7 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import collection.*
 from std import time.*
 from std import runtime.*
@@ -18,15 +18,15 @@ main() {
         serve()
     }
     sleep(Duration.second)
-    let client: OkHttpClient= OkHttpClient.builder()//.addNetworkInterceptor(MyInterceptor1())
+    let client: HttpClient= HttpClient.builder()//.addNetworkInterceptor(MyInterceptor1())
                                         .build()
     client.getDispatcher().setIdleCallback( { => println("===================di idle======================")})
-    let request: okhttp.Request = okhttp.Request.builder()
+    let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                     .url("http://127.0.0.1:${port}/1234")
                                     .method("GET")
                                     .build()
 
-    let response: okhttp.Response = client.newCall(request).execute()
+    let response: httpclient4cj.Response = client.newCall(request).execute()
      println(client.getDispatcher().runningCallsCount())
     // sleep(Duration.second*5)
      println("num = ${num}")

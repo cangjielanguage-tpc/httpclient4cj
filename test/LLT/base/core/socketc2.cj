@@ -4,7 +4,7 @@
 from net import http.*
 from net import tls.*
 from std import socket.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import io.*
 from std import time.*
 main() {
@@ -14,7 +14,7 @@ main() {
    socket.connect()
    println(socket.isClosed())
    let socketC = TlsC(socket)
-    let request: okhttp.Request = okhttp.Request.builder().url("http://36.152.44.95/index.html")
+    let request: httpclient4cj.Request = httpclient4cj.Request.builder().url("http://36.152.44.95/index.html")
     .header("User-Agent", "OkHttp-Example")
     .build()
     let requestStream = ByteArrayStream()
@@ -27,7 +27,7 @@ main() {
     socketC.close()
     0
 }
-public func toHttpRequest(request: okhttp.Request): http.Request{
+public func toHttpRequest(request: httpclient4cj.Request): http.Request{
  let method = getRequestMethod(request.getMethod())
  let header = request.getHeaders()
  let url = request.getUrl()

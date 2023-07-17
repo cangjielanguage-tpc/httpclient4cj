@@ -1,10 +1,10 @@
-// 3rd_party_lib:okhttp/build/okhttp
-// 3rd_party_lib:okhttp/ci_lib/cryptocj
+// 3rd_party_lib:httpclient4cj/build/httpclient4cj
+// 3rd_party_lib:httpclient4cj/ci_lib/cryptocj
 
 from std import unittest.*
 from std import unittest.testmacro.*
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from net import http.*
 from std import socket.*
@@ -19,7 +19,7 @@ public class okhttp_Tag_Test_001{
     // 设置 tag 后获取
     @TestCase
     func okhttp_Tag_Test_001(): Unit {
-        let request: okhttp.Request = okhttp.Request.builder().tag("tag_test").build()
+        let request: httpclient4cj.Request = httpclient4cj.Request.builder().tag("tag_test").build()
         var request_tag = request.getTag("tag_test").tag
         @Assert(request_tag, "tag_test")
     }
@@ -27,7 +27,7 @@ public class okhttp_Tag_Test_001{
     // 设置tag 移除tag
     @TestCase
     func okhttp_Tag_Test_002(): Unit {
-        let request: okhttp.Request = okhttp.Request.builder().tag("tag_test").build()
+        let request: httpclient4cj.Request = httpclient4cj.Request.builder().tag("tag_test").build()
         var request_tag = request.getTag("tag_test").tag
         @Assert(request_tag, "tag_test")
         request.removeTag("tag_test")
@@ -38,7 +38,7 @@ public class okhttp_Tag_Test_001{
     // 不设置直接获取tag 
     @TestCase
     func okhttp_Tag_Test_003(): Unit {
-        let request: okhttp.Request = okhttp.Request.builder().build()
+        let request: httpclient4cj.Request = httpclient4cj.Request.builder().build()
         var request_tag_01 = request.getTag("").tag
         @Assert(request_tag_01, "")
         var request_tag_02 = request.getTag("tag_test").tag
@@ -48,7 +48,7 @@ public class okhttp_Tag_Test_001{
     // 移除不存在的 tag 
     @TestCase
     func okhttp_Tag_Test_004(): Unit {
-        let request: okhttp.Request = okhttp.Request.builder().build()
+        let request: httpclient4cj.Request = httpclient4cj.Request.builder().build()
         request.removeTag("tag_test")
         var request_tag_01 = request.getTag("").tag
         @Assert(request_tag_01, "")
@@ -61,7 +61,7 @@ public class okhttp_Tag_Test_001{
     func okhttp_Tag_Test_005(): Unit {
         var tags = ["tag_test_01", "tag_test_02", "tag_test_03", "tag_test_04", "tag_test_05",
                     "tag_test_06", "tag_test_07", "tag_test_08", "tag_test_09", "tag_test_10"]
-        let request: okhttp.Request = okhttp.Request.builder()
+        let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                         .tag(tags[0])
                                         .tag(tags[1])
                                         .tag(tags[2])
@@ -87,7 +87,7 @@ public class okhttp_Tag_Test_001{
     func okhttp_Tag_Test_006(): Unit {
         var tags = ["tag_test_01", "tag_test_02", "tag_test_03", "tag_test_04", "tag_test_05",
                     "tag_test_06", "tag_test_07", "tag_test_08", "tag_test_09", "tag_test_10"]
-        let request: okhttp.Request = okhttp.Request.builder()
+        let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                         .tag(tags[0])
                                         .tag(tags[1])
                                         .tag(tags[2])
@@ -116,7 +116,7 @@ public class okhttp_Tag_Test_001{
     @TestCase
     func okhttp_Tag_Test_007(): Unit {
         var tagString:String = "!@#$%^%&*(*()+[]\\',[].''  /*-+ #### <>?:"
-        let request: okhttp.Request = okhttp.Request.builder()
+        let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                         .tag(tagString)
                                         .build()
         var request_tag = request.getTag(tagString).tag
@@ -130,7 +130,7 @@ public class okhttp_Tag_Test_001{
     @TestCase
     func okhttp_Tag_Test_008(): Unit {
         var tagString:String = "中文tag——中文tag——中文tag——中文tag——中文tag——中文tag"
-        let request: okhttp.Request = okhttp.Request.builder()
+        let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                         .tag(tagString)
                                         .build()
         var request_tag = request.getTag(tagString).tag
@@ -144,7 +144,7 @@ public class okhttp_Tag_Test_001{
     @TestCase
     func okhttp_Tag_Test_009(): Unit {
         var tagString:String = StringBuilder('t', 2048).toString()
-        let request: okhttp.Request = okhttp.Request.builder()
+        let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                         .tag(tagString)
                                         .build()
         var request_tag = request.getTag(tagString).tag

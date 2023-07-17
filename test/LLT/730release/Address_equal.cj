@@ -2,7 +2,7 @@
 // EXEC: ./main
 
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from encoding import url.*
 from std import collection.*

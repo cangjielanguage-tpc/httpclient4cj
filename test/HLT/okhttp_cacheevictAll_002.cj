@@ -1,11 +1,11 @@
-// 3rd_party_lib:okhttp/build/okhttp
-// 3rd_party_lib:okhttp/ci_lib/cryptocj
+// 3rd_party_lib:httpclient4cj/build/httpclient4cj
+// 3rd_party_lib:httpclient4cj/ci_lib/cryptocj
 
 
 from std import unittest.*
 from std import unittest.testmacro.*
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from net import http.*
 from std import socket.*
@@ -17,12 +17,12 @@ from std import sync.sleep
 
 class MyInterceptor<: Interceptor {
     
-    public func intercept(chain: Chain): okhttp.Response {
+    public func intercept(chain: Chain): httpclient4cj.Response {
         println("-------------------------------is Network----------------------------")
-        let request: okhttp.Request = chain.getRequest()
-        let requestBuilder: okhttp.RequestBuilder  = request.newBuilder()
-        var response: okhttp.Response =  chain.proceed(requestBuilder.build())
-        let responseBuilder: okhttp.ResponseBuilder = response.newBuilder().request(request)
+        let request: httpclient4cj.Request = chain.getRequest()
+        let requestBuilder: httpclient4cj.RequestBuilder  = request.newBuilder()
+        var response: httpclient4cj.Response =  chain.proceed(requestBuilder.build())
+        let responseBuilder: httpclient4cj.ResponseBuilder = response.newBuilder().request(request)
         // func exception(): String{ "exception"}
         let utctime = DateTime.nowUTC()
         let utctimestr = utctime.toString(", dd MMM yyyy HH:mm:ss z")
@@ -67,17 +67,17 @@ public class okhttp_cacheevictAll_002 {
                                     .maxAge(2000)
                                     .build()
         let cache: Cache = Cache("./okhttp_cacheevictAll_002", 10 * 1024 * 1024)
-        let client: OkHttpClient= OkHttpClient.builder().cache(cache).addNetworkInterceptor(MyInterceptor()).build()
-        let request: okhttp.Request = okhttp.Request.builder()
+        let client: HttpClient= HttpClient.builder().cache(cache).addNetworkInterceptor(MyInterceptor()).build()
+        let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                         .url("http://127.0.0.1:${port}/1234567")
                                         .method("GET").cacheControl(cachecontrol)
                                         .build()
-        let request2: okhttp.Request = okhttp.Request.builder()
+        let request2: httpclient4cj.Request = httpclient4cj.Request.builder()
                                         .url("https://www.baidu.com")
                                         .method("GET").cacheControl(cachecontrol)
                                         .build()
         println("-------------------------------OKHttp-第一次请求----------------------------")
-        var response: okhttp.Response = client.newCall(request).execute()
+        var response: httpclient4cj.Response = client.newCall(request).execute()
         var body = response.getBody().getOrThrow().getString()
         var response_heads: http.Header = response.getHeaders()
         
@@ -109,7 +109,7 @@ public class okhttp_cacheevictAll_002 {
         sleep(Duration.second)
        
         println("-------------------------------OKHttp-OKHttp-第二次请求----------------------------")
-        var response2: okhttp.Response = client.newCall(request).execute()
+        var response2: httpclient4cj.Response = client.newCall(request).execute()
         var response_heads2: http.Header = response2.getHeaders()
         for ((nm,vl) in response_heads2) {
             println(nm)
@@ -141,14 +141,14 @@ public class okhttp_cacheevictAll_002 {
 
         @Assert(body,body2)
         println("-------------------------------OKHttp-OKHttp-第三次请求-更换服务器---------------------------")
-        var response_3: okhttp.Response = client.newCall(request2).execute()
+        var response_3: httpclient4cj.Response = client.newCall(request2).execute()
         response_3.getBody().getOrThrow().getString()
 
         println("response_3.getNetworkResponse() : ${response_3.getNetworkResponse()}")
         println("response_3.getCacheResponse() : ${response_3.getCacheResponse()}")
 
         println("-------------------------------OKHttp-OKHttp-第四次请求-同第三次服务器---------------------------")
-        var response_4: okhttp.Response = client.newCall(request2).execute()
+        var response_4: httpclient4cj.Response = client.newCall(request2).execute()
         response_4.getBody().getOrThrow().getString()
 
         println("response_4.getNetworkResponse() : ${response_4.getNetworkResponse()}")
@@ -158,9 +158,9 @@ public class okhttp_cacheevictAll_002 {
         var exc = ""
         try{
             let cache3: Cache = Cache("./okhttp_cacheevictAll_002", 10 * 1024 * 1024)
-            let client2: OkHttpClient= OkHttpClient.builder().cache(cache3).addNetworkInterceptor(MyInterceptor()).build()
+            let client2: HttpClient= HttpClient.builder().cache(cache3).addNetworkInterceptor(MyInterceptor()).build()
             
-            var response_5: okhttp.Response = client2.newCall(request2).execute()
+            var response_5: httpclient4cj.Response = client2.newCall(request2).execute()
             response_5.getBody().getOrThrow().getString()
         } catch (e : Exception){
             exc = e.message
@@ -169,9 +169,9 @@ public class okhttp_cacheevictAll_002 {
 
         println("-------------------------------OKHttp-OKHttp-第六次请求-更换缓存文件夹---------------------------")
         let cache4: Cache = Cache("./okhttp_cacheevictAll_002_2", 10 * 1024 * 1024)
-        let client3: OkHttpClient= OkHttpClient.builder().cache(cache4).addNetworkInterceptor(MyInterceptor()).build()
+        let client3: HttpClient= HttpClient.builder().cache(cache4).addNetworkInterceptor(MyInterceptor()).build()
         
-        var response_6: okhttp.Response = client3.newCall(request2).execute()
+        var response_6: httpclient4cj.Response = client3.newCall(request2).execute()
         response_6.getBody().getOrThrow().getString()
 
         println("response_6.getNetworkResponse() : ${response_6.getNetworkResponse()}")

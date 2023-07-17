@@ -1,4 +1,4 @@
-package okhttp
+package httpclient4cj
 from std import unittest.*
 from std import unittest.testmacro.*
 
@@ -7,7 +7,7 @@ public class TestCase {
 
     @TestCase
     public func caseA(): Unit {
-        let client = OkHttpClient.builder().build()
+        let client = HttpClient.builder().build()
         let retry = RetryAndFollowUpInterceptor(client)
         let conn = ConnectInterceptor(client)
         var interceptors: ArrayList<Interceptor> = ArrayList<Interceptor>()

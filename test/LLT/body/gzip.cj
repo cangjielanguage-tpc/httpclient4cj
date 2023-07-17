@@ -3,7 +3,7 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import collection.*
 from std import time.*
 from std import runtime.*

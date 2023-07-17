@@ -1,10 +1,10 @@
-// 3rd_party_lib:okhttp/build/okhttp
-// 3rd_party_lib:okhttp/ci_lib/cryptocj
+// 3rd_party_lib:httpclient4cj/build/httpclient4cj
+// 3rd_party_lib:httpclient4cj/ci_lib/cryptocj
 
 from std import unittest.*
 from std import unittest.testmacro.*
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from net import http.*
 from std import socket.*
@@ -16,12 +16,12 @@ from std import sync.sleep
 
 class MyInterceptor<: Interceptor {
     
-    public func intercept(chain: Chain): okhttp.Response {
+    public func intercept(chain: Chain): httpclient4cj.Response {
         println("-------------------------------is Network----------------------------")
-        let request: okhttp.Request = chain.getRequest()
-        let requestBuilder: okhttp.RequestBuilder  = request.newBuilder()
-        var response: okhttp.Response =  chain.proceed(requestBuilder.build())
-        let responseBuilder: okhttp.ResponseBuilder = response.newBuilder().request(request)
+        let request: httpclient4cj.Request = chain.getRequest()
+        let requestBuilder: httpclient4cj.RequestBuilder  = request.newBuilder()
+        var response: httpclient4cj.Response =  chain.proceed(requestBuilder.build())
+        let responseBuilder: httpclient4cj.ResponseBuilder = response.newBuilder().request(request)
         // func exception(): String{ "exception"}
         return responseBuilder.build()
     }
@@ -60,13 +60,13 @@ public class okhttp_cache_009 {
                                     .maxAge(20)
                                     .build()
         let cache: Cache = Cache("./okhttp_cache_009", 10 * 1024 * 1024)
-        let client: OkHttpClient= OkHttpClient.builder().cache(cache).addNetworkInterceptor(MyInterceptor()).build()
-        let request: okhttp.Request = okhttp.Request.builder()
+        let client: HttpClient= HttpClient.builder().cache(cache).addNetworkInterceptor(MyInterceptor()).build()
+        let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                         .url("http://127.0.0.1:${port}/1234567")
                                         .method("POST",body: RealRequestBody.create(MediaType.get("application/json; charset=utf-8"),"hello world")).cacheControl(cachecontrol)
                                         .build()
         println("-------------------------------OKHttp-第一次请求----------------------------")
-        var response: okhttp.Response = client.newCall(request).execute()
+        var response: httpclient4cj.Response = client.newCall(request).execute()
         response.getBody().getOrThrow().getString()
         var response_heads: http.Header = response.getHeaders()
         
@@ -90,11 +90,11 @@ public class okhttp_cache_009 {
         sleep(Duration.second)
        
         println("-------------------------------OKHttp-OKHttp-第二次请求----------------------------")
-        let request2: okhttp.Request = okhttp.Request.builder()
+        let request2: httpclient4cj.Request = httpclient4cj.Request.builder()
                                 .url("http://127.0.0.1:${port}/1234567")
                                 .method("POST",body: RealRequestBody.create(MediaType.get("application/json; charset=utf-8"),"hello")).cacheControl(cachecontrol)
                                 .build()
-        var response2: okhttp.Response = client.newCall(request2).execute()
+        var response2: httpclient4cj.Response = client.newCall(request2).execute()
         var response_heads2: http.Header = response2.getHeaders()
         for ((nm,vl) in response_heads2) {
             println(nm)

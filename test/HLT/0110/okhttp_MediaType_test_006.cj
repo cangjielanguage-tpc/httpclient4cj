@@ -1,12 +1,12 @@
-// 3rd_party_lib:okhttp/build/okhttp
-// 3rd_party_lib:okhttp/ci_lib/cryptocj
+// 3rd_party_lib:httpclient4cj/build/httpclient4cj
+// 3rd_party_lib:httpclient4cj/ci_lib/cryptocj
 // data_file:body.text
 // data_file:image.png
 
 from std import unittest.*
 from std import unittest.testmacro.*
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 from net import http.*
 from std import socket.*
@@ -33,8 +33,8 @@ public class okhttp_MediaType_test_006{
             .addFormDataPart("name", "aaa")
             .addFormDataPart("image", "image.png", body_image)
             .build()
-        let client: OkHttpClient= OkHttpClient.builder().build()
-        let request: okhttp.Request = okhttp.Request.builder()
+        let client: HttpClient= HttpClient.builder().build()
+        let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                         .url("http://127.0.0.1:${port}/1234")
                                         .method("POST", body: multipartBody)
                                         .build()
@@ -63,7 +63,7 @@ public class MyCallbacks <: Callback {
         println("${e.message}")
     }
 
-    public func onResponse(call: Call,  response: okhttp.Response): Unit{
+    public func onResponse(call: Call,  response: httpclient4cj.Response): Unit{
         println("success")
     }
 }

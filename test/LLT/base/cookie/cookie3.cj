@@ -2,7 +2,7 @@
 // EXEC: ./main
 
 from std import io.*
-from okhttp import okhttp.*
+from httpclient4cj import httpclient4cj.*
 from net import http.*
 from std import socket.*
 from encoding import url.*
@@ -20,15 +20,15 @@ main() {
     let url: URL = URL.parse("https://baidu.com")
     let jar = getSimpleCookieJar()
     jar.saveFromResponse(url, [Cookie("BD_HOME", "1"), Cookie("BD_UPN", "12314753")])
-    let client: OkHttpClient= OkHttpClient.builder().cookieJar(jar)
+    let client: HttpClient= HttpClient.builder().cookieJar(jar)
     .build()
-    let request: okhttp.Request = okhttp.Request.builder()
+    let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                     .url(url)
                                     .build()
     let call = client.newCall(request)
 
     try{
-        let response: okhttp.Response = call.execute()
+        let response: httpclient4cj.Response = call.execute()
         let arr = ByteArrayStream()
          if(client.getCookieJar().loadForRequest(url).size > 0) {
             return 0
