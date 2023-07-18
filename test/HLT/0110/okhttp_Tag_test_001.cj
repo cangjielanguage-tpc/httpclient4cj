@@ -1,5 +1,5 @@
 // 3rd_party_lib:httpclient4cj/build/httpclient4cj
-// 3rd_party_lib:httpclient4cj/ci_lib/cryptocj
+// 3rd_party_lib:httpclient4cj/ci_lib/crypto4cj
 
 from std import unittest.*
 from std import unittest.testmacro.*
