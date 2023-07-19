@@ -4,13 +4,7 @@
   "name": "httpclient4cj",
   "description": "nothing here",
   "version": "0.0.6",
-  "requires": {
-    "crypto4cj": {
-      "organization": "cangjie",
-      "version": "0.0.6",
-      "path": "./crypto4cj"
-    }
-  },
+  "requires": {},
   "foreign_requires": {},
   "condition_option": {
     "cfg_win": "-lws2_32"

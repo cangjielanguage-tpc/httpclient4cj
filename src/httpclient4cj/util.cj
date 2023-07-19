@@ -10,7 +10,6 @@
 package httpclient4cj
 
 from compress import zlib.*
-from crypto4cj import md5cj.*
 from encoding import hex.*
 from encoding import url.*
 from net import http.*
