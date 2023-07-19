@@ -170,10 +170,7 @@ public class Cache <: Resource {
     }
 
     public static func key(url: URL): String {
-        let md = Array<UInt8>(16, item: 0)
-        md5(url.toString().toUtf8Array(), md)
-        let result = toHexString(md)
-        return result
+        return MD5.digest(url.toString())
     }
 
     public func getDirectory(): Directory {
