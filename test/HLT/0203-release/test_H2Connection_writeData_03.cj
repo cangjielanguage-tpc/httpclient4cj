@@ -1,5 +1,4 @@
 // 3rd_party_lib:httpclient4cj/build/httpclient4cj
-// 3rd_party_lib:httpclient4cj/ci_lib/crypto4cj
 
 
 from std import unittest.*
@@ -15,14 +14,14 @@ from std import core.*
 from std import log.*
 from std import sync.sleep
 
-public var port:UInt16=36389
+public var port:UInt16=portTrans(36389)
 
 @Test
 public class okhttp_H2Connection_01{
 
     @TestCase
     func okhttp_writeData_003(): Unit {
-        let soc = Socket(TCP,"127.0.0.1", port)
+        let soc = TcpSocket("127.0.0.1", port)
         soc.connect()
         let sc = SocketClient.SocketC(soc)
         let socket = OKSocket(sc, Option<Duration>.None, Option<Duration>.None)

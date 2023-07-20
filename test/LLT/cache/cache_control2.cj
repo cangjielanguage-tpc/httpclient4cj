@@ -17,7 +17,7 @@ main() {
         .cache(cache).build()
     let request = httpclient4cj.Request.builder()
             .cacheControl(forceNet)
-            .url("http://okhttp:50067/cache")
+            .url("http://okhttp:${portTrans(50067)}/cache")
             .build()
     let res = client.newCall(request).execute()
     println(res.getCode())

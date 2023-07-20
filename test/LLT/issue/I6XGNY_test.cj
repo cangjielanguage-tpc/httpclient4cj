@@ -1,4 +1,5 @@
-// EXEC: cjc %import-path %L %l %f
+// DEPENDENCE: ../z_test.cj
+// EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
 from std import unittest.*
 from std import unittest.testmacro.*
@@ -14,13 +15,13 @@ main(): Int64 {
 public class TlsTest {
     @TestCase
     public func tlsconfig(): Unit {
-        var cfg = TlsClientConfig("../data/test.cer")
-        cfg.verifyMode = TlsClientVerifyMode.VerifyNone
+        var cfg = TlsClientConfig()
+        cfg.verifyMode = CertificateVerifyMode.TrustAll
         let client: HttpClient = HttpClient.builder().tlsConfig(cfg).build()
         let mycfg = client.getTlsConfig().getOrThrow()
-        @Assert(mycfg.caFile, "../data/test.cer")
+        // @Assert(mycfg.caFile, "")
         match (mycfg.verifyMode) {
-            case TlsClientVerifyMode.VerifyNone => ()
+            case CertificateVerifyMode.TrustAll => ()
             case _ => throw Exception()
         }
     }

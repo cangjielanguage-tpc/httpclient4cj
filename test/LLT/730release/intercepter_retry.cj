@@ -1,4 +1,5 @@
-// EXEC: cjc %import-path %L %l %f
+// DEPENDENCE: ../z_test.cj
+// EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
 
 from std import io.*
@@ -13,10 +14,7 @@ from std import sync.sleep
 
 var port: UInt16 = 0
 main() {
-    spawn {
-        serve()
-    }
-    sleep(Duration.second)
+    serve()
     //http://127.0.0.1:${port}/1234
     //http://www.zhihu.com
     //http://www.baidu.com/index.html
@@ -25,12 +23,10 @@ main() {
     //http://www.weather.com.cn/data/sk/101010100.html
     //http://wjhsh.net/Jimc-p-10250861.html
     let url: URL = URL.parse("http://www.weather.com.cn/data/sk/101010100.html")
-    let client: HttpClient= HttpClient.builder().build()
-    let request: httpclient4cj.Request = httpclient4cj.Request.builder()
-                                    .url(url)
-                                    .build()
+    let client: HttpClient = HttpClient.builder().build()
+    let request: httpclient4cj.Request = httpclient4cj.Request.builder().url(url).build()
     let call = client.newCall(request)
-    try{
+    try {
         let response: httpclient4cj.Response = call.execute()
         println(response.toString())
         println(response.getBody().getOrThrow().getContentLength())
@@ -42,24 +38,26 @@ main() {
         println("count =======================")
         println(client.getConnectionPool().getOrThrow().connectionCount())
         println(client.getConnectionPool().getOrThrow().idleConnectionCount())
-    }catch (e: Exception) {
+    } catch (e: Exception) {
         e.printStackTrace()
         return 1
     }
     return 0
 }
 
-func serve(){
-    let hd = http.Route()
-    hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
+func serve() {
+    let serverSocket = TcpServerSocket(bindAt: 0)
+    let server = ServerBuilder.new().listener(serverSocket).build()
+    server.distributor.register("/1234",
+        {
+        httpContext =>
         let resp = "Hello from /red".toUtf8Array()
-        //rws.writeStatusCode(301)
-        //rws.header().set("Location","http://127.0.0.1:${port}/1234")
-        rws.write(resp)
+        //httpContext.responseBuilder.status(301)
+        //httpContext.responseBuilder.header("Location","http://127.0.0.1:${port}/1234")
+        httpContext.responseBuilder.body(resp)
         return
     })
-    let server = http.Server(hd)
-    let socket = socket.SocketServer(SocketNet.TCP, "0.0.0.0", port)
-    port = socket.port
-    server.serve(socket)
+    spawn {server.serve()}
+    sleep(Duration.second)
+    port = serverSocket.localAddress.port
 }

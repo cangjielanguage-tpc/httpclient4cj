@@ -117,7 +117,7 @@ public class Response <: ToString {
      * @since 0.29.3
      */
     public func getHeader(name: String): Option<String> {
-        return header.get(name)
+        return header.getString(name)
     }
 
     /**
@@ -130,7 +130,7 @@ public class Response <: ToString {
      * @since 0.29.3
      */
     public func getHeader(name: String, defaultValue: String): String {
-        return header.get(name) ?? defaultValue
+        return header.getString(name) ?? defaultValue
     }
 
     /**

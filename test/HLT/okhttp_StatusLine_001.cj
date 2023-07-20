@@ -1,5 +1,4 @@
 // 3rd_party_lib:httpclient4cj/build/httpclient4cj
-// 3rd_party_lib:httpclient4cj/ci_lib/crypto4cj
 
 
 from std import unittest.*
@@ -22,7 +21,7 @@ public class okhttp_StatusLine_001{
 
         var stl = StatusLine.parse("HTTP/1.1 200 OK")
         
-        @Assert(stl.protocol.toString(),Protocol.HTTP_1_1.toString())
+        @Assert(stl.protocol.toString(),httpclient4cj.Protocol.HTTP_1_1.toString())
         @Assert(stl.code,Int64(200))
         @Assert(stl.message,"OK")
 

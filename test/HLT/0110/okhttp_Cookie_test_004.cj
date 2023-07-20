@@ -1,5 +1,4 @@
 // 3rd_party_lib:httpclient4cj/build/httpclient4cj
-// 3rd_party_lib:httpclient4cj/ci_lib/crypto4cj
 
 from std import unittest.*
 from std import unittest.testmacro.*
@@ -12,6 +11,7 @@ from encoding import url.*
 from net import tls.*
 from std import core.*
 from std import collection.*
+from std import sync.sleep
 
 @Test
 public class okhttp_Cookie_Test_004{
@@ -39,13 +39,13 @@ public class okhttp_Cookie_Test_004{
         let client: HttpClient= HttpClient.builder().cookieJar(jar).build()
         let loadCookies: Array<Cookie> = client.getCookieJar().loadForRequest(url)
         @Expect(loadCookies.size, 1) 
-        @Expect(loadCookies[0].toString(), "BD_HOME=1")
+        @Expect(loadCookies[0].toSetCookieString(), "BD_HOME=1")
 
         jar.saveFromResponse(url, [Cookie("BD_HOME", "1"), Cookie("BD_UPN", "12314753")])
         let client2: HttpClient= HttpClient.builder().cookieJar(jar).build()
         let loadCookies2: Array<Cookie> = client.getCookieJar().loadForRequest(url)
         @Expect(loadCookies2.size, 2) 
-        @Expect(loadCookies2[0].toString(), "BD_UPN=12314753")
+        @Expect(loadCookies2[1].toSetCookieString(), "BD_UPN=12314753")
     }
 
     // public func saveFromResponse(url: URL, cookies: Array<Cookie>): Unit cookies 包含多个cookie
@@ -61,8 +61,8 @@ public class okhttp_Cookie_Test_004{
         let client: HttpClient= HttpClient.builder().cookieJar(jar).build()
         let loadCookies: Array<Cookie> = client.getCookieJar().loadForRequest(url)
         @Expect(loadCookies.size, 2) 
-        @Expect(loadCookies[0].toString(), "BD_UPN=12314753")
-        @Expect(loadCookies[1].toString(), "BD_HOME=1")
+        @Expect(loadCookies[1].toSetCookieString(), "BD_UPN=12314753")
+        @Expect(loadCookies[0].toSetCookieString(), "BD_HOME=1")
     }
 
     // 构建 httpClientBuilder 时不设置 cookieJar 验证是否自动使用了 NoCookieJar
@@ -77,20 +77,19 @@ public class okhttp_Cookie_Test_004{
 
 
     func serve() {
-        let hd = http.Route()
-        hd.handle("/1234", { rws: ResponseWriteStream, req: http.Request =>
-            req.url
+        let serverSocket = TcpServerSocket(bindAt: 0)
+        let server = ServerBuilder.new().listener(serverSocket).build()
+        server.distributor.register("/1234", { httpContext =>
             let resp = "Hello from /red".toUtf8Array()
-            rws.write(resp)
-            rws.header().add("test", "test")
-            rws.header().add("Set-Cookie", "key=server-header-1;")
-            rws.header().add("Set-Cookie", "key=server-header-2;")
+            httpContext.responseBuilder.body(resp)
+            httpContext.responseBuilder.header("test", "test")
+            httpContext.responseBuilder.header("Set-Cookie", "key=server-header-1;")
+            httpContext.responseBuilder.header("Set-Cookie", "key=server-header-2;")
             return
         })
-        let server = http.Server(hd)
-        let socket = socket.SocketServer(SocketNet.TCP, "0.0.0.0", port)
-        port = socket.port
-        server.serve(socket)
+        spawn{ server.serve() }
+        sleep(Duration.second)
+        port = serverSocket.localAddress.port
     }
 
 }

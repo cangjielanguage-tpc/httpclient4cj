@@ -11,7 +11,7 @@ from net import tls.*
 main (){
     try{
         let client = HttpClient.builder()
-        .protocols(ArrayList<String>([Protocol.get("HTTP/1.0").toString()])).build()
+        .protocols(ArrayList<String>([httpclient4cj.Protocol.get("HTTP/1.0").toString()])).build()
     }catch (e:Exception) {
         return 0
     }

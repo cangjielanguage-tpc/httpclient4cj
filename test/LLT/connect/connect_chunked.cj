@@ -1,4 +1,5 @@
-// EXEC: cjc %import-path %L %l %f
+// DEPENDENCE: ../z_test.cj
+// EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
 
 from std import io.*
@@ -7,10 +8,11 @@ from std import time.*
 from std import sync.sleep
 
 main() {
-    let client: HttpClient= HttpClient.builder().build()
-    let request2: Request = Request.builder().url("http://www.baidu.com")
-    .header("User-Agent", "OkHttp-Example")
-    .build()
+    let client: HttpClient = HttpClient.builder().build()
+    let request2: Request = Request.builder()
+        .url("http://www.baidu.com")
+        .header("User-Agent", "OkHttp-Example")
+        .build()
     let async = client.newCall(request2)
     try {
         let resp = async.execute()

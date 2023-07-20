@@ -23,7 +23,7 @@ public class TestCase {
         let response = Response.builder()
         let request = Request.builder().build()
         response.request(request)
-        let protocol = Protocol.get("http/1.0")
+        let protocol = httpclient4cj.Protocol.get("http/1.0")
         response.protocol(protocol)
         response.code(1)
         response.message("response message is exist")

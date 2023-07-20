@@ -16,22 +16,22 @@ var port: UInt16 = 1504
 var sev_cache_control = "max-age=20000"
 
 func serve() {
-    let hd = http.Route()
-    hd.handle(
+    let serverSocket = TcpServerSocket(bindAt: 0)
+    let server = ServerBuilder.new().listener(serverSocket).build()
+    server.distributor.register(
         "/1234567",
         {
-            rws: http.ResponseWriteStream, req: http.Request =>
+            httpContext =>
             let resp = "Hello from /red".toUtf8Array()
-            rws.header().add("Last-Modified", "Tue, 27 May 2014 02:35:47 GMT")
-            rws.header().add("cache-control", sev_cache_control)
-            rws.write(resp)
+            httpContext.responseBuilder.header("Last-Modified", "Tue, 27 May 2014 02:35:47 GMT")
+            httpContext.responseBuilder.header("cache-control", sev_cache_control)
+            httpContext.responseBuilder.body(resp)
             return
         }
     )
-    let server = http.Server(hd)
-    let socket = socket.SocketServer(SocketNet.TCP, "0.0.0.0", port)
-    port = socket.port
-    server.serve(socket)
+    spawn{ server.serve() }
+    sleep(Duration.second)
+    port = serverSocket.localAddress.port
 }
 class MyInterceptor <: Interceptor {
     public func intercept(chain: Chain): httpclient4cj.Response {
@@ -50,10 +50,7 @@ class MyInterceptor <: Interceptor {
 
 //第一次走网络不使用缓存，第二次缓存不走网络(此时应该只生成tmp文件,cache只保存在内存中)
 main() {
-    spawn {
-        serve()
-    }
-    sleep(Duration.second)
+    serve()
 
     let cachecontrol: CacheControl = CacheControl.builder().maxAge(2000).build()
     let cache: Cache = Cache("./cc", 10 * 1024 * 1024)
@@ -62,7 +59,7 @@ main() {
     println("-------------------------------OKHttp-第一次请求----------------------------")
     var response: httpclient4cj.Response = client.newCall(request).execute()
     var body = response.getBody().getOrThrow().getString()
-    var response_heads: http.Header = response.getHeaders()
+    var response_heads: Header = response.getHeaders()
 
     for ((nm, vl) in response_heads) {
         println(nm)

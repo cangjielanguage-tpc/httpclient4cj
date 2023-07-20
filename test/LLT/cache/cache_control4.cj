@@ -1,4 +1,5 @@
-// EXEC: cjc %import-path %L %l %f
+// DEPENDENCE: ../z_test.cj
+// EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
 
 from httpclient4cj import httpclient4cj.*
@@ -17,7 +18,7 @@ main() {
         .writeTimeout(Duration.minute*1)
         .build()
     let request = httpclient4cj.Request.builder()
-            .url("http://okhttp:50067/cache")
+            .url("http://okhttp:${portTrans(50067)}/cache")
             // .header("If-Modified-Since","Tue, 27 May 2022 02:35:47 GMT")
             .build()
 
@@ -36,7 +37,7 @@ main() {
         case None => true
     }
     let request2 = httpclient4cj.Request.builder()
-        .url("http://okhttp:50067/cache")
+        .url("http://okhttp:${portTrans(50067)}/cache")
         .header("If-Modified-Since","Tue, 27 May 2014 02:35:47 GMT")
         .build()
     //第二次走网络，用户手动添加不走缓存

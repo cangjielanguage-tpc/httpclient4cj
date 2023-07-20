@@ -58,8 +58,8 @@ public class HttpClientBuilder <: Builder<HttpClient> {
     }
 
     init() {
-        var cfg = TlsClientConfig("")
-        cfg.verifyMode = VerifyNone
+        var cfg = TlsClientConfig()
+        cfg.verifyMode = CertificateVerifyMode.TrustAll
         tlsConfigBuild = cfg
     }
 
@@ -190,21 +190,6 @@ public class HttpClientBuilder <: Builder<HttpClient> {
      */
     public func writeTimeout(writeTimeout: Duration): HttpClientBuilder {
         this.writeTimeoutBuild = Option<Duration>.Some(writeTimeout)
-        return this
-    }
-
-    /**
-     * The Function is tlsConfig
-     *
-     * @param path of String
-     *
-     * @return Type of HttpClientBuilder
-     * @since 0.30.4
-     */
-    public func tlsConfig(path: String): HttpClientBuilder {
-        var cfg = TlsClientConfig(path)
-        cfg.verifyMode = VerifyServer
-        this.tlsConfigBuild = cfg
         return this
     }
 

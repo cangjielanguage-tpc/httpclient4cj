@@ -1,5 +1,4 @@
 // 3rd_party_lib:httpclient4cj/build/httpclient4cj
-// 3rd_party_lib:httpclient4cj/ci_lib/crypto4cj
 
 
 from std import unittest.*
@@ -21,51 +20,48 @@ public class okhttp_Request_method_010{
 
     var port: UInt16 = 0
     func serve(){
-        let hd = http.Route()
-        hd.handle("/1234", { rws: ResponseWriteStream, req: http.Request =>
-            req.url
+        let serverSocket = TcpServerSocket(bindAt: 0)
+        let server = ServerBuilder.new().listener(serverSocket).build()
+        server.distributor.register("/1234", { httpContext =>
             let resp = "Hello from /red".toUtf8Array()
-            rws.write(resp)
+            httpContext.responseBuilder.body(resp)
             return
         })
-        let server = http.Server(hd)
-        let socket = socket.SocketServer(SocketNet.TCP, "0.0.0.0", port)
-        port = socket.port
-        server.serve(socket)
+        spawn{ server.serve() }
+        sleep(Duration.second)
+        port = serverSocket.localAddress.port
     }
 
     @TestCase
     func okhttp_Request_method_010(): Unit {
-    spawn {
         serve()
-    }
-    sleep(Duration.second)
-    var f = `open`("log.txt", O_RDWR | O_CREAT | O_TRUNC)
-    // 重定向到 log.txt 文件
-    var f1 = dup(1)
-    dup2(f, 1)
+        var f = `open`("log.txt", O_RDWR | O_CREAT | O_TRUNC)
+        // 重定向到 log.txt 文件
+        var f1 = dup(1)
+        dup2(f, 1)
 
-    let client: HttpClient= HttpClient.builder().build()
-    let request: httpclient4cj.Request = httpclient4cj.Request.builder()
-                                    .url("http://127.0.0.1:${port}/1234")
-                                    .method("abc")
-                                    .build()
-    var call = client.newCall(request)
-    call.execute()
+        let client: HttpClient= HttpClient.builder().build()
+        let request: httpclient4cj.Request = httpclient4cj.Request.builder()
+                                        .url("http://127.0.0.1:${port}/1234")
+                                        .method("a:bc")
+                                        .build()
+        var call = client.newCall(request)
+        let a = call.execute()
+        println(a.toString())
 
-    print("-----------log flush----------\n ", flush:true)
-    sleep(Duration.second*1)
+        print("-----------log flush----------\n ", flush:true)
+        sleep(Duration.second*1)
 
-    // 恢复到标准输出（屏幕)
-    dup2(f1, 1)
-    close(f1)
+        // 恢复到标准输出（屏幕)
+        dup2(f1, 1)
+        close(f1)
 
-    var filename = "log.txt"
-    chmod(filename,777)
-    var bytearry = File.readFrom(filename)
-    var str = String.fromUtf8(bytearry)
-    print("str ${str}")
-    @Assert(str.contains("net/http: invalid method:abc"), true)
+        var filename = "log.txt"
+        chmod(filename,777)
+        var bytearry = File.readFrom(filename)
+        var str = String.fromUtf8(bytearry)
+        print("str ${str}")
+        @Assert(str.contains("Incorrect method: a:bc"), true)
 
     }
 }

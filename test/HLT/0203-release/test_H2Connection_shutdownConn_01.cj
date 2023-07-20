@@ -1,5 +1,4 @@
 // 3rd_party_lib:httpclient4cj/build/httpclient4cj
-// 3rd_party_lib:httpclient4cj/ci_lib/crypto4cj
 
 
 from std import unittest.*
@@ -14,7 +13,7 @@ from net import tls.*
 from std import core.*
 from std import log.*
 
-public var port:UInt16=36389
+public var port:UInt16=portTrans(36389)
 
 @Test
 public class okhttp_H2Connection_01{
@@ -22,7 +21,7 @@ public class okhttp_H2Connection_01{
     @TestCase
     func okhttp_shutdownConn_001(): Unit {
 
-        let soc = Socket(TCP,"127.0.0.1", port)
+        let soc = TcpSocket("127.0.0.1", port)
         soc.connect()
         let sc = SocketClient.SocketC(soc)
         let socket = OKSocket(sc, Option<Duration>.None, Option<Duration>.None)
@@ -34,7 +33,7 @@ public class okhttp_H2Connection_01{
     }
     @TestCase
     func okhttp_shutdownConn_002(): Unit {
-        let soc = Socket(TCP,"127.0.0.1", port)
+        let soc = TcpSocket("127.0.0.1", port)
         soc.connect()
         let sc = SocketClient.SocketC(soc)
         let socket = OKSocket(sc, Option<Duration>.None, Option<Duration>.None)
@@ -46,7 +45,7 @@ public class okhttp_H2Connection_01{
     }
     @TestCase
     func okhttp_shutdownConn_003(): Unit {
-        let soc = Socket(TCP,"127.0.0.1", port)
+        let soc = TcpSocket("127.0.0.1", port)
         soc.connect()
         let sc = SocketClient.SocketC(soc)
         let socket = OKSocket(sc, Option<Duration>.None, Option<Duration>.None)
@@ -58,7 +57,7 @@ public class okhttp_H2Connection_01{
     }
     @TestCase
     func okhttp_shutdownConn_004(): Unit {
-        let soc = Socket(TCP,"127.0.0.1", port)
+        let soc = TcpSocket("127.0.0.1", port)
         soc.connect()
         let sc = SocketClient.SocketC(soc)
         let socket = OKSocket(sc, Option<Duration>.None, Option<Duration>.None)
@@ -70,7 +69,7 @@ public class okhttp_H2Connection_01{
     }
     @TestCase
     func okhttp_shutdownConn_005(): Unit {
-        let soc = Socket(TCP,"127.0.0.1", port)
+        let soc = TcpSocket("127.0.0.1", port)
         soc.connect()
         let sc = SocketClient.SocketC(soc)
         let socket = OKSocket(sc, Option<Duration>.None, Option<Duration>.None)
@@ -82,7 +81,7 @@ public class okhttp_H2Connection_01{
     }
     @TestCase
     func okhttp_shutdownConn_006(): Unit {
-        let soc = Socket(TCP,"127.0.0.1", port)
+        let soc = TcpSocket("127.0.0.1", port)
         soc.connect()
         let sc = SocketClient.SocketC(soc)
         let socket = OKSocket(sc, Option<Duration>.None, Option<Duration>.None)
@@ -94,7 +93,7 @@ public class okhttp_H2Connection_01{
     }
     @TestCase
     func okhttp_shutdownConn_007(): Unit {
-        let soc = Socket(TCP,"127.0.0.1", port)
+        let soc = TcpSocket("127.0.0.1", port)
         soc.connect()
         let sc = SocketClient.SocketC(soc)
         let socket = OKSocket(sc, Option<Duration>.None, Option<Duration>.None)
@@ -106,7 +105,7 @@ public class okhttp_H2Connection_01{
     }
     @TestCase
     func okhttp_shutdownConn_008(): Unit {
-        let soc = Socket(TCP,"127.0.0.1", port)
+        let soc = TcpSocket("127.0.0.1", port)
         soc.connect()
         let sc = SocketClient.SocketC(soc)
         let socket = OKSocket(sc, Option<Duration>.None, Option<Duration>.None)
@@ -118,7 +117,7 @@ public class okhttp_H2Connection_01{
     }
     @TestCase
     func okhttp_shutdownConn_009(): Unit {
-        let soc = Socket(TCP,"127.0.0.1", port)
+        let soc = TcpSocket("127.0.0.1", port)
         soc.connect()
         let sc = SocketClient.SocketC(soc)
         let socket = OKSocket(sc, Option<Duration>.None, Option<Duration>.None)
@@ -130,7 +129,7 @@ public class okhttp_H2Connection_01{
     }
     @TestCase
     func okhttp_shutdownConn_010(): Unit {
-        let soc = Socket(TCP,"127.0.0.1", port)
+        let soc = TcpSocket("127.0.0.1", port)
         soc.connect()
         let sc = SocketClient.SocketC(soc)
         let socket = OKSocket(sc, Option<Duration>.None, Option<Duration>.None)
@@ -142,7 +141,7 @@ public class okhttp_H2Connection_01{
     }
     @TestCase
     func okhttp_shutdownConn_011(): Unit {
-        let soc = Socket(TCP,"127.0.0.1", port)
+        let soc = TcpSocket("127.0.0.1", port)
         soc.connect()
         let sc = SocketClient.SocketC(soc)
         let socket = OKSocket(sc, Option<Duration>.None, Option<Duration>.None)

@@ -1,5 +1,4 @@
 // 3rd_party_lib:httpclient4cj/build/httpclient4cj
-// 3rd_party_lib:httpclient4cj/ci_lib/crypto4cj
 
 
 from std import unittest.*
@@ -17,38 +16,33 @@ from std import sync.sleep
 public class okhtttp_code_101{
     var port: UInt16 = 0
     func serve(){
-        let hd = http.Route()
-        hd.handle("/d1234A+!", { rws: ResponseWriteStream, req: http.Request =>
-            req.url
-            rws.writeStatusCode(101)
+        let serverSocket = TcpServerSocket(bindAt: 0)
+        let server = ServerBuilder.new().listener(serverSocket).build()
+        server.distributor.register("/d1234A+!", { httpContext =>
+            httpContext.responseBuilder.status(101)
             let resp = "Hello from /red".toUtf8Array()
-            rws.write(resp)
+            httpContext.responseBuilder.body(resp)
             return
         })
-        let server = http.Server(hd)
-        let socket = SocketServer(SocketNet.TCP, "0.0.0.0", port)
-        port = socket.port
-        server.serve(socket) 
+        spawn{ server.serve() }
+        sleep(Duration.second)
+        port = serverSocket.localAddress.port
     }
 
     @TestCase
     func okhtttp_code_101(): Unit {
-            
-        spawn {
-            serve()
-        }
-    sleep(Duration.second)
+        serve()
 
-    let client: HttpClient= HttpClient.builder().build()
-    let request: httpclient4cj.Request = httpclient4cj.Request.builder()
-                                    .url("http://127.0.0.1:${port}/d1234A+!")
-                                    .method("GET")
-                                    .build()
-    let call = client.newCall(request)
-    let response: httpclient4cj.Response = call.execute()
-    let code : Int64 = response.getCode() 
+        let client: HttpClient= HttpClient.builder().build()
+        let request: httpclient4cj.Request = httpclient4cj.Request.builder()
+                                        .url("http://127.0.0.1:${port}/d1234A+!")
+                                        .method("GET")
+                                        .build()
+        let call = client.newCall(request)
+        let response: httpclient4cj.Response = call.execute()
+        let code : Int64 = response.getCode() 
 
-    @Assert(code, Int64(101))
+        @Assert(code, Int64(101))
     }
 
 }

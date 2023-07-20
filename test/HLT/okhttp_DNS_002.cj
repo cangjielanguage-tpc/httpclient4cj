@@ -1,5 +1,4 @@
 // 3rd_party_lib:httpclient4cj/build/httpclient4cj
-// 3rd_party_lib:httpclient4cj/ci_lib/crypto4cj
 
 
 from std import unittest.*
@@ -34,7 +33,7 @@ public class okhttp_DNS_002{
     var response_code : Int64 = response.getCode()
     var response_Message = response.getMessage()
     var response_isSuccess:Bool= response.isSuccess()
-    var response_heads: http.Header = response.getHeaders()
+    var response_heads: Header = response.getHeaders()
     // var response_body:Array<Byte> = response.getBody().getOrThrow().getSource().readToEnd()
     // var response_body_str = String.fromUtf8(response_body)
     var cacheControl = response.getCacheControl().toString()

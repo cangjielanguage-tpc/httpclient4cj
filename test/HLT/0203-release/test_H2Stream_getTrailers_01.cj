@@ -13,7 +13,7 @@ from std import core.*
 from std import log.*
 from std import sync.*
 
-public var port: UInt16 = 36389
+public var port: UInt16 = portTrans(36389)
 
 @Test
 public class okhttp_H2Stream_01 {
@@ -31,7 +31,7 @@ public class okhttp_H2Stream_01 {
             .header("content-type", formBody.contentType().getOrThrow().toString())
             .build()
 
-        let soc = Socket(TCP, "127.0.0.1", port)
+        let soc = TcpSocket("127.0.0.1", port)
         soc.connect()
         let sc = SocketClient.SocketC(soc)
         let socket = OKSocket(sc, Option<Duration>.None, Option<Duration>.None)

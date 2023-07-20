@@ -1,4 +1,5 @@
-// EXEC: cjc %import-path %L %l %f
+// DEPENDENCE: ../z_test.cj
+// EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
 
 from httpclient4cj import httpclient4cj.*
@@ -14,16 +15,16 @@ from std import sync.sleep
 //创建h2conn 和 stream，发送data 帧 关闭 stream
 
 main (){
-     let formBody = FormBody.builder()
-    .add("username", "admin")
-    .add("password", "123456")
-    .add("host","%6D")
-    .build()
-     let request: httpclient4cj.Request = httpclient4cj.Request.builder().url("http://127.0.0.1:50066/cangjie_test-1.0-SNAPSHOT/put")
-    .header("User-Agent", "OkHttp-Example").put(formBody)
-    .header("content-type",formBody.contentType().getOrThrow().toString())
-    .build()
-    let soc = Socket(TCP,"127.0.0.1", 50066)
+    let formBody = FormBody.builder()
+        .add("username", "admin")
+        .add("password", "123456")
+        .add("host","%6D")
+        .build()
+    let request: httpclient4cj.Request = httpclient4cj.Request.builder().url("http://127.0.0.1:${portTrans(50066)}/cangjie_test-1.0-SNAPSHOT/put")
+        .header("User-Agent", "OkHttp-Example").put(formBody)
+        .header("content-type",formBody.contentType().getOrThrow().toString())
+        .build()
+    let soc = TcpSocket("127.0.0.1", portTrans(50066))
     soc.connect()
     let sc = SocketC(soc)
     let socket = OKSocket(sc, Option<Duration>.None, Option<Duration>.None)

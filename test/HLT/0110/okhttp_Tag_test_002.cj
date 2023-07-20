@@ -1,5 +1,4 @@
 // 3rd_party_lib:httpclient4cj/build/httpclient4cj
-// 3rd_party_lib:httpclient4cj/ci_lib/crypto4cj
 
 from std import unittest.*
 from std import unittest.testmacro.*
@@ -19,10 +18,7 @@ public class okhttp_Tag_Test_002{
     // 设置多个 tag 同步发送请求 在拦截器中使用tag
     @TestCase
     func okhttp_Tag_Test_010(): Unit {
-        spawn {
-            serve()
-        }
-        sleep(Duration.second)
+        serve()
 
         var tags = ["tag_test_01", "tag_test_02", "tag_test_03", "tag_test_04", "tag_test_05"]
         let request_01: httpclient4cj.Request = httpclient4cj.Request.builder()
@@ -67,18 +63,17 @@ public class okhttp_Tag_Test_002{
     }
 
     func serve(){
-        let hd = http.Route()
-        hd.handle("/1234", { rws: ResponseWriteStream, req: http.Request =>
-            req.url
+        let serverSocket = TcpServerSocket(bindAt: 0)
+        let server = ServerBuilder.new().listener(serverSocket).build()
+        server.distributor.register("/1234", { httpContext =>
             sleep(Duration.second)
             let resp = "Hello from /red".toUtf8Array()
-            rws.write(resp)
+            httpContext.responseBuilder.body(resp)
             return
         })
-        let server = http.Server(hd)
-        let socket = socket.SocketServer(SocketNet.TCP, "0.0.0.0", port)
-        port = socket.port
-        server.serve(socket)
+        spawn{ server.serve() }
+        sleep(Duration.second)
+        port = serverSocket.localAddress.port
     }
 
 }

@@ -140,7 +140,7 @@ public class Cache <: Resource {
             return None
         }
 
-        if (HttpHeaders.hasVaryAll(response.getHeaders())) {
+        if (HttpHeaderUtils.hasVaryAll(response.getHeaders())) {
             return None
         }
 
@@ -265,7 +265,7 @@ class CacheEntry {
 
     init(response: Response) {
         this.url = response.getRequest().getUrl().toString()
-        this.varyHeaders = HttpHeaders.varyHeaders(response)
+        this.varyHeaders = HttpHeaderUtils.varyHeaders(response)
         this.requestMethod = response.getRequest().getMethod()
         this.protocol = response.getProtocol()
         this.code = response.getCode()
@@ -312,8 +312,8 @@ class CacheEntry {
                 addLenient(responseHeader, source.readUtf8Line())
             }
 
-            let sendRequestMillisString: String = responseHeader.get(SENT_MILLIS).getOrThrow()
-            let receivedResponseMillisString: String = responseHeader.get(RECEIVED_MILLIS).getOrThrow()
+            let sendRequestMillisString: String = responseHeader.getString(SENT_MILLIS).getOrThrow()
+            let receivedResponseMillisString: String = responseHeader.getString(RECEIVED_MILLIS).getOrThrow()
             sentRequestMillis = match (Int64.tryParse(sendRequestMillisString)) {
                 case None => 0
                 case Some(v) => v
@@ -333,8 +333,8 @@ class CacheEntry {
     }
 
     public func response(snapshot: Snapshot): Response {
-        let contentType: String = responseHeaders.get("Content-Type").getOrThrow()
-        let contentLength: String = responseHeaders.get("Content-Length").getOrThrow()
+        let contentType: String = responseHeaders.getString("Content-Type") ?? ""
+        let contentLength: String = responseHeaders.getString("Content-Length") ?? ""
 
         let cacheRequest: Request = Request.builder().url(url).method(requestMethod).header(varyHeaders).build()
 

@@ -1,10 +1,8 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
-
 from httpclient4cj import httpclient4cj.*
-
 from net import http.*
-
+from std import collection.*
 
 main() {
     //实际使用时不应该都调用
@@ -20,15 +18,26 @@ main() {
         .build()
 
     let header: Header = Header()
-
     header.set("cache-control",
-        "no-cache, no-store, max-age=3600, max-stale=3600, min-fresh=3600, only-if-cached, no-transform, immutable")
+        ArrayList(
+        [
+            "no-cache",
+            "no-store",
+            "max-age=3600",
+            "max-stale=3600",
+            "min-fresh=3600",
+            "only-if-cached",
+            "no-transform",
+            "immutable"
+        ]
+    ))
     let cc2 = CacheControl.parse(header)
 
-    if ("${cc2}" == "${cc}") {
+    if ("${cc}" == "${cc2}") {
         return 0
     } else {
+        println("${cc}")
+        println("${cc2}")
         return 1
     }
 }
-

@@ -84,8 +84,8 @@ public class RequestBuilder <: Builder<Request> {
      * @return Type of RequestBuilder
      * @since 0.29.3
      */
-    public func header(name: String, value: String): RequestBuilder {
-        headerBuild.set(name, value)
+    public func header(name: String, value: Array<String>): RequestBuilder {
+        headerBuild.set(name, ArrayList(value))
         return this
     }
 

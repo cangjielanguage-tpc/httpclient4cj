@@ -1,4 +1,5 @@
-// EXEC: cjc %import-path %L %l %f
+// DEPENDENCE: ../z_test.cj
+// EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
 
 from httpclient4cj import httpclient4cj.*
@@ -13,7 +14,7 @@ main() {
     let cache: Cache = Cache("./cacheccccccc", 10 * 1024 * 1024)
     let client: HttpClient= HttpClient.builder().cache(cache).build()
     let request = httpclient4cj.Request.builder()
-            .url("http://okhttp:50067/cache")
+            .url("http://okhttp:${portTrans(50067)}/cache")
             .build()
 
     let res = client.newCall(request).execute()
@@ -33,7 +34,7 @@ main() {
     sleep(Duration.second)//休眠一秒保证缓存失效
 
     let request2 = httpclient4cj.Request.builder()
-        .url("http://okhttp:50067/cache")
+        .url("http://okhttp:${portTrans(50067)}/cache")
         .cacheControl(CacheControl.builder().maxAge(1).build()) //设置缓存有效时间不足，触发协商缓存
         .build()
     //第二次走网络，用户手动添加不走缓存

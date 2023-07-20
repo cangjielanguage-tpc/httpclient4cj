@@ -1,4 +1,5 @@
-// EXEC: cjc %import-path %L %l %f
+// DEPENDENCE: ../z_test.cj
+// EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
 
 from httpclient4cj import httpclient4cj.*
@@ -6,8 +7,10 @@ from std import time.*
 
 main() {
     let client: HttpClient= HttpClient.builder().build()
-    let request: Request = Request.builder().url("http://36.152.44.95/index.html")
-    .header("User-Agent", "OkHttp-Example").build()
+    let request: Request = Request.builder()
+        .url("http://36.152.44.95/index.html")
+        .header("User-Agent", "OkHttp-Example")
+        .build()
     // RequestLine()
     let response: Response = client.newCall(request).execute()
     println(response.getMessage())

@@ -14,10 +14,7 @@ from std import sync.sleep
 var port: UInt16 = 0
 //重定向401,客户端需要进行鉴权处理，默认不处理，此时直接返回错误的响应结果
 main() {
-    spawn {
-        serve()
-    }
-    sleep(Duration.second)
+    serve()
     let url: URL = URL.parse("http://127.0.0.1:${port}/1234")
     let client: HttpClient= HttpClient.builder().build()
     let request: httpclient4cj.Request = httpclient4cj.Request.builder()
@@ -38,16 +35,16 @@ main() {
 }
 
 func serve(){
-    let hd = http.Route()
-    hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
+    let serverSocket = TcpServerSocket(bindAt: 0)
+    let server = ServerBuilder.new().listener(serverSocket).build()
+    server.distributor.register("/1234", { httpContext =>
         let resp = "Hello from /red".toUtf8Array()
-        rws.writeStatusCode(401)
-        rws.header().set("Location","http://127.0.0.1:${port}/1234")
-        rws.write(resp)
+        httpContext.responseBuilder.status(401)
+        httpContext.responseBuilder.header("Location","http://127.0.0.1:${port}/1234")
+        httpContext.responseBuilder.body(resp)
         return
     })
-    let server = http.Server(hd)
-    let socket = socket.SocketServer(SocketNet.TCP, "0.0.0.0", port)
-    port = socket.port
-    server.serve(socket)
+    spawn{ server.serve() }
+    sleep(Duration.second)
+    port = serverSocket.localAddress.port
 }

@@ -114,11 +114,11 @@ public class Address <: Hashable & Equatable<Address> {
 
     func equalsTlsConfig(rhs: Address): Bool {
         let path1 = match (tlsConfig) {
-            case Some(ts) => ts.caFile
+            case Some(ts) => ts.domain ?? ""
             case None => ""
         }
         let path2 = match (rhs.getTlsConfig()) {
-            case Some(ts) => ts.caFile
+            case Some(ts) => ts.domain ?? ""
             case None => ""
         }
         return path1.equals(path2)

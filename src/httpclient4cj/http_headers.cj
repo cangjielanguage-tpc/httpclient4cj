@@ -8,7 +8,7 @@ package httpclient4cj
 /**
  * @file The file manage Http2Writer.
  */
-class HttpHeaders {
+class HttpHeaderUtils {
     static func hasVaryAll(response: Response): Bool {
         return hasVaryAll(response.getHeaders())
     }

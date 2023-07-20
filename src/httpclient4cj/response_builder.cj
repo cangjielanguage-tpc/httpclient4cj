@@ -125,8 +125,8 @@ public open class ResponseBuilder <: Builder<Response> {
      * Sets the header named {@code name} to {@code value}. If this request already has any header
      * with that name, they are all replaced.
      */
-    public func header(name: String, value: String): ResponseBuilder {
-        headerBuild.set(name, value)
+    public func header(name: String, value: Array<String>): ResponseBuilder {
+        headerBuild.set(name, ArrayList(value))
         return this
     }
 

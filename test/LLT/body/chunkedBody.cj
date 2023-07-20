@@ -1,6 +1,5 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
-
 from httpclient4cj import httpclient4cj.*
 from std import collection.*
 from net import http.*
@@ -11,40 +10,37 @@ from std import time.*
 
 var port: UInt16 = 0
 main() {
-    spawn {
-        serve()
-    }
-    sleep(Duration.second)
-    let client: HttpClient= HttpClient.builder().build()
+    serve()
+    let client: HttpClient = HttpClient.builder().build()
     let request: httpclient4cj.Request = httpclient4cj.Request.builder()
-                                    .url("http://127.0.0.1:${port}/1234")
-                                    .method("POST", body: MyRequestBody())
-                                    .build()
+        .url("http://127.0.0.1:${port}/1234")
+        .method("POST", body: MyRequestBody())
+        .build()
     let response: httpclient4cj.Response = client.newCall(request).execute()
     println(response.toString())
-    if(response.getBody()?.isClosed() ?? true) {
+    if (response.getBody()?.isClosed() ?? true) {
         return 1
     } else {
         response.getBody()?.close()
-         return 0
-
+        return 0
     }
 }
 
-func serve(){
-    let hd = http.Route()
-    hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
-        println(String.fromUtf8(req.readToEnd()))
+func serve() {
+    let serverSocket = TcpServerSocket(bindAt: 0)
+    let server = ServerBuilder.new().listener(serverSocket).build()
+    server.distributor.register("/1234",
+        {
+        httpContext =>
+        println(StringReader(httpContext.request.body).readToEnd())
         return
     })
-    let server = http.Server(hd)
-    let socket = socket.SocketServer(SocketNet.TCP, "0.0.0.0", port)
-    port = socket.port
-    server.serve(socket)
+    spawn {server.serve()}
+    sleep(Duration.second)
+    port = serverSocket.localAddress.port
 }
 
-
-class MyRequestBody <:RequestBody {
+class MyRequestBody <: RequestBody {
     public func contentType(): Option<MediaType> {
         return MediaType.parse("application/json")
     }
@@ -60,7 +56,5 @@ class MyRequestBody <:RequestBody {
 
     public func get(): InputStream {
         return ByteArrayStream()
-
     }
-
 }

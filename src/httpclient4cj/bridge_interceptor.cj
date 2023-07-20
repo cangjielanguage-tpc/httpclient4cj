@@ -155,5 +155,5 @@ func contentLength(response: Response): Int64 {
 }
 
 func contentLength(headers: Header): Int64 {
-    return Int64.tryParse(headers.get("Content-Length") ?? "") ?? -1
+    return Int64.tryParse(headers.getString("Content-Length") ?? "") ?? -1
 }

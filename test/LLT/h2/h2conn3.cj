@@ -1,4 +1,5 @@
-// EXEC: cjc %import-path %L %l %f
+// DEPENDENCE: ../z_test.cj
+// EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
 
 from httpclient4cj import httpclient4cj.*
@@ -13,12 +14,11 @@ from std import sync.sleep
 
 //创建h2conn 并发送 goaway 关闭连接,此时再创建stream将抛出异常
 
-main (){
-
-     let request: httpclient4cj.Request = httpclient4cj.Request.builder().url("http://127.0.0.1:50066/cangjie_test-1.0-SNAPSHOT/hello")
-    .header("User-Agent", "OkHttp-Example")
-    .build()
-    let soc = Socket(TCP,"127.0.0.1", 50066)
+main() {
+    let request: httpclient4cj.Request = httpclient4cj.Request.builder().url(
+        "http://127.0.0.1:${portTrans(50066)}/cangjie_test-1.0-SNAPSHOT/hello").header("User-Agent", "OkHttp-Example").
+        build()
+    let soc = TcpSocket("127.0.0.1", portTrans(50066))
     soc.connect()
     let sc = SocketC(soc)
     let socket = OKSocket(sc, Option<Duration>.None, Option<Duration>.None)
@@ -26,9 +26,9 @@ main (){
     h2conn.start()
     h2conn.close()
     sleep(Duration.second)
-    try  {
+    try {
         let stream = h2conn.newStream(request)
-    } catch(e: Exception) {
+    } catch (e: Exception) {
         return 0
     }
     return 1

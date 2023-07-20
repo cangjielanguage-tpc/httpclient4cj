@@ -14,10 +14,7 @@ var port: UInt16 = 0
 var num = Int64(0)
 
 main() {
-    spawn {
-        serve()
-    }
-    sleep(Duration.second)
+    serve()
     let client: HttpClient= HttpClient.builder()//.addNetworkInterceptor(MyInterceptor1())
                                         .build()
     client.getDispatcher().setIdleCallback( { => println("===================di idle======================")})
@@ -34,16 +31,16 @@ main() {
 
 
 func serve(){
-    let hd = http.Route()
-    hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
+    let serverSocket = TcpServerSocket(bindAt: 0)
+    let server = ServerBuilder.new().listener(serverSocket).build()
+    server.distributor.register("/1234", { httpContext =>
         let resp = "Hello from /red".toUtf8Array()
-        rws.write(resp)
+        httpContext.responseBuilder.body(resp)
         return
     })
-    let server = http.Server(hd)
-    let socket = socket.SocketServer(SocketNet.TCP, "0.0.0.0", port)
-    port = socket.port
-    server.serve(socket)
+    spawn{ server.serve() }
+    sleep(Duration.second)
+    port = serverSocket.localAddress.port
 }
 
 
