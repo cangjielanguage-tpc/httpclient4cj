@@ -1,19 +1,17 @@
 // 3rd_party_lib:httpclient4cj/build/httpclient4cj
-// 3rd_party_lib:httpclient4cj/ci_lib/crypto4cj
 // data_file:body.text
 
+from encoding import url.*
+from net import http.*
+from net import tls.*
+from httpclient4cj import httpclient4cj.*
+from std import fs.*
 from std import unittest.*
 from std import unittest.testmacro.*
 from std import io.*
-from httpclient4cj import httpclient4cj.*
-from std import time.*
-from net import http.*
 from std import socket.*
-from encoding import url.*
-from net import tls.*
-from std import core.*
-from std import fs.*
 from std import sync.sleep
+from std import time.*
 
 @Test
 public class okhttp_MediaType_test_004{
@@ -21,10 +19,7 @@ public class okhttp_MediaType_test_004{
     // 创建 MultipartBody
     @TestCase
     func okhttp_MediaType_MultipartBody_test_032(): Unit {
-        spawn {
-            serve()
-        }
-        sleep(Duration.second)
+        serve()
 
         let body = RealRequestBody.create(MediaType.get("application/json"),File("./body.text",OpenOption.Open(true,false)))
 
@@ -54,19 +49,18 @@ public class okhttp_MediaType_test_004{
     }
 
     func serve() {
-        let hd = http.Route()
-        hd.handle("/1234", { rws: ResponseWriteStream, req: http.Request =>
-            req.url
+        let serverSocket = TcpServerSocket(bindAt: 0)
+        let server = ServerBuilder.new().listener(serverSocket).build()
+        server.distributor.register("/1234", { httpContext =>
             let resp = "Hello from /red".toUtf8Array()
-            rws.write(resp)
+            httpContext.responseBuilder.body(resp)
             println("***---****")
-            println(String.fromUtf8(req.readToEnd()))
+            println(StringReader(httpContext.request.body).readToEnd())
             return
         })
-        let server = http.Server(hd)
-        let socket = socket.SocketServer(SocketNet.TCP, "0.0.0.0", port)
-        port = socket.port
-        server.serve(socket)
+        spawn{ server.serve() }
+        sleep(Duration.second)
+        port = serverSocket.localAddress.port
     }
 }
 

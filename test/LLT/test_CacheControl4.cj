@@ -15,39 +15,36 @@ from std import sync.sleep
 var port: UInt16 = 1504
 var sev_cache_control = "max-age=200"
 func serve() {
-    let hd = http.Route()
-    hd.handle(
+    let serverSocket = TcpServerSocket(bindAt: 0)
+    let server = ServerBuilder.new().listener(serverSocket).build()
+    server.distributor.register(
         "/1",
         {
-            rws: http.ResponseWriteStream, req: http.Request =>
+            httpContext =>
             let resp = "Hello from 1".toUtf8Array()
-            rws.header().add("Last-Modified", "Tue, 27 May 2014 02:35:47 GMT")
-            rws.header().add("cache-control", sev_cache_control)
-            rws.write(resp)
+            httpContext.responseBuilder.header("Last-Modified", "Tue, 27 May 2014 02:35:47 GMT")
+            httpContext.responseBuilder.header("cache-control", sev_cache_control)
+            httpContext.responseBuilder.body(resp)
             return
         }
     )
-    hd.handle(
+    server.distributor.register(
         "/2",
         {
-            rws: http.ResponseWriteStream, req: http.Request =>
+            httpContext =>
             let resp = "Hello from 2".toUtf8Array()
-            rws.header().add("Last-Modified", "Tue, 27 May 2014 02:35:47 GMT")
-            rws.header().add("cache-control", sev_cache_control)
-            rws.write(resp)
+            httpContext.responseBuilder.header("Last-Modified", "Tue, 27 May 2014 02:35:47 GMT")
+            httpContext.responseBuilder.header("cache-control", sev_cache_control)
+            httpContext.responseBuilder.body(resp)
             return
         }
     )
-    let server = http.Server(hd)
-    let socket = socket.SocketServer(SocketNet.TCP, "0.0.0.0", port)
-    port = socket.port
-    server.serve(socket)
+    spawn{ server.serve() }
+    sleep(Duration.second)
+    port = serverSocket.localAddress.port
 }
 main() {
-    spawn {
-        serve()
-    }
-    sleep(Duration.second)
+    serve()
     let cache: Cache = Cache("./okhttp_cache_001", 10 * 1024 * 1024)
     let client: HttpClient = HttpClient.builder().cache(cache).build()
     let request: httpclient4cj.Request = httpclient4cj.Request.builder().url("http://127.0.0.1:${port}/1").method("GET").build()

@@ -27,6 +27,7 @@ from std import socket.*
 from std import sync.*
 from std import time.*
 from std import unicode.*
+from crypto import crypto.*
 
 let METHOD_GET = "GET"
 
@@ -69,29 +70,6 @@ class Util {
      */
     static func sameConnection(a: URL, b: URL): Bool {
         return a.hostName == b.hostName && a.port == b.port && a.scheme == b.scheme
-    }
-
-    /**
-     * The Function is getRequestMethod
-     *
-     * @param method of String
-     *
-     * @return Type of RequestMethod
-     * @since 0.29.3
-     */
-    static func getRequestMethod(method: String): RequestMethod {
-        match (method) {
-            case "GET" => GET
-            case "PUT" => PUT
-            case "POST" => POST
-            case "HEAD" => HEAD
-            case "PATCH" => PATCH
-            case "TRACE" => TRACE
-            case "DELETE" => DELETE
-            case "CONNECT" => CONNECT
-            case "OPTIONS" => OPTIONS
-            case _ => throw IllegalArgumentException("no such method")
-        }
     }
 
     static func skipUntil(input: String, pos: Int64, characters: String): Int64 {
@@ -169,14 +147,14 @@ func addLenient(header: Header, line: String) {
  */
 func receiveHeaders(cookieJar: CookieJar, url: URL, headers: Header): Unit {
     match (cookieJar) {
-        case _: NoCookieJar => return ()
+        case _: NoCookieJar => return
         case _ => ()
     }
 
     let cookies: ArrayList<Cookie> = CookieUtil.parseAll(url, headers)
 
     if (cookies.isEmpty()) {
-        return ()
+        return
     }
     cookieJar.saveFromResponse(url, cookies.toArray())
 }
@@ -251,4 +229,100 @@ func has<T>(op: Option<T>): Bool {
         case Some(_) => return true
         case None => return false
     }
+}
+
+extend Int64 {
+    operator func >=(right: UInt16): Bool {
+        this >= Int64(right)
+    }
+    operator func !=(right: UInt16): Bool {
+        this != Int64(right)
+    }
+    operator func ==(right: UInt16): Bool {
+        this == Int64(right)
+    }
+    operator func <(right: UInt16): Bool {
+        this < Int64(right)
+    }
+}
+
+extend Cookie {
+    prop name: String {
+        get() {
+            this.cookieName
+        }
+    }
+    prop value: String {
+        get() {
+            this.cookieValue
+        }
+    }
+}
+
+extend Header {
+    public func clone(): Header {
+        let dest = Header()
+        for ((k, v) in this) {
+            dest.set(k, v)
+        }
+        dest
+    }
+    public func remove(k: String): Unit {
+        this.del(k)
+    }
+    public func getString(k: String): ?String {
+        match (this.get(k)) {
+            case Some(v) => v |> collectString<String>(delimiter: ",")
+            case _ => None
+        }
+    }
+    public func getAll(k: String): ArrayList<String> {
+        this.get(k) ?? this.get(k.toLower()) ?? ArrayList()
+    }
+}
+
+public class Header <: Iterable<(String, ArrayList<String>)> {
+    let fields = HashMap<String, ArrayList<String>>()
+    let httpHeaders = HttpHeaders()
+
+    public init() {}
+    init(fields: Array<HeaderField>) {
+        for (f in fields) {
+            this.set(f.name, toValueArr(f.value))
+        }
+    }
+    private func toValueArr(value: String): ArrayList<String> {
+        value.split(";") |> map {s: String => s.trim()} |> collectArrayList
+    }
+    public func add(name: String, value: String): Unit {
+        if (name.startsWith(":")) {
+            let list = fields.get(name) ?? ArrayList<String>()
+            list.append(value.trim())
+            this.fields.put(name.toLower(), list)
+        } else {
+            httpHeaders.add(name, value)
+        }
+    }
+    public func set(name: String, value: ArrayList<String>): Unit {
+        if (name.startsWith(":")) {
+            this.fields.put(name.toLower(), value)
+        } else {
+            httpHeaders.set(name, value)
+        }
+    }
+    public func get(name: String): ?ArrayList<String> {
+        httpHeaders.get(name) ?? fields.get(name)
+    }
+    public func del(name: String): Unit {
+        fields.remove(name)
+        httpHeaders.del(name)
+    }
+    public func iterator(): Iterator<(String, ArrayList<String>)> {
+        httpHeaders |> concat(fields)
+    }
+}
+
+foreign func htons(port: UInt16): UInt16
+public func portTrans(port: UInt16): UInt16 {
+    unsafe { htons(port) }
 }

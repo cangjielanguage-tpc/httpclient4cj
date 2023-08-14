@@ -11,8 +11,8 @@ main() {
         let client: HttpClient=
         HttpClient.builder()
         .protocols(
-        ArrayList<String>([Protocol.get("h2_prior_knowledge").toString(),
-         Protocol.get("HTTP/1.1").toString()])).build()
+        ArrayList<String>([httpclient4cj.Protocol.get("h2_prior_knowledge").toString(),
+         httpclient4cj.Protocol.get("HTTP/1.1").toString()])).build()
     }catch(e: Exception) {
         return 0
     }

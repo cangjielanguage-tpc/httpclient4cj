@@ -1,4 +1,5 @@
-// EXEC: cjc %import-path %L %l %f
+// DEPENDENCE: ./z_test.cj
+// EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
 
 from httpclient4cj import httpclient4cj.*
@@ -11,17 +12,14 @@ from std import sync.sleep
 
 var port: UInt16 = 0
 main() {
-    spawn {
-        serve()
-    }
-    sleep(Duration.second)
+    serve()
 
     let cache: CacheControl = CacheControl.builder()
                                 .maxAge(1000)
                                 .build()
     let client: HttpClient= HttpClient.builder().build()
     let request: httpclient4cj.Request = httpclient4cj.Request.builder()
-                                    .url("http://127.0.0.1:50066/cangjie_test-1.0-SNAPSHOT/hello")
+                                    .url("http://127.0.0.1:${portTrans(50066)}/cangjie_test-1.0-SNAPSHOT/hello")
                                     .method("GET")
                                     .cacheControl(cache)
                                     .build()
@@ -31,14 +29,14 @@ main() {
 }
 
 func serve(){
-    let hd = http.Route()
-    hd.handle("/index", { rws: http.ResponseWriteStream, req: http.Request =>
+    let serverSocket = TcpServerSocket(bindAt: 0)
+    let server = ServerBuilder.new().listener(serverSocket).build()
+    server.distributor.register("/index", { httpContext =>
         let resp = "Hello from /red".toUtf8Array()
-        rws.write(resp)
+        httpContext.responseBuilder.body(resp)
         return
     })
-    let server = http.Server(hd)
-    let socket = socket.SocketServer(SocketNet.TCP, "0.0.0.0", port)
-    port = socket.port
-    server.serve(socket)
+    spawn{ server.serve() }
+    sleep(Duration.second)
+    port = serverSocket.localAddress.port
 }

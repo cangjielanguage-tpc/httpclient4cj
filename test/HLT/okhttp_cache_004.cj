@@ -1,5 +1,4 @@
 // 3rd_party_lib:httpclient4cj/build/httpclient4cj
-// 3rd_party_lib:httpclient4cj/ci_lib/crypto4cj
 
 
 from std import unittest.*
@@ -32,28 +31,24 @@ public class okhttp_cache_004 {
 
     var port: UInt16 = 0
     func serve(){
-        let hd = http.Route() 
-        hd.handle("/1234567", { rws: ResponseWriteStream, req: http.Request =>
-            req.url
+        let serverSocket = TcpServerSocket(bindAt: 0)
+    let server = ServerBuilder.new().listener(serverSocket).build() 
+        server.distributor.register("/1234567", { httpContext =>
             let resp = "Hello from /red".toUtf8Array()
-            rws.header().add("Last-Modified", "Tue, 27 May 2014 02:35:47 GMT")
-            rws.header().add("cache-control", "max-age=1000") 
-            rws.write(resp)
+            httpContext.responseBuilder.header("Last-Modified", "Tue, 27 May 2014 02:35:47 GMT")
+            httpContext.responseBuilder.header("cache-control", "max-age=1000") 
+            httpContext.responseBuilder.body(resp)
             return
         })
-        let server = http.Server(hd)
-        let socket = socket.SocketServer(SocketNet.TCP, "0.0.0.0", port)
-        port = socket.port
-        server.serve(socket)
+        spawn{ server.serve() }
+        sleep(Duration.second)
+        port = serverSocket.localAddress.port
     }
 
     
     @TestCase
     func okhttp_cache_004(): Unit {
-        spawn {
-            serve()
-        }
-        sleep(Duration.second)
+        serve()
         let cache: Cache = Cache("../../tmp", 10 * 1024 * 1024)
         let client: HttpClient= HttpClient.builder().cache(cache)
                                         .addNetworkInterceptor(MyInterceptor()).build()

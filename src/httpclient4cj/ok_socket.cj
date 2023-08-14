@@ -43,20 +43,24 @@ public class OKSocket <: Resource & InputStream & OutputStream {
 }
 
 public enum SocketClient <: Resource {
-    | SocketC(Socket)
+    | SocketC(TcpSocket)
     | TlsC(TlsSocket)
 
     public func connect(): Unit {
         match (this) {
             case SocketC(conn) => conn.connect()
-            case TlsC(conn) => conn.connect()
+            case TlsC(conn) =>
+                (conn.socket as TcpSocket)?.connect()
+                conn.handshake()
         }
     }
 
     public func connect(timeout: Duration): Unit {
         match (this) {
-            case SocketC(conn) => conn.connect(timeout)
-            case TlsC(conn) => conn.connect(timeout)
+            case SocketC(conn) => conn.connect(timeout: timeout)
+            case TlsC(conn) =>
+                (conn.socket as TcpSocket)?.connect(timeout: timeout)
+                conn.handshake(timeout: timeout)
         }
     }
 
@@ -69,8 +73,12 @@ public enum SocketClient <: Resource {
 
     public func read(buffer: Array<Byte>, timeout: Duration): Int64 {
         return match (this) {
-            case SocketC(conn) => conn.read(buffer, timeout)
-            case TlsC(conn) => conn.read(buffer, timeout)
+            case SocketC(conn) =>
+                conn.readTimeout = timeout
+                conn.read(buffer)
+            case TlsC(conn) =>
+                conn.readTimeout = timeout
+                conn.read(buffer)
         }
     }
 
@@ -83,8 +91,12 @@ public enum SocketClient <: Resource {
 
     public func write(buffer: Array<Byte>, timeout: Duration): Unit {
         match (this) {
-            case SocketC(conn) => conn.write(buffer, timeout)
-            case TlsC(conn) => conn.write(buffer, timeout)
+            case SocketC(conn) =>
+                conn.writeTimeout = timeout
+                conn.write(buffer)
+            case TlsC(conn) =>
+                conn.writeTimeout = timeout
+                conn.write(buffer)
         }
     }
 

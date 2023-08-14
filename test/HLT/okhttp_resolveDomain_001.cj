@@ -1,5 +1,4 @@
 // 3rd_party_lib:httpclient4cj/build/httpclient4cj
-// 3rd_party_lib:httpclient4cj/ci_lib/crypto4cj
 
 from std import unittest.*
 from std import unittest.testmacro.*
@@ -18,25 +17,21 @@ from std import sync.sleep
 public class okhttp_resolveDomain_001 {
     var port: UInt16 = 0
     func serve(){
-        let hd = http.Route()
-        hd.handle("/1234", { rws: ResponseWriteStream, req: http.Request =>
-            req.url
+        let serverSocket = TcpServerSocket(bindAt: 0)
+        let server = ServerBuilder.new().listener(serverSocket).build()
+        server.distributor.register("/1234", { httpContext =>
             let resp = "hello".toUtf8Array()
-            rws.write(resp)
+            httpContext.responseBuilder.body(resp)
             return
         })
-        let server = http.Server(hd)
-        let socket = socket.SocketServer(SocketNet.TCP, "0.0.0.0", port)
-        port = socket.port
-        server.serve(socket)
+        spawn{ server.serve() }
+        sleep(Duration.second)
+        port = serverSocket.localAddress.port
     }
 
     @TestCase
     func okhttp_resolveDomain_001(): Unit {
-        spawn {
-            serve()
-        }
-        sleep(Duration.second)
+        serve()
         let url = URL.parse("http://127.0.0.1:${port}/1234")
         var socketHost = url.hostName
         let arr = resolveDomain(TCP, socketHost)

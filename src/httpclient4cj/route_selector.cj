@@ -93,9 +93,9 @@ class RouteSelector {
             case Some(v) => v
             case None =>
                 if (url.toString().startsWith("https")) {
-                    443
+                    portTrans(443)
                 } else {
-                    80
+                    portTrans(80)
                 }
         }
         eventListener.dnsStart(call, socketHost)

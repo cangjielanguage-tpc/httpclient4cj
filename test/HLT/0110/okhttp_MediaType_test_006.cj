@@ -1,5 +1,4 @@
 // 3rd_party_lib:httpclient4cj/build/httpclient4cj
-// 3rd_party_lib:httpclient4cj/ci_lib/crypto4cj
 // data_file:body.text
 // data_file:image.png
 
@@ -22,10 +21,7 @@ public class okhttp_MediaType_test_006{
     // 使用自定义的MediaType 附加图片、word 等格式文件
     @TestCase
     func okhttp_MediaType_MultipartBody_test_034(): Unit {
-        spawn {
-            serve()
-        }
-        sleep(Duration.second)
+        serve()
 
         let body_image = RealRequestBody.create(MediaType.get("text/img"),File("./image.png",OpenOption.Open(true,false)))
 
@@ -42,19 +38,18 @@ public class okhttp_MediaType_test_006{
     }
 
     func serve() {
-        let hd = http.Route()
-        hd.handle("/1234", { rws: ResponseWriteStream, req: http.Request =>
-            req.url
+        let serverSocket = TcpServerSocket(bindAt: 0)
+        let server = ServerBuilder.new().listener(serverSocket).build()
+        server.distributor.register("/1234", { httpContext =>
             let resp = "Hello from /red".toUtf8Array()
-            rws.write(resp)
+            httpContext.responseBuilder.body(resp)
             println("***---****")
-            //println(String.fromUtf8(req.readToEnd()))
+            println(StringReader(httpContext.request.body).readToEnd())
             return
         })
-        let server = http.Server(hd)
-        let socket = socket.SocketServer(SocketNet.TCP, "0.0.0.0", port)
-        port = socket.port
-        server.serve(socket)
+        spawn{ server.serve() }
+        sleep(Duration.second)
+        port = serverSocket.localAddress.port
     }
 }
 

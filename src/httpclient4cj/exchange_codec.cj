@@ -168,7 +168,8 @@ public class Http1ExchangeCodec <: ExchangeCodec {
         buffer.append(requestLine).append(CRLF)
 
         for ((ks, v) in headers) {
-            var k = HeaderDfaUtil.canonicalHeaderKey(ks)
+            // var k = HeaderDfaUtil.canonicalHeaderKey(ks)
+            var k = ks
             buffer.append(k).append(": ")
             for (i in v) {
                 buffer.append(i).append(';')

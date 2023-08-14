@@ -15,7 +15,7 @@ main() {
     printlnURL(parseUrl)
     printlnURL(parseUrl2)
     printlnURL(parseUrl3)
-    let arr  = ArrayList<String>([Protocol.get("H2_PRIOR_KNOWLEDGE").toString()])
+    let arr  = ArrayList<String>([httpclient4cj.Protocol.get("H2_PRIOR_KNOWLEDGE").toString()])
     let a1 = Address(parseUrl2, arr)
     let a2 = Address(parseUrl3, arr)
     if(a1 != a2) {

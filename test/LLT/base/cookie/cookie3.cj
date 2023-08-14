@@ -1,6 +1,6 @@
-// EXEC: cjc %import-path %L %l %f
+// DEPENDENCE: ../../z_test.cj
+// EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
-
 from std import io.*
 from httpclient4cj import httpclient4cj.*
 from net import http.*
@@ -9,10 +9,9 @@ from encoding import url.*
 from net import tls.*
 
 var port: UInt16 = 0
+
 //覆盖设置cookie对报文的影响，setCookie HttpOnly
 main() {
-
-
     //Max-Age存在时,以max-Age优先，表示失效的相对时间，单位为秒
     //setCookie = aliyungf_tc=4fcc6359a2084101dc82c15f3955c6126766c5b21109fbe4a39616f4192ba0e2; Path=/; HttpOnly
     //setCookie = acw_tc=0a324fb516657393236678577e76052a825b3fafab5db4e52bcc6530fe5a0e;path=/;HttpOnly;Max-Age=1800
@@ -20,23 +19,19 @@ main() {
     let url: URL = URL.parse("https://baidu.com")
     let jar = getSimpleCookieJar()
     jar.saveFromResponse(url, [Cookie("BD_HOME", "1"), Cookie("BD_UPN", "12314753")])
-    let client: HttpClient= HttpClient.builder().cookieJar(jar)
-    .build()
-    let request: httpclient4cj.Request = httpclient4cj.Request.builder()
-                                    .url(url)
-                                    .build()
+    let client: HttpClient = HttpClient.builder().cookieJar(jar).build()
+    let request: httpclient4cj.Request = httpclient4cj.Request.builder().url(url).build()
     let call = client.newCall(request)
 
-    try{
+    try {
         let response: httpclient4cj.Response = call.execute()
-        let arr = ByteArrayStream()
-         if(client.getCookieJar().loadForRequest(url).size > 0) {
+        // let arr = ByteArrayStream()
+        if (client.getCookieJar().loadForRequest(url).size > 0) {
             return 0
-         } else {
+        } else {
             return 1
-         }
-
-    }catch (e: Exception) {
+        }
+    } catch (e: Exception) {
         e.printStackTrace()
         return 1
     }

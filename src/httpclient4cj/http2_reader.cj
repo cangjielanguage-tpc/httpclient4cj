@@ -66,6 +66,9 @@ class Http2Reader {
             return false
         } catch (e: SocketException) {
             throw HttpException("SocketException")
+        }catch (e: Exception) {
+            e.printStackTrace()
+            throw e
         }
     }
 

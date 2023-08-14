@@ -24,7 +24,7 @@ main(){
     RealRequestBody.create(MediaType.get("application/json"), jsonStr.toUtf8Array()))
  var proArray = ArrayList<String>()
  proArray.append("http/1.1")
-  let header: http.Header = Header()
+  let header: Header = Header()
   header.add("aaa", "application/json")
   header.add("aaa", "application2/json")
  let client = HttpClient.builder().protocols(proArray).build()
@@ -43,14 +43,14 @@ main(){
 
  public func serve(){
 
-    let hd = http.Route()
-    hd.handle("/1241", { rws: http.ResponseWriteStream, req: http.Request =>
+    let serverSocket = TcpServerSocket(bindAt: 0)
+    let server = ServerBuilder.new().listener(serverSocket).build()
+    server.distributor.register("/1241", { httpContext =>
       let resp = "Hello from /red".toUtf8Array()
-      rws.write(resp)
+      httpContext.responseBuilder.body(resp)
       return
     })
-    let server = http.Server(hd)
-    let socket = socket.SocketServer(SocketNet.TCP, "0.0.0.0", port)
-    port = socket.port
-    server.serve(socket)
+    spawn{ server.serve() }
+    sleep(Duration.second)
+    port = serverSocket.localAddress.port
   }

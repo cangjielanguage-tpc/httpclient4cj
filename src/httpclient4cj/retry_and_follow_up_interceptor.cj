@@ -137,7 +137,7 @@ public class RetryAndFollowUpInterceptor <: Interceptor {
             case _: ProtocolException => return false
             case conn: ConnectException =>
                 let contain = conn.contain
-                if (contain is SocketTimeoutException || contain is TlsTimeoutException) {
+                if (contain is SocketTimeoutException) {
                     return !requestSendStarted
                 } else {
                     return false

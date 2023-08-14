@@ -1,4 +1,5 @@
-// EXEC: cjc %import-path %L %l %f
+// DEPENDENCE: ../z_test.cj
+// EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
 
 from httpclient4cj import httpclient4cj.*
@@ -12,12 +13,12 @@ from std import io.*
 
 //创建h2conn 和 stream， 获取id == 3以及 openStreamCount == 1
 
-main (){
-
-     let request: httpclient4cj.Request = httpclient4cj.Request.builder().url("http://127.0.0.1:50066/cangjie_test-1.0-SNAPSHOT/hello")
-    .header("User-Agent", "OkHttp-Example")
-    .build()
-    let soc = Socket(TCP,"127.0.0.1", 50066)
+main() {
+    let request: httpclient4cj.Request = httpclient4cj.Request.builder()
+        .url("http://127.0.0.1:${portTrans(50066)}/cangjie_test-1.0-SNAPSHOT/hello")
+        .header("User-Agent", "OkHttp-Example")
+        .build()
+    let soc = TcpSocket("127.0.0.1", portTrans(50066))
     soc.connect()
     let sc = SocketC(soc)
     let socket = OKSocket(sc, Option<Duration>.None, Option<Duration>.None)
@@ -27,8 +28,8 @@ main (){
     let id = stream.getId()
     let errorCode = stream.getErrorCode()
     let conn = stream.getConnection()
-    let openStreamCount =  h2conn.openStreamCount()
-    if (id ==3 && openStreamCount ==1) {
+    let openStreamCount = h2conn.openStreamCount()
+    if (id == 3 && openStreamCount == 1) {
         return 0
     } else {
         return 1

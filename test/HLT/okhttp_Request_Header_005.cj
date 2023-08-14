@@ -1,5 +1,4 @@
 // 3rd_party_lib:httpclient4cj/build/httpclient4cj
-// 3rd_party_lib:httpclient4cj/ci_lib/crypto4cj
 
 
 from std import unittest.*
@@ -19,7 +18,7 @@ public class okhttp_Request_Header_005{
     @TestCase
     func okhttp_Request_Header_005(): Unit {
         let url : URL = URL.parse("http://127.0.0.1:1109/1234")
-        let header: http.Header = Header()
+        let header: Header = Header()
         header.add("content-type", "application/json") 
         header.add("content-type", "application2/json")
         let request: httpclient4cj.Request = httpclient4cj.Request.builder()

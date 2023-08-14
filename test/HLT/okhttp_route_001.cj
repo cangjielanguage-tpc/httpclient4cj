@@ -1,5 +1,4 @@
 // 3rd_party_lib:httpclient4cj/build/httpclient4cj
-// 3rd_party_lib:httpclient4cj/ci_lib/crypto4cj
 
 
 from std import unittest.*
@@ -21,7 +20,7 @@ public class okhttp_route_001{
     func okhttp_route_001(): Unit {
 
         let parseUrl2 = URL.parse("http://www.jd.com/index.html")
-        let arr  = ArrayList<String>([Protocol.get("H2_PRIOR_KNOWLEDGE").toString()])
+        let arr  = ArrayList<String>([httpclient4cj.Protocol.get("H2_PRIOR_KNOWLEDGE").toString()])
         let adr = Address(parseUrl2, arr)
         let route = httpclient4cj.Route(adr, SocketAddress("192.168.0.1",80))
         println("route.getAddress() :${route.getAddress().getUrl()}")

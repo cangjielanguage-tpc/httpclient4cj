@@ -1,5 +1,4 @@
 // 3rd_party_lib:httpclient4cj/build/httpclient4cj
-// 3rd_party_lib:httpclient4cj/ci_lib/crypto4cj
 
 
 from std import unittest.*
@@ -22,7 +21,7 @@ public class okhttp_readHttp2HeadersList_001{
     func okhttp_readHttp2HeadersList_001(): Unit {
         var headers=Header()
         headers.add(":status","200")
-        var resp=Http2ExchangeCodec.readHttp2HeadersList(headers,Protocol.HTTP_2).build()
+        var resp=Http2ExchangeCodec.readHttp2HeadersList(headers,httpclient4cj.Protocol.HTTP_2).build()
         @Assert(resp.getProtocol().toString(),"h2")
     }
 }

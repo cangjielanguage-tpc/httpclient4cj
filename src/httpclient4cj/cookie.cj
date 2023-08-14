@@ -128,14 +128,11 @@ public class CookieUtil {
             pos = attributePairEnd + 1
         }
         expiresAt = checkExpiresAt(getTimeStamp(expiresAt), deltaSeconds)
-        if (deltaSeconds == -1) {
-            deltaSeconds = 0
-        }
 
         let urlHost = url.hostName
 
         if (domain == "") {
-            domain = urlHost
+            // domain = urlHost
         } else if (!domainMatch(urlHost, domain)) {
             return None
         }
@@ -150,8 +147,12 @@ public class CookieUtil {
             }
         }
 
-        return Cookie(cookieName, cookieValue, path: path, domain: domain, expires: expiresAt, rawExpires: rawExpires,
-            maxAge: deltaSeconds, secure: secureOnly, httpOnly: httpOnly)
+        let cookieMaxAge: ?Int64 = match (deltaSeconds) {
+            case -1 => None
+            case _ => deltaSeconds
+        }
+        return Cookie(cookieName, cookieValue, path: path, domain: domain, expires: expiresAt, maxAge: cookieMaxAge,
+            secure: secureOnly, httpOnly: httpOnly)
     }
 
     static func trimSubstring(str: String, pos: Int64, limit: Int64): String {
@@ -166,7 +167,7 @@ public class CookieUtil {
             return true
         }
         if (urlHost.endsWith(domain) && urlHost[urlHost.size - domain.size - 1] == '.') {
-            if(!Util.verifyAsIpAddress(urlHost)){
+            if (!Util.verifyAsIpAddress(urlHost)) {
                 return true
             }
         }

@@ -17,15 +17,15 @@ public class okhtttp_001{
     func serve(){
         var port: UInt16 = 50066
         let hd = http3.Route()
-        hd.handle("/index", { rws: http3.ResponseWriteStream, req: http3.Request =>
+        server.distributor.register("/index", { rws: http3.ResponseWriteStream, req: http3.Request =>
             let resp = "Hello from /red".toUtf8Array()
-            rws.write(resp)
+            httpContext.responseBuilder.body(resp)
             return
         })
         let server = http3.Server(hd)
-        let socket = socket.SocketServer(SocketNet.TCP, "0.0.0.0", port)
-        port = socket.port
-        server.serve(socket) 
+        spawn{ server.serve() }
+        sleep(Duration.second)
+        port = serverSocket.localAddress.port
     }
 
     @TestCase

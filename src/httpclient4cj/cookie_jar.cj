@@ -54,10 +54,10 @@ class NoCookieJar <: CookieJar {
  */
 class SimpleCookieJar <: CookieJar {
     /* let member delegate type is HttpCookieJar */
-    private let delegate: HttpCookieJar = HttpCookieJar()
+    private let delegate: HttpCookieJar = HttpCookieJar.createDefaultCookieJar(ArrayList(), true)
 
     public func saveFromResponse(url: URL, cookies: Array<Cookie>): Unit {
-        delegate.setCookies(url, cookies)
+        delegate.storeCookies(url, ArrayList(cookies))
     }
 
     /**
@@ -69,7 +69,7 @@ class SimpleCookieJar <: CookieJar {
      * @since 0.34.3
      */
     public func loadForRequest(url: URL): Array<Cookie> {
-        return delegate.cookies(url)
+        return delegate.getCookies(url).toArray()
     }
 }
 

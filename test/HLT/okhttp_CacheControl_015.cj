@@ -1,5 +1,4 @@
 // 3rd_party_lib:httpclient4cj/build/httpclient4cj
-// 3rd_party_lib:httpclient4cj/ci_lib/crypto4cj
 
 from std import unittest.*
 from std import unittest.testmacro.*
@@ -34,29 +33,25 @@ public class okhttp_CacheControl_015 {
 
     var port: UInt16 = 0
     func serve(){
-        let hd = http.Route() 
-        hd.handle("/1234567", { rws: ResponseWriteStream, req: http.Request =>
-            req.url
+        let serverSocket = TcpServerSocket(bindAt: 0)
+    let server = ServerBuilder.new().listener(serverSocket).build() 
+        server.distributor.register("/1234567", { httpContext =>
             let resp = "Hello from /red".toUtf8Array()
-            rws.header().add("Last-Modified", "Tue, 27 May 2014 02:35:47 GMT")
-            rws.header().add("cache-control", "") 
-            rws.write(resp)
+            httpContext.responseBuilder.header("Last-Modified", "Tue, 27 May 2014 02:35:47 GMT")
+            httpContext.responseBuilder.header("cache-control", "") 
+            httpContext.responseBuilder.body(resp)
             return
         })
-        let server = http.Server(hd)
-        let socket = socket.SocketServer(SocketNet.TCP, "0.0.0.0", port)
-        port = socket.port
-        server.serve(socket)
+        spawn{ server.serve() }
+        sleep(Duration.second)
+        port = serverSocket.localAddress.port
     }
 
     
     @TestCase
     @Skip
     func okhttp_CacheControl_015(): Unit {
-        spawn {
-            serve()
-        }
-        sleep(Duration.second)
+        serve()
 
         let cachecontrol: CacheControl = CacheControl.builder()
                                     .minFresh(3)
@@ -70,7 +65,7 @@ public class okhttp_CacheControl_015 {
         println("-------------------------------OKHttp-第一次请求----------------------------")
         var response: httpclient4cj.Response = client.newCall(request).execute()
         response.getBody().getOrThrow().getString()
-        var response_heads: http.Header = response.getHeaders()
+        var response_heads: Header = response.getHeaders()
         
         for ((nm,vl) in response_heads) {
             println(nm)
@@ -135,7 +130,7 @@ public class okhttp_CacheControl_015 {
        
         println("-------------------------------OKHttp-OKHttp-第二次请求----------------------------")
         var response2: httpclient4cj.Response = client.newCall(request).execute()
-        var response_heads2: http.Header = response2.getHeaders()
+        var response_heads2: Header = response2.getHeaders()
         for ((nm,vl) in response_heads2) {
             println(nm)
             println(vl)

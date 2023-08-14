@@ -1,5 +1,4 @@
 // 3rd_party_lib:httpclient4cj/build/httpclient4cj
-// 3rd_party_lib:httpclient4cj/ci_lib/crypto4cj
 
 
 from std import unittest.*
@@ -19,25 +18,21 @@ public class okhttp_Response_002{
 
     var port: UInt16 = 0
     func serve(){
-        let hd = http.Route()
-        hd.handle("/12345", { rws: ResponseWriteStream, req: http.Request =>
-            req.url
+        let serverSocket = TcpServerSocket(bindAt: 0)
+        let server = ServerBuilder.new().listener(serverSocket).build()
+        server.distributor.register("/12345", { httpContext =>
             let resp = "Hello from /red".toUtf8Array()
-            rws.write(resp)
+            httpContext.responseBuilder.body(resp)
             return
         })
-        let server = http.Server(hd)
-        let socket = socket.SocketServer(SocketNet.TCP, "0.0.0.0", port)
-        port = socket.port
-        server.serve(socket)
+        spawn{ server.serve() }
+        sleep(Duration.second)
+        port = serverSocket.localAddress.port
     }
 
     @TestCase
     func okhttp_Response_002(): Unit {
-    spawn {
-        serve()
-    }
-    sleep(Duration.second)
+    serve()
 
     let cache: CacheControl = CacheControl.builder()
                                 .maxAge(1000)
@@ -52,7 +47,7 @@ public class okhttp_Response_002{
     var call = client.newCall(request)
     var response: httpclient4cj.Response = call.execute()
     response.getRequest()
-    var response_heads: http.Header = response.getHeaders()
+    var response_heads: Header = response.getHeaders()
 
     var response_protocol = response.getProtocol().toString()
     var response_code : Int64 = response.getCode()

@@ -1,4 +1,5 @@
-// EXEC: cjc %import-path %L %l %f
+// DEPENDENCE: ../z_test.cj
+// EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
 
 from std import time.*
@@ -26,7 +27,7 @@ main() {
 
     /*request1*/
     let request = httpclient4cj.Request.builder()
-            .url("http://okhttp:50067/cache/1000")
+            .url("http://okhttp:${portTrans(50067)}/cache/1000")
             .method("GET")
             .build()
     let res = client.newCall(request).execute()

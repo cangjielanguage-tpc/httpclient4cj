@@ -245,15 +245,15 @@ public class Connection {
      *
      * @since 0.29.3
      */
-    private func connectSocket(connectTimeout: Option<Duration>) {
+    private func connectSocket(connectTimeout: ?Duration, readTimeout: ?Duration, writeTimeout: ?Duration): TcpSocket {
         let socketAddress: SocketAddress = route.inetSocketAddress
         try {
-            let s = Socket(TCP, socketAddress.hostAddress, socketAddress.port)
-            match (connectTimeout) {
-                case Some(time) => s.connect(time)
-                case None => s.connect()
-            }
+            let s = TcpSocket(socketAddress.hostAddress, socketAddress.port)
+            s.readTimeout = readTimeout
+            s.writeTimeout = writeTimeout
+            s.connect(timeout: connectTimeout)
             rawSocket = SocketC(s)
+            return s
         } catch (e1: SocketException) {
             throw ConnectException("Failed to connect to ${socketAddress}", e1)
         } catch (e2: SocketTimeoutException) {
@@ -271,7 +271,7 @@ public class Connection {
         match (route.getAddress().getTlsConfig()) {
             case None =>
                 eventListener.connectStart(call, route.inetSocketAddress)
-                connectSocket(connectTimeout)
+                connectSocket(connectTimeout, readTimeout, writeTimeout)
                 let client = OKSocket(rawSocket.getOrThrow(), readTimeout, writeTimeout)
                 socket = client
                 sink = BufferedOutputStream(client)
@@ -309,16 +309,15 @@ public class Connection {
     ) {
         let address = route.getAddress()
         var cfg = route.getAddress().getTlsConfig().getOrThrow()
-        cfg.alpnList = collectArray(address.getProtocols().iterator())
-        let socketAddress: SocketAddress = route.inetSocketAddress
+        cfg.alpnProtocolsList = collectArray(address.getProtocols().iterator())
         try {
-            var client = TlsSocket(TCP, socketAddress.hostAddress, socketAddress.port, cfg)
-            match (connectTimeout) {
-                case Some(time) => client.connect(time)
-                case None => client.connect()
-            }
+            let tcpSocket = connectSocket(connectTimeout, readTimeout, writeTimeout)
+            let client = TlsSocket.client(tcpSocket, clientConfig: cfg)
+            client.readTimeout = readTimeout
+            client.writeTimeout = writeTimeout
+            client.handshake()
             let realSocket = OKSocket(TlsC(client), readTimeout, writeTimeout)
-            let aplnSelected: String = client.getAlpnSelected()
+            let aplnSelected: String = client.alpnProtocolName.getOrThrow()
             socket = realSocket
             sink = BufferedOutputStream(realSocket)
             source = OkBuffer(realSocket)
@@ -327,8 +326,6 @@ public class Connection {
             }
         } catch (e: TlsException) {
             throw ConnectException("${e.message}", e)
-        } catch (e2: TlsTimeoutException) {
-            throw ConnectException("${e2.message}", e2)
         }
     }
 

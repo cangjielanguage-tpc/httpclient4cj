@@ -12,7 +12,7 @@ main() {
         let client: HttpClient=
         HttpClient.builder()
         .protocols(
-        ArrayList<String>([Protocol.get("HTTP/2.0").toString()])).build()
+        ArrayList<String>([httpclient4cj.Protocol.get("HTTP/2.0").toString()])).build()
     }catch(e: Exception) {
         return 0
     }

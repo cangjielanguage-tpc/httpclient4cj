@@ -1,5 +1,4 @@
 // 3rd_party_lib:httpclient4cj/build/httpclient4cj
-// 3rd_party_lib:httpclient4cj/ci_lib/crypto4cj
 
 
 from std import unittest.*
@@ -37,34 +36,30 @@ public class okhttp_ResponseBuilder_001{
 
     var port: UInt16 = 0
     func serve(){
-        let hd = http.Route()
-        hd.handle("/1234", { rws: ResponseWriteStream, req: http.Request =>
-            req.url
+        let serverSocket = TcpServerSocket(bindAt: 0)
+        let server = ServerBuilder.new().listener(serverSocket).build()
+        server.distributor.register("/1234", { httpContext =>
             let resp = "Hello from /red".toUtf8Array()
-            rws.write(resp)
+            httpContext.responseBuilder.body(resp)
             return
         })
-        let server = http.Server(hd)
-        let socket = socket.SocketServer(SocketNet.TCP, "0.0.0.0", port)
-        port = socket.port
-        server.serve(socket)
+        spawn{ server.serve() }
+        sleep(Duration.second)
+        port = serverSocket.localAddress.port
     }
     @TestCase
     func okhttp_ResponseBuilder_001(): Unit {
-    spawn {
         serve()
-    }
-    sleep(Duration.second)
-    let client: HttpClient= HttpClient.builder().addNetworkInterceptor(MyInterceptor())
-                                          .build()
-    let request: httpclient4cj.Request = httpclient4cj.Request.builder()
-                                    .url("http://127.0.0.1:${port}/1234")
-                                    .method("GET")
-                                    .build()
-    let response: httpclient4cj.Response = client.newCall(request).execute()
-    func exception(): String{ "exception"}
-    @Assert(response.getHeader("name1"),"value2")
-    @Assert(response.getHeader("name3"),"value3")
-    @Assert(response.getHeader("name4").getOrDefault(exception),"exception")
+        let client: HttpClient= HttpClient.builder().addNetworkInterceptor(MyInterceptor())
+                                            .build()
+        let request: httpclient4cj.Request = httpclient4cj.Request.builder()
+                                        .url("http://127.0.0.1:${port}/1234")
+                                        .method("GET")
+                                        .build()
+        let response: httpclient4cj.Response = client.newCall(request).execute()
+        func exception(): String{ "exception"}
+        @Assert(response.getHeader("name1"),"value2")
+        @Assert(response.getHeader("name3"),"value3")
+        @Assert(response.getHeader("name4").getOrDefault(exception),"exception")
     }
 }

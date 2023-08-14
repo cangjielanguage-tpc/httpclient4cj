@@ -1,5 +1,4 @@
 // 3rd_party_lib:httpclient4cj/build/httpclient4cj
-// 3rd_party_lib:httpclient4cj/ci_lib/crypto4cj
 // data_file:image.png
 
 from std import unittest.*
@@ -18,43 +17,29 @@ from std import sync.sleep
 
 @Test
 public class okhttp_EventListener_test_001{
+    init(){ serve() }
     var port: UInt16 = 0
     // 验证 EventListener 方法调用
     @TestCase
     func okhttp_EventListener_test_001(): Unit {
-        spawn {
-            serve()
-        }
-        sleep(Duration.second)
         let request_01: httpclient4cj.Request = httpclient4cj.Request.builder()
                                         .url("http://127.0.0.1:${port}/1234")
                                         .build()
         let client: HttpClient= HttpClient.builder().eventListener(MyEventListener()).build()
         client.newCall(request_01).enqueue(MyCallbacks())
-        sleep(10*Duration.second)
     }
     
     @TestCase
     func okhttp_EventListener_test_002(): Unit {
-        spawn {
-            serve()
-        }
-        sleep(Duration.second)
         let request_01: httpclient4cj.Request = httpclient4cj.Request.builder()
                                         .url("https://1.0.0.1:${port}/1234")
                                         .build()
         let client: HttpClient= HttpClient.builder().eventListener(MyEventListener()).build()
         client.newCall(request_01).enqueue(MyCallbacks())
-        sleep(10*Duration.second)
     }
 
     @TestCase
     func okhttp_EventListener_test_003(): Unit {
-        spawn {
-            serve()
-        }
-        sleep(Duration.second)
-
         let body_image = RealRequestBody.create(MediaType.get("text/img"),File("./image.png",OpenOption.Open(true,false)))
 
         let multipartBody = MultipartBody.builder()
@@ -67,23 +52,20 @@ public class okhttp_EventListener_test_001{
                                         .build()
         let client: HttpClient= HttpClient.builder().eventListener(MyEventListener()).build()
         let response = client.newCall(request).enqueue(MyCallbacks())
-        sleep(10*Duration.second)
     }
 
     func serve(){
-        let hd = http.Route()
-        hd.handle("/1234", { rws: ResponseWriteStream, req: http.Request =>
-            req.url
-            sleep(Duration.second)
+        let serverSocket = TcpServerSocket(bindAt: 0)
+        let server = ServerBuilder.new().listener(serverSocket).build()
+        server.distributor.register("/1234", { httpContext =>
             let resp = "Hello from /red".toUtf8Array()
-            rws.write(resp)
-            println(String.fromUtf8(req.readToEnd()))
+            httpContext.responseBuilder.body(resp)
+            println(StringReader(httpContext.request.body).readToEnd())
             return
         })
-        let server = http.Server(hd)
-        let socket = socket.SocketServer(SocketNet.TCP, "0.0.0.0", port)
-        port = socket.port
-        server.serve(socket)
+        spawn{ server.serve() }
+        sleep(Duration.second)
+        port = serverSocket.localAddress.port
     }
 }
 
@@ -118,7 +100,7 @@ public class MyEventListener <: EventListener {
         println("MyEventListener: connectStart()")
     }
 
-    public func connectEnd(call: Call, socketAddress: SocketAddress, protocol: Protocol): Unit {
+    public func connectEnd(call: Call, socketAddress: SocketAddress, protocol: httpclient4cj.Protocol): Unit {
         println("MyEventListener: connectEnd()")
     }
 
@@ -130,7 +112,7 @@ public class MyEventListener <: EventListener {
         println("MyEventListener: secureConnectEnd()")
     }
 
-    public func connectFailed(call: Call, socketAddress: SocketAddress, protocol: Protocol, e: httpclient4cj.HttpException ): Unit {
+    public func connectFailed(call: Call, socketAddress: SocketAddress, protocol: httpclient4cj.Protocol, e: httpclient4cj.HttpException ): Unit {
         println("MyEventListener: connectFailed()")
     }
 

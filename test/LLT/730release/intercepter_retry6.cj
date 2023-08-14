@@ -13,10 +13,7 @@ from std import sync.sleep
 
 var port: UInt16 = 0
 main() {
-    spawn {
-        serve()
-    }
-    sleep(Duration.second)
+    serve()
     let url: URL = URL.parse("http://127.0.0.1:${port}/1234")
     let client: HttpClient= HttpClient.builder().build()
     let request: httpclient4cj.Request = httpclient4cj.Request.builder()
@@ -32,16 +29,16 @@ main() {
 }
 
 func serve(){
-    let hd = http.Route()
-    hd.handle("/1234", { rws: http.ResponseWriteStream, req: http.Request =>
+    let serverSocket = TcpServerSocket(bindAt: 0)
+    let server = ServerBuilder.new().listener(serverSocket).build()
+    server.distributor.register("/1234", { httpContext =>
         let resp = "Hello from /red".toUtf8Array()
-        rws.writeStatusCode(307)
-        rws.header().set("Location","")
-        rws.write(resp)
+        httpContext.responseBuilder.status(307)
+        httpContext.responseBuilder.header("Location","")
+        httpContext.responseBuilder.body(resp)
         return
     })
-    let server = http.Server(hd)
-    let socket = socket.SocketServer(SocketNet.TCP, "0.0.0.0", port)
-    port = socket.port
-    server.serve(socket)
+    spawn{ server.serve() }
+    sleep(Duration.second)
+    port = serverSocket.localAddress.port
 }
