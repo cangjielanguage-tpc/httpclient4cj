@@ -1,4 +1,5 @@
 // 3rd_party_lib:httpclient4cj/build/httpclient4cj
+// sources_file: RealRequestBody.html
 
 from std import unittest.*
 from std import unittest.testmacro.*
@@ -19,7 +20,7 @@ public class okhttp_RequestBody_006{
     func okhttp_RequestBody_006(): Unit {
         println(Directory(".").info.path)
         
-        var file: File = File("../../RealRequestBody.html",OpenOption.Open(true,true))
+        var file: File = File("RealRequestBody.html",OpenOption.Open(true,true))
         let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                         .method("POST",body: RealRequestBody.create(MediaType.get("application/json"),file))
                                         .build()
