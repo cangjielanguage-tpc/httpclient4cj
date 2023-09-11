@@ -11,6 +11,7 @@ from encoding import url.*
 from net import tls.*
 from std import core.*
 from std import sync.sleep
+from std import collection.*
 
 main():Int64{
     var port:UInt16=portTrans(36389)
@@ -35,7 +36,7 @@ main():Int64{
     let h2stream = h2conn.newStream(request)
     let sink = h2stream.getSink()
     let trailers = Header()
-    trailers.set("123", "ttt")
+    trailers.set("123", ArrayList<String>(["ttt"]))
     h2stream.enqueueTrailers(trailers)
     formBody.writeTo(sink)
     sink.close()//此用例只是触发用例，需要抓包确认用例结果

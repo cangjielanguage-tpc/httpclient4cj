@@ -5,7 +5,8 @@ from httpclient4cj import httpclient4cj.*
 
 foreign func htons(port: UInt16): UInt16
 func portTrans(port: UInt16): UInt16 {
-    unsafe { htons(port) }
+    // unsafe { htons(port) }
+    port
 }
 
 func getRequestMethod(method: String): String {

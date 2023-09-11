@@ -13,14 +13,14 @@ public class okhttp_OkBuffer_close_001 {
         println("---------------------------okhttp_OkBuffer_close_001-----------------------------")
         var exc = ""
         try {
-            File.delete("../../testData/okhttp_OkBuffer_close_001_2.txt")
+            File.delete("testData_okhttp_OkBuffer_close_001_2.txt")
         } catch (e:Exception){
             println("e.message = ${e.message}")
         }
         
-        var file = File.create("../../testData/okhttp_OkBuffer_close_001_2.txt")
+        var file = File.create("testData_okhttp_OkBuffer_close_001_2.txt")
         file.write("hello world".toUtf8Array())
-        file = File("../../testData/okhttp_OkBuffer_close_001_2.txt",OpenOption.Open(true, true))
+        file = File("testData_okhttp_OkBuffer_close_001_2.txt",OpenOption.Open(true, true))
         
         var okbuffer = OkBuffer(file)
         try {
@@ -44,7 +44,7 @@ public class okhttp_OkBuffer_close_001 {
         }
         @Assert(exc,"The file not opened, can not to read.") 
 
-        file = File("../../testData/okhttp_OkBuffer_close_001_2.txt",OpenOption.Open(true, true))
+        file = File("testData_okhttp_OkBuffer_close_001_2.txt",OpenOption.Open(true, true))
         okbuffer = OkBuffer(file)
         println("okbuffer.readByte() = ${okbuffer.readByte()}")
         @Assert(okbuffer.readByte(),101) 

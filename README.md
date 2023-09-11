@@ -5,7 +5,7 @@
 <p align="center">
 <img alt="" src="https://img.shields.io/badge/release-v0.0.6-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjc-v0.39.5-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjc-v0.39.7-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-85.0%25-brightgreen" style="display: inline-block;" /> 
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
@@ -160,7 +160,7 @@ Httpclient4cj 是一个高效的 HTTP 客户端, 代码参考: https://github.co
 
 ## 示例
 
-注意：以下示例若在本地不成功，可能是 url 地址请求失败，请换成实际可用地址。
+注意：以下示例请将`url`地址换成实际可用地址。
 
 ### 获取HttpClient对象并配置超时时间
 
@@ -168,13 +168,13 @@ Httpclient4cj 是一个高效的 HTTP 客户端, 代码参考: https://github.co
 from httpclient4cj import httpclient4cj.*
 from std import time.*
 
-main (){
-    let client: HttpClient= HttpClient.builder()
-    .connectTimeout(Duration.second)
-    .readTimeout(Duration.second)
-    .writeTimeout(Duration.second).build()
+main() {
+    let client: HttpClient = HttpClient.builder()
+        .connectTimeout(Duration.second)
+        .readTimeout(Duration.second)
+        .writeTimeout(Duration.second)
+        .build()
 }
-
 ```
 
 ### 同步 GET 请求方法示例
@@ -185,43 +185,36 @@ from std import time.*
 from encoding import url.*
 
 main() {
-    let url = URL.parse("https://postman-echo.com/get?foo1=bar1&foo2=bar2")
-
-    let client: HttpClient= HttpClient.builder()
-    .connectTimeout(Duration.second)
-    .readTimeout(Duration.second)
-    .writeTimeout(Duration.second)
-    .build()
-
+    let url = URL.parse("http://127.0.0.1:50060")
+    let client: HttpClient = HttpClient.builder()
+        .connectTimeout(Duration.second)
+        .readTimeout(Duration.second)
+        .writeTimeout(Duration.second)
+        .build()
     let request = Request.builder().url(url).build()
     let call = client.newCall(request)
     let response = call.execute()
     println(response.getBody().getOrThrow().getString())
-    return 0
 }
-
 ```
 ### 同步 Post 发送json字符串
 
 ```cangjie
-
 from httpclient4cj import httpclient4cj.*
 from std import time.*
 
 main() {
-   let client: HttpClient = HttpClient.builder()
-    .connectTimeout(Duration.second)
-    .readTimeout(Duration.second)
-    .writeTimeout(Duration.second)
-    .build()
+    let client: HttpClient = HttpClient.builder()
+        .connectTimeout(Duration.second)
+        .readTimeout(Duration.second)
+        .writeTimeout(Duration.second)
+        .build()
     let request = Request.builder()
-                .url("https://postman-echo.com/post")
-                .post(RealRequestBody.create(MediaType.get("application/json; charset=utf-8"),
-                 "{\"id\": \"123\"}"))
-                .build()
+        .url("http://127.0.0.1:50060")
+        .post(RealRequestBody.create(MediaType.get("application/json; charset=utf-8"), "{\"id\": \"123\"}"))
+        .build()
     let response = client.newCall(request).execute()
     println(response.getBody().getOrThrow().getString())
-    return 0
 }
 ```
 
@@ -231,25 +224,24 @@ main() {
 from httpclient4cj import httpclient4cj.*
 from std import time.*
 from std import fs.*
-main() {
-   let client: HttpClient= HttpClient.builder()
-    .connectTimeout(Duration.second)
-    .readTimeout(Duration.second)
-    .writeTimeout(Duration.second)
-    .build()
 
+main() {
+    let client: HttpClient = HttpClient.builder()
+        .connectTimeout(Duration.second)
+        .readTimeout(Duration.second)
+        .writeTimeout(Duration.second)
+        .build()
     var arr: Array<Byte> = Array<Byte>(1024, {i => UInt8(i % 256)})
     File.writeTo("./body.txt", arr)
     let file = File("./body.txt", OpenOption.Open(true, false))
-    let body = RealRequestBody.create(MediaType.get("text/plain"),file)
+    let body = RealRequestBody.create(MediaType.get("text/plain"), file)
     let request: httpclient4cj.Request = httpclient4cj.Request.builder()
-                                  .url("https://postman-echo.com/post")
-                                  .post(body)
-                                  .build()
+        .url("http://127.0.0.1:50060")
+        .post(body)
+        .build()
     let response: httpclient4cj.Response = client.newCall(request).execute()
     println(response.getBody().getOrThrow().getString())
     File.delete("./body.txt")
-    return 0
 }
 ```
 ### multipart 发送数据以及多上传文件
@@ -260,35 +252,28 @@ from std import time.*
 from std import fs.*
 
 main() {
-    let client: HttpClient= HttpClient.builder()
-            .connectTimeout(Duration.second)
-            .readTimeout(Duration.second)
-            .writeTimeout(Duration.second)
-            .build()
+    let client: HttpClient = HttpClient.builder()
+        .connectTimeout(Duration.second)
+        .readTimeout(Duration.second)
+        .writeTimeout(Duration.second)
+        .build()
     var arr: Array<Byte> = Array<Byte>(1024, {i => UInt8(i % 256)})
     File.writeTo("./body1.txt", arr)
     File.writeTo("./body2.txt", arr)
-
-    let body1 = RealRequestBody.create(MediaType.get("text/plain"),File("./body1.txt",OpenOption.Open(true,false)))
-    let body2 = RealRequestBody.create(MediaType.get("text/plain"),File("./body2.txt",OpenOption.Open(true,false)))
-
-    let mu = MultipartBody.builder().
-    addFormDataPart("name", "huluwa").
-    addFormDataPart("age", "18").
-    addFormDataPart("file1", "body1.txt", body1).
-    addFormDataPart("file2", "body2.txt", body2).
-    build()
-
-    let request = Request.builder()
-                    .url("https://postman-echo.com/post")
-                    .post(mu)
-                    .build()
+    let body1 = RealRequestBody.create(MediaType.get("text/plain"), File("./body1.txt", OpenOption.Open(true, false)))
+    let body2 = RealRequestBody.create(MediaType.get("text/plain"), File("./body2.txt", OpenOption.Open(true, false)))
+    let mu = MultipartBody.builder()
+        .addFormDataPart("name", "huluwa")
+        .addFormDataPart("age", "18")
+        .addFormDataPart("file1", "body1.txt", body1)
+        .addFormDataPart("file2", "body2.txt", body2)
+        .build()
+    let request = Request.builder().url("http://127.0.0.1:50060").post(mu).build()
     let response: httpclient4cj.Response = client.newCall(request).execute()
     println(response.getBody().getOrThrow().getString())
     File.delete("./body1.txt")
     File.delete("./body2.txt")
 }
-
 ```
 
 ### chunked分块传输请求
@@ -298,37 +283,28 @@ from std import time.*
 from std import io.*
 
 main() {
-
-    let client: HttpClient= HttpClient.builder().build()
-    let request= httpclient4cj.Request.builder()
-                .url("https://postman-echo.com/post")
-                .post(MyRequestBody())
-                .build()
+    let client: HttpClient = HttpClient.builder().build()
+    let request = httpclient4cj.Request.builder().url("http://127.0.0.1:50060").post(MyRequestBody()).build()
     let response = client.newCall(request).execute()
     println(response.getBody().getOrThrow().getString())
 }
-class MyRequestBody <:RequestBody {
+class MyRequestBody <: RequestBody {
     public func contentType(): Option<MediaType> {
         return MediaType.parse("application/json")
     }
-
-    //声明的getContentLength -1，客户端拦截器默认添加"Transfer-Encoding", "chunked"头,使用ChunkedSink读取body
     public func getContentLength(): Int64 {
+        // 声明的getContentLength -1，客户端拦截器默认添加"Transfer-Encoding", "chunked"头,使用ChunkedSink读取body
         return -1
     }
-
     public func writeTo(sink: Sink): Unit {
-        //每次调用write都会产生一个传输块
+        // 每次调用write都会产生一个传输块
         sink.write("hello".toUtf8Array())
         sink.write("world".toUtf8Array())
     }
-
     public func get(): InputStream {
         return ByteArrayStream()
-
     }
 }
-
 ```
 ### 异步请求以及回调
 
@@ -337,32 +313,26 @@ from httpclient4cj import httpclient4cj.*
 from std import time.*
 
 main() {
-     let client: HttpClient= HttpClient.builder()
-                    .connectTimeout(Duration.second)
-                    .readTimeout(Duration.second)
-                    .writeTimeout(Duration.second)
-                    .build()
-
-    let request = Request.builder().url("https://www.baidu.com")
-                    .header("User-Agent", "Httpclient4cj-Example")
-                    .build()
-
+    let client: HttpClient = HttpClient.builder()
+        .connectTimeout(Duration.second)
+        .readTimeout(Duration.second)
+        .writeTimeout(Duration.second)
+        .build()
+    let request = Request.builder()
+        .url("http://127.0.0.1:50060")
+        .header("User-Agent", "Httpclient4cj-Example")
+        .build()
     for (i in 0..5) {
         let async = client.newCall(request)
         async.enqueue(MyCallbacks())
     }
-
     sleep(Duration.second)
 }
-
 public class MyCallbacks <: Callback {
-
-    public func onFailure(call: Call,  e: Exception): Unit{
+    public func onFailure(call: Call, e: Exception): Unit {
         println("fail, ${e.message}")
-
     }
-
-    public func onResponse(call: Call,  response: Response): Unit{
+    public func onResponse(call: Call, response: Response): Unit {
         println(response)
     }
 }
@@ -374,22 +344,21 @@ public class MyCallbacks <: Callback {
 from httpclient4cj import httpclient4cj.*
 from std import time.*
 
-
-main (){
-    let client: HttpClient= HttpClient.builder()
-                .addNetworkInterceptor(MyInterceptor())//添加拦截器
-                .connectTimeout(Duration.second)
-                .readTimeout(Duration.second)
-                .writeTimeout(Duration.second)
-                .build()
-    let request = Request.builder().url("https://postman-echo.com/get?foo1=bar1&foo2=bar2").build()
+main() {
+    let client: HttpClient = HttpClient.builder()
+        .addNetworkInterceptor(MyInterceptor())
+        .connectTimeout(Duration.second)
+        .readTimeout(Duration.second)
+        .writeTimeout(Duration.second)
+        .build()
+    let request = Request.builder().url("http://127.0.0.1:50060").build()
     let response: Response = client.newCall(request).execute()
     println(response.getBody().getOrThrow().getString())
     return 0
 }
-//自定义拦截器打印route地址
-class MyInterceptor<: Interceptor {
-     public func intercept(chain: Chain): httpclient4cj.Response {
+// 自定义拦截器打印route地址
+class MyInterceptor <: Interceptor {
+    public func intercept(chain: Chain): httpclient4cj.Response {
         let conn = chain.getConnection().getOrThrow()
         println("route = ${conn.getRoute().getInetSocketAddress()}")
         return chain.proceed(chain.getRequest())
@@ -400,164 +369,139 @@ class MyInterceptor<: Interceptor {
 ### cookie管理
 
 ```cangjie
-from httpclient4cj import httpclient4cj.*
 from encoding import url.*
+from httpclient4cj import httpclient4cj.*
 from std import time.*
 
 main() {
-    let url: URL = URL.parse("https://www.zhihu.com")
+    let url: URL = URL.parse("http://127.0.0.1:50060")
     let jar = getSimpleCookieJar()
-    let client: HttpClient = HttpClient.builder().cookieJar(jar)
-                            .connectTimeout(Duration.second)
-                            .readTimeout(Duration.second)
-                            .writeTimeout(Duration.second)
-                            .build()
+    let client: HttpClient = HttpClient.builder()
+        .cookieJar(jar)
+        .connectTimeout(Duration.second)
+        .readTimeout(Duration.second)
+        .writeTimeout(Duration.second)
+        .build()
     let request = httpclient4cj.Request.builder().url(url).build()
     let call = client.newCall(request)
-
-
     let response: httpclient4cj.Response = call.execute()
     for (cookie in client.getCookieJar().loadForRequest(url)) {
-        println(cookie.toString())
+        println(cookie.toSetCookieString())
     }
     return 0
-
 }
- 
 ```
 ### 监听器使用
 
 ```cangjie
-from httpclient4cj import httpclient4cj.*
-from std import time.*
 from encoding import url.*
-from std import socket.*
+from httpclient4cj import httpclient4cj.*
 from net import tls.*
 from std import collection.*
+from std import socket.*
+from std import time.*
 
 main() {
-    let url = URL.parse("https://postman-echo.com/get?foo1=bar1&foo2=bar2")
-
-    let client: HttpClient= HttpClient.builder()
-    .eventListener(MyEventListener())
-    .connectTimeout(Duration.second)
-    .readTimeout(Duration.second)
-    .writeTimeout(Duration.second)
-    .build()
-
+    let url = URL.parse("http://127.0.0.1:50060")
+    let client: HttpClient = HttpClient.builder()
+        .eventListener(MyEventListener())
+        .connectTimeout(Duration.second)
+        .readTimeout(Duration.second)
+        .writeTimeout(Duration.second)
+        .build()
     let request = Request.builder().url(url).build()
     let call = client.newCall(request)
     let response = call.execute()
     println(response.getBody().getOrThrow().getString())
     return 0
 }
-
 class MyEventListener <: EventListener {
-
     public func callStart(call: Call): Unit {
         println("callStart!!!")
     }
-
     public func callEnd(call: Call): Unit {
         println("callEnd!!!")
     }
-
     public func dnsStart(call: Call, domainName: String): Unit {
         println("dnsStart!!!")
     }
-
     public func dnsEnd(call: Call, domainName: String, allRoutes: ArrayList<Route>): Unit {
         println("dnsEnd!!!")
     }
-
     public func connectStart(call: Call, socketAddress: SocketAddress): Unit {
         println("connectStart!!!")
     }
-
     public func connectEnd(call: Call, socketAddress: SocketAddress, protocol: Protocol): Unit {
         println("connectEnd!!!")
     }
-
     public func secureConnectStart(call: Call): Unit {
         println("secureConnectStart!!!")
     }
-
     public func secureConnectEnd(call: Call, tlsConfig: TlsClientConfig): Unit {
         println("secureConnectEnd!!!")
     }
-
-    public func connectFailed(call: Call, socketAddress: SocketAddress, protocol: Protocol, e: HttpException ): Unit {
+    public func connectFailed(call: Call, socketAddress: SocketAddress, protocol: Protocol, e: HttpException): Unit {
         println("connectFailed!!!")
     }
-
     public func requestHeadersStart(call: Call): Unit {
         println("requestHeadersStart!!!")
     }
-
     public func requestHeadersEnd(call: Call): Unit {
         println("requestHeadersEnd!!!")
     }
-
     public func requestBodyStart(call: Call): Unit {
         println("requestBodyStart!!!")
     }
-
     public func requestBodyEnd(call: Call, byteCount: Int64): Unit {
         println("requestBodyEnd!!!")
     }
-
     public func requestFailed(call: Call, e: HttpException): Unit {
         println("requestFailed!!!")
     }
-
     public func responseHeadersStart(call: Call): Unit {
         println("responseHeadersStart!!!")
     }
-
     public func responseHeadersEnd(call: Call, response: Response): Unit {
         println("responseHeadersEnd!!!")
     }
-
     public func responseBodyStart(call: Call): Unit {
         println("responseBodyStart!!!")
     }
-
     public func responseBodyEnd(call: Call, byteCount: Int64): Unit {
         println("responseBodyEnd!!!")
     }
-
     public func responseFailed(call: Call, e: HttpException): Unit {
         println("responseFailed!!!")
     }
 }
-
 ```
 
 ### 使用http2协议
 
 ```cangjie
-from httpclient4cj import httpclient4cj.*
-from std import time.*
 from encoding import url.*
+from httpclient4cj import httpclient4cj.*
+from net import tls.*
 from std import collection.*
+from std import time.*
 
 main() {
-    let url = URL.parse("https://www.taobao.com")
-
-    let client: HttpClient= HttpClient.builder()
-    .tlsConfig("./jjd.cer")//需要用户自己配置CA证书验证公钥,如果不配置CA证书将不进行服务端证书校验,将使用不安全的连接
-    //H2_PRIOR_KNOWLEDGE 使用明文http2协议, 不支持https
-    //.protocols(ArrayList<String>([Protocol.get("H2_PRIOR_KNOWLEDGE").toString()]))
-    //使用apln协商协议,服务端响应支持的协议，list中前面的协议会被优先选择
-    .protocols(ArrayList<String>([Protocol.get("HTTP/2.0").toString(),Protocol.get("HTTP/1.1").toString()]))
-    .connectTimeout(Duration.second)
-    .readTimeout(Duration.second)
-    .writeTimeout(Duration.second)
-    .build()
-
+    let url = URL.parse("http://127.0.0.1:50060")
+    // 需要用户自己配置CA证书验证公钥,如果不配置CA证书将不进行服务端证书校验,将使用不安全的连接
+    // H2_PRIOR_KNOWLEDGE 使用明文http2协议, 不支持https
+    // .protocols(ArrayList<String>([Protocol.get("H2_PRIOR_KNOWLEDGE").toString()]))
+    // 使用apln协商协议,服务端响应支持的协议，list中前面的协议会被优先选择
+    let client: HttpClient = HttpClient.builder()
+        .tlsConfig(TlsClientConfig())
+        .protocols(ArrayList<String>([Protocol.get("HTTP/2.0").toString(), Protocol.get("HTTP/1.1").toString()]))
+        .connectTimeout(Duration.second)
+        .readTimeout(Duration.second)
+        .writeTimeout(Duration.second)
+        .build()
     let request = Request.builder().url(url).build()
     let call = client.newCall(request)
     let response = call.execute()
+    println(response)
     return 0
 }
 ```

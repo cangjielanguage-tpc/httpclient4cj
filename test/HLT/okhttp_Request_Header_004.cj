@@ -28,7 +28,7 @@ public class okhttp_Request_Header_004{
                                         .build()
 
         // @Assert(request.getHeader("content-type","aaa"),  "application/json")
-        @Assert(request.getHeader("content-type","aaa"),  "application/json,application2/json")
+        @Assert(request.getHeader("content-type","aaa"),  "application/json; application2/json")
     }
 
 }

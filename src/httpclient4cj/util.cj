@@ -272,7 +272,7 @@ extend Header {
     }
     public func getString(k: String): ?String {
         match (this.get(k)) {
-            case Some(v) => v |> collectString<String>(delimiter: ",")
+            case Some(v) => v |> collectString<String>(delimiter: "; ")
             case _ => None
         }
     }
@@ -324,5 +324,6 @@ public class Header <: Iterable<(String, ArrayList<String>)> {
 
 foreign func htons(port: UInt16): UInt16
 public func portTrans(port: UInt16): UInt16 {
-    unsafe { htons(port) }
+    // unsafe { htons(port) }
+    port
 }
