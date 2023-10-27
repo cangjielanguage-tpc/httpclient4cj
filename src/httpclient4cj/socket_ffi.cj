@@ -35,7 +35,7 @@ public func resolveDomain(net: SocketNet, domain: String): ArrayList<(SocketAddr
         }
         index += sz
         match {
-            case sz == SOCK_ADDR_IPV4_LEN => arr.append((IPv4, ips))
+            case sz == SOCK_ADDR_IPV4_LEN => arr.prepend((IPv4, ips))
             case sz == SOCK_ADDR_IPV6_LEN => arr.append((IPv6, ips))
             case _ => ()
         }
