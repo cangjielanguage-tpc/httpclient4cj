@@ -114,7 +114,7 @@ public class Chain {
      */
     public func proceed(request: Request, transmitter: Transmitter, exchange: Option<Exchange>): Response {
         if (index >= interceptors.size) {
-            throw Exception("interceptors error")
+            throw IllegalStateException("interceptors error")
         }
 
         calls++

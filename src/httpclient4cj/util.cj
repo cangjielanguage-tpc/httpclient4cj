@@ -20,6 +20,7 @@ from std import convert.*
 from std import format.*
 from std import fs.*
 from std import io.*
+from std import log.*
 from std import math.*
 from std import random.*
 from std import regex.*
@@ -327,3 +328,5 @@ public func portTrans(port: UInt16): UInt16 {
     // unsafe { htons(port) }
     port
 }
+
+let LOG: SimpleLogger = SimpleLogger()

@@ -24,6 +24,9 @@ public open class HttpException <: Exception {
     public init(message: String) {
         super(message)
     }
+    public open func toString(): String {
+        "HttpException: ${message}"
+    }
 }
 
 public class EOFException <: Exception {
@@ -46,24 +49,27 @@ public class EOFException <: Exception {
     public init() {
         super("EOF")
     }
+    public func toString(): String {
+        "EOFException: ${message}"
+    }
 }
 
 public class RouteException <: Exception {
     private let firstException: HttpException
     private var lastException: HttpException
-
     public init(message: String, e: HttpException) {
         super(message)
         this.firstException = e
         this.lastException = e
     }
-
     public func getFirstConnectException(): HttpException {
         return firstException
     }
-
     public func getLastConnectException(): HttpException {
         return lastException
+    }
+    public func toString(): String {
+        "RouteException: ${message}"
     }
 }
 
@@ -73,11 +79,17 @@ public class ConnectException <: HttpException {
         super(message)
         this.contain = e
     }
+    public func toString(): String {
+        "ConnectException: ${message}"
+    }
 }
 
 public class ProtocolException <: HttpException {
     public init(message: String) {
         super(message)
+    }
+    public func toString(): String {
+        "ProtocolException: ${message}"
     }
 }
 
@@ -85,19 +97,27 @@ public class ConnectionShutdownException <: HttpException {
     public init(message: String) {
         super(message)
     }
+    public func toString(): String {
+        "ConnectionShutdownException: ${message}"
+    }
 }
 
 public class IllegalStateException <: Exception {
     public init(message: String) {
         super(message)
     }
+    public func toString(): String {
+        "IllegalStateException: ${message}"
+    }
 }
 
 public class StreamResetException <: HttpException {
     public let errorCode: ErrorCode
-
     public init(errorCode: ErrorCode) {
         super("stream was reset: ${errorCode.toString()}")
         this.errorCode = errorCode
+    }
+    public func toString(): String {
+        "StreamResetException: ${message}"
     }
 }

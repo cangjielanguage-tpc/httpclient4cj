@@ -118,7 +118,7 @@ func http_SOCKET_ConvertAddrPtr(res: CPointer<addrinfo>): CPointer<UInt8> {
         }
 
         if (ip4cnt * ip4bytes + ip6cnt * ip6bytes + 1 > arraddrlen - useCnt) {
-            println("Error: The number of IP exceeds the resolution range")
+            LOG.debug("Error: The number of IP exceeds the resolution range")
             return nullptr
         }
 
@@ -191,7 +191,7 @@ func WSAStartup4cj(): Int32 {
     var ret = unsafe { WSAStartup(wVersionRequested, wsaData) }
     unsafe { free(CPointer<UInt8>(wsaData)) }
     if (ret != 0) {
-        println("WSAStartup failed: ${ret}")
+        LOG.debug("WSAStartup failed: ${ret}")
     }
     return ret
 }
@@ -242,7 +242,7 @@ func http_SOCKET_GetAddrInfo(net: UInt8, node: CString): CPointer<UInt8> {
     ret = unsafe { getaddrinfo(node.getChars(), service, pHints, pRes) }
     unsafe { free(CPointer<UInt8>(pHints)) }
     if (ret != 0) {
-        println("GetAddrInfo failed")
+        LOG.debug("GetAddrInfo failed")
         WSACleanup4cj()
         unsafe { free(CPointer<UInt8>(pRes)) }
         return nullptr
