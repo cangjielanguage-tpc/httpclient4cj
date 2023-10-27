@@ -3,7 +3,6 @@
 /.idea
 /build
 /bin
-/http2
 module-resolve.json
 /ci_lib/
 /ci_test/
