@@ -37,10 +37,9 @@ public class CacheInterceptor <: Interceptor {
 
         if (!has(networkRequest) && !has(cacheResponse)) {
             return Response.builder().request(chain.getRequest()).protocol(Protocol.HTTP_1_1).code(504).message(
-                "Unsatisfiable Request (only-if-cached)"
-            ).body(ResponseBody("", 0, OkBuffer(ByteArrayStream()))).sentRequestAtMillis(-1).receivedResponseAtMillis(
-                DateTime.now().toUnixTimeStamp().toMilliseconds()
-            ).build()
+                "Unsatisfiable Request (only-if-cached)").body(ResponseBody("", 0, OkBuffer(ByteArrayStream()))).
+                sentRequestAtMillis(-1).receivedResponseAtMillis(DateTime.now().toUnixTimeStamp().toMilliseconds()).
+                build()
         }
 
         if (!has(networkRequest)) {
@@ -61,11 +60,11 @@ public class CacheInterceptor <: Interceptor {
         if (has(cacheResponse)) {
             let cacheRes = cacheResponse.getOrThrow()
             if (networkResponse.getCode() == HttpStatusCode.STATUS_NOT_MODIFIED) {
-                let response: Response =
-                    cacheRes.newBuilder().header(combine(cacheRes.getHeaders(), networkResponse.getHeaders())).
-                sentRequestAtMillis(networkResponse.getSentRequestAtMillis()).receivedResponseAtMillis(
-                    networkResponse.getReceivedResponseAtMillis()
-                ).cacheResponse(stripBody(cacheResponse)).networkResponse(stripBody(networkResponse)).build()
+                let response: Response = cacheRes.newBuilder().header(
+                    combine(cacheRes.getHeaders(), networkResponse.getHeaders())).sentRequestAtMillis(
+                    networkResponse.getSentRequestAtMillis()).receivedResponseAtMillis(
+                    networkResponse.getReceivedResponseAtMillis()).cacheResponse(stripBody(cacheResponse)).
+                    networkResponse(stripBody(networkResponse)).build()
                 networkResponse.getBody().getOrThrow().close()
                 cache.getOrThrow().trackConditionalCacheHit()
                 cache.getOrThrow().update(cacheRes, response)
@@ -75,10 +74,8 @@ public class CacheInterceptor <: Interceptor {
             }
         }
 
-        let response: Response =
-            networkResponse.newBuilder().cacheResponse(stripBody(cacheResponse)).networkResponse(
-            stripBody(networkResponse)
-        ).build()
+        let response: Response = networkResponse.newBuilder().cacheResponse(stripBody(cacheResponse)).networkResponse(
+            stripBody(networkResponse)).build()
 
         if (has(cache)) {
             if (hasBody(response) && isCacheable(response, realNetworkRequest)) {
@@ -161,12 +158,11 @@ public class CacheInterceptor <: Interceptor {
 
     private func stripBody(response: Option<Response>): Option<Response> {
         match (response) {
-            case Some(v) =>
-                if (has(v.getBody())) {
-                    return v.newBuilder().body(Option<ResponseBody>.None).build()
-                } else {
-                    return v
-                }
+            case Some(v) => if (has(v.getBody())) {
+                return v.newBuilder().body(Option<ResponseBody>.None).build()
+            } else {
+                return v
+            }
 
             case None => return Option<Response>.None
         }

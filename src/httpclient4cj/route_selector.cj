@@ -91,12 +91,11 @@ class RouteSelector {
         var socketHost = url.hostName
         let port: UInt16 = match (UInt16.tryParse(url.port)) {
             case Some(v) => v
-            case None =>
-                if (url.toString().startsWith("https")) {
-                    portTrans(443)
-                } else {
-                    portTrans(80)
-                }
+            case None => if (url.toString().startsWith("https")) {
+                portTrans(443)
+            } else {
+                portTrans(80)
+            }
         }
         eventListener.dnsStart(call, socketHost)
 

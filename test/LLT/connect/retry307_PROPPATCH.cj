@@ -32,9 +32,9 @@ main() {
 
 func serve(){
     let serverSocket = TcpServerSocket(bindAt: 0)
-    let server = ServerBuilder.new().listener(serverSocket).build()
+    let server = ServerBuilder().listener(serverSocket).build()
     server.distributor.register("/1234", {httpContext =>
-        let resp = "Hello from /red".toUtf8Array()
+        let resp = "Hello from /red".toArray()
         let  s = "http://127.0.0.1:${port}/1234"
         httpContext.responseBuilder.status(307)
         httpContext.responseBuilder.header("Location", s)

@@ -34,7 +34,7 @@ public class okhttp_RequestBody_006{
         var str_body:Array<Byte> = Array<Byte>(5, item: 0)
         request.getBody().getOrThrow().get().read(str_body)
         println(String.fromUtf8(str_body))
-        @Assert(str_body, "hello".toUtf8Array())
+        @Assert(str_body, "hello".toArray())
 
     }
 

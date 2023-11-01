@@ -17,12 +17,12 @@ public class okhttp_OKSocket_003 {
     var port: UInt16 = 0
     func serve() {
         let serverSocket = TcpServerSocket(bindAt: 0)
-        let server = ServerBuilder.new().listener(serverSocket).build()
+        let server = ServerBuilder().listener(serverSocket).build()
         server.distributor.register(
             "/1234",
             {
                 httpContext =>
-                let resp = "Hello from /red".toUtf8Array()
+                let resp = "Hello from /red".toArray()
                 httpContext.responseBuilder.body(resp)
                 httpContext.responseBuilder.header("Content-Type","text/plain; charset=utf-8")
                 return
@@ -35,7 +35,7 @@ public class okhttp_OKSocket_003 {
     @TestCase
     func okhttp_OKSocket_003(): Unit {
         serve()
-        var httpRq: HttpRequest = HttpRequestBuilder.new()
+        var httpRq: HttpRequest = HttpRequestBuilder()
             .get()
             .url("http://127.0.0.1:${port}/1234")
             .header("host", "127.0.0.1:${port}")
@@ -58,14 +58,14 @@ public class okhttp_OKSocket_003 {
         @Assert(str_body.contains(" GMT"), true)
         @Assert(str_body.contains("content-length: 15"), true)
         @Assert(str_body.contains("connection: keep-alive"), true)
-        @Assert(str_body.contains("content-type: text/plain; charset=utf-8"), true)
+        @Assert(str_body.toAsciiLower().contains("content-type: text/plain; charset=utf-8"), true)
         @Assert(str_body.contains("Hello from /red"), true)
     }
 }
 extend http.HttpRequest {
     func copyTo(stream: OutputStream): Unit {
         println(this.toString())
-        let bytes = this.toString().toUtf8Array()
+        let bytes = this.toString().toArray()
         stream.write(bytes)
     }
 }

@@ -18,7 +18,7 @@ public class okhtttp_001{
         var port: UInt16 = 50066
         let hd = http3.Route()
         server.distributor.register("/index", { rws: http3.ResponseWriteStream, req: http3.Request =>
-            let resp = "Hello from /red".toUtf8Array()
+            let resp = "Hello from /red".toArray()
             httpContext.responseBuilder.body(resp)
             return
         })

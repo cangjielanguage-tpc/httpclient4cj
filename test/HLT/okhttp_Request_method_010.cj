@@ -21,9 +21,9 @@ public class okhttp_Request_method_010{
     var port: UInt16 = 0
     func serve(){
         let serverSocket = TcpServerSocket(bindAt: 0)
-        let server = ServerBuilder.new().listener(serverSocket).build()
+        let server = ServerBuilder().listener(serverSocket).build()
         server.distributor.register("/1234", { httpContext =>
-            let resp = "Hello from /red".toUtf8Array()
+            let resp = "Hello from /red".toArray()
             httpContext.responseBuilder.body(resp)
             return
         })
@@ -61,7 +61,7 @@ public class okhttp_Request_method_010{
         var bytearry = File.readFrom(filename)
         var str = String.fromUtf8(bytearry)
         print("str ${str}")
-        @Assert(str.contains("Incorrect method: a:bc"), true)
+        @Assert(str.contains("Invalid request method: a:bc"), true)
 
     }
 }

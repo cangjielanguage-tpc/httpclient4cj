@@ -90,10 +90,10 @@ public class StatusLine <: ToString {
             case _ => sb.append("HTTP/1.1")
         }
 
-        sb.append(' ').append(code)
+        sb.append(" ${code}")
         if (message != "") {
-            sb.append(' ').append(message)
+            sb.append(" ${message}")
         }
-        return "${sb}"
+        return sb.toString()
     }
 }

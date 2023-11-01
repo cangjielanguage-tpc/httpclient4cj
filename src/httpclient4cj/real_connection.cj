@@ -43,7 +43,7 @@ public class Connection {
 
     var routeFailureCount: Int64 = 0
 
-    private var sink: Option<BufferedOutputStream> = Option<BufferedOutputStream>.None
+    private var sink: ?BufferedOutputStream<OutputStream> = None
 
     private var source: Option<OkBuffer> = Option<OkBuffer>.None
 
@@ -232,11 +232,12 @@ public class Connection {
     private func checkSslSocket(): Unit {
         match (route.getAddress().getTlsConfig()) {
             case None => ()
-            case Some(_) =>
-                if (route.getAddress().getProtocols().contains(Protocol.H2_PRIOR_KNOWLEDGE.toString())) {
-                    throw RouteException("H2_PRIOR_KNOWLEDGE cannot be used with HTTPS",
-                        HttpException("H2_PRIOR_KNOWLEDGE cannot be used with HTTPS"))
-                }
+            case Some(_) => if (route.getAddress().getProtocols().contains(Protocol.H2_PRIOR_KNOWLEDGE.toString())) {
+                throw RouteException(
+                    "H2_PRIOR_KNOWLEDGE cannot be used with HTTPS",
+                    HttpException("H2_PRIOR_KNOWLEDGE cannot be used with HTTPS")
+                )
+            }
         }
     }
 
@@ -274,7 +275,7 @@ public class Connection {
                 connectSocket(connectTimeout, readTimeout, writeTimeout)
                 let client = OKSocket(rawSocket.getOrThrow(), readTimeout, writeTimeout)
                 socket = client
-                sink = BufferedOutputStream(client)
+                sink = BufferedOutputStream<OutputStream>(client)
                 source = OkBuffer(client)
                 if (route.getAddress().getProtocols().contains(Protocol.H2_PRIOR_KNOWLEDGE.toString())) {
                     this.protocol = H2_PRIOR_KNOWLEDGE
@@ -319,7 +320,7 @@ public class Connection {
             let realSocket = OKSocket(TlsC(client), readTimeout, writeTimeout)
             let aplnSelected: String = client.alpnProtocolName.getOrThrow()
             socket = realSocket
-            sink = BufferedOutputStream(realSocket)
+            sink = BufferedOutputStream<OutputStream>(realSocket)
             source = OkBuffer(realSocket)
             if (aplnSelected != "") {
                 protocol = Protocol.get(aplnSelected)

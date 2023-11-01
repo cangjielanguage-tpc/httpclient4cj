@@ -79,10 +79,9 @@ class DiskLruCache {
             validateKey(key)
             match (lruEntries.get(key)) {
                 case None => return None
-                case Some(entry) =>
-                    if (!entry.readable) {
-                        return None
-                    }
+                case Some(entry) => if (!entry.readable) {
+                    return None
+                }
             }
 
             match (lruEntries[key].snapshot()) {
@@ -112,8 +111,8 @@ class DiskLruCache {
             checkNotClosed()
             validateKey(key)
             var entry: Option<Entry> = lruEntries.get(key)
-            if (expectedSequenceNumber != ANY_SEQUENCE_NUMBER &&
-                (!has(entry) || entry.getOrThrow().sequenceNumber != expectedSequenceNumber)) {
+            if (expectedSequenceNumber != ANY_SEQUENCE_NUMBER && (!has(entry) || entry.getOrThrow().sequenceNumber !=
+                expectedSequenceNumber)) {
                 return None
             }
 
@@ -305,10 +304,9 @@ class DiskLruCache {
         for (key in lruEntries.keys()) {
             let entry = lruEntries[key]
             match (entry.currentEditor) {
-                case None =>
-                    for (i in 0..valueCount) {
-                        size += entry.lengths[i]
-                    }
+                case None => for (i in 0..valueCount) {
+                    size += entry.lengths[i]
+                }
                 case Some(_) =>
                     entry.currentEditor = None
                     for (i in 0..valueCount) {
@@ -338,7 +336,8 @@ class DiskLruCache {
             while (true) {
                 try {
                     let s = source.readUtf8Line()
-                    content.append(s).append("\n")
+                    content.append(s)
+                    content.append("\n")
                     readJournalLine(s)
                     lineCount++
                 } catch (endOfJournal: EOFException) {
@@ -443,8 +442,7 @@ class DiskLruCache {
             entry.currentEditor = Editor(entry, this)
         } else if (secondSpace == -1 && firstSpace == READ.size && line.startsWith(READ)) {
             // This work was already done by calling lruEntries.get().
-        }
-        else {
+        } else {
             throw HttpException("unexpected journal line: ${line}")
         }
     }
@@ -706,7 +704,7 @@ class Entry {
         lengths = Array<Int64>(diskLruCache.valueCount, item: 0)
         cleanFiles = Array<String>(diskLruCache.valueCount, item: "")
         dirtyFiles = Array<String>(diskLruCache.valueCount, item: "")
-        var sb = StringBuilder(key).append('.')
+        var sb = StringBuilder("${key}.")
         let truncateTo = sb.size
         for (i in 0..diskLruCache.valueCount) {
             sb.append(i)

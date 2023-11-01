@@ -306,8 +306,8 @@ class FramingSource <: Source {
 
                 if (isClosed()) {
                     throw HttpException("stream closed")
-                } else if (readBuffer.length > 0) {
-                    let arr = Array<Byte>(min(byteCount, readBuffer.length), item: 0)
+                } else if (readBuffer.remainLength > 0) {
+                    let arr = Array<Byte>(min(byteCount, readBuffer.remainLength), item: 0)
                     readBytesDelivered = readBuffer.read(arr)
                     bytes.write(arr)
                     h2Stream.unacknowledgedBytesRead += readBytesDelivered
@@ -346,7 +346,7 @@ class FramingSource <: Source {
             var flowControlError: Bool
             synchronized(stream.getOrThrow().mutex) {
                 finished = this.finished
-                flowControlError = byteCount + readBuffer.length > maxByteCount
+                flowControlError = byteCount + readBuffer.remainLength > maxByteCount
             }
 
             if (flowControlError) {
@@ -370,10 +370,10 @@ class FramingSource <: Source {
             var bytesDiscarded = 0
             synchronized(stream.getOrThrow().mutex) {
                 if (isClosed()) {
-                    bytesDiscarded = receiveBuffer.length
+                    bytesDiscarded = receiveBuffer.remainLength
                     receiveBuffer.clear()
                 } else {
-                    let wasEmpty = readBuffer.length == 0
+                    let wasEmpty = readBuffer.remainLength == 0
                     readBuffer.write(receiveBuffer.readToEnd())
                     if (wasEmpty) {
                         let mu = stream.getOrThrow().mutex
@@ -392,7 +392,7 @@ class FramingSource <: Source {
         let bytesDiscarded: Int64
         synchronized(stream.getOrThrow().mutex) {
             closed = true
-            bytesDiscarded = readBuffer.length
+            bytesDiscarded = readBuffer.remainLength
             readBuffer.clear()
             stream.getOrThrow().mutex.notifyAll()
         }

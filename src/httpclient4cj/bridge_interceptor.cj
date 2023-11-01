@@ -112,11 +112,9 @@ public class BridgeInterceptor <: Interceptor {
     func cookieHeader(cookies: Array<Cookie>): String {
         let sb: StringBuilder = StringBuilder()
         for (cookie in cookies) {
-            sb.append("; ")
-            sb.append(cookie.name).append("=").append(cookie.value)
+            sb.append("; ${cookie.name}=${cookie.value}")
         }
-        sb.remove(0..2)
-        return "${sb}"
+        return sb.toString()[2..]
     }
 }
 
@@ -143,8 +141,7 @@ func hasBody(response: Response): Bool {
     let contentLength = response.getHeader("Content-Length", "")
 
     if (contentLength != "" && ((Int64.tryParse(contentLength) ?? -1) != -1) || "chunked".equals(
-        response.getHeader("Transfer-Encoding", "")
-    )) {
+        response.getHeader("Transfer-Encoding", ""))) {
         return true
     }
     return false

@@ -73,12 +73,8 @@ public class RetryAndFollowUpInterceptor <: Interceptor {
             }
 
             match (priorResponse) {
-                case Some(resp) =>
-                    response = response.newBuilder().prevResponse(
-                        Option<Response>.Some(
-                            resp.newBuilder().body(Option<ResponseBody>.None).build()
-                        )
-                    ).build()
+                case Some(resp) => response = response.newBuilder().prevResponse(
+                    Option<Response>.Some(resp.newBuilder().body(Option<ResponseBody>.None).build())).build()
                 case _ => ()
             }
             let route: Option<Route> = match (response.exchange) {
@@ -174,10 +170,9 @@ public class RetryAndFollowUpInterceptor <: Interceptor {
                 }
 
                 match (response.getPrevResponse()) {
-                    case Some(resp) =>
-                        if (resp.getCode() == HttpStatusCode.STATUS_REQUEST_TIMEOUT) {
-                            return Option<Request>.None
-                        }
+                    case Some(resp) => if (resp.getCode() == HttpStatusCode.STATUS_REQUEST_TIMEOUT) {
+                        return Option<Request>.None
+                    }
                     case _ => ()
                 }
 
@@ -188,10 +183,9 @@ public class RetryAndFollowUpInterceptor <: Interceptor {
                 return response.getRequest()
             case 503 =>
                 match (response.getPrevResponse()) {
-                    case Some(resp) =>
-                        if (resp.getCode() == HttpStatusCode.STATUS_SERVICE_UNAVAILABLE) {
-                            return Option<Request>.None
-                        }
+                    case Some(resp) => if (resp.getCode() == HttpStatusCode.STATUS_SERVICE_UNAVAILABLE) {
+                        return Option<Request>.None
+                    }
                     case _ => ()
                 }
 

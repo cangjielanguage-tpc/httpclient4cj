@@ -35,9 +35,9 @@ public class okhttp_CacheControl_004 {
     var port: UInt16 = 0
     func serve(){
         let serverSocket = TcpServerSocket(bindAt: 0)
-    let server = ServerBuilder.new().listener(serverSocket).build() 
+    let server = ServerBuilder().listener(serverSocket).build() 
         server.distributor.register("/1234567", { httpContext =>
-            let resp = "Hello from /red".toUtf8Array()
+            let resp = "Hello from /red".toArray()
             httpContext.responseBuilder.header("Last-Modified", "Tue, 27 May 2014 02:35:47 GMT")
             httpContext.responseBuilder.header("cache-control", "no-cache") 
             httpContext.responseBuilder.body(resp)

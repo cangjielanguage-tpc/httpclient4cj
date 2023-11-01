@@ -17,11 +17,11 @@ public class okhttp_demo {
     var port: UInt16 = 0
     func serve() {
         let serverSocket = TcpServerSocket(bindAt: 0)
-        let server = ServerBuilder.new().listener(serverSocket).build()
+        let server = ServerBuilder().listener(serverSocket).build()
         server.distributor.register("/1235",
             {
             httpContext =>
-            let resp = "Hello from /red".toUtf8Array()
+            let resp = "Hello from /red".toArray()
             httpContext.responseBuilder.body(resp)
             httpContext.responseBuilder.header("Content-type","text/plain; charset=utf-8")
             return
@@ -63,7 +63,7 @@ public class okhttp_demo {
 
         @Assert(response_code,Int64(200))
         // @Assert(str, "Hello from /red")
-        // @Assert(response_body, "Hello from /red".toUtf8Array())
+        // @Assert(response_body, "Hello from /red".toArray())
         @Assert(response.getHeader("Content-Length").getOrThrow(),"15")
         @Assert(response.getHeader("Date").getOrThrow().contains("GMT"),true)
         @Assert(response.getHeader("Connection").getOrThrow(),"keep-alive")
@@ -80,11 +80,11 @@ public class http_demo {
     var port: UInt16 = 1104
     func serve() {
         let serverSocket = TcpServerSocket(bindAt: 0)
-        let server = ServerBuilder.new().listener(serverSocket).build()
+        let server = ServerBuilder().listener(serverSocket).build()
         server.distributor.register("/1234",
             {
             httpContext =>
-            let resp = "Hello from /red".toUtf8Array()
+            let resp = "Hello from /red".toArray()
             httpContext.responseBuilder.body(resp)
             return
         })
@@ -96,7 +96,7 @@ public class http_demo {
     @TestCase
     func http_demo(): Unit {
         serve()
-        let client = ClientBuilder.new().build()
+        let client = ClientBuilder().build()
         var a: http.HttpResponse = client.get("http://127.0.0.1:${port}/1234")
         var byteStream = ByteArrayStream()
         a.copyTo(byteStream)
@@ -116,7 +116,7 @@ public class http_demo {
 extend http.HttpResponse {
     func copyTo(stream: OutputStream): Unit {
         println(this.toString())
-        let bytes = this.toString().toUtf8Array()
+        let bytes = this.toString().toArray()
         stream.write(bytes)
     }
 }

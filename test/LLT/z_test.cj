@@ -35,7 +35,7 @@ func getRequestMethod(method: String): String {
 // }
 extend http.HttpRequest {
     func copyTo(stream: OutputStream): Unit {
-        let bytes = this.toString().toUtf8Array()
+        let bytes = this.toString().toArray()
         stream.write(bytes)
     }
 }
@@ -43,7 +43,7 @@ public func toHttpRequest(request: httpclient4cj.Request): http.HttpRequest {
     let method = getRequestMethod(request.getMethod())
     let header = request.getHeaders()
     let url = request.getUrl()
-    let req = HttpRequestBuilder.new().method(method).url(url)
+    let req = HttpRequestBuilder().method(method).url(url)
     for ((k, vs) in header.clone()) {
         for (v in vs) {
             req.header(k, v)

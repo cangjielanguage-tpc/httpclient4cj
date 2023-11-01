@@ -102,14 +102,14 @@ public class ConnectionShutdownException <: HttpException {
     }
 }
 
-public class IllegalStateException <: Exception {
-    public init(message: String) {
-        super(message)
-    }
-    public func toString(): String {
-        "IllegalStateException: ${message}"
-    }
-}
+// public class IllegalStateException <: Exception {
+//     public init(message: String) {
+//         super(message)
+//     }
+//     public func toString(): String {
+//         "IllegalStateException: ${message}"
+//     }
+// }
 
 public class StreamResetException <: HttpException {
     public let errorCode: ErrorCode

@@ -92,28 +92,24 @@ public class CallServerInterceptor <: Interceptor {
 
         if (code == 100) {
             response = exchange.readResponseHeaders(false).getOrThrow().request(request).sentRequestAtMillis(
-                sentRequestMillis
-            ).receivedResponseAtMillis(DateTime.now().toUnixTimeStamp().toMilliseconds()).build()
+                sentRequestMillis).receivedResponseAtMillis(DateTime.now().toUnixTimeStamp().toMilliseconds()).build()
         }
 
         response = response.newBuilder().body(exchange.openResponseBody(response)).sentRequestAtMillis(
-            sentRequestMillis
-        ).receivedResponseAtMillis(DateTime.now().toUnixTimeStamp().toMilliseconds()).build()
+            sentRequestMillis).receivedResponseAtMillis(DateTime.now().toUnixTimeStamp().toMilliseconds()).build()
 
         exchange.responseHeadersEnd(response)
 
         if ("close".equals(response.getRequest().getHeader("Connection", "")) || "close".equals(
-            response.getHeader("Connection", "")
-        )) {
+            response.getHeader("Connection", ""))) {
             exchange.noNewExchangesOnConnection()
         }
 
         if (code == 204 || code == 205) {
             match (response.getBody()) {
-                case Some(body) =>
-                    if (body.getContentLength() > 0) {
-                        throw ProtocolException("HTTP ${code} had non-zero Content-Length: ${body.getContentLength()}")
-                    }
+                case Some(body) => if (body.getContentLength() > 0) {
+                    throw ProtocolException("HTTP ${code} had non-zero Content-Length: ${body.getContentLength()}")
+                }
                 case None => ()
             }
         }

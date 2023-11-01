@@ -156,7 +156,7 @@ public class Response <: ToString {
     /** Returns true if this response redirects to another resource. */
     public func isRedirect(): Bool {
         if (code == StatusLine.HTTP_PERM_REDIRECT || code == StatusLine.HTTP_TEMP_REDIRECT || code == StatusLine.
-        HTTP_MULT_CHOICE || code == StatusLine.HTTP_MOVED_PERM || code == StatusLine.HTTP_MOVED_TEMP || code ==
+            HTTP_MULT_CHOICE || code == StatusLine.HTTP_MOVED_PERM || code == StatusLine.HTTP_MOVED_TEMP || code ==
             StatusLine.HTTP_SEE_OTHER) {
             return true
         } else {

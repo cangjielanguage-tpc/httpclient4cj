@@ -101,7 +101,7 @@ public class okhttp_indexOf_001 {
         }
         try {
             var file = File.create("../../testData/okhttp_indexOf_001_7.txt")
-            file.write("hello world".toUtf8Array())
+            file.write("hello world".toArray())
             file = File("../../testData/okhttp_indexOf_001_7.txt",OpenOption.Open(true, true))
             
             var okbuffer = OkBuffer(file)

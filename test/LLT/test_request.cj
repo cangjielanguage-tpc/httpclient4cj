@@ -21,7 +21,7 @@ main(){
  let mUrl = "http://0.0.0.0:${port}/1241"
  var jsonStr = ##"{"name":"Tom","age":"18","version":"0.1.1"}"##
  let requestBody:Option<RequestBody> = Option<RequestBody>.Some(
-    RealRequestBody.create(MediaType.get("application/json"), jsonStr.toUtf8Array()))
+    RealRequestBody.create(MediaType.get("application/json"), jsonStr.toArray()))
  var proArray = ArrayList<String>()
  proArray.append("http/1.1")
   let header: Header = Header()
@@ -44,9 +44,9 @@ main(){
  public func serve(){
 
     let serverSocket = TcpServerSocket(bindAt: 0)
-    let server = ServerBuilder.new().listener(serverSocket).build()
+    let server = ServerBuilder().listener(serverSocket).build()
     server.distributor.register("/1241", { httpContext =>
-      let resp = "Hello from /red".toUtf8Array()
+      let resp = "Hello from /red".toArray()
       httpContext.responseBuilder.body(resp)
       return
     })

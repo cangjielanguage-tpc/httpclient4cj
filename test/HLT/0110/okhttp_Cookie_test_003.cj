@@ -86,9 +86,9 @@ public class okhttp_Cookie_Test_003{
 
     func serve() {
         let serverSocket = TcpServerSocket(bindAt: 0)
-        let server = ServerBuilder.new().listener(serverSocket).build()
+        let server = ServerBuilder().listener(serverSocket).build()
         server.distributor.register("/1234", { httpContext =>
-            let resp = "Hello from /red".toUtf8Array()
+            let resp = "Hello from /red".toArray()
             httpContext.responseBuilder.body(resp)
             httpContext.responseBuilder.header("test", "test")
             httpContext.responseBuilder.header("Set-Cookie", "key=server-header-1;")
@@ -103,12 +103,12 @@ public class okhttp_Cookie_Test_003{
 
 func expect(c: String, s: String): Unit {
     let map = HashMap<String, String>()
-    for (str in c.split(';')) {
-        let kv = str.split('=')
+    for (str in c.split(";")) {
+        let kv = str.split("=")
         map.put(kv[0].trimAscii(), kv[1].trimAscii())
     }
-    for (str in s.split(';')) {
-        let kv = str.split('=')
+    for (str in s.split(";")) {
+        let kv = str.split("=")
         @Expect(map[kv[0].trimAscii()], kv[1].trimAscii())
         map.remove(kv[0].trimAscii())
     }

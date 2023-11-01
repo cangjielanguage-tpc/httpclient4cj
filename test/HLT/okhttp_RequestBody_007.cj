@@ -32,7 +32,7 @@ public class okhttp_RequestBody_writeTo {
     @TestCase //test RealRequestBody
     func okhttp_RequestBody_writeTo(): Unit {
         var body : RequestBodySink = RequestBodySink()
-        let RealRequestBody = httpclient4cj.RealRequestBody.create(MediaType.get("application/json"),"hello".toUtf8Array())
+        let RealRequestBody = httpclient4cj.RealRequestBody.create(MediaType.get("application/json"),"hello".toArray())
         RealRequestBody.writeTo(body)
         //println(String.fromUtf8(arr.readToEnd()))
         @Assert(String.fromUtf8(arr.readToEnd()), "hello")

@@ -6,7 +6,7 @@ from std import io.*
 main() {
    var byteArrayStream = ByteArrayStream(10)
    var okbuffer = OkBuffer(byteArrayStream)
-   byteArrayStream.write("华为\n中国".toUtf8Array())
+   byteArrayStream.write("华为\n中国".toArray())
    try{
        okbuffer.readUtf8Line(4)
    } catch (e:Exception){

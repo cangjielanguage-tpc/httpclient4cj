@@ -82,21 +82,19 @@ public class Transmitter {
             canceled = true
             exchangeToCancel = exchange
             connectionToCancel = match (exchangeFinder) {
-                case Some(find) =>
-                    match (find.getConnectingConnection()) {
-                        case Some(conn) => Option<Connection>.Some(conn)
-                        case None => this.connection
-                    }
+                case Some(find) => match (find.getConnectingConnection()) {
+                    case Some(conn) => Option<Connection>.Some(conn)
+                    case None => this.connection
+                }
                 case None => this.connection
             }
         }
         match (exchangeToCancel) {
             case Some(cancelEx) => cancelEx.cancel()
-            case None =>
-                match (connectionToCancel) {
-                    case Some(cancelConn) => cancelConn.cancel()
-                    case None => ()
-                }
+            case None => match (connectionToCancel) {
+                case Some(cancelConn) => cancelConn.cancel()
+                case None => ()
+            }
         }
     }
 
@@ -188,8 +186,7 @@ public class Transmitter {
         this.request = request
         address = createAddress(request.getUrl())
         this.exchangeFinder = Option<ExchangeFinder>.Some(
-            ExchangeFinder(this, connectionPool, address, call, eventListener)
-        )
+            ExchangeFinder(this, connectionPool, address, call, eventListener))
     }
 
     private func createAddress(url: URL): Address {

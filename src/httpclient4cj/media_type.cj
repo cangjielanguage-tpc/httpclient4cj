@@ -31,7 +31,7 @@ public class MediaType <: ToString {
         var subtype: String = ""
         var end = 0
         match (typeSubtype.find()) {
-            case None => throw IllegalArgumentException("No subtype found for: \"" + string + '"')
+            case None => throw IllegalArgumentException("No subtype found for: \"${string}\"")
             case Some(data) =>
                 mediaType = data.matchStr(1).toLower()
                 subtype = data.matchStr(2).toLower()
@@ -47,10 +47,8 @@ public class MediaType <: ToString {
             }
             parameter.setRegion(s, string.size)
             match (parameter.find()) {
-                case None =>
-                    throw IllegalArgumentException(
-                        "Parameter is not formatted correctly: \"${string.substring(s)}\" for: \"${string}\""
-                    )
+                case None => throw IllegalArgumentException(
+                    "Parameter is not formatted correctly: \"${string.substring(s)}\" for: \"${string}\"")
                 case Some(data) =>
                     s = data.matchPosition(0).end
                     let name = data.matchStr(1).toLower()
@@ -72,8 +70,7 @@ public class MediaType <: ToString {
 
                     if (charset != "" && !equalsIgnoreCase(charsetParameter, charset)) {
                         throw IllegalArgumentException(
-                            "Multiple charsets defined: \"${charset}\" and: \"${charsetParameter}\" for: \"${string}\""
-                        )
+                            "Multiple charsets defined: \"${charset}\" and: \"${charsetParameter}\" for: \"${string}\"")
                     }
 
                     charset = charsetParameter

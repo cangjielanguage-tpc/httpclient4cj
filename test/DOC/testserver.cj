@@ -5,10 +5,10 @@ from std import time.Duration
 
 func serve() {
     let serverSocket = TcpServerSocket(bindAt: 50060)
-    let server = ServerBuilder.new().listener(serverSocket).build()
+    let server = ServerBuilder().listener(serverSocket).build()
     server.distributor.register("/", {
         httpContext =>
-        httpContext.responseBuilder.body("Hello".toUtf8Array())
+        httpContext.responseBuilder.body("Hello".toArray())
         return
     })
     spawn {server.serve()}

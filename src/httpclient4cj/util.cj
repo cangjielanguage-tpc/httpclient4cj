@@ -48,14 +48,13 @@ class Util {
      */
     static func closeQuietly<T>(socket: Option<T>): Unit where T <: Resource {
         match (socket) {
-            case Some(s) =>
-                try {
-                    if (!s.isClosed()) {
-                        s.close()
-                    }
-                } catch (ignored: Exception) {
-                    throw ignored
+            case Some(s) => try {
+                if (!s.isClosed()) {
+                    s.close()
                 }
+            } catch (ignored: Exception) {
+                throw ignored
+            }
             case None => ()
         }
     }
@@ -91,8 +90,8 @@ class Util {
         var posi: Int64 = pos
 
         while (posi < input.size) {
-            let c: Char = input[Int64(posi)]
-            if (c != ' ' && c != '\t') {
+            let c = input[posi]
+            if (c != b' ' && c != b'\t') {
                 break
             }
             posi++
@@ -127,12 +126,11 @@ class Util {
 func addLenient(header: Header, line: String) {
     match (line.indexOf(":", 1)) {
         case Some(index) => header.add(line.substring(0, index), line.substring(index + 1).trim())
-        case None =>
-            if (!line.startsWith(":")) {
-                header.add("", line)
-            } else {
-                throw ProtocolException("Unexpected header: ${line}")
-            }
+        case None => if (!line.startsWith(":")) {
+            header.add("", line)
+        } else {
+            throw ProtocolException("Unexpected header: ${line}")
+        }
     }
 }
 
@@ -308,18 +306,27 @@ public class Header <: Iterable<(String, ArrayList<String>)> {
         if (name.startsWith(":")) {
             this.fields.put(name.toLower(), value)
         } else {
-            httpHeaders.set(name, value)
+            httpHeaders.del(name)
+            for (v in value) {
+                httpHeaders.add(name, v)
+            }
         }
     }
     public func get(name: String): ?ArrayList<String> {
-        httpHeaders.get(name) ?? fields.get(name)
+        let arr = httpHeaders.get(name)
+        if (arr.size != 0) {
+            return arr |> collectArrayList
+        }
+        return fields.get(name)
     }
     public func del(name: String): Unit {
         fields.remove(name)
         httpHeaders.del(name)
     }
     public func iterator(): Iterator<(String, ArrayList<String>)> {
-        httpHeaders |> concat(fields)
+        httpHeaders |>
+            map<(String, Collection<String>), (String, ArrayList<String>)> {kv => (kv[0], kv[1] |> collectArrayList)} |>
+            concat(fields)
     }
 }
 
@@ -330,3 +337,45 @@ public func portTrans(port: UInt16): UInt16 {
 }
 
 let LOG: SimpleLogger = SimpleLogger()
+
+
+extend String {
+    func equals(s: String): Bool {
+        this == s
+    }
+    func toUtf8Array(): Array<UInt8> {
+        this.toArray()
+    }
+    func substring(start: Int64, size: Int64): String {
+        this[start..start + size]
+    }
+    func substring(start: Int64): String {
+        this[start..]
+    }
+    func contains(char: Char): Bool {
+        this.contains(char.toString())
+    }
+    func indexOf(char: Char): ?Int64 {
+        this.indexOf(char.toString())
+    }
+    func indexOf(char: Char, begin: Int64): ?Int64 {
+        this.indexOf(char.toString(), begin)
+    }
+}
+extend UInt8 {
+    operator func ==(char: Char): Bool {
+        UInt32(this) == UInt32(char)
+    }
+    operator func !=(char: Char): Bool {
+        UInt32(this) != UInt32(char)
+    }
+    operator func <(char: Char): Bool {
+        UInt32(this) < UInt32(char)
+    }
+    operator func <=(char: Char): Bool {
+        UInt32(this) <= UInt32(char)
+    }
+    operator func >=(char: Char): Bool {
+        UInt32(this) >= UInt32(char)
+    }
+}

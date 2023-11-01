@@ -18,9 +18,9 @@ public class okhttp_okhttpClient_002 {
     var port: UInt16 = 0
     func serve(){
         let serverSocket = TcpServerSocket(bindAt: 0)
-        let server = ServerBuilder.new().listener(serverSocket).build()
+        let server = ServerBuilder().listener(serverSocket).build()
         server.distributor.register("/1234", { httpContext =>
-            let resp = "hello".toUtf8Array()
+            let resp = "hello".toArray()
             httpContext.responseBuilder.body(resp)
             return
         })

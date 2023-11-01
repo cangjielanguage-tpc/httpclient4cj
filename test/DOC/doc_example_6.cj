@@ -21,8 +21,8 @@ class MyRequestBody <: RequestBody {
     }
     public func writeTo(sink: Sink): Unit {
         // 每次调用write都会产生一个传输块
-        sink.write("hello".toUtf8Array())
-        sink.write("world".toUtf8Array())
+        sink.write("hello".toArray())
+        sink.write("world".toArray())
     }
     public func get(): InputStream {
         return ByteArrayStream()

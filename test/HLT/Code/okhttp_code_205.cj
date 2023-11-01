@@ -17,10 +17,10 @@ public class okhtttp_code_205{
     var port: UInt16 = 0
     func serve(){
         let serverSocket = TcpServerSocket(bindAt: 0)
-        let server = ServerBuilder.new().listener(serverSocket).build()
+        let server = ServerBuilder().listener(serverSocket).build()
         server.distributor.register("/d1234A+!", { httpContext =>
             httpContext.responseBuilder.status(205)
-            let resp = "".toUtf8Array()
+            let resp = "".toArray()
             httpContext.responseBuilder.body(resp)
             return
         })

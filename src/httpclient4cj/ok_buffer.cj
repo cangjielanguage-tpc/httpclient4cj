@@ -40,13 +40,13 @@ public class OkBuffer <: Source {
     }
 
     func exhausted(): Bool {
-        return buffer.length == 0
+        return buffer.remainLength == 0
     }
 
     public func readByte(): Byte {
         let arr = Array<Byte>(1, item: 0)
 
-        if (buffer.length > 0) {
+        if (buffer.remainLength > 0) {
             buffer.read(arr)
         } else {
             let arr2 = Array<Byte>(4096, item: 0)
@@ -61,7 +61,7 @@ public class OkBuffer <: Source {
             throw IllegalStateException("closed")
         }
 
-        if (buffer.length == 0) {
+        if (buffer.remainLength == 0) {
             let arr = Array<Byte>(4096, item: 0)
             let read = read(arr)
             if (read == -1) {
@@ -69,7 +69,7 @@ public class OkBuffer <: Source {
             }
         }
 
-        let arr = Array<Byte>(min(byteCount, buffer.length), item: 0)
+        let arr = Array<Byte>(min(byteCount, buffer.remainLength), item: 0)
         let read = buffer.read(arr)
         bytes.write(arr)
         return read
@@ -83,7 +83,7 @@ public class OkBuffer <: Source {
         }
 
         let bytes = Array<Byte>(limit, item: 0)
-        if (buffer.length >= limit) {
+        if (buffer.remainLength >= limit) {
             buffer.read(bytes)
         } else {
             let arr2 = Array<Byte>(4096, item: 0)
@@ -95,7 +95,7 @@ public class OkBuffer <: Source {
     public func indexOf(b: Byte, start: Int64, end: Int64): Int64 {
         if (start >= 0 && end >= start) {
             var offSet = start
-            if (end < buffer.length) {
+            if (end < buffer.remainLength) {
                 for (i in offSet..end) {
                     if (buffer.bytes()[i] == b) {
                         return i
@@ -103,8 +103,8 @@ public class OkBuffer <: Source {
                 }
             } else {
                 while (offSet < end) {
-                    if (offSet < buffer.length) {
-                        for (i in offSet..buffer.length) {
+                    if (offSet < buffer.remainLength) {
+                        for (i in offSet..buffer.remainLength) {
                             if (i > end) {
                                 return -1
                             }
@@ -114,7 +114,7 @@ public class OkBuffer <: Source {
                             }
                         }
 
-                        offSet = buffer.length
+                        offSet = buffer.remainLength
                     }
 
                     if (read(Array<Byte>(4096, item: 0)) == -1) {

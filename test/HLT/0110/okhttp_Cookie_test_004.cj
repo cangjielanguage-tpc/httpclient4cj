@@ -78,9 +78,9 @@ public class okhttp_Cookie_Test_004{
 
     func serve() {
         let serverSocket = TcpServerSocket(bindAt: 0)
-        let server = ServerBuilder.new().listener(serverSocket).build()
+        let server = ServerBuilder().listener(serverSocket).build()
         server.distributor.register("/1234", { httpContext =>
-            let resp = "Hello from /red".toUtf8Array()
+            let resp = "Hello from /red".toArray()
             httpContext.responseBuilder.body(resp)
             httpContext.responseBuilder.header("test", "test")
             httpContext.responseBuilder.header("Set-Cookie", "key=server-header-1;")

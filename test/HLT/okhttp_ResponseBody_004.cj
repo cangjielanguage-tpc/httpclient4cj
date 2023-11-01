@@ -18,9 +18,9 @@ public class okhttp_ResponseBody_004{
     var port: UInt16 = 0
     func serve(){
         let serverSocket = TcpServerSocket(bindAt: 0)
-        let server = ServerBuilder.new().listener(serverSocket).build()
+        let server = ServerBuilder().listener(serverSocket).build()
         server.distributor.register("/1234", { httpContext =>
-            let resp = "".toUtf8Array()
+            let resp = "".toArray()
             httpContext.responseBuilder.header("content-Type","text/plain; charset=utf-8")
             httpContext.responseBuilder.body(resp)
             return

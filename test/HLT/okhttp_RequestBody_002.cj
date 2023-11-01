@@ -32,7 +32,7 @@ public class okhttp_RequestBody_002{
         var body_get = request.getBody().getOrThrow().get().read(str_body)
         println("body_get = [${body_get}]")
         println("str_body = [${String.fromUtf8(str_body)}]")
-        @Assert(str_body, "".toUtf8Array())
+        @Assert(str_body, "".toArray())
 
     }
 

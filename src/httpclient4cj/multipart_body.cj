@@ -83,15 +83,14 @@ public class MultipartBody <: RequestBody {
             arr.write(boundary.toUtf8Array())
             arr.write(CRLF)
             match (headers) {
-                case Some(h) =>
-                    for ((k, v) in h) {
-                        for (e in v) {
-                            arr.write(k.toUtf8Array())
-                            arr.write(COLONSPACE)
-                            arr.write(e.toUtf8Array())
-                            arr.write(CRLF)
-                        }
+                case Some(h) => for ((k, v) in h) {
+                    for (e in v) {
+                        arr.write(k.toUtf8Array())
+                        arr.write(COLONSPACE)
+                        arr.write(e.toUtf8Array())
+                        arr.write(CRLF)
                     }
+                }
                 case None => ()
             }
 
@@ -130,7 +129,7 @@ public class MultipartBody <: RequestBody {
         arr.write(boundary.toUtf8Array())
         arr.write(DASHDASH)
         arr.write(CRLF)
-        byteCount += arr.length
+        byteCount += arr.remainLength
         if (!write) {
             arr.clear()
         }
@@ -146,15 +145,14 @@ public class MultipartBody <: RequestBody {
             sink.write(boundary.toUtf8Array())
             sink.write(CRLF)
             match (headers) {
-                case Some(h) =>
-                    for ((k, v) in h) {
-                        for (e in v) {
-                            sink.write(k.toUtf8Array())
-                            sink.write(COLONSPACE)
-                            sink.write(e.toUtf8Array())
-                            sink.write(CRLF)
-                        }
+                case Some(h) => for ((k, v) in h) {
+                    for (e in v) {
+                        sink.write(k.toUtf8Array())
+                        sink.write(COLONSPACE)
+                        sink.write(e.toUtf8Array())
+                        sink.write(CRLF)
                     }
+                }
                 case None => ()
             }
 
@@ -291,8 +289,8 @@ public class Part {
     }
 
     private static func checkName(name: String) {
-        for (i in 0..name.toCharArray().size) {
-            if (name[i] <= '\u{0020}' || name[i] >= '\u{007f}') {
+        for (i in name) {
+            if (i <= 0x20 || i >= 0x7f) {
                 throw IllegalArgumentException("Unexpected char in header name: ${name}")
             }
         }
@@ -305,12 +303,12 @@ func randomBoundary(): String {
 
 func appendQuotedString(target: StringBuilder, key: String): Unit {
     target.append('"')
-    for (i in 0..key.toCharArray().size) {
-        match (key[i]) {
-            case '\n' => target.append("%0A")
-            case '\r' => target.append("%0D")
-            case '"' => target.append("%22")
-            case _ => target.append(key[i])
+    for (i in key) {
+        match (i) {
+            case b'\n' => target.append("%0A")
+            case b'\r' => target.append("%0D")
+            case b'"' => target.append("%22")
+            case _ => target.append(i)
         }
     }
     target.append('"')

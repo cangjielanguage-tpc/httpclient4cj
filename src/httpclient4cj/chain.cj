@@ -118,8 +118,17 @@ public class Chain {
         }
 
         calls++
-        var next: Chain = Chain(interceptors, transmitter, index + 1, request, call, exchange, connectTimeout,
-            readTimeout, writeTimeout)
+        var next: Chain = Chain(
+            interceptors,
+            transmitter,
+            index + 1,
+            request,
+            call,
+            exchange,
+            connectTimeout,
+            readTimeout,
+            writeTimeout
+        )
         let interceptor: Interceptor = interceptors.get(index).getOrThrow()
         let response: Response = interceptor.intercept(next)
         return response
@@ -142,7 +151,7 @@ public class Chain {
      * of network interceptors: for application interceptors this is always null.
      */
     //func Connection connection():
-    
+
     /**
      * The Function is getCall
      *

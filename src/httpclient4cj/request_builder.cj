@@ -103,14 +103,12 @@ public class RequestBuilder <: Builder<Request> {
         }
 
         match (body) {
-            case Some(_) =>
-                if (!permitsRequestBody(method)) {
-                    throw IllegalArgumentException("method ${method} must not have a request body.")
-                }
-            case None =>
-                if (requiresRequestBody(method)) {
-                    throw IllegalArgumentException("method ${method} must have a request body.")
-                }
+            case Some(_) => if (!permitsRequestBody(method)) {
+                throw IllegalArgumentException("method ${method} must not have a request body.")
+            }
+            case None => if (requiresRequestBody(method)) {
+                throw IllegalArgumentException("method ${method} must have a request body.")
+            }
         }
         this.methodBuild = method
         this.bodyBuild = body

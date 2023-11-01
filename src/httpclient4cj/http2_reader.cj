@@ -66,7 +66,7 @@ class Http2Reader {
             return false
         } catch (e: SocketException) {
             throw HttpException("SocketException")
-        }catch (e: Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
             throw e
         }
@@ -275,28 +275,27 @@ class Http2Reader {
             let value = Int32(readInt32(source))
             match (id) {
                 case 1 => // SETTINGS_HEADER_TABLE_SIZE
-                    ()
+                ()
                 case 2 =>
-                    // SETTINGS_ENABLE_PUSH
-                    if (value != 0 && value != 1) {
-                        throw HttpException("PROTOCOL_ERROR SETTINGS_ENABLE_PUSH != 0 or 1")
-                    }
+                        // SETTINGS_ENABLE_PUSH
+                        if (value != 0 && value != 1) {
+                    throw HttpException("PROTOCOL_ERROR SETTINGS_ENABLE_PUSH != 0 or 1")
+                }
                 case 3 => // SETTINGS_MAX_CONCURRENT_STREAMS
-                    id = 4 // Renumbered in draft 10
+                id = 4 // Renumbered in draft 10
                 case 4 =>
                     // SETTINGS_INITIAL_WINDOW_SIZE
                     id = 7 // Renumbered in draft 10
                     if (value < 0) {
                         throw HttpException("PROTOCOL_ERROR SETTINGS_INITIAL_WINDOW_SIZE should < 2^31 - 1")
                     }
-                case 5 =>
-                    if (Int64(value) < INITIAL_MAX_FRAME_SIZE || value > 16777215) {
-                        throw HttpException("PROTOCOL_ERROR SETTINGS_MAX_FRAME_SIZE: ${value}")
-                    }
+                case 5 => if (Int64(value) < INITIAL_MAX_FRAME_SIZE || value > 16777215) {
+                    throw HttpException("PROTOCOL_ERROR SETTINGS_MAX_FRAME_SIZE: ${value}")
+                }
                 case 6 => // SETTINGS_MAX_HEADER_LIST_SIZE
-                    ()
+                ()
                 case _ => // Must ignore setting with unknown id
-                    ()
+                ()
             }
             settings.setting(id, Int64(value))
         }

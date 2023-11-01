@@ -139,7 +139,7 @@ public class CookieUtil {
 
         if (path == "" || !path.startsWith("/")) {
             let encodedPath = url.rawPath
-            let lastSlash = encodedPath.lastIndexOf('/') ?? 0
+            let lastSlash = encodedPath.lastIndexOf("/") ?? 0
             path = if (lastSlash != 0) {
                 encodedPath.substring(0, lastSlash)
             } else {
@@ -151,8 +151,16 @@ public class CookieUtil {
             case -1 => None
             case _ => deltaSeconds
         }
-        return Cookie(cookieName, cookieValue, path: path, domain: domain, expires: expiresAt, maxAge: cookieMaxAge,
-            secure: secureOnly, httpOnly: httpOnly)
+        return Cookie(
+            cookieName,
+            cookieValue,
+            path: path,
+            domain: domain,
+            expires: expiresAt,
+            maxAge: cookieMaxAge,
+            secure: secureOnly,
+            httpOnly: httpOnly
+        )
     }
 
     static func trimSubstring(str: String, pos: Int64, limit: Int64): String {
@@ -176,9 +184,10 @@ public class CookieUtil {
     }
 
     static func indexOfControlOrNonAscii(input: String): Int64 {
-        for (i in 0..input.size) {
-            let c: Char = input[i]
-            if ((c <= '\u{001f}' || c >= '\u{007f}') || ##"(),/:;<=>?@[\]{}"##.contains(c)) {
+        let arr = input.toRuneArray()
+        for (i in 0..arr.size) {
+            let c = arr[i]
+            if ((c <= '\u{001f}' || c >= '\u{007f}') || ##"(),/:;<=>?@[\]{}"##.contains(c.toString())) {
                 return i
             }
         }
@@ -398,8 +407,8 @@ public class CookieUtil {
     private static func dateCharacterOffset(input: String, pos: Int64, limit: Int64, invert: Bool) {
         for (i in pos..limit) {
             let c = input[i]
-            let dateCharacter: Bool = (c < ' ' && c != '\t') || (c >= '\u{007f}') || (c >= '0' && c <= '9') ||
-                (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == ':')
+            let dateCharacter: Bool = (c < ' ' && c != '\t') || (c >= '\u{007f}') || (c >= '0' && c <= '9') || (c >= 'a' &&
+                c <= 'z') || (c >= 'A' && c <= 'Z') || (c == ':')
             if (dateCharacter == !invert) {
                 return i
             }
@@ -418,19 +427,18 @@ public class CookieUtil {
             }
         } catch (e: Exception) {
             match (Regex("-?\\d+").matches(s)) {
-                case Some(_) =>
-                    if (s.startsWith("-")) {
-                        return Int64.Min
-                    } else {
-                        return Int64.Max
-                    }
+                case Some(_) => if (s.startsWith("-")) {
+                    return Int64.Min
+                } else {
+                    return Int64.Max
+                }
                 case None => throw e
             }
         }
     }
 
     static func parseIPv4(address: String): (Array<UInt8>, Bool) {
-        var it = address.lazySplit('.')
+        var it = address.lazySplit(".")
         var ip = Array<UInt8>(SOCK_ADDR_IPV4_LEN, item: 0)
 
         for (i in 0..SOCK_ADDR_IPV4_LEN) {
@@ -455,7 +463,7 @@ public class CookieUtil {
     }
 
     static func parseIPv6Zone(address: String): (Array<UInt8>, String, Bool) {
-        var idx = match (address.lastIndexOf('%')) {
+        var idx = match (address.lastIndexOf("%")) {
             case Some(v) => v
             case None => -1
         }
@@ -563,7 +571,7 @@ public class CookieUtil {
         var n = 0
         var m = 0
         var i = 0
-        for (c in s) {
+        for (c in s.toRuneArray()) {
             m = i + 1
             if ('0' <= c && c <= '9') {
                 n *= 16
@@ -593,7 +601,7 @@ public class CookieUtil {
 
     static func stoi(s: String): Int64 {
         var num: Int64 = 0
-        for (u in s.utf8View) {
+        for (u in s) {
             if (u < b'0' || u > b'9') {
                 return -1
             }

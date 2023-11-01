@@ -17,12 +17,12 @@ public class okhttp_OKSocket_002 {
     var port: UInt16 = 0
     func serve() {
         let serverSocket = TcpServerSocket(bindAt: 0)
-        let server = ServerBuilder.new().listener(serverSocket).build()
+        let server = ServerBuilder().listener(serverSocket).build()
         server.distributor.register(
             "/1234",
             {
                 httpContext =>
-                let resp = "Hello from /red".toUtf8Array()
+                let resp = "Hello from /red".toArray()
                 httpContext.responseBuilder.body(resp)
                 return
             }
@@ -34,7 +34,7 @@ public class okhttp_OKSocket_002 {
     @TestCase
     func okhttp_OKSocket_002(): Unit {
         serve()
-        var httpRq: HttpRequest = HttpRequestBuilder.new().get().url("http://127.0.0.1:${port}/1234").header(
+        var httpRq: HttpRequest = HttpRequestBuilder().get().url("http://127.0.0.1:${port}/1234").header(
             "host",
             "127.0.0.1:${port}"
         ).header("Content-Type", "multipart/form-data").build()
@@ -62,7 +62,7 @@ public class okhttp_OKSocket_002 {
 extend http.HttpRequest {
     func copyTo(stream: OutputStream): Unit {
         println(this.toString())
-        let bytes = this.toString().toUtf8Array()
+        let bytes = this.toString().toArray()
         stream.write(bytes)
     }
 }
