@@ -17,7 +17,7 @@ public class okhttp_RequestBody_005{
     @TestCase //test RealRequestBody
     func okhttp_RequestBody_005(): Unit {
         let request: httpclient4cj.Request = httpclient4cj.Request.builder()
-                                        .method("POST",body: RealRequestBody.create(MediaType.get("application/json; charset=utf-8"),"hello".toUtf8Array()))
+                                        .method("POST",body: RealRequestBody.create(MediaType.get("application/json; charset=utf-8"),"hello".toArray()))
                                         .build()
         // test contentType
         var body_Type = request.getBody().getOrThrow().contentType().getOrThrow().toString()
@@ -29,7 +29,7 @@ public class okhttp_RequestBody_005{
         var str_body:Array<Byte> = Array<Byte>(5, item: 0)
         request.getBody().getOrThrow().get().read(str_body)
         println(String.fromUtf8(str_body))
-        @Assert(str_body, "hello".toUtf8Array())
+        @Assert(str_body, "hello".toArray())
 
     }
 

@@ -29,7 +29,7 @@ public class okhttp_Request_method_004{
     @TestCase
     func okhttp_Request_method_004_exception(): Unit {
         var exception = ""
-        let body: httpclient4cj.RequestBody = httpclient4cj.RealRequestBody.create(MediaType.get("application/json; charset=utf-8"), "hello".toUtf8Array())
+        let body: httpclient4cj.RequestBody = httpclient4cj.RealRequestBody.create(MediaType.get("application/json; charset=utf-8"), "hello".toArray())
         try{
             let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                             .method("HEAD",body:body)

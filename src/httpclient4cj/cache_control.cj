@@ -318,8 +318,21 @@ public class CacheControl <: ToString {
             headerValue = ""
         }
 
-        return CacheControl(noCache, noStore, maxAgeSeconds, sMaxAgeSeconds, isPrivate, isPublic, mustRevalidate,
-            maxStaleSeconds, minFreshSeconds, onlyIfCached, noTransform, immutable, headerValue)
+        return CacheControl(
+            noCache,
+            noStore,
+            maxAgeSeconds,
+            sMaxAgeSeconds,
+            isPrivate,
+            isPublic,
+            mustRevalidate,
+            maxStaleSeconds,
+            minFreshSeconds,
+            onlyIfCached,
+            noTransform,
+            immutable,
+            headerValue
+        )
     }
 
     /**
@@ -347,10 +360,10 @@ public class CacheControl <: ToString {
             result.append("no-store, ")
         }
         if (maxAgeSecondsInit != -1) {
-            result.append("max-age=").append(maxAgeSecondsInit).append(", ")
+            result.append("max-age=${maxAgeSecondsInit}, ")
         }
         if (sMaxAgeSecondsInit != -1) {
-            result.append("s-maxage=").append(sMaxAgeSecondsInit).append(", ")
+            result.append("s-maxage=${sMaxAgeSecondsInit}, ")
         }
         if (isPrivateInit) {
             result.append("private, ")
@@ -362,10 +375,10 @@ public class CacheControl <: ToString {
             result.append("must-revalidate, ")
         }
         if (maxStaleSecondsInit != -1) {
-            result.append("max-stale=").append(maxStaleSecondsInit).append(", ")
+            result.append("max-stale=${maxStaleSecondsInit}, ")
         }
         if (minFreshSecondsInit != -1) {
-            result.append("min-fresh=").append(minFreshSecondsInit).append(", ")
+            result.append("min-fresh=${minFreshSecondsInit}, ")
         }
         if (onlyIfCachedInit) {
             result.append("only-if-cached, ")
@@ -379,7 +392,6 @@ public class CacheControl <: ToString {
         if (result.size == 0) {
             return ""
         }
-        result.remove(result.size - 2..result.size - 1)
-        return result.toString().trim()
+        return result.toString()[..result.size - 2].trim()
     }
 }

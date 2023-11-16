@@ -123,37 +123,37 @@ class Decoder {
              */
             if ((src[i] & INDEXD[0]) != INDEXD[1]) {
                 i = this.parseFieldIndexed(src, i, headerBuf)
-            } else /*
-             * 0   1   2   3   4   5   6   7
-             * +---+---+---+---+---+---+---+---+
-             * | 0 | 1 |   Max size (6+)       |
-             * +---+---------------------------+
-             */
-            if ((src[i] & LITERAL_WITH_INDEXING[0]) == LITERAL_WITH_INDEXING[1]) {
+            } else if ((src[i] & LITERAL_WITH_INDEXING[0]) == LITERAL_WITH_INDEXING[1]) {
+                /*
+                 * 0   1   2   3   4   5   6   7
+                 * +---+---+---+---+---+---+---+---+
+                 * | 0 | 1 |   Max size (6+)       |
+                 * +---+---------------------------+
+                 */
                 i = this.parseFieldLiteral(src, i, INDEXD_TRUE, INCREMENTAL, headerBuf)
-            } else /*
-             * 0   1   2   3   4   5   6   7
-             * +---+---+---+---+---+---+---+---+
-             * | 0 | 0 | 1 |   size update     |
-             * +---+---------------------------+
-             */
-            if ((src[i] & SIZE_UPDATE[0]) == SIZE_UPDATE[1]) {
+            } else if ((src[i] & SIZE_UPDATE[0]) == SIZE_UPDATE[1]) {
+                /*
+                 * 0   1   2   3   4   5   6   7
+                 * +---+---+---+---+---+---+---+---+
+                 * | 0 | 0 | 1 |   size update     |
+                 * +---+---------------------------+
+                 */
                 i = this.parseUpdateDynamicTableSize(src, i)
-            } else /*
-             * 0   1   2   3   4   5   6   7
-             * +---+---+---+---+---+---+---+---+
-             * | 0 | 0 | 0 | 1 |  size (4+)    |
-             * +---+---------------------------+
-             */
-            if ((src[i] & LITERAL_NEVER_INDEXED[0]) == LITERAL_NEVER_INDEXED[1]) {
+            } else if ((src[i] & LITERAL_NEVER_INDEXED[0]) == LITERAL_NEVER_INDEXED[1]) {
+                /*
+                 * 0   1   2   3   4   5   6   7
+                 * +---+---+---+---+---+---+---+---+
+                 * | 0 | 0 | 0 | 1 |  size (4+)    |
+                 * +---+---------------------------+
+                 */
                 i = this.parseFieldLiteral(src, i, INDEXD_NEVER, NEVER, headerBuf)
-            } else /*
-             * 0   1   2   3   4   5   6   7
-             * +---+---+---+---+---+---+---+---+
-             * | 0 | 0 | 0 | 0 |  size (4+)    |
-             * +---+---------------------------+
-             */
-            if ((src[i] & LITERAL[0]) == LITERAL[1]) {
+            } else if ((src[i] & LITERAL[0]) == LITERAL[1]) {
+                /*
+                 * 0   1   2   3   4   5   6   7
+                 * +---+---+---+---+---+---+---+---+
+                 * | 0 | 0 | 0 | 0 |  size (4+)    |
+                 * +---+---------------------------+
+                 */
                 i = this.parseFieldLiteral(src, i, INDEXD_NONE, NONE, headerBuf)
             }
         }

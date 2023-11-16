@@ -19,7 +19,7 @@ public class okhttp_OkBuffer_close_001 {
         }
         
         var file = File.create("testData_okhttp_OkBuffer_close_001_2.txt")
-        file.write("hello world".toUtf8Array())
+        file.write("hello world".toArray())
         file = File("testData_okhttp_OkBuffer_close_001_2.txt",OpenOption.Open(true, true))
         
         var okbuffer = OkBuffer(file)

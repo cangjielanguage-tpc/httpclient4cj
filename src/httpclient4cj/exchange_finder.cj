@@ -211,21 +211,22 @@ class ExchangeFinder {
             //Attempt to get a connection from the pool first time .
             match (result) {
                 case Some(_) => ()
-                case None =>
-                    if (connectionPool.transmitterAcquirePooledConnection(address, transmitter,
-                        Option<RouteSelector>.None)) {
-                        result = transmitter.connection
-                    } else {
-                        match (nextRouteToTry) {
-                            case Some(route) =>
-                                selectedRoute = route
-                                nextRouteToTry = None
-                            case None =>
-                                if (retryCurrentRoute()) {
-                                    selectedRoute = transmitter.connection.getOrThrow().route
-                                }
+                case None => if (connectionPool.transmitterAcquirePooledConnection(
+                    address,
+                    transmitter,
+                    Option<RouteSelector>.None
+                )) {
+                    result = transmitter.connection
+                } else {
+                    match (nextRouteToTry) {
+                        case Some(route) =>
+                            selectedRoute = route
+                            nextRouteToTry = None
+                        case None => if (retryCurrentRoute()) {
+                            selectedRoute = transmitter.connection.getOrThrow().route
                         }
                     }
+                }
             }
         }
         return (toClose, result, selectedRoute)
@@ -257,13 +258,14 @@ class ExchangeFinder {
 
     private func retryCurrentRoute(): Bool {
         match (transmitter.connection) {
-            case Some(conn) =>
-                if (conn.routeFailureCount == 0 && Util.sameConnection(conn.route.getAddress().getUrl(),
-                    address.getUrl())) {
-                    return true
-                } else {
-                    return false
-                }
+            case Some(conn) => if (conn.routeFailureCount == 0 && Util.sameConnection(
+                conn.route.getAddress().getUrl(),
+                address.getUrl()
+            )) {
+                return true
+            } else {
+                return false
+            }
             case None => return false
         }
     }

@@ -35,7 +35,7 @@ public class okhttp_skipBuffer_001 {
         }
         try {
             var file = File.create("../../testData/okhttp_skipBuffer_001_2.txt")
-            file.write("hello world".toUtf8Array())
+            file.write("hello world".toArray())
             file = File("../../testData/okhttp_skipBuffer_001_2.txt",OpenOption.Open(true, true))
             
 

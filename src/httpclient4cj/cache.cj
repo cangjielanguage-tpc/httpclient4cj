@@ -233,15 +233,14 @@ class CacheIterator <: Iterator<String> {
         while (true) {
             match (delegate.next()) {
                 case None => return Option<String>.None
-                case Some(snapshot) =>
-                    try {
-                        let source = snapshot.getSource(ENTRY_METADATA)
-                        let str = source.readUtf8Line()
-                        snapshot.close()
-                        return str
-                    } catch (e: FSException | EOFException) {
-                        return Option<String>.None
-                    }
+                case Some(snapshot) => try {
+                    let source = snapshot.getSource(ENTRY_METADATA)
+                    let str = source.readUtf8Line()
+                    snapshot.close()
+                    return str
+                } catch (e: FSException | EOFException) {
+                    return Option<String>.None
+                }
             }
         }
         return Option<String>.None
@@ -338,16 +337,9 @@ class CacheEntry {
 
         let cacheRequest: Request = Request.builder().url(url).method(requestMethod).header(varyHeaders).build()
 
-        return Response.builder()
-            .request(cacheRequest)
-            .protocol(protocol)
-            .code(code)
-            .message(message)
-            .header(responseHeaders)
-            .body(CacheResponseBody(snapshot, contentType, contentLength))
-            .sentRequestAtMillis(sentRequestMillis)
-            .receivedResponseAtMillis(receivedResponseMillis)
-            .build()
+        return Response.builder().request(cacheRequest).protocol(protocol).code(code).message(message).header(
+            responseHeaders).body(CacheResponseBody(snapshot, contentType, contentLength)).sentRequestAtMillis(
+            sentRequestMillis).receivedResponseAtMillis(receivedResponseMillis).build()
     }
 
     public func writeTo(editor: Editor): Unit {
@@ -404,10 +396,14 @@ class CacheResponseBody <: ResponseBody {
     let snapshot: Snapshot
 
     init(snapshot: Snapshot, contentType: String, contentLength: String) {
-        super(contentType, match (Int64.tryParse(contentLength)) {
-            case Some(v) => v
-            case None => -1
-        }, snapshot.getSource(ENTRY_BODY))
+        super(
+            contentType,
+            match (Int64.tryParse(contentLength)) {
+                case Some(v) => v
+                case None => -1
+            },
+            snapshot.getSource(ENTRY_BODY)
+        )
         this.snapshot = snapshot
     }
 }

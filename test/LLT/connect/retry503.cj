@@ -33,9 +33,9 @@ main() {
 
 func serve(){
     let serverSocket = TcpServerSocket(bindAt: 0)
-    let server = ServerBuilder.new().listener(serverSocket).build()
+    let server = ServerBuilder().listener(serverSocket).build()
     server.distributor.register("/1234", {httpContext =>
-        let resp = "Hello from /red".toUtf8Array()
+        let resp = "Hello from /red".toArray()
         httpContext.responseBuilder.status(503)
         httpContext.responseBuilder.header("Retry-After", "0")
         httpContext.responseBuilder.body(resp)

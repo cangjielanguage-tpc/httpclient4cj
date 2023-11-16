@@ -37,7 +37,7 @@ public class Route <: Hashable & Equatable<Route> {
      * @param address of Address
      * @since 0.29.3
      */
-    
+
     /**
      * The Function is getAddress
      * @return Type of Address

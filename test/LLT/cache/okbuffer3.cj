@@ -6,7 +6,7 @@ from std import io.*
 
 main() {
     let arr = ByteArrayStream()
-    arr.write("12345\n345\r\n".toUtf8Array())
+    arr.write("12345\n345\r\n".toArray())
     let buf = OkBuffer(arr)
 
     let s1 = buf.readUtf8LineStrict()

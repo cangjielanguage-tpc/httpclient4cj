@@ -22,7 +22,7 @@ let SP = b" "
 let TRIM_BYTE: Array<Byte> = SP
 let CRLF_STR: String = "\r\n"
 let CHAR_ZERO: UInt32 = 48
-let UInt64ToHex: Utf8View = "0123456789abcdef".utf8View
+let UInt64ToHex: Array<UInt8> = "0123456789abcdef".toArray()
 
 /**
  * The class is Http1ExchangeCodec
@@ -64,7 +64,7 @@ public class Http1ExchangeCodec <: ExchangeCodec {
 
     /* var member client type is HttpClient */
     var client: HttpClient
-    let sink: BufferedOutputStream
+    let sink: BufferedOutputStream<OutputStream>
     let source: OkBuffer
     private var headerLimit: Int64 = HEADER_LIMIT
     var trailers: Header = Header()
@@ -76,7 +76,12 @@ public class Http1ExchangeCodec <: ExchangeCodec {
      * @param realConnection of Connection
      * @since 0.29.3
      */
-    public init(client: HttpClient, realConnection: Connection, source: OkBuffer, sink: BufferedOutputStream) {
+    public init(
+        client: HttpClient,
+        realConnection: Connection,
+        source: OkBuffer,
+        sink: BufferedOutputStream<OutputStream>
+    ) {
         this.client = client
         this.realConnection = realConnection
         this.source = source
@@ -165,16 +170,17 @@ public class Http1ExchangeCodec <: ExchangeCodec {
         }
 
         var buffer: StringBuilder = StringBuilder()
-        buffer.append(requestLine).append(CRLF)
+        buffer.append(requestLine + CRLF)
 
         for ((ks, v) in headers) {
             // var k = HeaderDfaUtil.canonicalHeaderKey(ks)
             var k = ks
-            buffer.append(k).append(": ")
+            buffer.append("${k}: ")
+            var str = ""
             for (i in v) {
-                buffer.append(i).append(';')
+                str += ";${i}"
             }
-            buffer.removeLast()
+            buffer.append(str[1..])
             buffer.append(CRLF)
         }
 
@@ -198,8 +204,7 @@ public class Http1ExchangeCodec <: ExchangeCodec {
         let line: String = readHeaderLine()
         let statusLine: StatusLine = StatusLine.parse(line)
         responseBuilder.protocol(statusLine.protocol).code(statusLine.code).message(statusLine.message).header(
-            readHeaders()
-        )
+            readHeaders())
 
         if (expectContinue && statusLine.code == HttpStatusCode.STATUS_CONTINUE) {
             return None
@@ -245,9 +250,7 @@ public class Http1ExchangeCodec <: ExchangeCodec {
             return newKnownLengthSink()
         }
 
-        throw IllegalStateException(
-            "Cannot stream a request body without chunked encoding or a known content length!"
-        )
+        throw IllegalStateException("Cannot stream a request body without chunked encoding or a known content length!")
     }
 
     /*
@@ -266,11 +269,10 @@ public class Http1ExchangeCodec <: ExchangeCodec {
         }
 
         match (response.getHeader("Content-Length")) {
-            case Some(s) =>
-                match (Int64.tryParse(s)) {
-                    case Some(n) => return n
-                    case None => return -1
-                }
+            case Some(s) => match (Int64.tryParse(s)) {
+                case Some(n) => return n
+                case None => return -1
+            }
             case None => return -1
         }
     }

@@ -18,7 +18,7 @@ public class okhttp_ResponseBody_005{
     @TestCase //ResponseBody.init() ContentLength = ResponseBody长度
     func okhttp_ResponseBody_005(): Unit {
         let arr = ByteArrayStream()
-        arr.write("hello".toUtf8Array())
+        arr.write("hello".toArray())
         var inputStream: InputStream = arr
         var source :OkBuffer = OkBuffer(inputStream)
         var response_body : ResponseBody = ResponseBody("text/plain; charset=utf-8",5,source)

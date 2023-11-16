@@ -16,7 +16,7 @@ from std import core.*
 public class okhttp_Request_method_003{
     @TestCase
     func okhttp_Request_method_003(): Unit {
-        let body: httpclient4cj.RequestBody = httpclient4cj.RealRequestBody.create(MediaType.get("application/json; charset=utf-8"), "hello".toUtf8Array())
+        let body: httpclient4cj.RequestBody = httpclient4cj.RealRequestBody.create(MediaType.get("application/json; charset=utf-8"), "hello".toArray())
         let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                         .method("POST",body:body)
                                         .build()
@@ -27,7 +27,7 @@ public class okhttp_Request_method_003{
         var str_body:Array<Byte> = Array<Byte>(5, item: 0)
         request.getBody().getOrThrow().get().read(str_body)
         println(String.fromUtf8(str_body))
-        @Assert(str_body, "hello".toUtf8Array())
+        @Assert(str_body, "hello".toArray())
 
     }
     @TestCase

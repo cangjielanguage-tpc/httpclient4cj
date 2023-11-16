@@ -17,11 +17,11 @@ public class okhttp_Response_004 {
     var port: UInt16 = 0
     func serve() {
         let serverSocket = TcpServerSocket(bindAt: 0)
-        let server = ServerBuilder.new().listener(serverSocket).build()
+        let server = ServerBuilder().listener(serverSocket).build()
         server.distributor.register("/1234",
             {
             httpContext =>
-            let resp = "Hello from /red".toUtf8Array()
+            let resp = "Hello from /red".toArray()
             httpContext.responseBuilder.body(resp)
             httpContext.responseBuilder.header("Content-Type","text/plain; charset=utf-8")
             return
@@ -66,7 +66,7 @@ public class okhttp_Response_004 {
         @Assert(request_method, "POST")
         @Assert(response_code,Int64(200))
         // @Assert(str, "Hello from /red")
-        // @Assert(response_body, "Hello from /red".toUtf8Array())
+        // @Assert(response_body, "Hello from /red".toArray())
         func exception(): String {
             "exception"
         }

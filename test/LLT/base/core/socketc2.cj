@@ -36,8 +36,8 @@ main() {
 //     let header = request.getHeaders()
 //     let url = request.getUrl()
 //     let req = match (request.getBody()) {
-//         case Some(v) => HttpRequestBuilder.new().method(method).url(url).body(v.get())
-//         case _ => HttpRequestBuilder.new().method(method).url(url)
+//         case Some(v) => HttpRequestBuilder().method(method).url(url).body(v.get())
+//         case _ => HttpRequestBuilder().method(method).url(url)
 //     }
 //     for ((k, vs) in header.clone()) {
 //         for (v in vs) {
@@ -72,7 +72,7 @@ main() {
 // }
 // extend http.HttpRequest {
 //     func copyTo(stream: OutputStream): Unit {
-//         let bytes = this.toString().toUtf8Array()
+//         let bytes = this.toString().toArray()
 //         stream.write(bytes)
 //     }
 // }

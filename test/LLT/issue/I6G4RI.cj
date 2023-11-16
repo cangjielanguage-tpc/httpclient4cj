@@ -5,7 +5,7 @@ from httpclient4cj import httpclient4cj.*
 from std import io.*
 main() {
     var byteArrayStream = ByteArrayStream(10)
-    byteArrayStream.write("hello world".toUtf8Array())
+    byteArrayStream.write("hello world".toArray())
     var okbuffer = OkBuffer(byteArrayStream)
     okbuffer.close()
 

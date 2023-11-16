@@ -12,7 +12,7 @@ package httpclient4cj
 class RequestLine {
     public static func get(request: Request): String {
         let result: StringBuilder = StringBuilder()
-        result.append(request.getMethod()).append(' ')
+        result.append("${request.getMethod()} ")
         let u = request.getUrl()
         let rawPath = if (u.rawPath.size > 0) {
             u.rawPath

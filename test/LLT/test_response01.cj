@@ -6,7 +6,7 @@ from std import io.*
 main (){
     let response = Response.builder().build()
     let b = ByteArrayStream()
-    b.write("abcdefG".toUtf8Array())
+    b.write("abcdefG".toArray())
     let body: ResponseBody = ResponseBody("text/html", 31946, OkBuffer(b))
     response.getRequest()
     response.getProtocol()

@@ -27,7 +27,7 @@ public class okhttp_Request_method_008{
     }
     @TestCase
     func okhttp_Request_method_008_body(): Unit {
-        let body: httpclient4cj.RequestBody = httpclient4cj.RealRequestBody.create(MediaType.get("application/json; charset=utf-8"), "hello".toUtf8Array())
+        let body: httpclient4cj.RequestBody = httpclient4cj.RealRequestBody.create(MediaType.get("application/json; charset=utf-8"), "hello".toArray())
         let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                         .method("CONNECT",body:body)
                                         .build()
@@ -38,7 +38,7 @@ public class okhttp_Request_method_008{
         var str_body:Array<Byte> = Array<Byte>(5, item: 0)
         request.getBody().getOrThrow().get().read(str_body)
         println(String.fromUtf8(str_body))
-        @Assert(str_body, "hello".toUtf8Array())
+        @Assert(str_body, "hello".toArray())
 
     }
 

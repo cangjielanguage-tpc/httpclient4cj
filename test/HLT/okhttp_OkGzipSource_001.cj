@@ -23,7 +23,7 @@ public class okhttp_OkGzipSource_001 {
         println("2222222222")
         var cotps = CompressOutputStream(arr,wrap:GzipFormat)
         println("3333333333")
-        cotps.write("hello world".toUtf8Array())
+        cotps.write("hello world".toArray())
         println("444444444411111111111111")
         cotps.flush()
         println("4444444444")

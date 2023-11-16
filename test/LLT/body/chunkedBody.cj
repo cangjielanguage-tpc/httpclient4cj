@@ -28,7 +28,7 @@ main() {
 
 func serve() {
     let serverSocket = TcpServerSocket(bindAt: 0)
-    let server = ServerBuilder.new().listener(serverSocket).build()
+    let server = ServerBuilder().listener(serverSocket).build()
     server.distributor.register("/1234",
         {
         httpContext =>
@@ -50,8 +50,8 @@ class MyRequestBody <: RequestBody {
     }
 
     public func writeTo(sink: Sink): Unit {
-        sink.write("hello".toUtf8Array())
-        sink.write("world".toUtf8Array())
+        sink.write("hello".toArray())
+        sink.write("world".toArray())
     }
 
     public func get(): InputStream {

@@ -129,8 +129,8 @@ class MD5 {
 
         var j: Int64 = 0
         for (i in 0..16) {
-            m[i] = UInt32(this.data[j]) + (UInt32(this.data[j + 1]) << 8) + (UInt32(this.data[j + 2]) << 16) +
-                (UInt32(this.data[j + 3]) << 24)
+            m[i] = UInt32(this.data[j]) + (UInt32(this.data[j + 1]) << 8) + (UInt32(this.data[j + 2]) << 16) + (UInt32(this.
+                    data[j + 3]) << 24)
             j += 4
         }
         var a: UInt32 = this.state[0]

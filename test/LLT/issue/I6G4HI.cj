@@ -6,7 +6,7 @@ from std import io.*
 main() {
     var byteArrayStream = ByteArrayStream(10)
     var okbuffer = OkBuffer(byteArrayStream)
-    byteArrayStream.write("hello world".toUtf8Array())
+    byteArrayStream.write("hello world".toArray())
 
     if (okbuffer.indexOf(108,4,11) == 9) {
         return 0

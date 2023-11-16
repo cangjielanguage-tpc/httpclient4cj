@@ -14,9 +14,9 @@ from std import sync.sleep
 var port: UInt16 = 0
 main() {
     let serverSocket = TcpServerSocket(bindAt: 0)
-    let server = ServerBuilder.new().listener(serverSocket).build()
+    let server = ServerBuilder().listener(serverSocket).build()
     server.distributor.register("/1234", { httpContext =>
-        let resp = "Hello from /red".toUtf8Array()
+        let resp = "Hello from /red".toArray()
         //解析错误, 连接设置为不再使用
         httpContext.responseBuilder.header("Transfer-Encoding","chunked")
         //httpContext.responseBuilder.header("Myhost","1111\r\n\r\n222444\n122;")

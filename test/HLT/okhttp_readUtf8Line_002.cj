@@ -13,7 +13,7 @@ public class okhttp_readUtf8Line_002 {
         println("---------------------------okhttp_readUtf8Line_002-----------------------------")
         var byteArrayStream = ByteArrayStream(10)
         var okbuffer = OkBuffer(byteArrayStream)
-        byteArrayStream.write("华为\n中国".toUtf8Array())
+        byteArrayStream.write("华为\n中国".toArray())
 
         // println(okbuffer.readUtf8Line())
         @Assert(okbuffer.readUtf8Line(7),"华为")
@@ -24,7 +24,7 @@ public class okhttp_readUtf8Line_002 {
 
         var byteArrayStream = ByteArrayStream(10)
         var okbuffer = OkBuffer(byteArrayStream)
-        byteArrayStream.write("华为中国".toUtf8Array())
+        byteArrayStream.write("华为中国".toArray())
         var exc = ""
         try{
             println(okbuffer.readUtf8Line(18))
@@ -38,7 +38,7 @@ public class okhttp_readUtf8Line_002 {
         println("---------------------------okhttp_readUtf8Line_002_3-----------------------------")
         var byteArrayStream = ByteArrayStream(10)
         var okbuffer = OkBuffer(byteArrayStream)
-        byteArrayStream.write("华为\n中国".toUtf8Array())
+        byteArrayStream.write("华为\n中国".toArray())
         var exc = ""
         try{
             // println("okbuffer.readUtf8Line(0) = ${okbuffer.readUtf8Line(0)}")
@@ -54,7 +54,7 @@ public class okhttp_readUtf8Line_002 {
 
         var byteArrayStream = ByteArrayStream(10)
         var okbuffer = OkBuffer(byteArrayStream)
-        byteArrayStream.write("华为\n中国".toUtf8Array())
+        byteArrayStream.write("华为\n中国".toArray())
         var exc = ""
         try{
             println(okbuffer.readUtf8Line(-1))
@@ -69,7 +69,7 @@ public class okhttp_readUtf8Line_002 {
 
         var byteArrayStream = ByteArrayStream(10)
         var okbuffer = OkBuffer(byteArrayStream)
-        byteArrayStream.write("华为\n中国".toUtf8Array())
+        byteArrayStream.write("华为\n中国".toArray())
         var exc = ""
         try{
             // println(okbuffer.readUtf8Line(1))
@@ -99,7 +99,7 @@ public class okhttp_readUtf8Line_002 {
 
         var byteArrayStream = ByteArrayStream(10)
         var okbuffer = OkBuffer(byteArrayStream)
-        byteArrayStream.write("华为\r\n中国".toUtf8Array())
+        byteArrayStream.write("华为\r\n中国".toArray())
 
         // println(okbuffer.readUtf8Line())
         @Assert(okbuffer.readUtf8Line(8),"华为\r")

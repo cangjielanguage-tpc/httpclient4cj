@@ -238,12 +238,12 @@ public class okhttp_Cookie_Test_001 {
 
 func expect(c: String, s: String): Unit {
     let map = HashMap<String, String>()
-    for (str in c.split(';')) {
-        let kv = str.split('=')
+    for (str in c.split(";")) {
+        let kv = str.split("=")
         map.put(kv[0].trimAscii(), kv[1].trimAscii())
     }
-    for (str in s.split(';')) {
-        let kv = str.split('=')
+    for (str in s.split(";")) {
+        let kv = str.split("=")
         @Expect(map[kv[0].trimAscii()], kv[1].trimAscii())
         map.remove(kv[0].trimAscii())
     }

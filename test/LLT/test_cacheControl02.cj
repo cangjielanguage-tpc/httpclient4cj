@@ -30,9 +30,9 @@ main() {
 
 func serve(){
     let serverSocket = TcpServerSocket(bindAt: 0)
-    let server = ServerBuilder.new().listener(serverSocket).build()
+    let server = ServerBuilder().listener(serverSocket).build()
     server.distributor.register("/index", { httpContext =>
-        let resp = "Hello from /red".toUtf8Array()
+        let resp = "Hello from /red".toArray()
         httpContext.responseBuilder.body(resp)
         return
     })

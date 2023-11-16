@@ -16,12 +16,12 @@ var port: UInt16 = 1504
 var sev_cache_control = "max-age=200"
 func serve() {
     let serverSocket = TcpServerSocket(bindAt: 0)
-    let server = ServerBuilder.new().listener(serverSocket).build()
+    let server = ServerBuilder().listener(serverSocket).build()
     server.distributor.register(
         "/1",
         {
             httpContext =>
-            let resp = "Hello from 1".toUtf8Array()
+            let resp = "Hello from 1".toArray()
             httpContext.responseBuilder.header("Last-Modified", "Tue, 27 May 2014 02:35:47 GMT")
             httpContext.responseBuilder.header("cache-control", sev_cache_control)
             httpContext.responseBuilder.body(resp)
@@ -32,7 +32,7 @@ func serve() {
         "/2",
         {
             httpContext =>
-            let resp = "Hello from 2".toUtf8Array()
+            let resp = "Hello from 2".toArray()
             httpContext.responseBuilder.header("Last-Modified", "Tue, 27 May 2014 02:35:47 GMT")
             httpContext.responseBuilder.header("cache-control", sev_cache_control)
             httpContext.responseBuilder.body(resp)

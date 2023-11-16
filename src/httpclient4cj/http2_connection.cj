@@ -56,7 +56,7 @@ public class H2Connection {
 
     public init(
         socket: SocketClient,
-        sink: BufferedOutputStream,
+        sink: BufferedOutputStream<OutputStream>,
         source: OkBuffer,
         listener!: Option<Connection> = Option<Connection>.None
     ) {

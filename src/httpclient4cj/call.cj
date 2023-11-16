@@ -164,8 +164,17 @@ class RealCall <: Call {
         }
 
         interceptors.append(CallServerInterceptor(forWebSocket))
-        let chain: Chain = Chain(interceptors, getTransmitter(), 0, originalRequest, this, Option<Exchange>.None,
-            client.getConnectTimeout(), client.getReadTimeout(), client.getWriteTimeout())
+        let chain: Chain = Chain(
+            interceptors,
+            getTransmitter(),
+            0,
+            originalRequest,
+            this,
+            Option<Exchange>.None,
+            client.getConnectTimeout(),
+            client.getReadTimeout(),
+            client.getWriteTimeout()
+        )
         let response: Response
         var calledNoMoreExchanges = false
 

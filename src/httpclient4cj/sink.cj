@@ -172,7 +172,7 @@ public class RealBufferSink <: Sink {
         if (closed) {
             throw IllegalStateException("closed")
         } else {
-            if (this.buffer.length > 0) {
+            if (this.buffer.remainLength > 0) {
                 this.sink.write(this.buffer.readToEnd())
             }
             this.sink.flush()
@@ -185,7 +185,7 @@ public class RealBufferSink <: Sink {
 
     public func close(): Unit {
         if (!closed) {
-            if (buffer.length > 0) {
+            if (buffer.remainLength > 0) {
                 this.sink.write(this.buffer.readToEnd())
             }
             sink.close()
@@ -217,7 +217,7 @@ class FramingSink <: Sink {
 
     public func write(bytes: Array<Byte>): Unit {
         sendBuffer.write(bytes)
-        while (sendBuffer.length >= EMIT_BUFFER_SIZE) {
+        while (sendBuffer.remainLength >= EMIT_BUFFER_SIZE) {
             emitFrame(false)
         }
     }
@@ -230,11 +230,11 @@ class FramingSink <: Sink {
             }
 
             http2Stream.checkOutNotClosed()
-            toWrite = min(http2Stream.bytesLeftInWriteWindow, sendBuffer.length)
+            toWrite = min(http2Stream.bytesLeftInWriteWindow, sendBuffer.remainLength)
             http2Stream.bytesLeftInWriteWindow -= toWrite
         }
 
-        let outFinished: Bool = outFinishedOnLastFrame && toWrite == sendBuffer.length
+        let outFinished: Bool = outFinishedOnLastFrame && toWrite == sendBuffer.remainLength
         http2Stream.cc.writeData(http2Stream.id, outFinished, sendBuffer, toWrite)
     }
 
@@ -243,7 +243,7 @@ class FramingSink <: Sink {
             http2Stream.checkOutNotClosed()
         }
 
-        while (sendBuffer.length > 0) {
+        while (sendBuffer.remainLength > 0) {
             emitFrame(true)
             http2Stream.cc.flush()
         }
@@ -257,10 +257,10 @@ class FramingSink <: Sink {
         }
 
         if (!finished) {
-            let hasData: Bool = sendBuffer.length > 0
+            let hasData: Bool = sendBuffer.remainLength > 0
             let hasTrailers: Bool = has(trailers)
             if (hasTrailers) {
-                while (sendBuffer.length > 0) {
+                while (sendBuffer.remainLength > 0) {
                     emitFrame(false)
                 }
                 let result: ArrayList<HeaderField> = ArrayList<HeaderField>()
@@ -270,7 +270,7 @@ class FramingSink <: Sink {
                 trailers = Option<Header>.None
                 http2Stream.cc.writeHeaders(http2Stream.id, true, result)
             } else if (hasData) {
-                while (sendBuffer.length > 0) {
+                while (sendBuffer.remainLength > 0) {
                     emitFrame(true)
                 }
             } else {

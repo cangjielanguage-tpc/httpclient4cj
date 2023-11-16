@@ -19,9 +19,9 @@ public class okhttp_Response_002{
     var port: UInt16 = 0
     func serve(){
         let serverSocket = TcpServerSocket(bindAt: 0)
-        let server = ServerBuilder.new().listener(serverSocket).build()
+        let server = ServerBuilder().listener(serverSocket).build()
         server.distributor.register("/12345", { httpContext =>
-            let resp = "Hello from /red".toUtf8Array()
+            let resp = "Hello from /red".toArray()
             httpContext.responseBuilder.body(resp)
             return
         })
@@ -66,7 +66,7 @@ public class okhttp_Response_002{
     //@Assert(request2,request)
     @Assert(response_code,Int64(404))
     // @Assert(str, "404 page not found")
-    // @Assert(response_body, "404 page not found".toUtf8Array())
+    // @Assert(response_body, "404 page not found".toArray())
     @Assert(response_isSuccess,false)
 
     }

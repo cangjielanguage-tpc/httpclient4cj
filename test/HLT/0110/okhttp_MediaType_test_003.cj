@@ -81,9 +81,9 @@ public class okhttp_MediaType_test_003{
                 .add("password", "123456")
                 .build()
         var input = formBody.get()
-        var arr = Array<Byte>(input.length, item:0)
-        input.read(arr)
-        var inputString = String.fromUtf8(arr)
+        var arr = Array<Byte>(1024, item:0)
+        let len = input.read(arr)
+        var inputString = String.fromUtf8(arr[..len])
         @Assert(inputString, "username=admin&password=123456")
         var contentType = formBody.contentType().getOrThrow().toString()
         @Assert(contentType, "application/x-www-form-urlencoded")
@@ -94,9 +94,9 @@ public class okhttp_MediaType_test_003{
     func okhttp_MediaType_FormBody_test_028(): Unit {
         var formBody = FormBody.builder().build()
         var input = formBody.get()
-        var arr = Array<Byte>(input.length, item:0)
-        input.read(arr)
-        var inputString = String.fromUtf8(arr)
+        var arr = Array<Byte>(1024, item:0)
+        let len = input.read(arr)
+        var inputString = String.fromUtf8(arr[..len])
         @Assert(inputString, "")
         var contentType = formBody.contentType().getOrThrow().toString()
         @Assert(contentType, "application/x-www-form-urlencoded")
@@ -105,7 +105,7 @@ public class okhttp_MediaType_test_003{
     // 创建 RealRequestBody
     @TestCase
     func okhttp_MediaType_RealRequestBody_test_029(): Unit {
-        var body_01 = RealRequestBody.create(MediaType.get("application/HTML"),"hello".toUtf8Array())
+        var body_01 = RealRequestBody.create(MediaType.get("application/HTML"),"hello".toArray())
         var request_01: httpclient4cj.Request = httpclient4cj.Request.builder().method("POST",body:body_01).build()
         var body_Type_01 = request_01.getBody().getOrThrow().contentType()
         match (body_Type_01) {
