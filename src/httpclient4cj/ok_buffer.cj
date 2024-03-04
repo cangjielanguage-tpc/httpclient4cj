@@ -29,11 +29,7 @@ public class OkBuffer <: Source {
         if (read == 0) {
             throw EOFException()
         } else if (read != -1) {
-            if (read == bytes.size) {
-                buffer.write(bytes)
-            } else {
-                buffer.write(bytes.slice(0, read))
-            }
+            buffer.write(bytes[..read])
         }
 
         return read

@@ -26,3 +26,5 @@ module-lock.json
 temp_ci_lib/
 *.macrocall
 .cache
+cjpm.lock
+target
