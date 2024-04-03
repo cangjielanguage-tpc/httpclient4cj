@@ -409,7 +409,7 @@ class DiskLruCache {
     }
 
     private func readJournalLine(line: String): Unit {
-        let firstSpace = line.indexOf(' ').getOrThrow({ => HttpException("unexpected journal line: ${line}")})
+        let firstSpace = line.indexOf(' ').getOrThrow({=> HttpException("unexpected journal line: ${line}")})
         let keyBegin = firstSpace + 1
         let key: String
         let secondSpace = match (line.indexOf(' ', keyBegin)) {
@@ -809,19 +809,19 @@ class FileSystem {
 
     public func source(name: String): OkBuffer {
         let file = File(directory.info.path.join(name), Open(true, true))
-        closeFuncs.append { => file.close()}
+        closeFuncs.append({=> file.close()})
         return OkBuffer(file)
     }
 
     public func sink(name: String): Sink {
         let file = directory.createFile(name)
-        closeFuncs.append { => file.close()}
+        closeFuncs.append({=> file.close()})
         return FileSink(file)
     }
 
     public func appendingSink(name: String): Sink {
         let file = File(directory.info.path.join(name), Append)
-        closeFuncs.append { => file.close()}
+        closeFuncs.append({=> file.close()})
         return FileSink(file)
     }
 
