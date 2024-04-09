@@ -28,3 +28,4 @@ temp_ci_lib/
 .cache
 cjpm.lock
 target
+test_temp
