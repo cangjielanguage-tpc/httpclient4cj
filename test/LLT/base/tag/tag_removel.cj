@@ -1,4 +1,4 @@
-// EXEC: cjc %import-path %L %l %f
+// EXEC: cjc %import-path %L %l %f -V --link-options "-V"
 // EXEC: ./main
 
 from httpclient4cj import httpclient4cj.*

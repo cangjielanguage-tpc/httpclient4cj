@@ -1,4 +1,4 @@
-// EXEC: cjc %import-path %L %l %f
+// EXEC: cjc %import-path %L %l %f  -V --link-options "-V"
 // EXEC: ./main
 from std import unittest.*
 from std import unittest.testmacro.*

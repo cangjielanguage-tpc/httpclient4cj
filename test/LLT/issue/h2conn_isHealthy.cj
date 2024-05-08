@@ -10,14 +10,14 @@ from net import http.*
 from std import socket.*
 
 main() {
-    let soc = TcpSocket("127.0.0.1", portTrans(50066))
+    let soc = TcpSocket("okhttp", portTrans(50066))
     soc.connect()
     let sc = SocketClient.SocketC(soc)
     let socket = OKSocket(sc, Option<Duration>.None, Option<Duration>.None)
     let h2conn = H2Connection(sc, BufferedOutputStream(socket), OkBuffer(socket))
     let formBody = FormBody.builder().add("username", "admin").add("password", "123456").add("host", "%6D").build()
     let request = httpclient4cj.Request.builder()
-        .url("http://127.0.0.1:${portTrans(50066)}/cangjie_test-1.0-SNAPSHOT/hello")
+        .url("http://okhttp:${portTrans(50066)}/cangjie_test-1.0-SNAPSHOT/hello")
         .header("User-Agent", "OkHttp-Example")
         .put(formBody)
         .header("content-type", formBody.contentType().getOrThrow().toString())

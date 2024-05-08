@@ -56,6 +56,7 @@ public class Route <: Hashable & Equatable<Route> {
         return inetSocketAddress
     }
 
+    @OverflowWrapping
     public func hashCode(): Int64 {
         var result: Int64 = 17
         result = 31 * result + address.hashCode()
