@@ -69,6 +69,7 @@ public class Address <: Hashable & Equatable<Address> {
         return tlsConfig
     }
 
+    @OverflowWrapping
     public func hashCode(): Int64 {
         var result: Int64 = 17
         result = 31 * result + url.toString().hashCode()

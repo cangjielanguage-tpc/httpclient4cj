@@ -19,7 +19,7 @@ main() {
                                 .build()
     let client: HttpClient= HttpClient.builder().build()
     let request: httpclient4cj.Request = httpclient4cj.Request.builder()
-                                    .url("http://127.0.0.1:${portTrans(50066)}/cangjie_test-1.0-SNAPSHOT/hello")
+                                    .url("http://127.0.0.1:${port}/index")
                                     .method("GET")
                                     .cacheControl(cache)
                                     .build()

@@ -16,9 +16,9 @@ from std import sync.sleep
 
 main() {
     let request: httpclient4cj.Request = httpclient4cj.Request.builder().url(
-        "http://127.0.0.1:${portTrans(50066)}/cangjie_test-1.0-SNAPSHOT/hello").header("User-Agent", "OkHttp-Example").
+        "http://okhttp:${portTrans(50066)}/cangjie_test-1.0-SNAPSHOT/hello").header("User-Agent", "OkHttp-Example").
         build()
-    let soc = TcpSocket("127.0.0.1", portTrans(50066))
+    let soc = TcpSocket("okhttp", portTrans(50066))
     soc.connect()
     let sc = SocketC(soc)
     let socket = OKSocket(sc, Option<Duration>.None, Option<Duration>.None)
