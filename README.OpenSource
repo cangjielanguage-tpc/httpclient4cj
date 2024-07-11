@@ -1,11 +1,11 @@
 [
     {
-        "Name": " okhttp ",
-        "License": " Apache License 2.0 ",
-        "License File": " LICENSE ",
-        "Version Number": " 3.14.9 ",
+        "Name": "okhttp",
+        "License": "Apache License 2.0",
+        "License File": "LICENSE",
         "Owner": "square"
         "Upstream URL": "https://github.com/square/okhttp/tree/parent-3.14.9",
-        "Description": " Doing HTTP efficiently makes your stuff load faster and saves bandwidth."
+        "Version Number": "3.14.9",
+        "Description": "Doing HTTP efficiently makes your stuff load faster and saves bandwidth."
     }
 ]
