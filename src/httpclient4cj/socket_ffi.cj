@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2022-2023. All rights resvered.
+ */
 package httpclient4cj
 
 let AI_IPPROTO_TCP: UInt8 = 6
