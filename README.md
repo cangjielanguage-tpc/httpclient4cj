@@ -45,13 +45,7 @@ Httpclient4cj 是一个高效的 HTTP 客户端, 代码参考: https://github.co
 │   ├── assets
 │   ├── cjcov     
 │   ├── feature_api.md  
-│   ├── design.md  
-│   ├── proposal.md
-│   └── xxx_lib.md 
-├── lib
-│   └── libdns.so
-├── inclue
-│   └── dns.c
+│   └── design.md
 ├── src
 │   └── httpclient4cj
 │      ├── address.cj
@@ -118,8 +112,7 @@ Httpclient4cj 是一个高效的 HTTP 客户端, 代码参考: https://github.co
     ├── LLT
     └── UT
 ```
-- `lib`依赖 c 库的dns解析接口的动态链接文件
-- `clude` c代码目录
+
 - `doc`是库的设计文档、提案、库的使用文档、LLT 覆盖报告 ( 由于未支持服务端的对接,部分拦截器连接后处理逻辑暂时无法覆盖)
 - `src`是库源码目录
 - `test`是存放测试用例，包括 HLT 用例、LLT 用例和 UT 用例
