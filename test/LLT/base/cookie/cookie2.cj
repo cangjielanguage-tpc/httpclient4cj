@@ -1,13 +1,14 @@
 // DEPENDENCE: ../../z_test.cj
 // EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
-from std import io.*
-from httpclient4cj import httpclient4cj.*
-from net import http.*
-from std import socket.*
-from std import collection.*
-from encoding import url.*
-from net import tls.*
+import std.io.*
+import httpclient4cj
+import httpclient4cj.*
+import net.http.*
+import std.socket.*
+import std.collection.*
+import encoding.url.*
+import net.tls.*
 
 //setCookie响应报文属性有expires， path， domian的解析
 main() {

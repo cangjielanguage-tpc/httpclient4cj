@@ -1,8 +1,9 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from httpclient4cj import httpclient4cj.*
-from net import http.*
+import httpclient4cj
+import httpclient4cj.*
+import net.http.*
 
 main (){
     let client = HttpClient.builder()

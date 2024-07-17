@@ -1,16 +1,17 @@
 // 3rd_party_lib:httpclient4cj/build/httpclient4cj
 
 
-from httpclient4cj import httpclient4cj.*
-from net import http.*
-from std import collection.*
-from encoding import url.*
-from net import tls.*
-from std import unittest.*
-from std import unittest.testmacro.*
-from std import io.*
-from std import time.*
-from std import socket.*
+import httpclient4cj
+import httpclient4cj.*
+import net.http.*
+import std.collection.*
+import encoding.url.*
+import net.tls.*
+import std.unittest.*
+import std.unittest.testmacro.*
+import std.io.*
+import std.time.*
+import std.socket.*
 
 @Test
 public class okhttp_Protocol_001{

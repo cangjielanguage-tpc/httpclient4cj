@@ -1,15 +1,16 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from std import io.*
-from httpclient4cj import httpclient4cj.*
-from std import time.*
-from net import http.*
-from std import socket.*
-from encoding import url.*
-from net import tls.*
-from std import core.*
-from std import sync.sleep
+import std.io.*
+import httpclient4cj
+import httpclient4cj.*
+import std.time.*
+import net.http.*
+import std.socket.*
+import encoding.url.*
+import net.tls.*
+import std.core.*
+import std.sync.sleep
 
 var port: UInt16 = 0
 //重定向401,客户端需要进行鉴权处理，默认不处理，此时直接返回错误的响应结果

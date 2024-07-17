@@ -2,9 +2,10 @@
 // EXEC: ./main
 
 
-from httpclient4cj import httpclient4cj.*
-from encoding import url.*
-from net import http.*
+import httpclient4cj
+import httpclient4cj.*
+import encoding.url.*
+import net.http.*
 
 //覆盖设置cookie对报文的影响，Max-Age 为负数设置为最小值
 main() {

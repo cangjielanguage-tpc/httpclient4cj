@@ -2,13 +2,14 @@
 // DEPENDENCE: ../z_test.cj
 // EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
-from httpclient4cj import httpclient4cj.*
-from net import http.*
-from std import collection.*
-from encoding import url.*
-from net import tls.*
-from std import fs.*
-from std import log.*
+import httpclient4cj
+import httpclient4cj.*
+import net.http.*
+import std.collection.*
+import encoding.url.*
+import net.tls.*
+import std.fs.*
+import std.log.*
 
 //使用http2,不response关闭,可以连接多路复用,对于相同请求,不需要创建新的连接,期望连接池连接数为1
 main() {

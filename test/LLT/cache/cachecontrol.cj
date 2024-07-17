@@ -1,8 +1,9 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
-from httpclient4cj import httpclient4cj.*
-from net import http.*
-from std import collection.*
+import httpclient4cj
+import httpclient4cj.*
+import net.http.*
+import std.collection.*
 
 main() {
     //实际使用时不应该都调用

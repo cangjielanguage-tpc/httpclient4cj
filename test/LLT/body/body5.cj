@@ -2,9 +2,10 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from httpclient4cj import httpclient4cj.*
-from std import fs.*
-from net import http.*
+import httpclient4cj
+import httpclient4cj.*
+import std.fs.*
+import net.http.*
 
 main() {
     let body = RealRequestBody.create(MediaType.get("application/json"),File("./body.text",OpenOption.Open(true,false)))

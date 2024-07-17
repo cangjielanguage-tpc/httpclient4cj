@@ -1,12 +1,13 @@
 // DEPENDENCE: ../../z_test.cj
 // EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
-from net import http.*
-from net import tls.*
-from std import socket.*
-from httpclient4cj import httpclient4cj.*
-from std import io.*
-from std import time.*
+import net.http.*
+import net.tls.*
+import std.socket.*
+import httpclient4cj
+import httpclient4cj.*
+import std.io.*
+import std.time.*
 
 main() {
     var cfg = TlsClientConfig()

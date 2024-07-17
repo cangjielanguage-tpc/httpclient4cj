@@ -3,11 +3,12 @@
 
 // EXEC: ./main
 
-from httpclient4cj import httpclient4cj.*
-from std import collection.*
-from encoding import url.*
-from net import tls.*
-from net import http.*
+import httpclient4cj
+import httpclient4cj.*
+import std.collection.*
+import encoding.url.*
+import net.tls.*
+import net.http.*
 
 main() {
     let client = HttpClient.builder()

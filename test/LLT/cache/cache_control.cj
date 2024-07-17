@@ -2,7 +2,8 @@
 // EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
 
-from httpclient4cj import httpclient4cj.*
+import httpclient4cj
+import httpclient4cj.*
 
 main() {
     let forceNet = CacheControl.FORCE_NETWORK //强制网络的缓存控制

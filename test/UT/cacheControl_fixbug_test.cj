@@ -1,15 +1,15 @@
 
 package httpclient4cj
-from net import http.* as http3.*
-from std import collection.*
-from encoding import url.*
-from net import tls.*
-from std import unittest.*
-from std import unittest.testmacro.*
-from std import io.*
-from std import time.*
-from std import socket.*
-from std import sync.sleep
+import net.http.* as http3.*
+import std.collection.*
+import encoding.url.*
+import net.tls.*
+import std.unittest.*
+import std.unittest.testmacro.*
+import std.io.*
+import std.time.*
+import std.socket.*
+import std.sync.sleep
 
 @Test
 public class okhtttp_001{

@@ -1,7 +1,7 @@
-from net import http.ServerBuilder
-from std import socket.{TcpServerSocket, SocketAddress}
-from std import sync.sleep
-from std import time.Duration
+internal import net.http.ServerBuilder
+internal import std.socket.{TcpServerSocket, SocketAddress}
+internal import std.sync.sleep
+internal import std.time.Duration
 
 func serve() {
     let serverSocket = TcpServerSocket(bindAt: 50060)

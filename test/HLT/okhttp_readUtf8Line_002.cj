@@ -1,9 +1,10 @@
 // 3rd_party_lib:httpclient4cj/build/httpclient4cj
 
-from std import io.*
-from std import time.*
-from httpclient4cj import httpclient4cj.*
-from std import fs.*
+import std.io.*
+import std.time.*
+import httpclient4cj
+import httpclient4cj.*
+import std.fs.*
 
 @Test
 public class okhttp_readUtf8Line_002 {

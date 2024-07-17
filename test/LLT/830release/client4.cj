@@ -1,11 +1,12 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from std import io.*
-from httpclient4cj import httpclient4cj.*
-from std import time.*
+import std.io.*
+import httpclient4cj
+import httpclient4cj.*
+import std.time.*
 
-from std import collection.*
+import std.collection.*
 
 main() {
     try{

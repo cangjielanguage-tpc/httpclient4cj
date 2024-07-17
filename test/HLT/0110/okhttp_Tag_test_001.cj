@@ -1,16 +1,17 @@
 // 3rd_party_lib:httpclient4cj/build/httpclient4cj
 
-from std import unittest.*
-from std import unittest.testmacro.*
-from std import io.*
-from httpclient4cj import httpclient4cj.*
-from std import time.*
-from net import http.*
-from std import socket.*
-from encoding import url.*
-from net import tls.*
-from std import core.*
-from std import collection.*
+import std.unittest.*
+import std.unittest.testmacro.*
+import std.io.*
+import httpclient4cj
+import httpclient4cj.*
+import std.time.*
+import net.http.*
+import std.socket.*
+import encoding.url.*
+import net.tls.*
+import std.core.*
+import std.collection.*
 
 @Test
 public class okhttp_Tag_Test_001{
@@ -142,7 +143,7 @@ public class okhttp_Tag_Test_001{
     // tag 值长度超长
     @TestCase
     func okhttp_Tag_Test_009(): Unit {
-        var tagString:String = StringBuilder('t', 2048).toString()
+        var tagString:String = StringBuilder(r't', 2048).toString()
         let request: httpclient4cj.Request = httpclient4cj.Request.builder()
                                         .tag(tagString)
                                         .build()

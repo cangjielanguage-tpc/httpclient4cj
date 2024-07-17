@@ -2,7 +2,8 @@
 // EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
 
-from httpclient4cj import httpclient4cj.*
+import httpclient4cj
+import httpclient4cj.*
 
 //获取缓存迭代器获取url字符串
 main() {

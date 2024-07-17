@@ -1,10 +1,11 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
-from httpclient4cj import httpclient4cj.*
-from encoding import url.*
-from net import http.*
-from std import unittest.*
-from std import unittest.testmacro.*
+import httpclient4cj
+import httpclient4cj.*
+import encoding.url.*
+import net.http.*
+import std.unittest.*
+import std.unittest.testmacro.*
 
 //测试domain 为 ipv6
 main() {

@@ -1,16 +1,17 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
-from std import io.*
-from std import collection.*
-from httpclient4cj import httpclient4cj.*
-from std import time.*
-from net import http.*
-from std import socket.*
-from encoding import url.*
-from net import tls.*
-from std import core.*
-from std import fs.*
-from std import sync.sleep
+import std.io.*
+import std.collection.*
+import httpclient4cj
+import httpclient4cj.*
+import std.time.*
+import net.http.*
+import std.socket.*
+import encoding.url.*
+import net.tls.*
+import std.core.*
+import std.fs.*
+import std.sync.sleep
 
 var port: UInt16 = 1504
 var sev_cache_control = "max-age=20000"

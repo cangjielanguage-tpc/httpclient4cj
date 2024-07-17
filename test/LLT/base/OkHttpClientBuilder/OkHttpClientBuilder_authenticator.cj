@@ -1,11 +1,12 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from std import io.*
-from httpclient4cj import httpclient4cj.*
-from std import time.*
-from std import collection.*
-from std import socket.*
+import std.io.*
+import httpclient4cj
+import httpclient4cj.*
+import std.time.*
+import std.collection.*
+import std.socket.*
 
 main (){
     let client: HttpClient= HttpClient.builder()

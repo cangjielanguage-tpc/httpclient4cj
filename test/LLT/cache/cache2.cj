@@ -2,13 +2,14 @@
 // EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
 
-from httpclient4cj import httpclient4cj.*
+import httpclient4cj
+import httpclient4cj.*
 
-from net import http.*
-from std import io.*
-from std import time.*
-from std import socket.*
-from std import fs.*
+import net.http.*
+import std.io.*
+import std.time.*
+import std.socket.*
+import std.fs.*
 
 
 var port: UInt16 = 0

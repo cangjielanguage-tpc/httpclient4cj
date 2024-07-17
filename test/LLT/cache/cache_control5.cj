@@ -2,9 +2,10 @@
 // EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
 
-from httpclient4cj import httpclient4cj.*
-from std import sync.sleep
-from std import time.*
+import httpclient4cj
+import httpclient4cj.*
+import std.sync.sleep
+import std.time.*
 
 //Last-Modified: Tue, 27 May 2014 02:35:47 GMT
 //ETag: "5383fa03-6df"

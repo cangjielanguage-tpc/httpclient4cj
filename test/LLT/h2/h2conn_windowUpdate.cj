@@ -2,16 +2,17 @@
 // EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
 
-from httpclient4cj import httpclient4cj.*
-from net import http.*
-from std import collection.*
-from encoding import url.*
-from net import tls.*
-from std import socket.*
-from std import time.*
-from std import io.*
-from std import fs.*
-from std import sync.sleep
+import httpclient4cj
+import httpclient4cj.*
+import net.http.*
+import std.collection.*
+import encoding.url.*
+import net.tls.*
+import std.socket.*
+import std.time.*
+import std.io.*
+import std.fs.*
+import std.sync.sleep
 
 //创建h2conn 和 stream，发送data 帧时由于流量窗口不足,必须阻塞等待 服务端发送流量窗口才能继续发送
 

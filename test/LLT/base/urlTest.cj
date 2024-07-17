@@ -2,7 +2,7 @@
 // EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
 
-from encoding import url.*
+import encoding.url.*
 
 main (){
      let s = URL.parse("http://okhttp:${portTrans(50066)}/cangjie_test-1.0-SNAPSHOT/hello").hostName

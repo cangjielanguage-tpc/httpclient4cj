@@ -1,14 +1,15 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from httpclient4cj import httpclient4cj.*
-from std import collection.*
-from std import time.*
-from std import runtime.*
-from net import http.*
-from std import socket.*
-from std import io.*
-from std import sync.*
+import httpclient4cj
+import httpclient4cj.*
+import std.collection.*
+import std.time.*
+import std.runtime.*
+import net.http.*
+import std.socket.*
+import std.io.*
+import std.sync.*
 
 var port: UInt16 = 0
 var num = Int64(0)

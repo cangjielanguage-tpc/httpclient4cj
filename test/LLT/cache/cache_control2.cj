@@ -1,8 +1,9 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from httpclient4cj import httpclient4cj.*
-from std import time.*
+import httpclient4cj
+import httpclient4cj.*
+import std.time.*
 
 
 //缓存控制强制使用缓存时，若无法读取到响应缓存，则返回504的响应

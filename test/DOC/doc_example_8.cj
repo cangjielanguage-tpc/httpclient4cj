@@ -1,8 +1,9 @@
 // DEPENDENCE: testserver.cj
 // EXEC: cjc %import-path %L %l %f testserver.cj
 // EXEC: ./main
-from httpclient4cj import httpclient4cj.*
-from std import time.*
+import httpclient4cj
+import httpclient4cj.*
+import std.time.*
 
 main() {
     let client: HttpClient = HttpClient.builder()

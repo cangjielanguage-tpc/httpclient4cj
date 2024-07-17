@@ -2,15 +2,16 @@
 // EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
 
-from httpclient4cj import httpclient4cj.*
-from net import http.*
-from std import collection.*
-from encoding import url.*
-from net import tls.*
-from std import socket.*
-from std import time.*
-from std import io.*
-from std import sync.sleep
+import httpclient4cj
+import httpclient4cj.*
+import net.http.*
+import std.collection.*
+import encoding.url.*
+import net.tls.*
+import std.socket.*
+import std.time.*
+import std.io.*
+import std.sync.sleep
 
 //创建h2conn 和 stream，发送data 帧 关闭 stream
 

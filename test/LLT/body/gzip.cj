@@ -3,13 +3,14 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from httpclient4cj import httpclient4cj.*
-from std import collection.*
-from std import time.*
-from std import runtime.*
-from std import io.*
-from compress import zlib.*
-from std import fs.*
+import httpclient4cj
+import httpclient4cj.*
+import std.collection.*
+import std.time.*
+import std.runtime.*
+import std.io.*
+import compress.zlib.*
+import std.fs.*
 main() {
     var srcFile: File = File("./body.text", OpenOption.Open(true, true))
     var srcFile2: File = File("./gzip.text", OpenOption.Open(true, true))

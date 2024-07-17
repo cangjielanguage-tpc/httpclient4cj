@@ -3,9 +3,9 @@
 </div>
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v0.0.6-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v0.0.1-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjc-v0.51.4-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjc-v0.53.4-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-85.0%25-brightgreen" style="display: inline-block;" /> 
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
@@ -47,66 +47,6 @@ Httpclient4cj 是一个高效的 HTTP 客户端, 代码参考: https://github.co
 │   ├── feature_api.md  
 │   └── design.md
 ├── src
-│   └── httpclient4cj
-│      ├── address.cj
-│      ├── bridge_interceptor.cj
-│      ├── cache_control.cj
-│      ├── cache_control_builder.cj
-│      ├── call.cj
-│      ├── call_back.cj
-│      ├── call_server_interceptor.cj
-│      ├── connect_interceptor.cj
-│      ├── cookie.cj
-│      ├── cookie_jar.cj
-│      ├── dispatcher.cj
-│      ├── error_code.cj
-│      ├── event_listener.cj
-│      ├── exception.cj
-│      ├── exchange_codec.cj
-│      ├── exchange_codec2.cj
-│      ├── exchange_finder.cj
-│      ├── form_body.cj
-│      ├── hpack_config.cj
-│      ├── hpack_decoder.cj
-│      ├── hpack_encoder.cj
-│      ├── hpack_tables.cj
-│      ├── http2_connection.cj
-│      ├── http2_stream.cj
-│      ├── http2_writer.cj
-│      ├── http2_reader.cj
-│      ├── http_method.cj
-│      ├── huffman.cj
-│      ├── huffman_util.cj
-│      ├── chain.cj
-│      ├── interfaces.cj
-│      ├── multipart_body.cj
-│      ├── ok_buffer.cj
-│      ├── ok_gzip_source.cj
-│      ├── http_client.cj
-│      ├── http_client_builder.cj
-│      ├── ok_socket.cj
-│      ├── protocol.cj
-│      ├── queue.cj
-│      ├── real_connection.cj
-│      ├── real_connection_pool.cj
-│      ├── request.cj
-│      ├── request_body.cj
-│      ├── request_builder.cj
-│      ├── request_line.cj
-│      ├── response.cj
-│      ├── response_body.cj
-│      ├── response_builder.cj
-│      ├── retry_and_follow_up_interceptor.cj
-│      ├── route.cj
-│      ├── route_database.cj
-│      ├── route_selector.cj
-│      ├── settings.cj
-│      ├── sink.cj
-│      ├── socket_ffi.cj
-│      ├── source.cj
-│      ├── status_line.cj
-│      ├── transmitter.cj
-│      └── util.cj
 └── test   
     ├── HLT
     ├── LLT
@@ -158,8 +98,9 @@ Httpclient4cj 是一个高效的 HTTP 客户端, 代码参考: https://github.co
 ### 获取HttpClient对象并配置超时时间
 
 ```canjie
-from httpclient4cj import httpclient4cj.*
-from std import time.*
+import httpclient4cj
+import httpclient4cj.*
+import std.time.*
 
 main() {
     let client: HttpClient = HttpClient.builder()
@@ -173,9 +114,10 @@ main() {
 ### 同步 GET 请求方法示例
 
 ```canjie
-from httpclient4cj import httpclient4cj.*
-from std import time.*
-from encoding import url.*
+import httpclient4cj
+import httpclient4cj.*
+import std.time.*
+import encoding.url.*
 
 main() {
     let url = URL.parse("http://127.0.0.1:50060")
@@ -193,8 +135,9 @@ main() {
 ### 同步 Post 发送json字符串
 
 ```cangjie
-from httpclient4cj import httpclient4cj.*
-from std import time.*
+import httpclient4cj
+import httpclient4cj.*
+import std.time.*
 
 main() {
     let client: HttpClient = HttpClient.builder()
@@ -214,9 +157,10 @@ main() {
 ### 同步 Post 发送文件内容
 
 ```cangjie
-from httpclient4cj import httpclient4cj.*
-from std import time.*
-from std import fs.*
+import httpclient4cj
+import httpclient4cj.*
+import std.time.*
+import std.fs.*
 
 main() {
     let client: HttpClient = HttpClient.builder()
@@ -240,9 +184,10 @@ main() {
 ### multipart 发送数据以及多上传文件
 
 ```cangjie
-from httpclient4cj import httpclient4cj.*
-from std import time.*
-from std import fs.*
+import httpclient4cj
+import httpclient4cj.*
+import std.time.*
+import std.fs.*
 
 main() {
     let client: HttpClient = HttpClient.builder()
@@ -271,9 +216,10 @@ main() {
 
 ### chunked分块传输请求
 ```cangjie
-from httpclient4cj import httpclient4cj.*
-from std import time.*
-from std import io.*
+import httpclient4cj
+import httpclient4cj.*
+import std.time.*
+import std.io.*
 
 main() {
     let client: HttpClient = HttpClient.builder().build()
@@ -302,8 +248,9 @@ class MyRequestBody <: RequestBody {
 ### 异步请求以及回调
 
 ```
-from httpclient4cj import httpclient4cj.*
-from std import time.*
+import httpclient4cj
+import httpclient4cj.*
+import std.time.*
 
 main() {
     let client: HttpClient = HttpClient.builder()
@@ -334,8 +281,9 @@ public class MyCallbacks <: Callback {
 ### 拦截器使用
 
 ```cangjie
-from httpclient4cj import httpclient4cj.*
-from std import time.*
+import httpclient4cj
+import httpclient4cj.*
+import std.time.*
 
 main() {
     let client: HttpClient = HttpClient.builder()
@@ -362,9 +310,10 @@ class MyInterceptor <: Interceptor {
 ### cookie管理
 
 ```cangjie
-from encoding import url.*
-from httpclient4cj import httpclient4cj.*
-from std import time.*
+import encoding.url.*
+import httpclient4cj
+import httpclient4cj.*
+import std.time.*
 
 main() {
     let url: URL = URL.parse("http://127.0.0.1:50060")
@@ -387,12 +336,13 @@ main() {
 ### 监听器使用
 
 ```cangjie
-from encoding import url.*
-from httpclient4cj import httpclient4cj.*
-from net import tls.*
-from std import collection.*
-from std import socket.*
-from std import time.*
+import encoding.url.*
+import httpclient4cj
+import httpclient4cj.*
+import net.tls.*
+import std.collection.*
+import std.socket.*
+import std.time.*
 
 main() {
     let url = URL.parse("http://127.0.0.1:50060")
@@ -472,11 +422,12 @@ class MyEventListener <: EventListener {
 ### 使用http2协议
 
 ```cangjie
-from encoding import url.*
-from httpclient4cj import httpclient4cj.*
-from net import tls.*
-from std import collection.*
-from std import time.*
+import encoding.url.*
+import httpclient4cj
+import httpclient4cj.*
+import net.tls.*
+import std.collection.*
+import std.time.*
 
 main() {
     let url = URL.parse("http://127.0.0.1:50060")

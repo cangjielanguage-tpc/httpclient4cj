@@ -1,9 +1,10 @@
 // DEPENDENCE: testserver.cj
 // EXEC: cjc %import-path %L %l %f testserver.cj
 // EXEC: ./main
-from httpclient4cj import httpclient4cj.*
-from std import time.*
-from encoding import url.*
+import httpclient4cj
+import httpclient4cj.*
+import std.time.*
+import encoding.url.*
 
 main() {
     let url = URL.parse("http://127.0.0.1:50060")
