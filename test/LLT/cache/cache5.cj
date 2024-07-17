@@ -2,8 +2,9 @@
 // EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
 
-from httpclient4cj import httpclient4cj.*
-from std import fs.*
+import httpclient4cj
+import httpclient4cj.*
+import std.fs.*
 //获取缓存迭代器获取url字符串
 main() {
     let cache: Cache = Cache("./cacheccccccc", 10 * 1024 * 1024)

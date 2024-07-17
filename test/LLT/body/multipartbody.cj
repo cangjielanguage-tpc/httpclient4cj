@@ -2,14 +2,15 @@
 // DEPENDENCE: ./body2.text
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
-from httpclient4cj import httpclient4cj.*
-from std import collection.*
-from net import http.*
-from std import io.*
-from std import socket.*
-from std import fs.*
-from std import sync.sleep
-from std import time.*
+import httpclient4cj
+import httpclient4cj.*
+import std.collection.*
+import net.http.*
+import std.io.*
+import std.socket.*
+import std.fs.*
+import std.sync.sleep
+import std.time.*
 
 var port: UInt16 = 0
 main() {

@@ -2,8 +2,9 @@
 // EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
 
-from httpclient4cj import httpclient4cj.*
-from std import time.*
+import httpclient4cj
+import httpclient4cj.*
+import std.time.*
 
 //100-continue请求， 如果服务端返回100，继续请求
 main() {

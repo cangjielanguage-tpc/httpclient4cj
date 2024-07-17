@@ -1,19 +1,20 @@
 // 3rd_party_lib:httpclient4cj/build/httpclient4cj
 // data_file:image.png
 
-from std import unittest.*
-from std import unittest.testmacro.*
-from std import io.*
-from httpclient4cj import httpclient4cj.*
-from std import time.*
-from net import http.*
-from std import socket.*
-from encoding import url.*
-from net import tls.*
-from std import core.*
-from std import collection.*
-from std import fs.*
-from std import sync.sleep
+import std.unittest.*
+import std.unittest.testmacro.*
+import std.io.*
+import httpclient4cj
+import httpclient4cj.*
+import std.time.*
+import net.http.*
+import std.socket.*
+import encoding.url.*
+import net.tls.*
+import std.core.*
+import std.collection.*
+import std.fs.*
+import std.sync.sleep
 
 @Test
 public class okhttp_EventListener_test_001{

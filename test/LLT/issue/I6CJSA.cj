@@ -1,9 +1,10 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from httpclient4cj import httpclient4cj.*
-from std import time.*
-from encoding import url.*
+import httpclient4cj
+import httpclient4cj.*
+import std.time.*
+import encoding.url.*
 main() {
    try {
        let cookieUtil5 = CookieUtil.parse(URL.parse("http://example.com/foo/bar/baz"),

@@ -2,8 +2,9 @@
 // EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
 
-from httpclient4cj import httpclient4cj.*
-from std import collection.*
+import httpclient4cj
+import httpclient4cj.*
+import std.collection.*
 
 main() {
     let formBody = FormBody.builder()

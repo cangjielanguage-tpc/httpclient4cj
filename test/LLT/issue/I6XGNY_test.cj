@@ -1,10 +1,11 @@
 // DEPENDENCE: ../z_test.cj
 // EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
-from std import unittest.*
-from std import unittest.testmacro.*
-from net import tls.*
-from httpclient4cj import httpclient4cj.*
+import std.unittest.*
+import std.unittest.testmacro.*
+import net.tls.*
+import httpclient4cj
+import httpclient4cj.*
 
 main(): Int64 {
     TlsTest().tlsconfig()

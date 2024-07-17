@@ -2,8 +2,9 @@
 // EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
 
-from std import time.*
-from httpclient4cj import httpclient4cj.*
+import std.time.*
+import httpclient4cj
+import httpclient4cj.*
 
 
 //第一次走网络不使用缓存，第二次缓存不走网络(此时应该只生成tmp文件,cache只保存在内存中)

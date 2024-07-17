@@ -2,11 +2,12 @@
 // EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
 
-from httpclient4cj import httpclient4cj.*
-from net import http.*
-from std import collection.*
-from encoding import url.*
-from net import tls.*
+import httpclient4cj
+import httpclient4cj.*
+import net.http.*
+import std.collection.*
+import encoding.url.*
+import net.tls.*
 
 main() {
     let client = HttpClient.builder()

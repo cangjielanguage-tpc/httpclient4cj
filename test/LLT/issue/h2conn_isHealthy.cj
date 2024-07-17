@@ -2,12 +2,13 @@
 // EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
 
-from httpclient4cj import httpclient4cj.*
-from std import collection.*
-from std import io.*
-from std import time.*
-from net import http.*
-from std import socket.*
+import httpclient4cj
+import httpclient4cj.*
+import std.collection.*
+import std.io.*
+import std.time.*
+import net.http.*
+import std.socket.*
 
 main() {
     let soc = TcpSocket("okhttp", portTrans(50066))

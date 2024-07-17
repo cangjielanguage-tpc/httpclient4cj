@@ -1,7 +1,8 @@
 from std import unittest.*
 from std import unittest.testmacro.*
 from std import io.*
-from httpclient4cj import httpclient4cj.*
+from httpclient4cj import httpclient4cj
+import httpclient4cj.*
 from std import time.*
 from net import http.*
 from std import socket.*

@@ -2,9 +2,10 @@
 // EXEC: ./main
 
 
-from httpclient4cj import httpclient4cj.*
-from encoding import url.*
-from net import http.*
+import httpclient4cj
+import httpclient4cj.*
+import encoding.url.*
+import net.http.*
 
 //覆盖设置cookie对报文的影响，expires year>=70 自动补全
 main() {

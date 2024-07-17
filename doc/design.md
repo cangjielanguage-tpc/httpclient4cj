@@ -823,7 +823,8 @@ HTTP2错误码， 从Reset_Stream帧或GOAway帧中获取
 #### 同步请求
 
 ```cangjie
-from httpclient4cj import httpclient4cj.*
+import httpclient4cj
+import httpclient4cj.*
 
 main() {
     let client: HttpClient= HttpClient.builder().build()
@@ -841,7 +842,8 @@ success
 
 #### 异步请求
 ```cangjie
-from httpclient4cj import httpclient4cj.*
+import httpclient4cj
+import httpclient4cj.*
 
 main() {
     let client: HttpClient= HttpClient.builder().build()
@@ -870,11 +872,12 @@ success
 #### chunked分块传输请求
 ```
 
-from httpclient4cj import httpclient4cj.*
-from std import collection.*
-from net import http.*
-from std import io.*
-from std import socket.*
+import httpclient4cj
+import httpclient4cj.*
+import std.collection.*
+import net.http.*
+import std.io.*
+import std.socket.*
 
 var port: UInt16 = 0
 main() {

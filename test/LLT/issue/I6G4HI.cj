@@ -1,8 +1,9 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from httpclient4cj import httpclient4cj.*
-from std import io.*
+import httpclient4cj
+import httpclient4cj.*
+import std.io.*
 main() {
     var byteArrayStream = ByteArrayStream(10)
     var okbuffer = OkBuffer(byteArrayStream)

@@ -1,9 +1,10 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
-from httpclient4cj import httpclient4cj.*
-from encoding import url.*
-from std import unittest.*
-from std import unittest.testmacro.*
+import httpclient4cj
+import httpclient4cj.*
+import encoding.url.*
+import std.unittest.*
+import std.unittest.testmacro.*
 
 main(): Int64 {
     let url1 = URL.parse("vscode-remote://wsl%2Bubuntu/home/young/cangjie_projects/httpclient4cj/test/LLT/test_CacheControl.cj")

@@ -1,18 +1,19 @@
 // 3rd_party_lib:httpclient4cj/build/httpclient4cj
 // data_file:body.text
 
-from std import unittest.*
-from std import unittest.testmacro.*
-from std import io.*
-from httpclient4cj import httpclient4cj.*
-from std import time.*
-from net import http.*
-from std import socket.*
-from encoding import url.*
-from net import tls.*
-from std import core.*
-from std import fs.*
-from std import collection.*
+import std.unittest.*
+import std.unittest.testmacro.*
+import std.io.*
+import httpclient4cj
+import httpclient4cj.*
+import std.time.*
+import net.http.*
+import std.socket.*
+import encoding.url.*
+import net.tls.*
+import std.core.*
+import std.fs.*
+import std.collection.*
 
 @Test
 public class okhttp_MediaType_test_003{
@@ -42,8 +43,8 @@ public class okhttp_MediaType_test_003{
     // get 创建 MediaType 超长字符
     @TestCase
     func okhttp_MediaType_test_025(): Unit {
-        var tagString_a = StringBuilder('a', 512).toString()
-        var tagString_b = StringBuilder('b', 512).toString()
+        var tagString_a = StringBuilder(r'a', 512).toString()
+        var tagString_b = StringBuilder(r'b', 512).toString()
         var mediaType = MediaType.get("${tagString_a}/${tagString_b}; charset=utf-8")
         var get_type = mediaType.getType()
         var get_sub = mediaType.getSubtype()
@@ -57,8 +58,8 @@ public class okhttp_MediaType_test_003{
     // parse 创建 MediaType 超长字符
     @TestCase
     func okhttp_MediaType_test_026(): Unit {
-        var tagString_a = StringBuilder('a', 512).toString()
-        var tagString_b = StringBuilder('b', 512).toString()
+        var tagString_a = StringBuilder(r'a', 512).toString()
+        var tagString_b = StringBuilder(r'b', 512).toString()
         var mediaType = MediaType.parse("${tagString_a}/${tagString_b}; charset=utf-8")
         match (mediaType) {
             case Some(contentType) =>

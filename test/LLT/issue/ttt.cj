@@ -1,13 +1,14 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from httpclient4cj import httpclient4cj.*
-from net import http.*
-from std import collection.*
-from encoding import url.*
-from std import time.*
-from std import socket.*
-from std import sync.*
+import httpclient4cj
+import httpclient4cj.*
+import net.http.*
+import std.collection.*
+import encoding.url.*
+import std.time.*
+import std.socket.*
+import std.sync.*
 
  var times:Int64 = 50
  var end:Int64 = 0

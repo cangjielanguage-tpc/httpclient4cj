@@ -1,11 +1,12 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from httpclient4cj import httpclient4cj.*
-from net import http.*
-from std import collection.*
-from encoding import url.*
-from net import tls.*
+import httpclient4cj
+import httpclient4cj.*
+import net.http.*
+import std.collection.*
+import encoding.url.*
+import net.tls.*
 
 //不支持空数组
 main (){

@@ -2,7 +2,8 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from httpclient4cj import httpclient4cj.*
+from httpclient4cj import httpclient4cj
+import httpclient4cj.*
 from net import http.*
 from std import collection.*
 from encoding import url.*

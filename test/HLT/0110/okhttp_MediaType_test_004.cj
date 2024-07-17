@@ -1,17 +1,18 @@
 // 3rd_party_lib:httpclient4cj/build/httpclient4cj
 // data_file:body.text
 
-from encoding import url.*
-from net import http.*
-from net import tls.*
-from httpclient4cj import httpclient4cj.*
-from std import fs.*
-from std import unittest.*
-from std import unittest.testmacro.*
-from std import io.*
-from std import socket.*
-from std import sync.sleep
-from std import time.*
+import encoding.url.*
+import net.http.*
+import net.tls.*
+import httpclient4cj
+import httpclient4cj.*
+import std.fs.*
+import std.unittest.*
+import std.unittest.testmacro.*
+import std.io.*
+import std.socket.*
+import std.sync.sleep
+import std.time.*
 
 @Test
 public class okhttp_MediaType_test_004{

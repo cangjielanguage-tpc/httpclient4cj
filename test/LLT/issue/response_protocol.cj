@@ -1,7 +1,8 @@
-from httpclient4cj import httpclient4cj.*
-from std import time.*
-from encoding import url.*
-from std import collection.*
+import httpclient4cj
+import httpclient4cj.*
+import std.time.*
+import encoding.url.*
+import std.collection.*
 
 main() {
     let url = URL.parse("https://www.taobao.com")

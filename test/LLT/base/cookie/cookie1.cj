@@ -2,12 +2,13 @@
 // EXEC: cjc %import-path %L %l %f z_test.cj
 // EXEC: ./main
 
-from std import io.*
-from httpclient4cj import httpclient4cj.*
-from net import http.*
-from std import socket.*
-from encoding import url.*
-from net import tls.*
+import std.io.*
+import httpclient4cj
+import httpclient4cj.*
+import net.http.*
+import std.socket.*
+import encoding.url.*
+import net.tls.*
 
 //覆盖设置cookie对报文的影响，setCookie响应报文无返回
 main() {

@@ -1,7 +1,9 @@
-from net import http.*
-from std import io.*
-from std import socket.*
-from httpclient4cj import httpclient4cj.*
+import net.http
+import net.http.*
+import std.io.*
+import std.socket.*
+import httpclient4cj
+import httpclient4cj.*
 
 foreign func htons(port: UInt16): UInt16
 func portTrans(port: UInt16): UInt16 {

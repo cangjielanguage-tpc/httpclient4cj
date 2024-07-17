@@ -1,8 +1,9 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from httpclient4cj import httpclient4cj.*
-from std import collection.*
+import httpclient4cj
+import httpclient4cj.*
+import std.collection.*
 
 main() {
     let mediaType = MediaType.parse("multipart/mixed; boundary=1670471181459")

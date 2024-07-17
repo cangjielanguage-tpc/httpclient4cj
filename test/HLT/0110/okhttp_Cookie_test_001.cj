@@ -1,16 +1,17 @@
 // 3rd_party_lib:httpclient4cj/build/httpclient4cj
 
-from std import unittest.*
-from std import unittest.testmacro.*
-from std import io.*
-from httpclient4cj import httpclient4cj.*
-from std import time.*
-from net import http.*
-from std import socket.*
-from encoding import url.*
-from net import tls.*
-from std import core.*
-from std import collection.*
+import std.unittest.*
+import std.unittest.testmacro.*
+import std.io.*
+import httpclient4cj
+import httpclient4cj.*
+import std.time.*
+import net.http.*
+import std.socket.*
+import encoding.url.*
+import net.tls.*
+import std.core.*
+import std.collection.*
 
 @Test
 public class okhttp_Cookie_Test_001 {
@@ -131,7 +132,7 @@ public class okhttp_Cookie_Test_001 {
     // public static func parse(url: URL, setCookie: String): Option<Cookie> setCookie 1k长度
     @TestCase
     func okhttp_Cookie_Test_006(): Unit {
-        var tagString_a = StringBuilder('a', 1024).toString()
+        var tagString_a = StringBuilder(r'a', 1024).toString()
         var cookie_01: String = "${tagString_a}=${tagString_a}; Path=/foo/bar; Domain=example.com; Expires=Sun, 13 Oct 2024 08:44:48 UTC"
         let cookieUtil = CookieUtil.parse(URL.parse("http://example.com/foo/bar/baz"), cookie_01)
         expect(cookieUtil.getOrThrow().toSetCookieString(), cookie_01)
@@ -142,7 +143,7 @@ public class okhttp_Cookie_Test_001 {
     // 不确定是否需要进一步优化
     @TestCase
     func okhttp_Cookie_Test_007(): Unit {
-        var tagString_a = StringBuilder('a', 5000).toString()
+        var tagString_a = StringBuilder(r'a', 5000).toString()
         var cookie_01: String = "${tagString_a}=${tagString_a}; Path=/foo/bar; Domain=example.com; Expires=Sun, 13 Oct 2024 08:44:48 UTC"
         let cookieUtil = CookieUtil.parse(URL.parse("http://example.com/foo/bar/baz"), cookie_01)
         expect(cookieUtil.getOrThrow().toSetCookieString(), cookie_01)
