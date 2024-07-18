@@ -450,6 +450,10 @@ main() {
 }
 ```
 
+## 开源协议
+
+本项目基于 [Apache-2.0 license](LICENSE) , 请自由享受和参与开源
+
 ## <img alt="" src="./doc/assets/readme-icon-contribute.png" style="display: inline-block;" width=3%/> 参与贡献
 
 主要写参与贡献的人以及个人主页链接
