@@ -46,16 +46,11 @@ Httpclient4cj 是一个高效的 HTTP 客户端, 代码参考: https://github.co
 │   ├── cjcov     
 │   ├── feature_api.md  
 │   └── design.md
-├── src
-└── test   
-    ├── HLT
-    ├── LLT
-    └── UT
+└── src
 ```
 
 - `doc`是库的设计文档、提案、库的使用文档、LLT 覆盖报告 ( 由于未支持服务端的对接,部分拦截器连接后处理逻辑暂时无法覆盖)
 - `src`是库源码目录
-- `test`是存放测试用例，包括 HLT 用例、LLT 用例和 UT 用例
 
 ## 接口说明
 
