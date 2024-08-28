@@ -24,7 +24,7 @@ internal import std.log.*
 internal import std.math.*
 internal import std.random.*
 internal import std.regex.*
-internal import std.socket.*
+internal import std.net.*
 internal import std.sync.*
 internal import std.time.*
 internal import std.unicode.*

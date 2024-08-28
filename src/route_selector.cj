@@ -102,8 +102,8 @@ class RouteSelector {
         let arr = resolveDomain(TCP, socketHost)
 
         for (i in 0..arr.size) {
-            let route: (SocketAddressKind, Array<UInt8>) = arr[i]
-            allRoutes.append(Route(address, SocketAddress(route[0], route[1], port)))
+            let route = arr[i]
+            allRoutes.append(Route(address, IPSocketAddress(route, port)))
         }
 
         eventListener.dnsEnd(call, socketHost, allRoutes)
