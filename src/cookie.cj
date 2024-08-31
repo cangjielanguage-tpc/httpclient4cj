@@ -81,7 +81,7 @@ public class CookieUtil {
             hour: 23,
             minute: 59,
             second: 59,
-            timeZone: TimeZone.load("GMT")
+            timeZone: TimeZone.UTC
         )
         var deltaSeconds = -1
         var domain = ""
