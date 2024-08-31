@@ -2583,7 +2583,7 @@ public func getSimpleCookieJar(): CookieJar
  * 解析域名
  * @param net: SocketNet
  * @param domain: String
- * @return ArrayList<(SocketAddressKind, Array<UInt8>)>
+ * @return ArrayList<IPAddress>
  */
-public func resolveDomain(net: SocketNet, domain: String): ArrayList<(SocketAddressKind, Array<UInt8>)>
+public func resolveDomain(net: SocketNet, domain: String): ArrayList<IPAddress>
 ```

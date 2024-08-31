@@ -248,7 +248,7 @@ public class Connection {
     private func connectSocket(connectTimeout: ?Duration, readTimeout: ?Duration, writeTimeout: ?Duration): TcpSocket {
         let socketAddress: SocketAddress = route.inetSocketAddress
         try {
-            let s = TcpSocket(socketAddress.hostAddress, socketAddress.port)
+            let s = TcpSocket(socketAddress)
             s.readTimeout = readTimeout
             s.writeTimeout = writeTimeout
             s.connect(timeout: connectTimeout)

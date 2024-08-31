@@ -9,7 +9,7 @@ let AI_IPPROTO_UDP: UInt8 = 17
 let SOCK_ADDR_IPV4_LEN: Int64 = 4
 let SOCK_ADDR_IPV6_LEN: Int64 = 16
 
-public func resolveDomain(net: SocketNet, domain: String): ArrayList<(SocketAddressKind, Array<UInt8>)> {
+public func resolveDomain(net: SocketNet, domain: String): ArrayList<IPAddress> {
     var protocol = match (net) {
         case TCP => AI_IPPROTO_TCP
         case UDP => AI_IPPROTO_UDP
@@ -23,7 +23,7 @@ public func resolveDomain(net: SocketNet, domain: String): ArrayList<(SocketAddr
     }
     let size = Int64(unsafe { ip.read() })
 
-    let arr = ArrayList<(SocketAddressKind, Array<UInt8>)>()
+    let arr = ArrayList<IPAddress>()
     var index = 1
     for (_ in 0..size) {
         let sz = Int64(unsafe { ip.read(index) })
@@ -38,8 +38,11 @@ public func resolveDomain(net: SocketNet, domain: String): ArrayList<(SocketAddr
         }
         index += sz
         match {
-            case sz == SOCK_ADDR_IPV4_LEN => arr.prepend((IPv4, ips))
-            case sz == SOCK_ADDR_IPV6_LEN => arr.append((IPv6, ips))
+            // case sz == SOCK_ADDR_IPV4_LEN => arr.prepend((IPv4, ips))
+            case sz == SOCK_ADDR_IPV4_LEN => arr.append(
+                IPv4Address(ips[0], ips[1], ips[2], ips[3])
+            )
+            case sz == SOCK_ADDR_IPV6_LEN => arr.append(IPv6Address(ips))
             case _ => ()
         }
     }
