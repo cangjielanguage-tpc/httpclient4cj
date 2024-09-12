@@ -98,7 +98,7 @@ let AF_INET6: Int32 = 10
 
 func http_SOCKET_ConvertAddrPtr(res: CPointer<addrinfo>): CPointer<UInt8> {
     let arraddrlen = 400
-    var tmpaddr = Array<UInt8>(arraddrlen, item: 0)
+    var tmpaddr = Array<UInt8>(arraddrlen, repeat: 0)
     var ip4cnt = 0
     var ip6cnt = 0
     let ip4bytes = 5

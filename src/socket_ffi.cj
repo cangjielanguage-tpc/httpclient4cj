@@ -32,7 +32,7 @@ public func resolveDomain(net: SocketNet, domain: String): ArrayList<IPAddress> 
             unsafe { free(ip) }
             throw HttpException("parse domain = ${domain} fail ")
         }
-        let ips = Array<UInt8>(sz, item: 0)
+        let ips = Array<UInt8>(sz, repeat: 0)
         for (i in 0..sz) {
             ips[i] = unsafe { ip.read(i + index) }
         }

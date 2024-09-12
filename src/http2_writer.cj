@@ -301,7 +301,7 @@ class Http2Writer {
         let frameType = TYPE_DATA
         frameHeader(streamId, byteCount, frameType, flags)
         if (byteCount > 0) {
-            let arr = Array<Byte>(byteCount, item: 0)
+            let arr = Array<Byte>(byteCount, repeat: 0)
             source.read(arr)
             sink.write(arr)
         }

@@ -40,12 +40,12 @@ public class OkBuffer <: Source {
     }
 
     public func readByte(): Byte {
-        let arr = Array<Byte>(1, item: 0)
+        let arr = Array<Byte>(1, repeat: 0)
 
         if (buffer.remainLength > 0) {
             buffer.read(arr)
         } else {
-            let arr2 = Array<Byte>(4096, item: 0)
+            let arr2 = Array<Byte>(4096, repeat: 0)
             read(arr2)
             buffer.read(arr)
         }
@@ -58,14 +58,14 @@ public class OkBuffer <: Source {
         }
 
         if (buffer.remainLength == 0) {
-            let arr = Array<Byte>(4096, item: 0)
+            let arr = Array<Byte>(4096, repeat: 0)
             let read = read(arr)
             if (read == -1) {
                 return -1
             }
         }
 
-        let arr = Array<Byte>(min(byteCount, buffer.remainLength), item: 0)
+        let arr = Array<Byte>(min(byteCount, buffer.remainLength), repeat: 0)
         let read = buffer.read(arr)
         bytes.write(arr)
         return read
@@ -78,11 +78,11 @@ public class OkBuffer <: Source {
             return
         }
 
-        let bytes = Array<Byte>(limit, item: 0)
+        let bytes = Array<Byte>(limit, repeat: 0)
         if (buffer.remainLength >= limit) {
             buffer.read(bytes)
         } else {
-            let arr2 = Array<Byte>(4096, item: 0)
+            let arr2 = Array<Byte>(4096, repeat: 0)
             read(arr2)
             buffer.read(bytes)
         }
@@ -113,7 +113,7 @@ public class OkBuffer <: Source {
                         offSet = buffer.remainLength
                     }
 
-                    if (read(Array<Byte>(4096, item: 0)) == -1) {
+                    if (read(Array<Byte>(4096, repeat: 0)) == -1) {
                         return -1
                     }
                 }
@@ -150,7 +150,7 @@ public class OkBuffer <: Source {
                         return ""
                     }
 
-                    let arr = Array<Byte>(indexCR, item: 0)
+                    let arr = Array<Byte>(indexCR, repeat: 0)
                     buffer.read(arr)
                     let line = String.fromUtf8(arr)
                     skipBuffer(2)
@@ -184,7 +184,7 @@ public class OkBuffer <: Source {
             return ""
         }
 
-        let arr = Array<Byte>(indexLF, item: 0)
+        let arr = Array<Byte>(indexLF, repeat: 0)
         buffer.read(arr)
         let line = String.fromUtf8(arr)
         skipBuffer(1)

@@ -439,7 +439,7 @@ public class CookieUtil {
 
     static func parseIPv4(address: String): (Array<UInt8>, Bool) {
         var it = address.lazySplit(".")
-        var ip = Array<UInt8>(SOCK_ADDR_IPV4_LEN, item: 0)
+        var ip = Array<UInt8>(SOCK_ADDR_IPV4_LEN, repeat: 0)
 
         for (i in 0..SOCK_ADDR_IPV4_LEN) {
             match (it.next()) {
@@ -487,13 +487,13 @@ public class CookieUtil {
     @OverflowWrapping
     static func parseIPv6(str: String): (Array<UInt8>, Bool) {
         var s = str
-        var ip = Array<UInt8>(SOCK_ADDR_IPV6_LEN, item: 0)
+        var ip = Array<UInt8>(SOCK_ADDR_IPV6_LEN, repeat: 0)
         var ellipsis = -1
         let pk = Array<UInt8>()
 
         if (s.size >= 2 && s.startsWith("::")) {
             ellipsis = 0
-            s = s.trimLeft("::")
+            s = s.removePrefix("::")
             if (s.size == 0) {
                 return (ip, true)
             }

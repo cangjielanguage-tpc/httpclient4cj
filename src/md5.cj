@@ -7,11 +7,11 @@ package httpclient4cj
  * md5
  */
 class MD5 {
-    var data: Array<UInt8> = Array<UInt8>(64, item: 0)
+    var data: Array<UInt8> = Array<UInt8>(64, repeat: 0)
     var datalen: Int64 = 0
     var bitlen: Int64 = 0
     var state: Array<UInt32> = [0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476]
-    var hash: Array<UInt8> = Array<UInt8>(16, item: 0)
+    var hash: Array<UInt8> = Array<UInt8>(16, repeat: 0)
 
     /*
      * 计算字符串 md5 值
@@ -128,7 +128,7 @@ class MD5 {
 
     @OverflowWrapping
     private func transform() {
-        var m: Array<UInt32> = Array<UInt32>(16, item: 0)
+        var m: Array<UInt32> = Array<UInt32>(16, repeat: 0)
 
         var j: Int64 = 0
         for (i in 0..16) {

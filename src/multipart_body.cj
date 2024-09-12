@@ -119,7 +119,7 @@ public class MultipartBody <: RequestBody {
             byteCount += contentLength
             arr.write(CRLF)
             if (write) {
-                let readArr = Array<Byte>(contentLength, item: 0)
+                let readArr = Array<Byte>(contentLength, repeat: 0)
                 body.get().read(readArr)
                 arr.write(readArr)
             }

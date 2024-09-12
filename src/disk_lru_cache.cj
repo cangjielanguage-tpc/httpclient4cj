@@ -547,7 +547,7 @@ class Editor {
         this.entry = entry
         this.diskLruCache = diskLruCache
         this.written = if (!entry.readable) {
-            Array<Bool>(diskLruCache.valueCount, item: false)
+            Array<Bool>(diskLruCache.valueCount, repeat: false)
         } else {
             Option<Array<Bool>>.None
         }
@@ -701,9 +701,9 @@ class Entry {
     init(key: String, diskLruCache: DiskLruCache) {
         this.key = key
         this.diskLruCache = diskLruCache
-        lengths = Array<Int64>(diskLruCache.valueCount, item: 0)
-        cleanFiles = Array<String>(diskLruCache.valueCount, item: "")
-        dirtyFiles = Array<String>(diskLruCache.valueCount, item: "")
+        lengths = Array<Int64>(diskLruCache.valueCount, repeat: 0)
+        cleanFiles = Array<String>(diskLruCache.valueCount, repeat: "")
+        dirtyFiles = Array<String>(diskLruCache.valueCount, repeat: "")
         var sb = StringBuilder("${key}.")
         let truncateTo = sb.size
         for (i in 0..diskLruCache.valueCount) {

@@ -250,7 +250,7 @@ class DynamicTables {
         if ((bs - CONST_32_I64 * maxEntries) != 0) {
             maxEntries++
         }
-        this.dynamicArray = Array<Option<HeaderField>>(maxEntries, item: NULL)
+        this.dynamicArray = Array<Option<HeaderField>>(maxEntries, repeat: NULL)
         this.tail = 0
         this.head = 0
         this.mySize = 0
@@ -420,7 +420,7 @@ class DynamicTables {
         if (this.dynamicArray.size == maxEntries) {
             return false
         }
-        let newFields: Array<Option<HeaderField>> = Array<Option<HeaderField>>(maxEntries, item: NULL)
+        let newFields: Array<Option<HeaderField>> = Array<Option<HeaderField>>(maxEntries, repeat: NULL)
         hashDynamicTable.clear()
         let len: Int64 = length()
         var cur: Int64 = tail
