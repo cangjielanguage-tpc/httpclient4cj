@@ -477,14 +477,4 @@ class CacheRegister {
             // println("releasedir ${count}")
         }
     }
-    static func ifSafe(dir: String) {
-        synchronized(lock) {
-            // if(map.contains(dir)){
-            //     println("ifsafe ${map[dir]}")
-            // }else{
-            //     println("ifsafe 0")
-            // }
-            return !map.contains(dir)
-        }
-    }
 }
