@@ -303,7 +303,7 @@ public class H2Connection {
             }
             shutdown = true
         }
-        writer.goAway(0, statusCode, Array<Byte>(1, item: 0))
+        writer.goAway(0, statusCode, Array<Byte>(1, repeat: 0))
     }
 
     func windowUpdate(streamId: UInt32, windowSizeIncrement: Int64) {

@@ -40,7 +40,7 @@ public class Settings {
 
     private var set = 0
 
-    private let values: Array<Int64> = Array<Int64>(COUNT, item: 0)
+    private let values: Array<Int64> = Array<Int64>(COUNT, repeat: 0)
 
     /**
      * The Function is setting

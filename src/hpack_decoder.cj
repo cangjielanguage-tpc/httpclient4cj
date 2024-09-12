@@ -53,7 +53,7 @@ enum IndexType {
  */
 class Decoder {
     private var dynTab: DynamicTables
-    private var arr = Array<UInt8>(16, item: 0)
+    private var arr = Array<UInt8>(16, repeat: 0)
     private var maxDynamicTableSizeChangeRequired: Bool = false
 
     // 0b1000_0000 128 128
@@ -273,7 +273,7 @@ class Decoder {
             src[index..length]
         } else { // HUFFMAN
             if (this.arr.size < (length - idx) * 5) {
-                this.arr = Array<UInt8>((length - idx) * 5, item: 0)
+                this.arr = Array<UInt8>((length - idx) * 5, repeat: 0)
             }
             let ctx = HuffDecodeContext(HUFF_ACCEPTED)
             this.arr[0..huff_decode(ctx, this.arr, src[idx..length], true)]

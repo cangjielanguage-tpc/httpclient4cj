@@ -307,7 +307,7 @@ class FramingSource <: Source {
                 if (isClosed()) {
                     throw HttpException("stream closed")
                 } else if (readBuffer.remainLength > 0) {
-                    let arr = Array<Byte>(min(byteCount, readBuffer.remainLength), item: 0)
+                    let arr = Array<Byte>(min(byteCount, readBuffer.remainLength), repeat: 0)
                     readBytesDelivered = readBuffer.read(arr)
                     bytes.write(arr)
                     h2Stream.unacknowledgedBytesRead += readBytesDelivered

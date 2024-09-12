@@ -38,7 +38,7 @@ public class OkGzipSource <: Source {
             }
         }
 
-        let arr = Array<Byte>(byteCount, item: 0)
+        let arr = Array<Byte>(byteCount, repeat: 0)
         let read = gzip.read(arr)
         bytes.write(arr.slice(0, read))
         return read

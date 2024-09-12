@@ -187,7 +187,7 @@ func UInt64ToHexString(n: UInt64): Array<Byte> {
         }
     }
 
-    var arr = Array<Byte>(arrSize, item: UInt8(CHAR_ZERO))
+    var arr = Array<Byte>(arrSize, repeat: UInt8(CHAR_ZERO))
     var mask: UInt64 = 0x0f
     num = n
 
