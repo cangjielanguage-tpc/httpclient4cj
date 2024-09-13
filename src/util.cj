@@ -16,11 +16,12 @@ internal import net.http.*
 internal import net.http.CookieJar as HttpCookieJar
 internal import net.tls.*
 internal import std.collection.*
+internal import std.collection.concurrent.ConcurrentHashMap
 internal import std.convert.*
 internal import std.format.*
 internal import std.fs.*
 internal import std.io.*
-internal import std.log.*
+internal import log.*
 internal import std.math.*
 internal import std.random.*
 internal import std.regex.*
@@ -336,7 +337,7 @@ public func portTrans(port: UInt16): UInt16 {
     port
 }
 
-let LOG: SimpleLogger = SimpleLogger()
+let LOG: Logger = getGlobalLogger()
 
 
 extend String {
@@ -355,27 +356,9 @@ extend String {
     func contains(char: Rune): Bool {
         this.contains(char.toString())
     }
-    func indexOf(char: Rune): ?Int64 {
-        this.indexOf(char.toString())
-    }
-    func indexOf(char: Rune, begin: Int64): ?Int64 {
-        this.indexOf(char.toString(), begin)
-    }
 }
 extend UInt8 {
     operator func ==(char: Rune): Bool {
         UInt32(this) == UInt32(char)
-    }
-    operator func !=(char: Rune): Bool {
-        UInt32(this) != UInt32(char)
-    }
-    operator func <(char: Rune): Bool {
-        UInt32(this) < UInt32(char)
-    }
-    operator func <=(char: Rune): Bool {
-        UInt32(this) <= UInt32(char)
-    }
-    operator func >=(char: Rune): Bool {
-        UInt32(this) >= UInt32(char)
     }
 }

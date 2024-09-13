@@ -22,12 +22,12 @@ let PREFACE: String = "PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n"
 public class H2Connection {
     protected var socket: SocketClient
     protected var nextStreamID: UInt32 = 1
-    protected var streams: HashMap<UInt32, H2Stream> = HashMap<UInt32, H2Stream>()
-    var muLock: Monitor = Monitor()
+    protected let streams = ConcurrentHashMap<UInt32, H2Stream>()
+    let muLock: Monitor = Monitor()
 
     let hpackEncode: Encoder = Encoder.newEncoder()
 
-    public prop streamMap: HashMap<UInt32, H2Stream> {
+    public prop streamMap: ConcurrentHashMap<UInt32, H2Stream> {
         get() {
             return streams
         }
@@ -135,15 +135,13 @@ public class H2Connection {
         } catch (ignored: Exception) {}
 
         synchronized(muLock) {
-            streamMap.removeIf(
-                {
-                    _: UInt32, stream: H2Stream =>
-                    try {
-                        stream.close(streamCode, cause)
-                    } catch (ignored: SocketException) {}
-                    return true
-                }
-            )
+            let arr = streamMap |> collectArray
+            for (item in arr) {
+                let stream = item[1]
+                try {
+                    stream.close(streamCode, cause)
+                } catch (ignored: SocketException) {}
+            }
         }
 
         try {
@@ -324,18 +322,16 @@ public class H2Connection {
     func goAway(lastGoodStreamId: Int64, _: ErrorCode) {
         synchronized(muLock) {
             shutdown = true
-            streamMap.removeIf(
-                {
-                    _: UInt32, stream: H2Stream => if (stream.id > UInt32(lastGoodStreamId)) {
-                        stream.receiveRstStream(REFUSED_STREAM)
-                        removeStream(stream.id)
-                        muLock.notifyAll()
-                        return true
-                    } else {
-                        return false
-                    }
+            let arr = streamMap |> collectArray
+            for (item in arr) {
+                let stream = item[1]
+                if (stream.id > UInt32(lastGoodStreamId)) {
+                    stream.receiveRstStream(REFUSED_STREAM)
+                    removeStream(stream.id)
+                    muLock.notifyAll()
+                    streamMap.remove(item[0])
                 }
-            )
+            }
         }
     }
 

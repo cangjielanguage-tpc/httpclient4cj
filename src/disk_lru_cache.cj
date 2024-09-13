@@ -608,7 +608,7 @@ class Editor {
                     }
                     if (!diskLruCache.fileSystem.exists(entry.dirtyFiles[i])) {
                         editor.abort()
-                        return ()
+                        return
                     }
                 }
             }
