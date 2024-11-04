@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights resvered.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights reserved.
  */
 
 package httpclient4cj
@@ -283,7 +283,7 @@ class Http2Writer {
         }
     }
 
-    func data(outFinished: Bool, streamId: UInt32, source: ByteArrayStream, byteCount: Int64) {
+    func data(outFinished: Bool, streamId: UInt32, source: ByteBuffer, byteCount: Int64) {
         synchronized(mutex) {
             if (closed) {
                 throw HttpException("closed")
@@ -297,7 +297,7 @@ class Http2Writer {
         }
     }
 
-    func dataFrame(streamId: UInt32, flags: Byte, source: ByteArrayStream, byteCount: Int64) {
+    func dataFrame(streamId: UInt32, flags: Byte, source: ByteBuffer, byteCount: Int64) {
         let frameType = TYPE_DATA
         frameHeader(streamId, byteCount, frameType, flags)
         if (byteCount > 0) {

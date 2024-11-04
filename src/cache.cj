@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights resvered.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights reserved.
  */
 
 /**
@@ -9,10 +9,11 @@
 
 package httpclient4cj
 
+import std.fs
+
 let ENTRY_COUNT: Int64 = 2
 let ENTRY_METADATA: Int64 = 0
 let ENTRY_BODY: Int64 = 1
-
 let CLEAN: String = "CLEAN"
 let DIRTY: String = "DIRTY"
 let REMOVE: String = "REMOVE"
@@ -42,12 +43,10 @@ public class Cache <: Resource {
     private var networkCount: Int64 = 0
 
     public init(directoryPath: String, maxSize: Int64) {
-        let directory: Directory
-
-        if (!Directory.exists(directoryPath)) {
-            directory = Directory.create(directoryPath, recursive: true)
+        let directory: Directory = if (fs.exists(directoryPath) && FileInfo(directoryPath).isDirectory()) {
+            Directory(directoryPath)
         } else {
-            directory = Directory(directoryPath)
+            Directory.create(directoryPath, recursive: true)
         }
         this.cacheDir = directoryPath
         CacheRegister.regDir(cacheDir)
@@ -325,7 +324,7 @@ class CacheEntry {
             responseHeader.remove(SENT_MILLIS)
             responseHeader.remove(RECEIVED_MILLIS)
             responseHeaders = responseHeader
-            //TODO https
+        //TODO https
         } finally {
             source.close()
         }
@@ -337,9 +336,17 @@ class CacheEntry {
 
         let cacheRequest: Request = Request.builder().url(url).method(requestMethod).header(varyHeaders).build()
 
-        return Response.builder().request(cacheRequest).protocol(protocol).code(code).message(message).header(
-            responseHeaders).body(CacheResponseBody(snapshot, contentType, contentLength)).sentRequestAtMillis(
-            sentRequestMillis).receivedResponseAtMillis(receivedResponseMillis).build()
+        return Response
+            .builder()
+            .request(cacheRequest)
+            .protocol(protocol)
+            .code(code)
+            .message(message)
+            .header(responseHeaders)
+            .body(CacheResponseBody(snapshot, contentType, contentLength))
+            .sentRequestAtMillis(sentRequestMillis)
+            .receivedResponseAtMillis(receivedResponseMillis)
+            .build()
     }
 
     public func writeTo(editor: Editor): Unit {
@@ -468,13 +475,11 @@ class CacheRegister {
             } else {
                 map.put(dir, 1)
             }
-            // println("regdir ${map[dir]}")
         }
     }
     static func releaseDir(dir: String): Unit {
         synchronized(lock) {
             map.remove(dir)
-            // println("releasedir ${count}")
         }
     }
 }

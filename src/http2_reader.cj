@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights resvered.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights reserved.
  */
 
 package httpclient4cj
@@ -81,9 +81,9 @@ class Http2Reader {
     }
 
     func readMedium(source: OkBuffer): Int64 {
-        let arr = ByteArrayStream()
+        let arr = ByteBuffer()
         source.read(arr, 3)
-        let bytes = arr.readToEnd()
+        let bytes = readToEnd(arr)
         return Int64(Int32(bytes[0]) << 16 | Int32(bytes[1]) << 8 | Int32(bytes[2]))
     }
 
@@ -156,7 +156,7 @@ class Http2Reader {
         }
 
         if (opaqueDataLength > 0) {
-            let arr = ByteArrayStream()
+            let arr = ByteBuffer()
             source.read(arr, opaqueDataLength)
             arr.clear()
         }
@@ -184,7 +184,7 @@ class Http2Reader {
         }
 
         length = lengthWithoutPadding(length, flags, padding)
-        let arr = ByteArrayStream()
+        let arr = ByteBuffer()
         source.read(arr, length)
         source.skipBuffer(padding)
 
@@ -192,11 +192,11 @@ class Http2Reader {
             endStream = readContinuationHeader(arr, streamId)
         }
 
-        let headerBlock: Array<HeaderField> = frameDecode.decode(arr.readToEnd())
+        let headerBlock: Array<HeaderField> = frameDecode.decode(readToEnd(arr))
         handler.headers(endStream, streamId, -1, headerBlock)
     }
 
-    func readContinuationHeader(arr: ByteArrayStream, previousStreamId: UInt32) {
+    func readContinuationHeader(arr: ByteBuffer, previousStreamId: UInt32) {
         let length = readMedium(source)
         let frameType: Byte = source.readByte()
         let flags: Byte = source.readByte()

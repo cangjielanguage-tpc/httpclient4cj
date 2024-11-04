@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights resvered.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights reserved.
  */
 
 /**
@@ -155,7 +155,7 @@ class RequestBodySink <: Sink {
 public class RealBufferSink <: Sink {
     var closed: Bool = false
     let sink: Sink
-    private var buffer: ByteArrayStream = ByteArrayStream()
+    private var buffer: ByteBuffer = ByteBuffer()
 
     public init(sink: Sink) {
         this.sink = sink
@@ -174,20 +174,20 @@ public class RealBufferSink <: Sink {
             throw IllegalStateException("closed")
         } else {
             if (this.buffer.remainLength > 0) {
-                this.sink.write(this.buffer.readToEnd())
+                this.sink.write(readToEnd(this.buffer))
             }
             this.sink.flush()
         }
     }
 
-    func getBuffer(): ByteArrayStream {
+    func getBuffer(): ByteBuffer {
         return buffer
     }
 
     public func close(): Unit {
         if (!closed) {
             if (buffer.remainLength > 0) {
-                this.sink.write(this.buffer.readToEnd())
+                this.sink.write(readToEnd(this.buffer))
             }
             sink.close()
             closed = true
@@ -197,7 +197,7 @@ public class RealBufferSink <: Sink {
 
 class FramingSink <: Sink {
     private static let EMIT_BUFFER_SIZE = 16384
-    private let sendBuffer: ByteArrayStream = ByteArrayStream()
+    private let sendBuffer: ByteBuffer = ByteBuffer()
     var stream: Option<H2Stream> = Option<H2Stream>.None
     var trailers: Option<Header> = Option<Header>.None
     var closed: Bool = false
@@ -275,7 +275,7 @@ class FramingSink <: Sink {
                     emitFrame(true)
                 }
             } else {
-                http2Stream.cc.writeData(http2Stream.id, true, ByteArrayStream(), 0)
+                http2Stream.cc.writeData(http2Stream.id, true, ByteBuffer(), 0)
             }
         }
 

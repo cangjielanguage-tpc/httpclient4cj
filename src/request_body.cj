@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights resvered.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights reserved.
  */
 
 /**
@@ -66,7 +66,7 @@ public class RealRequestBody <: RequestBody {
      * @since 0.29.3
      */
     public func get(): InputStream {
-        let arr = ByteArrayStream()
+        let arr = ByteBuffer()
         arr.write(bytes)
         return arr
     }
@@ -80,6 +80,6 @@ public class RealRequestBody <: RequestBody {
     }
 
     public static func create(contentType: Option<MediaType>, file: File): RequestBody {
-        return create(contentType, file.readToEnd())
+        return create(contentType, readToEnd(file))
     }
 }

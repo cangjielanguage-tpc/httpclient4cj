@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights resvered.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights reserved.
  */
 
 /**
@@ -39,7 +39,7 @@ public class FormBody <: RequestBody {
     }
 
     public func get(): InputStream {
-        let arr = ByteArrayStream()
+        let arr = ByteBuffer()
         arr.write(form.toEncodeString().toUtf8Array())
         return arr
     }

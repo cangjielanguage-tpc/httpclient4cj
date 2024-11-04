@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights resvered.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights reserved.
  */
 
 /**
@@ -223,7 +223,7 @@ public class CookieUtil {
             s = s.substring(1)
         }
 
-        let canonicalDomain = canonicalizeHost(s)
+        let canonicalDomain = canonicalizeHost(s).toAsciiLower() // 统一小写
         if (canonicalDomain == "") {
             throw IllegalArgumentException()
         }

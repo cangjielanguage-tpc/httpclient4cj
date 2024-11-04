@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights resvered.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights reserved.
  */
 
 /**
@@ -99,7 +99,7 @@ class RouteSelector {
         }
         eventListener.dnsStart(call, socketHost)
 
-        let arr = resolveDomain(TCP, socketHost)
+        let arr = resolveDomain(socketHost)
 
         for (i in 0..arr.size) {
             let route = arr[i]

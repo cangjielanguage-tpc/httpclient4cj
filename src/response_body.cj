@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights resvered.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights reserved.
  */
 
 /**
@@ -75,10 +75,10 @@ public open class ResponseBody <: Resource {
     }
 
     public func getString(): String {
-        let stream = ByteArrayStream()
+        let stream = ByteBuffer()
         try (r = source) {
             while (source.read(stream, 4096) > 0) {}
         } catch (e: EOFException) {}
-        return String.fromUtf8(stream.readToEnd())
+        return unsafe { readStringUnchecked(stream) }
     }
 }

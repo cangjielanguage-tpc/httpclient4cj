@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights resvered.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights reserved.
  */
 
 /**
@@ -38,7 +38,7 @@ public class MultipartBody <: RequestBody {
     }
 
     public func get(): InputStream {
-        let arr = ByteArrayStream()
+        let arr = ByteBuffer()
         writeOrCountBytes(arr, true)
         return arr
     }
@@ -47,7 +47,7 @@ public class MultipartBody <: RequestBody {
         if (contentLength != -1) {
             return contentLength
         } else {
-            contentLength = writeOrCountBytes(ByteArrayStream(), false)
+            contentLength = writeOrCountBytes(ByteBuffer(), false)
             return contentLength
         }
     }
@@ -72,7 +72,7 @@ public class MultipartBody <: RequestBody {
         writeOrCountBytes(sink)
     }
 
-    private func writeOrCountBytes(arr: ByteArrayStream, write: Bool): Int64 {
+    private func writeOrCountBytes(arr: ByteBuffer, write: Bool): Int64 {
         var byteCount = 0
 
         for (p in 0..parts.size) {

@@ -1152,11 +1152,11 @@ public func cacheResponse(networkResponse: Option<Response>): ResponseBuilder
 ```
 /*
  * 读取指定字节的数据
- * @param bytes: ByteArrayStream
+ * @param bytes: ByteBuffer
  * @param byteCount: Int64
  * @return Int64
  */
-public func read(bytes: ByteArrayStream, byteCount: Int64): Int64
+public func read(bytes: ByteBuffer, byteCount: Int64): Int64
 /*
  * 关闭source
  */
@@ -1893,11 +1893,11 @@ public func close(): Unit
  * 发送 data 帧, outFinished: 是否是endStream 帧
  * @param streamId: UInt32
  * @param outFinished: Bool
- * @param buffer: ByteArrayStream
+ * @param buffer: ByteBuffer
  * @param length: Int64
  * @throw SocketException
  */
-public func writeData(streamId: UInt32, outFinished: Bool, buffer: ByteArrayStream, length: Int64): Unit
+public func writeData(streamId: UInt32, outFinished: Bool, buffer: ByteBuffer, length: Int64): Unit
 /*
  * 连接是否健康
  * 未进行连接时抛出异常
@@ -2581,9 +2581,8 @@ public func getLastConnectException(): HttpException
 public func getSimpleCookieJar(): CookieJar
 /*
  * 解析域名
- * @param net: SocketNet
  * @param domain: String
  * @return ArrayList<IPAddress>
  */
-public func resolveDomain(net: SocketNet, domain: String): ArrayList<IPAddress>
+public func resolveDomain(domain: String): ArrayList<IPAddress>
 ```

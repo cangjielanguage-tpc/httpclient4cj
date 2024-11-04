@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights resvered.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights reserved.
  */
 
 /**
@@ -43,7 +43,7 @@ public interface Sink {
 }
 
 public interface Source <: Resource {
-    func read(bytes: ByteArrayStream, byteCount: Int64): Int64
+    func read(bytes: ByteBuffer, byteCount: Int64): Int64
     func close(): Unit
     func isClosed(): Bool
 }
