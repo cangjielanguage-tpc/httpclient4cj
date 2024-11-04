@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights resvered.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights reserved.
  */
 
 /**
@@ -174,11 +174,11 @@ public class H2Connection {
      *
      * @param streamId of UInt32
      * @param outFinished of Bool
-     * @param buffer of ByteArrayStream
+     * @param buffer of ByteBuffer
      * @param length of Int64
      * @since 0.34.3
      */
-    public func writeData(streamId: UInt32, outFinished: Bool, buffer: ByteArrayStream, length: Int64) {
+    public func writeData(streamId: UInt32, outFinished: Bool, buffer: ByteBuffer, length: Int64) {
         var byteCount = length
         if (byteCount == 0) {
             // Empty data frames are not flow-controlled.

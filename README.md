@@ -5,7 +5,7 @@
 <p align="center">
 <img alt="" src="https://img.shields.io/badge/release-v0.0.1-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjc-v0.55.3-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjc-v0.56.4-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-85.0%25-brightgreen" style="display: inline-block;" /> 
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
@@ -173,7 +173,7 @@ main() {
         .build()
     let response: httpclient4cj.Response = client.newCall(request).execute()
     println(response.getBody().getOrThrow().getString())
-    File.delete("./body.txt")
+    remove("./body.txt")
 }
 ```
 ### multipart 发送数据以及多上传文件
@@ -204,8 +204,8 @@ main() {
     let request = Request.builder().url("http://127.0.0.1:50060").post(mu).build()
     let response: httpclient4cj.Response = client.newCall(request).execute()
     println(response.getBody().getOrThrow().getString())
-    File.delete("./body1.txt")
-    File.delete("./body2.txt")
+    remove("./body1.txt")
+    remove("./body2.txt")
 }
 ```
 
@@ -236,7 +236,7 @@ class MyRequestBody <: RequestBody {
         sink.write("world".toArray())
     }
     public func get(): InputStream {
-        return ByteArrayStream()
+        return ByteBuffer()
     }
 }
 ```

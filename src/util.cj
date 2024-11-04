@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights resvered.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights reserved.
  */
 
 /**
@@ -19,7 +19,7 @@ internal import std.collection.*
 internal import std.collection.concurrent.ConcurrentHashMap
 internal import std.convert.*
 internal import std.format.*
-internal import std.fs.*
+internal import std.fs.{Directory, File, FileInfo, FSException, OpenOption}
 internal import std.io.*
 internal import log.*
 internal import std.math.*
@@ -103,13 +103,11 @@ class Util {
 
     static func parseSeconds(value: String, defaultValue: Int64): Int64 {
         try {
-            let seconds: Int32 = Int32.parse(value)
-            if (seconds > Int32.Max) {
-                return Int64(Int32.Max)
-            } else if (seconds < 0) {
+            let seconds: Int = Int64.parse(value)
+            if (seconds < 0) {
                 return 0
             } else {
-                return Int64(seconds)
+                return seconds
             }
         } catch (e: Exception) {
             return defaultValue
@@ -161,7 +159,7 @@ func receiveHeaders(cookieJar: CookieJar, url: URL, headers: Header): Unit {
 
 func disCard(source: Source): Bool {
     try {
-        let arr = ByteArrayStream()
+        let arr = ByteBuffer()
         while (source.read(arr, 4096) != -1) {
             arr.clear()
         }

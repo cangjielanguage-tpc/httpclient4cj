@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights resvered.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights reserved.
  */
 
 /**
@@ -17,7 +17,7 @@ abstract class AbstractSource <: Source {
         this.exchangeCode = exchange
     }
 
-    public open func read(bytes: ByteArrayStream, byteCount: Int64): Int64 {
+    public open func read(bytes: ByteBuffer, byteCount: Int64): Int64 {
         return exchangeCode.source.read(bytes, byteCount)
     }
 
@@ -38,7 +38,7 @@ class FixedLengthSource <: AbstractSource {
         }
     }
 
-    public func read(bytes: ByteArrayStream, count: Int64): Int64 {
+    public func read(bytes: ByteBuffer, count: Int64): Int64 {
         var byteCount = count
 
         if (isClosed()) {
@@ -90,7 +90,7 @@ class UnknownLengthSource <: AbstractSource {
         super(exchange)
     }
 
-    public func read(bytes: ByteArrayStream, byteCount: Int64): Int64 {
+    public func read(bytes: ByteBuffer, byteCount: Int64): Int64 {
         if (isClosed()) {
             throw IllegalStateException("closed")
         }
@@ -136,7 +136,7 @@ class ChunkedSource <: Source {
         this.exchangeCode = exchange
     }
 
-    public func read(bytes: ByteArrayStream, byteCount: Int64): Int64 {
+    public func read(bytes: ByteBuffer, byteCount: Int64): Int64 {
         if (isClosed()) {
             throw IllegalStateException("closed")
         }
@@ -221,7 +221,7 @@ class ResponseBodySource <: Source {
         }
     }
 
-    public func read(bytes: ByteArrayStream, byteCount: Int64): Int64 {
+    public func read(bytes: ByteBuffer, byteCount: Int64): Int64 {
         if (isClosed()) {
             throw IllegalStateException("closed")
         }
@@ -281,15 +281,15 @@ class FramingSource <: Source {
     var trailers: Option<Header> = Option<Header>.None
     var stream: Option<H2Stream> = Option<H2Stream>.None
     var maxByteCount: Int64
-    let readBuffer = ByteArrayStream()
-    let receiveBuffer = ByteArrayStream()
+    let readBuffer = ByteBuffer()
+    let receiveBuffer = ByteBuffer()
     var closed = false
 
     public init(maxByteCount: Int64) {
         this.maxByteCount = maxByteCount
     }
 
-    public func read(bytes: ByteArrayStream, byteCount: Int64): Int64 {
+    public func read(bytes: ByteBuffer, byteCount: Int64): Int64 {
         let h2Stream = stream.getOrThrow()
 
         if (byteCount < 0) {
@@ -374,7 +374,7 @@ class FramingSource <: Source {
                     receiveBuffer.clear()
                 } else {
                     let wasEmpty = readBuffer.remainLength == 0
-                    readBuffer.write(receiveBuffer.readToEnd())
+                    copy(receiveBuffer, to: readBuffer)
                     if (wasEmpty) {
                         let mu = stream.getOrThrow().mutex
                         mu.notifyAll()
@@ -419,7 +419,7 @@ class CacheWritingSource <: Source {
         this.cacheRequest = cacheRequest
     }
 
-    public func read(bytes: ByteArrayStream, byteCount: Int64): Int64 {
+    public func read(bytes: ByteBuffer, byteCount: Int64): Int64 {
         var bytesRead: Int64
         let cacheBody = RealBufferSink(cacheRequest)
 

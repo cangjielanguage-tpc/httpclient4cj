@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights resvered.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights reserved.
  */
 
 /**
@@ -10,7 +10,7 @@
 package httpclient4cj
 
 public class OkGzipSource <: Source {
-    private let base: ByteArrayStream = ByteArrayStream()
+    private let base: ByteBuffer = ByteBuffer()
     private let gzip: DecompressInputStream = DecompressInputStream(base, wrap: GzipFormat, bufLen: 4096)
     private let source: Source
     private var hasMoreGzip: Bool = true
@@ -19,7 +19,7 @@ public class OkGzipSource <: Source {
         this.source = source
     }
 
-    public func read(bytes: ByteArrayStream, byteCount: Int64): Int64 {
+    public func read(bytes: ByteBuffer, byteCount: Int64): Int64 {
         if (isClosed()) {
             return -1
         }

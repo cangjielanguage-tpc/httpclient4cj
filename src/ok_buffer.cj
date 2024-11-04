@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights resvered.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights reserved.
  */
 
 /**
@@ -12,7 +12,7 @@ package httpclient4cj
 public class OkBuffer <: Source {
     private var source: InputStream
     private var closed: Bool = false
-    private var buffer: ByteArrayStream = ByteArrayStream()
+    private var buffer: ByteBuffer = ByteBuffer()
     public init(inputStream: InputStream) {
         this.source = inputStream
     }
@@ -52,7 +52,7 @@ public class OkBuffer <: Source {
         return arr[0]
     }
 
-    public func read(bytes: ByteArrayStream, byteCount: Int64): Int64 {
+    public func read(bytes: ByteBuffer, byteCount: Int64): Int64 {
         if (closed) {
             throw IllegalStateException("closed")
         }

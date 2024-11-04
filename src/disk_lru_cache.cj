@@ -1,13 +1,14 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights resvered.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights reserved.
  */
 
 /**
  * @file
  * The file declares the CallServerInterceptor class.
  */
-
 package httpclient4cj
+
+import std.fs
 
 class DiskLruCache {
     let fileSystem: FileSystem
@@ -808,7 +809,7 @@ class FileSystem {
     }
 
     public func source(name: String): OkBuffer {
-        let file = File(directory.info.path.join(name), Open(true, true))
+        let file = File(directory.info.path.join(name), OpenOption.Open(true, true))
         closeFuncs.append({=> file.close()})
         return OkBuffer(file)
     }
@@ -820,7 +821,7 @@ class FileSystem {
     }
 
     public func appendingSink(name: String): Sink {
-        let file = File(directory.info.path.join(name), Append)
+        let file = File(directory.info.path.join(name), OpenOption.Append)
         closeFuncs.append({=> file.close()})
         return FileSink(file)
     }
@@ -832,16 +833,16 @@ class FileSystem {
 
     public func delete(name: String): Unit {
         if (exists(name)) {
-            File.delete(directory.info.path.join(name))
+            fs.remove(directory.info.path.join(name))
         }
     }
 
     public func exists(name: String): Bool {
-        File.exists(directory.info.path.join(name))
+        fs.exists(directory.info.path.join(name))
     }
 
     public func rename(f: String, t: String): Unit {
-        File.move(directory.info.path.join(f), directory.info.path.join(t), true)
+        fs.rename(directory.info.path.join(f), to: directory.info.path.join(t), overwrite: true)
     }
 
     public func deleteContents(directory: Directory): Unit {
@@ -850,8 +851,8 @@ class FileSystem {
 
     private func deleteRecursive(directory: Directory): Unit {
         for (i in directory) {
-            if (i.isFile()) {
-                File.delete(i.path)
+            if (i.isRegular()) {
+                fs.remove(i.path)
             } else if (i.isDirectory()) {
                 deleteRecursive(Directory(i.path))
             }
@@ -859,6 +860,6 @@ class FileSystem {
     }
 
     public func size(name: String): Int64 {
-        return FileInfo(directory.info.path.join(name)).length
+        return FileInfo(directory.info.path.join(name)).size
     }
 }

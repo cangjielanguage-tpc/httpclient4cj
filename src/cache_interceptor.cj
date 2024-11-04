@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights resvered.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights reserved.
  */
 
 /**
@@ -37,7 +37,7 @@ public class CacheInterceptor <: Interceptor {
 
         if (!has(networkRequest) && !has(cacheResponse)) {
             return Response.builder().request(chain.getRequest()).protocol(Protocol.HTTP_1_1).code(504).message(
-                "Unsatisfiable Request (only-if-cached)").body(ResponseBody("", 0, OkBuffer(ByteArrayStream()))).
+                "Unsatisfiable Request (only-if-cached)").body(ResponseBody("", 0, OkBuffer(ByteBuffer()))).
                 sentRequestAtMillis(-1).receivedResponseAtMillis(DateTime.now().toUnixTimeStamp().toMilliseconds()).
                 build()
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights resvered.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights reserved.
  */
 
 /**
@@ -35,7 +35,7 @@ public class H2Stream {
      *
      * @param ids of UInt32
      * @param cc of H2Connection
-     * @param reqBody of ByteArrayStream
+     * @param reqBody of ByteBuffer
      * @since 0.29.3
      */
     init(ids: UInt32, cc: H2Connection, outFinished: Bool) {
