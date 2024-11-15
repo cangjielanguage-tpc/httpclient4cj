@@ -19,7 +19,7 @@ internal import std.collection.*
 internal import std.collection.concurrent.ConcurrentHashMap
 internal import std.convert.*
 internal import std.format.*
-internal import std.fs.{Directory, File, FileInfo, FSException, OpenOption}
+internal import std.fs.{Directory, File, FileInfo, FSException, OpenMode, Path}
 internal import std.io.*
 internal import log.*
 internal import std.math.*

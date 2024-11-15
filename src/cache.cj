@@ -43,14 +43,12 @@ public class Cache <: Resource {
     private var networkCount: Int64 = 0
 
     public init(directoryPath: String, maxSize: Int64) {
-        let directory: Directory = if (fs.exists(directoryPath) && FileInfo(directoryPath).isDirectory()) {
-            Directory(directoryPath)
-        } else {
-            Directory.create(directoryPath, recursive: true)
+        if (!(fs.exists(directoryPath) && FileInfo(directoryPath).isDirectory())) {
+            Directory.create(Path(directoryPath), recursive: true)
         }
         this.cacheDir = directoryPath
         CacheRegister.regDir(cacheDir)
-        this.cache = DiskLruCache.create(FileSystem(directory), directory, ENTRY_COUNT, maxSize)
+        this.cache = DiskLruCache.create(FileSystem(Path(directoryPath)), Path(directoryPath), ENTRY_COUNT, maxSize)
     }
 
     func trackResponse(cacheStrategy: CacheStrategy) {
@@ -172,8 +170,8 @@ public class Cache <: Resource {
         return MD5.digest(url.toString())
     }
 
-    public func getDirectory(): Directory {
-        return cache.directory
+    public func getDirectoryPath(): Path {
+        return cache.directoryPath
     }
 
     func remove(request: Request) {
