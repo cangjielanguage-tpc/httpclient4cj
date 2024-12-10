@@ -12,7 +12,7 @@ import std.fs
 
 class DiskLruCache {
     let fileSystem: FileSystem
-    var directory: Directory
+    var directoryPath: Path
     var valueCount: Int64
     var maxSize: Int64
     var size: Int64 = 0
@@ -29,16 +29,16 @@ class DiskLruCache {
     var mostRecentRebuildFailed: Bool = false
     var nextSequenceNumber = 0
 
-    init(fileSystem: FileSystem, directory: Directory, valueCount: Int64, maxSize: Int64) {
+    init(fileSystem: FileSystem, directoryPath: Path, valueCount: Int64, maxSize: Int64) {
         this.fileSystem = fileSystem
-        this.directory = directory
+        this.directoryPath = directoryPath
         this.valueCount = valueCount
         this.maxSize = maxSize
     }
 
     static func create(
         fileSystem: FileSystem,
-        directory: Directory,
+        directoryPath: Path,
         valueCount: Int64,
         maxSize: Int64
     ): DiskLruCache {
@@ -50,7 +50,7 @@ class DiskLruCache {
             throw IllegalArgumentException("valueCount <= 0")
         }
 
-        return DiskLruCache(fileSystem, directory, valueCount, maxSize)
+        return DiskLruCache(fileSystem, directoryPath, valueCount, maxSize)
     }
 
     public func remove(key: String): Bool {
@@ -276,7 +276,7 @@ class DiskLruCache {
     }
 
     public func delete() {
-        fileSystem.deleteContents(directory)
+        fileSystem.deleteContents(directoryPath)
     }
 
     public func close(): Unit {
@@ -801,27 +801,27 @@ class Snapshot <: Resource {
 }
 
 class FileSystem {
-    var directory: Directory
+    var directoryPath: Path
     let closeFuncs = ArrayList<() -> Unit>()
 
-    init(directory: Directory) {
-        this.directory = directory
+    init(directoryPath: Path) {
+        this.directoryPath = directoryPath
     }
 
     public func source(name: String): OkBuffer {
-        let file = File(directory.info.path.join(name), OpenOption.Open(true, true))
+        let file = File(directoryPath.join(name), OpenMode.ReadWrite)
         closeFuncs.append({=> file.close()})
         return OkBuffer(file)
     }
 
     public func sink(name: String): Sink {
-        let file = directory.createFile(name)
+        let file = File.create(directoryPath.join(name))
         closeFuncs.append({=> file.close()})
         return FileSink(file)
     }
 
     public func appendingSink(name: String): Sink {
-        let file = File(directory.info.path.join(name), OpenOption.Append)
+        let file = File(directoryPath.join(name), OpenMode.Append)
         closeFuncs.append({=> file.close()})
         return FileSink(file)
     }
@@ -833,33 +833,34 @@ class FileSystem {
 
     public func delete(name: String): Unit {
         if (exists(name)) {
-            fs.remove(directory.info.path.join(name))
+            fs.remove(directoryPath.join(name))
         }
     }
 
     public func exists(name: String): Bool {
-        fs.exists(directory.info.path.join(name))
+        fs.exists(directoryPath.join(name))
     }
 
     public func rename(f: String, t: String): Unit {
-        fs.rename(directory.info.path.join(f), to: directory.info.path.join(t), overwrite: true)
+        fs.rename(directoryPath.join(f), to: directoryPath.join(t), overwrite: true)
     }
 
-    public func deleteContents(directory: Directory): Unit {
-        deleteRecursive(directory)
+    public func deleteContents(directoryPath: Path): Unit {
+        deleteRecursive(directoryPath)
     }
 
-    private func deleteRecursive(directory: Directory): Unit {
-        for (i in directory) {
+    private func deleteRecursive(directoryPath: Path): Unit {
+        Directory.walk(directoryPath) { i =>
             if (i.isRegular()) {
                 fs.remove(i.path)
             } else if (i.isDirectory()) {
-                deleteRecursive(Directory(i.path))
+                deleteRecursive(i.path)
             }
+            return true
         }
     }
 
     public func size(name: String): Int64 {
-        return FileInfo(directory.info.path.join(name)).size
+        return FileInfo(directoryPath.join(name)).size
     }
 }
