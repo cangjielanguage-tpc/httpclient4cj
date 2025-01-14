@@ -121,7 +121,7 @@ public class Transmitter {
 
         for (index in 0..arr.size) {
             if (refEq(arr[index], this)) {
-                arr.remove(index)
+                arr.remove(at: index)
                 break
             }
         }
@@ -152,7 +152,7 @@ public class Transmitter {
             match (connection) {
                 case Some(conn) =>
                     this.connection = conn
-                    conn.transmitters.append(this)
+                    conn.transmitters.add(this)
                 case None => throw HttpException("IllegalStateException")
             }
         }

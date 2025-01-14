@@ -208,7 +208,7 @@ public class MultipartBodyBuilder <: Builder<MultipartBody> {
     }
 
     public func addPart(part: Part): MultipartBodyBuilder {
-        parts.append(part)
+        parts.add(part)
         return this
     }
 

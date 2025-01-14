@@ -153,17 +153,17 @@ class RealCall <: Call {
      */
     func getResponseWithInterceptorChain(): Response {
         let interceptors: ArrayList<Interceptor> = ArrayList<Interceptor>()
-        interceptors.appendAll(client.getInterceptors())
-        interceptors.append(RetryAndFollowUpInterceptor(client))
-        interceptors.append(BridgeInterceptor(client.getCookieJar()))
-        interceptors.append(CacheInterceptor(client.getCache()))
-        interceptors.append(ConnectInterceptor(client))
+        interceptors.add(all: client.getInterceptors())
+        interceptors.add(RetryAndFollowUpInterceptor(client))
+        interceptors.add(BridgeInterceptor(client.getCookieJar()))
+        interceptors.add(CacheInterceptor(client.getCache()))
+        interceptors.add(ConnectInterceptor(client))
 
         if (!forWebSocket) {
-            interceptors.appendAll(client.getNetworkInterceptors())
+            interceptors.add(all: client.getNetworkInterceptors())
         }
 
-        interceptors.append(CallServerInterceptor(forWebSocket))
+        interceptors.add(CallServerInterceptor(forWebSocket))
         let chain: Chain = Chain(
             interceptors,
             getTransmitter(),

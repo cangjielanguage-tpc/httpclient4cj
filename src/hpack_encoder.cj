@@ -170,7 +170,7 @@ class Encoder {
      *
      */
     func addNewField(f: HeaderField, indexing: Bool) {
-        myBuffer.append(encodeTypeByte(indexing, f.sensitive))
+        myBuffer.add(encodeTypeByte(indexing, f.sensitive))
         addHPackString(f.name)
         addHPackString(f.value)
     }
@@ -233,8 +233,8 @@ class Encoder {
             myBuffer[first] |= 0x80
         } else {
             let arr = str.toUtf8Array()
-            myBuffer.append(UInt8(arr.size))
-            myBuffer.appendAll(str.toUtf8Array())
+            myBuffer.add(UInt8(arr.size))
+            myBuffer.add(all: str.toUtf8Array())
         }
     }
 
@@ -257,16 +257,16 @@ class Encoder {
         checkPrefix(N)
         let line: UInt8 = UInt8((1 << N) - 1)
         if (v < UInt64(line)) {
-            myBuffer.append(UInt8(v))
+            myBuffer.add(UInt8(v))
             return
         }
         var n: UInt64 = v - UInt64(line)
-        myBuffer.append(line)
+        myBuffer.add(line)
         while (n >= UInt64(CONST_128_I64)) {
-            myBuffer.append(UInt8((n & UInt64(CONST_127_I64)) | UInt64(CONST_128_I64)))
+            myBuffer.add(UInt8((n & UInt64(CONST_127_I64)) | UInt64(CONST_128_I64)))
             n >>= UInt64(VAILD_BIT)
         }
-        myBuffer.append(UInt8(n))
+        myBuffer.add(UInt8(n))
     }
 
     /**

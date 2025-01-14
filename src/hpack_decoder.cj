@@ -235,7 +235,7 @@ class Decoder {
         if (that.indexed()) {
             this.dynTab.add(header)
         }
-        buf.append(header)
+        buf.add(header)
         return newIndex
     }
 
@@ -292,7 +292,7 @@ class Decoder {
             return -1
         }
         let (idx, newIndex) = readVarInt(src, index, INDEXD_SUCCESS)
-        buf.append(this.getHeader(idx))
+        buf.add(this.getHeader(idx))
         return newIndex
     }
 

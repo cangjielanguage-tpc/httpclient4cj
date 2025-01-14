@@ -60,7 +60,7 @@ public class ConnectionPool {
                 }
             }
             if (removeIndex != -1) {
-                connections.remove(removeIndex)
+                connections.remove(at: removeIndex)
             }
             return true
         } else {
@@ -145,7 +145,7 @@ public class ConnectionPool {
                     connection: Connection =>
                     if (connection.getTransmitters().size == 0) {
                         connection.noNewExchanges = true
-                        evictedConnections.append(connection)
+                        evictedConnections.add(connection)
                         return true
                     }
                     return false
@@ -213,7 +213,7 @@ public class ConnectionPool {
 
             // weather the connection is ready to be evicted
             if (longestIdleDurationNs >= keepAliveDurationNs || idleConnectionCount > this.maxIdleConnections) {
-                connections.remove(remove)
+                connections.remove(at: remove)
             } else if (idleConnectionCount > 0) {
                 // wait for next time
                 return (keepAliveDurationNs - longestIdleDurationNs).toNanoseconds()
@@ -239,12 +239,12 @@ public class ConnectionPool {
         for (i in 0..transmitters.size) {
             let transmitter = transmitters[i]
             if (transmitter.ref == false) {
-                indexArray.append(i)
+                indexArray.add(i)
             }
         }
 
         for (i in 0..indexArray.size) {
-            transmitters.remove(indexArray[i])
+            transmitters.remove(at: indexArray[i])
             connection.noNewExchanges = true
         }
 

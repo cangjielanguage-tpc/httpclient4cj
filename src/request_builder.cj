@@ -230,7 +230,7 @@ public class RequestBuilder <: Builder<Request> {
     }
 
     public func tag(s: String): RequestBuilder {
-        this.tagsBuild.put(s, Tag(s))
+        this.tagsBuild.add(s, Tag(s))
         return this
     }
 }

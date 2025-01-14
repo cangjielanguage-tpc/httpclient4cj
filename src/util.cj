@@ -18,7 +18,6 @@ internal import net.tls.*
 internal import std.collection.*
 internal import std.collection.concurrent.ConcurrentHashMap
 internal import std.convert.*
-internal import std.format.*
 internal import std.fs.{Directory, File, FileInfo, FSException, OpenMode, Path}
 internal import std.io.*
 internal import log.*
@@ -295,15 +294,15 @@ public class Header <: Iterable<(String, ArrayList<String>)> {
     public func add(name: String, value: String): Unit {
         if (name.startsWith(":")) {
             let list = fields.get(name) ?? ArrayList<String>()
-            list.append(value.trim())
-            this.fields.put(name.toLower(), list)
+            list.add(value.trim())
+            this.fields.add(name.toLower(), list)
         } else {
             httpHeaders.add(name, value)
         }
     }
     public func set(name: String, value: ArrayList<String>): Unit {
         if (name.startsWith(":")) {
-            this.fields.put(name.toLower(), value)
+            this.fields.add(name.toLower(), value)
         } else {
             httpHeaders.del(name)
             for (v in value) {

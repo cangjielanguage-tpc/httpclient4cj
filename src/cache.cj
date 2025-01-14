@@ -357,10 +357,10 @@ class CacheEntry {
         let list: ArrayList<Byte> = ArrayList<Byte>()
         for ((k, v) in varyHeaders) {
             size++
-            list.appendAll(k.toUtf8Array())
-            list.appendAll(": ".toUtf8Array())
-            list.appendAll(v[0].toUtf8Array())
-            list.appendAll("\n".toUtf8Array())
+            list.add(all: k.toUtf8Array())
+            list.add(all: ": ".toUtf8Array())
+            list.add(all: v[0].toUtf8Array())
+            list.add(all: "\n".toUtf8Array())
         }
         sink.write("${size}".toUtf8Array())
         sink.write("\n".toUtf8Array())
@@ -374,10 +374,10 @@ class CacheEntry {
         for ((k, v) in responseHeaders) {
             size += v.size
             for (i in 0..v.size) {
-                list.appendAll(k.toUtf8Array())
-                list.appendAll(": ".toUtf8Array())
-                list.appendAll(v[i].toUtf8Array())
-                list.appendAll("\n".toUtf8Array())
+                list.add(all: k.toUtf8Array())
+                list.add(all: ": ".toUtf8Array())
+                list.add(all: v[i].toUtf8Array())
+                list.add(all: "\n".toUtf8Array())
             }
         }
         sink.write("${size + 2}".toUtf8Array())
@@ -471,7 +471,7 @@ class CacheRegister {
             if (map.contains(dir)) {
                 throw IllegalStateException("cache dir is in use")
             } else {
-                map.put(dir, 1)
+                map.add(dir, 1)
             }
         }
     }

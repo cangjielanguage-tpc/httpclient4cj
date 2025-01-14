@@ -124,7 +124,7 @@ public class HttpClientBuilder <: Builder<HttpClient> {
      * @since 0.29.3
      */
     public func addInterceptor(interceptor: Interceptor): HttpClientBuilder {
-        this.interceptorsBuild.append(interceptor)
+        this.interceptorsBuild.add(interceptor)
         return this
     }
 
@@ -137,7 +137,7 @@ public class HttpClientBuilder <: Builder<HttpClient> {
      * @since 0.29.3
      */
     public func addNetworkInterceptor(interceptor: Interceptor): HttpClientBuilder {
-        this.networkInterceptorsBuild.append(interceptor)
+        this.networkInterceptorsBuild.add(interceptor)
         return this
     }
 

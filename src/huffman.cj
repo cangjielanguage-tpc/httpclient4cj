@@ -34,7 +34,7 @@ func huff_encode(bufs: ArrayList<UInt8>, arr: Array<UInt8>) {
     var bits: Int64 = 0
     var index = bufs.size
     var code: UInt64 = 0
-    var avail: Int64 = bufs.capacity() - index
+    var avail: Int64 = bufs.capacity - index
 
     for (i in 0..arr.size) {
         let sym = HUFF_SYM_TABLE[Int64(arr[i])]
@@ -45,10 +45,10 @@ func huff_encode(bufs: ArrayList<UInt8>, arr: Array<UInt8>) {
         }
         if (avail >= 4) {
             let temp = code >> 32
-            bufs.append(UInt8((temp >> 24) & 0xff))
-            bufs.append(UInt8((temp >> 16) & 0xff))
-            bufs.append(UInt8((temp >> 8) & 0xff))
-            bufs.append(UInt8(temp & 0xff))
+            bufs.add(UInt8((temp >> 24) & 0xff))
+            bufs.add(UInt8((temp >> 16) & 0xff))
+            bufs.add(UInt8((temp >> 8) & 0xff))
+            bufs.add(UInt8(temp & 0xff))
             avail -= 4
             index += 4
             bits -= 32
@@ -57,23 +57,23 @@ func huff_encode(bufs: ArrayList<UInt8>, arr: Array<UInt8>) {
         }
 
         while (bits >= 8) {
-            bufs.append(UInt8(code >> 56))
+            bufs.add(UInt8(code >> 56))
             index += 1
             bits -= 8
             code <<= UInt64(8)
         }
-        avail = bufs.capacity() - index
+        avail = bufs.capacity - index
     }
 
     while (bits >= 8) {
-        bufs.append(UInt8(code >> 56))
+        bufs.add(UInt8(code >> 56))
         code <<= UInt64(8)
         index += 1
         bits -= 8
     }
 
     if (bits != 0) {
-        bufs.append(UInt8(code >> 56) | UInt8(((1 << (8 - bits)) - 1)))
+        bufs.add(UInt8(code >> 56) | UInt8(((1 << (8 - bits)) - 1)))
         index += 1
     }
 }

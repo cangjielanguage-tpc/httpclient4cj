@@ -308,10 +308,10 @@ class DynamicTables {
         }
         this.dynamicArray[head] = header
         match (this.hashDynamicTable.get(header.name)) {
-            case Some(v) => v.append(head)
+            case Some(v) => v.add(head)
             case None =>
                 let list = ArrayList<Int64>()
-                list.append(head)
+                list.add(head)
                 hashDynamicTable[header.name] = list
         }
         this.head++
@@ -361,7 +361,7 @@ class DynamicTables {
                 if (list.size == 1) {
                     hashDynamicTable.remove(v.name)
                 } else {
-                    list.remove(index)
+                    list.remove(at: index)
                 }
                 dynamicArray[this.tail] = NULL
                 tail++
@@ -428,10 +428,10 @@ class DynamicTables {
             newFields[i] = dynamicArray[cur]
             let name = dynamicArray[cur].getOrThrow().name
             match (hashDynamicTable.get(name)) {
-                case Some(v) => v.append(i)
+                case Some(v) => v.add(i)
                 case None =>
                     let list = ArrayList<Int64>()
-                    list.append(i)
+                    list.add(i)
                     hashDynamicTable[name] = list
             }
             cur++

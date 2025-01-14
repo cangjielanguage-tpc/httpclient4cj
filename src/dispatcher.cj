@@ -135,7 +135,7 @@ public class Dispatcher {
         synchronized(mutex) {
             for (index in 0..calls.size()) {
                 if (refEq(call, calls.get(index))) {
-                    calls.remove(index)
+                    calls.remove(at: index)
                     break
                 }
             }
@@ -160,7 +160,7 @@ public class Dispatcher {
         synchronized(mutex) {
             for (index in 0..calls.size()) {
                 if (refEq(call, calls.get(index))) {
-                    calls.remove(index)
+                    calls.remove(at: index)
                     break
                 }
             }
@@ -288,14 +288,14 @@ public class Dispatcher {
                     continue
                     // Host max capacity.
                 }
-                arr.append(index)
+                arr.add(index)
                 asyncCall.callsPerHost.fetchAdd(1)
-                executableCalls.append(asyncCall)
+                executableCalls.add(asyncCall)
                 runningAsyncCalls.add(asyncCall)
             }
 
             for (i in 0..arr.size) {
-                readyAsyncCalls.remove(arr[i])
+                readyAsyncCalls.remove(at: arr[i])
             }
 
             isRunning = runningAsyncCalls.toArrayList().size + runningSyncCalls.toArrayList().size > 0
@@ -331,7 +331,7 @@ public class Dispatcher {
 
         synchronized(mutex) {
             for (i in 0..list.size) {
-                result.append(list[i].get())
+                result.add(list[i].get())
             }
         }
 
@@ -351,12 +351,12 @@ public class Dispatcher {
 
         synchronized(mutex) {
             for (i in 0..asyncList.size) {
-                syncList.append(asyncList[i].get())
+                syncList.add(asyncList[i].get())
             }
         }
 
         for (i in 0..syncList.size) {
-            result.append(syncList[i])
+            result.add(syncList[i])
         }
 
         return result

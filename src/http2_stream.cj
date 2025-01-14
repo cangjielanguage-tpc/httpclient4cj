@@ -150,7 +150,7 @@ public class H2Stream {
         }
 
         if (headersQueue.size != 0) {
-            return headersQueue.remove(0)
+            return headersQueue.remove(at: 0)
         }
 
         throwErrorException()
@@ -236,7 +236,7 @@ public class H2Stream {
         synchronized(mutex) {
             if (!hasResponseHeaders || !inFinished) {
                 hasResponseHeaders = true
-                headersQueue.append(headers)
+                headersQueue.add(headers)
             } else {
                 source.trailers = headers
             }
