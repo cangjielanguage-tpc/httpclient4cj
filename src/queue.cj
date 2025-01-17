@@ -44,7 +44,7 @@ class ConcurrentQueue<T> <: Iterable<T> {
     public func add(item: T) {
         m.lock()
         try {
-            this.list.append(item)
+            this.list.add(item)
         } finally {
             m.unlock()
         }
@@ -56,9 +56,9 @@ class ConcurrentQueue<T> <: Iterable<T> {
         }
     }
 
-    public func remove(index: Int64) {
+    public func remove(at!: Int64) {
         synchronized(m) {
-            list.remove(index)
+            list.remove(at: at)
         }
     }
 

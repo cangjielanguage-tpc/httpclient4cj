@@ -79,7 +79,7 @@ class RouteSelector {
     public func getAll(): ArrayList<Route> {
         hasAll = true
         if (routeCache.contains(address)) {
-            allRoutes.appendAll(routeCache[address])
+            allRoutes.add(all: routeCache[address])
             return allRoutes
         }
 
@@ -103,11 +103,11 @@ class RouteSelector {
 
         for (i in 0..arr.size) {
             let route = arr[i]
-            allRoutes.append(Route(address, IPSocketAddress(route, port)))
+            allRoutes.add(Route(address, IPSocketAddress(route, port)))
         }
 
         eventListener.dnsEnd(call, socketHost, allRoutes)
-        routeCache.put(address, allRoutes)
+        routeCache.add(address, allRoutes)
         return allRoutes
     }
 }

@@ -15,7 +15,7 @@ class RouteDatabase {
 
     public func failed(failedRoute: Route): Unit {
         synchronized(mutex) {
-            failedRoutes.put(failedRoute)
+            failedRoutes.add(failedRoute)
         }
     }
 

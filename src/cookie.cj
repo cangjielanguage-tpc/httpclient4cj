@@ -42,7 +42,7 @@ public class CookieUtil {
             let cookie = parse(url, values[i])
             match (cookie) {
                 case None => continue
-                case Some(c) => cookies.append(c)
+                case Some(c) => cookies.add(c)
             }
         }
 

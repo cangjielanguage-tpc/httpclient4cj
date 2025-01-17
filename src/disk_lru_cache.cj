@@ -138,7 +138,7 @@ class DiskLruCache {
 
             if (!has(entry)) {
                 let e = Entry(key, this)
-                lruEntries.put(key, e)
+                lruEntries.add(key, e)
                 entry = e
             }
 
@@ -314,10 +314,10 @@ class DiskLruCache {
                         fileSystem.delete(entry.cleanFiles[i])
                         fileSystem.delete(entry.dirtyFiles[i])
                     }
-                    arr.append(key)
+                    arr.add(key)
             }
         }
-        lruEntries.removeAll(arr)
+        lruEntries.remove(all: arr)
     }
 
     private func readJournal() {
@@ -431,7 +431,7 @@ class DiskLruCache {
             case Some(e) => e
             case None =>
                 let e = Entry(key, this)
-                lruEntries.put(key, e)
+                lruEntries.add(key, e)
                 e
         }
         if (secondSpace != -1 && firstSpace == CLEAN.size && line.startsWith(CLEAN)) {
@@ -467,7 +467,7 @@ class DiskLruCache {
 
             //Copying for safe iteration. resolve ConcurrentModificationException
             for ((_, v) in lruEntries) {
-                arr.append(v)
+                arr.add(v)
             }
 
             for (i in 0..arr.size) {
@@ -721,7 +721,7 @@ class Entry {
         let arr: ArrayList<OkBuffer> = ArrayList<OkBuffer>()
         try {
             for (i in 0..diskLruCache.valueCount) {
-                arr.append(diskLruCache.fileSystem.source(cleanFiles[i]))
+                arr.add(diskLruCache.fileSystem.source(cleanFiles[i]))
             }
             return Snapshot(key, sequenceNumber, arr.toArray(), cl, diskLruCache)
         } catch (e: FSException) {
@@ -810,19 +810,19 @@ class FileSystem {
 
     public func source(name: String): OkBuffer {
         let file = File(directoryPath.join(name), OpenMode.ReadWrite)
-        closeFuncs.append({=> file.close()})
+        closeFuncs.add({=> file.close()})
         return OkBuffer(file)
     }
 
     public func sink(name: String): Sink {
         let file = File.create(directoryPath.join(name))
-        closeFuncs.append({=> file.close()})
+        closeFuncs.add({=> file.close()})
         return FileSink(file)
     }
 
     public func appendingSink(name: String): Sink {
         let file = File(directoryPath.join(name), OpenMode.Append)
-        closeFuncs.append({=> file.close()})
+        closeFuncs.add({=> file.close()})
         return FileSink(file)
     }
 

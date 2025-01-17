@@ -23,7 +23,7 @@ class HttpHeaderUtils {
                 continue
             } else {
                 for (varyField in v[0].split(",")) {
-                    result.put(varyField.trim())
+                    result.add(varyField.trim())
                 }
             }
         }
