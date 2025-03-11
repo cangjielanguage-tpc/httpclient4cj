@@ -114,7 +114,7 @@ class Util {
     }
 
     static func verifyAsIpAddress(host: String): Bool {
-        match (Regex(VERIFY_AS_IP_ADDRESS).matches(host)) {
+        match (Regex(VERIFY_AS_IP_ADDRESS).find(host)) {
             case Some(_) => return true
             case None => return false
         }

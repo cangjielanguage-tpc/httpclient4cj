@@ -26,37 +26,40 @@ public class MediaType <: ToString {
     }
 
     public static func get(string: String): MediaType {
-        let typeSubtype: Matcher = Regex("^" + TOKEN + "/" + TOKEN).matcher(string)
+        let typeSubtype: Regex = Regex("^" + TOKEN + "/" + TOKEN)
         var mediaType: String = ""
         var subtype: String = ""
         var end = 0
-        match (typeSubtype.find()) {
+        match (typeSubtype.find(string, group: true)) {
             case None => throw IllegalArgumentException("No subtype found for: \"${string}\"")
             case Some(data) =>
-                mediaType = data.matchStr(1).toLower()
-                subtype = data.matchStr(2).toLower()
+                mediaType = data.matchString(1).toLower()
+                subtype = data.matchString(2).toLower()
                 end = data.matchPosition(2).end
         }
 
-        let parameter: Matcher = Regex(";\\s*(?:" + TOKEN + "=(?:" + TOKEN + "|" + QUOTED + "))?").matcher(string)
+        let parameter: Regex = Regex(";\\s*(?:" + TOKEN + "=(?:" + TOKEN + "|" + QUOTED + "))?")
         var charset = ""
         var s = end
         for (_ in end..string.size) {
             if (s == string.size) {
                 break
             }
-            parameter.setRegion(s, string.size)
-            match (parameter.find()) {
+            match (parameter.find(string[s..], group: true)) {
                 case None => throw IllegalArgumentException(
                     "Parameter is not formatted correctly: \"${string.substring(s)}\" for: \"${string}\"")
                 case Some(data) =>
-                    s = data.matchPosition(0).end
-                    let name = data.matchStr(1).toLower()
+                    s += data.matchPosition(0).end
+                    let name = data.matchString(1).toLower()
                     if (name == "" || !equalsIgnoreCase(name, "charset")) {
                         continue
                     }
                     var charsetParameter: String
-                    let token = data.matchStr(2).toLower()
+                    let token = try {
+                        data.matchString(2).toLower()
+                    } catch (e: Exception) {
+                        ""
+                    }
 
                     if (token != "") {
                         if (token.startsWith("'") && token.endsWith("'") && token.size > 2) {
@@ -65,7 +68,7 @@ public class MediaType <: ToString {
                             charsetParameter = token
                         }
                     } else {
-                        charsetParameter = data.matchStr(3)
+                        charsetParameter = data.matchString(3)
                     }
 
                     if (charset != "" && !equalsIgnoreCase(charsetParameter, charset)) {

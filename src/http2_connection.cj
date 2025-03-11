@@ -428,7 +428,7 @@ public class H2Connection {
             h2Stream = H2Stream(streamId, this, outFinished)
             h2Stream.start()
             if (h2Stream.isOpen()) {
-                streamMap.put(streamId, h2Stream)
+                streamMap.add(streamId, h2Stream)
             }
             let requestHeaders: ArrayList<HeaderField> = Http2ExchangeCodec.http2HeadersList(request)
             writer.headers(outFinished, streamId, requestHeaders)

@@ -261,28 +261,28 @@ public class CookieUtil {
             let ifMatchMonth = matchMonth(offString)
             let ifMatchYear = matchYear(offString)
             if (hour == -1 && ifMatchTime) {
-                match (timeMatcher.matches(offString)) {
+                match (timeMatcher.find(offString, group: true)) {
                     case Some(data) =>
-                        hour = Int64.parse(data.matchStr(1))
-                        minute = Int64.parse(data.matchStr(2))
-                        second = Int64.parse(data.matchStr(3))
+                        hour = Int64.parse(data.matchString(1))
+                        minute = Int64.parse(data.matchString(2))
+                        second = Int64.parse(data.matchString(3))
                     case None => ()
                 }
             } else if (dayOfMonth == -1 && ifMatchDOM) {
-                match (domMatcher.matches(s[pos..end])) {
-                    case Some(data) => dayOfMonth = Int64.parse(data.matchStr(1))
+                match (domMatcher.find(s[pos..end], group: true)) {
+                    case Some(data) => dayOfMonth = Int64.parse(data.matchString(1))
                     case None => ()
                 }
             } else if (month == -1 && ifMatchMonth) {
-                match (monthMatcher.matches(s[pos..end])) {
+                match (monthMatcher.find(s[pos..end], group: true)) {
                     case Some(data) =>
-                        let monthString = data.matchStr(1)
+                        let monthString = data.matchString(1)
                         month = IndexOfMonthDay(monthString)
                     case None => ()
                 }
             } else if (year == -1 && ifMatchYear) {
-                match (yearMatcher.matches(s[pos..end])) {
-                    case Some(data) => year = Int64.parse(data.matchStr(1))
+                match (yearMatcher.find(s[pos..end], group: true)) {
+                    case Some(data) => year = Int64.parse(data.matchString(1))
                     case None => ()
                 }
             }
@@ -294,7 +294,7 @@ public class CookieUtil {
     private static func matchTime(input: String): Bool {
         let timeMatcher = Regex(TIME_PATTERN)
 
-        match (timeMatcher.matches(input)) {
+        match (timeMatcher.find(input)) {
             case Some(_) => return true
             case None => return false
         }
@@ -303,7 +303,7 @@ public class CookieUtil {
     private static func matchYear(input: String): Bool {
         let yearMatcher = Regex(YEAR_PATTERN)
 
-        match (yearMatcher.matches(input)) {
+        match (yearMatcher.find(input)) {
             case Some(_) => return true
             case None => return false
         }
@@ -317,7 +317,7 @@ public class CookieUtil {
     private static func matchMonth(input: String): Bool {
         let monthMatcher = Regex(MONTH_PATTERN)
 
-        match (monthMatcher.matches(input)) {
+        match (monthMatcher.find(input)) {
             case Some(_) => return true
             case None => return false
         }
@@ -426,7 +426,7 @@ public class CookieUtil {
                 return parsed
             }
         } catch (e: Exception) {
-            match (Regex("-?\\d+").matches(s)) {
+            match (Regex("-?\\d+").find(s)) {
                 case Some(_) => if (s.startsWith("-")) {
                     return Int64.Min
                 } else {
