@@ -827,7 +827,9 @@ class FileSystem {
     }
 
     func close(): Unit {
-        closeFuncs |> forEach {f: () -> Unit => f()}
+        for (f in closeFuncs) {
+            f()
+        }
         closeFuncs.clear()
     }
 
