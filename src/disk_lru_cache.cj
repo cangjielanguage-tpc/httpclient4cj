@@ -17,7 +17,7 @@ class DiskLruCache {
     var maxSize: Int64
     var size: Int64 = 0
     var initialized: Bool = false
-    let lock: Monitor = Monitor()
+    let lock: Mutex = Mutex()
     var closed: Bool = false
 
     static let LEGAL_KEY_PATTERN: String = "[a-z0-9_-]{1,120}"
@@ -542,7 +542,7 @@ class Editor {
     let written: Option<Array<Bool>>
     private var done: Bool = false
     let diskLruCache: DiskLruCache
-    let lock: Monitor = Monitor()
+    let lock: Mutex = Mutex()
 
     init(entry: Entry, diskLruCache: DiskLruCache) {
         this.entry = entry

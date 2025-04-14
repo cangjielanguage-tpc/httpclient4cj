@@ -37,7 +37,7 @@ let FLAG_COMPRESSED: Byte = 0x20
  */
 class Http2Writer {
     private let sink: BufferedOutputStream<OutputStream>
-    let mutex: Monitor = Monitor()
+    let mutex: Mutex = Mutex()
     private var closed: Bool = false
     private var maxFrameSize = INITIAL_MAX_FRAME_SIZE
     private let encoder: Encoder

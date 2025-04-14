@@ -9,26 +9,26 @@
 
 package httpclient4cj
 
-internal import compress.zlib.*
-internal import encoding.hex.*
-internal import encoding.url.*
-internal import net.http.*
-internal import net.http.CookieJar as HttpCookieJar
-internal import net.tls.*
+internal import stdx.compress.zlib.*
+internal import stdx.crypto.crypto.*
+internal import stdx.encoding.hex.*
+internal import stdx.encoding.url.*
+internal import stdx.log.*
+internal import stdx.net.http.*
+internal import stdx.net.http.CookieJar as HttpCookieJar
+internal import stdx.net.tls.*
 internal import std.collection.*
 internal import std.collection.concurrent.ConcurrentHashMap
 internal import std.convert.*
 internal import std.fs.{Directory, File, FileInfo, FSException, OpenMode, Path}
 internal import std.io.*
-internal import log.*
 internal import std.math.*
+internal import std.net.*
 internal import std.random.*
 internal import std.regex.*
-internal import std.net.*
 internal import std.sync.*
 internal import std.time.*
 internal import std.unicode.*
-internal import crypto.crypto.*
 
 let METHOD_GET = "GET"
 
