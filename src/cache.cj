@@ -33,7 +33,7 @@ let RECEIVED_MILLIS = "Httpclient4cj-Received-Millis"
 
 public class Cache <: Resource {
     let cache: DiskLruCache
-    let lock: Monitor = Monitor()
+    let lock: Mutex = Mutex()
     let cacheDir: String
 
     private var requestCount: Int64 = 0
@@ -465,7 +465,7 @@ class CacheRequest <: Sink {
 
 class CacheRegister {
     private static let map = HashMap<String, Int64>()
-    private static let lock: Monitor = Monitor()
+    private static let lock: Mutex = Mutex()
     static func regDir(dir: String): Unit {
         synchronized(lock) {
             if (map.contains(dir)) {

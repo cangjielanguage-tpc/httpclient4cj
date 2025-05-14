@@ -10,7 +10,7 @@
 package httpclient4cj
 
 class RouteDatabase {
-    public var mutex: Monitor = Monitor()
+    public var mutex: Mutex = Mutex()
     private let failedRoutes: HashSet<Route> = HashSet<Route>()
 
     public func failed(failedRoute: Route): Unit {

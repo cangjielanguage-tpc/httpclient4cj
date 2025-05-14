@@ -15,7 +15,7 @@ package httpclient4cj
  * @since 0.29.3
  */
 class RealCall <: Call {
-    public var mutex: Monitor = Monitor()
+    public var mutex: Mutex = Mutex()
 
     /** var member forWebSocket type is Bool */
     public var forWebSocket: Bool
