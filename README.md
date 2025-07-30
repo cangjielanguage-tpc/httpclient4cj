@@ -95,7 +95,7 @@ main() {
 import httpclient4cj
 import httpclient4cj.*
 import std.time.*
-import encoding.url.*
+import stdx.encoding.url.*
 
 main() {
     let url = URL.parse("http://127.0.0.1:50060")
@@ -288,7 +288,7 @@ class MyInterceptor <: Interceptor {
 ### cookie管理
 
 ```cangjie
-import encoding.url.*
+import stdx.encoding.url.*
 import httpclient4cj
 import httpclient4cj.*
 import std.time.*
@@ -314,10 +314,10 @@ main() {
 ### 监听器使用
 
 ```cangjie
-import encoding.url.*
+import stdx.encoding.url.*
 import httpclient4cj
 import httpclient4cj.*
-import net.tls.*
+import stdx.net.tls.*
 import std.collection.*
 import std.net.*
 import std.time.*
@@ -400,10 +400,10 @@ class MyEventListener <: EventListener {
 ### 使用http2协议
 
 ```cangjie
-import encoding.url.*
+import stdx.encoding.url.*
 import httpclient4cj
 import httpclient4cj.*
-import net.tls.*
+import stdx.net.tls.*
 import std.collection.*
 import std.time.*
 
