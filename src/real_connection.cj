@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights reserved.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2022-2025. All rights reserved.
  */
 
 /**
@@ -317,12 +317,12 @@ public class Connection {
             client.writeTimeout = writeTimeout
             client.handshake()
             let realSocket = OKSocket(TlsC(client), readTimeout, writeTimeout)
-            let aplnSelected: String = client.alpnProtocolName.getOrThrow()
+            let alpnSelected: ?String = client.alpnProtocolName
             socket = realSocket
             sink = BufferedOutputStream<OutputStream>(realSocket)
             source = OkBuffer(realSocket)
-            if (aplnSelected != "") {
-                protocol = Protocol.get(aplnSelected)
+            if (let Some(alpnSelected) <- alpnSelected) {
+                protocol = Protocol.get(alpnSelected)
             }
         } catch (e: TlsException) {
             throw ConnectException("${e.message}", e)
