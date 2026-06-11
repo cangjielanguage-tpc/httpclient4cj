@@ -1,7 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights reserved.
- */
-
 /**
  * @file
  * The file declares the Address class.
@@ -115,11 +111,11 @@ public class Address <: Hashable & Equatable<Address> {
 
     func equalsTlsConfig(rhs: Address): Bool {
         let path1 = match (tlsConfig) {
-            case Some(ts) => ts.domain ?? ""
+            case Some(ts) => ts.serverName ?? ""
             case None => ""
         }
         let path2 = match (rhs.getTlsConfig()) {
-            case Some(ts) => ts.domain ?? ""
+            case Some(ts) => ts.serverName ?? ""
             case None => ""
         }
         return path1.equals(path2)
