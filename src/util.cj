@@ -1,7 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2022-2024. All rights reserved.
- */
-
 /**
  * @file
  * The file declares the Util class.
@@ -17,6 +13,7 @@ internal import stdx.log.*
 internal import stdx.net.http.*
 internal import stdx.net.http.CookieJar as HttpCookieJar
 internal import stdx.net.tls.*
+internal import stdx.net.tls.common.*
 internal import std.collection.*
 internal import std.collection.concurrent.ConcurrentHashMap
 internal import std.convert.*

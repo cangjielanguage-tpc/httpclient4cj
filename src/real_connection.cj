@@ -1,7 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2022-2025. All rights reserved.
- */
-
 /**
  * @file
  * The file declares the Connection class.
@@ -309,19 +305,19 @@ public class Connection {
     ) {
         let address = route.getAddress()
         var cfg = route.getAddress().getTlsConfig().getOrThrow()
-        cfg.alpnProtocolsList = collectArray(address.getProtocols().iterator())
+        cfg.supportedAlpnProtocols = collectArray(address.getProtocols().iterator())
         try {
             let tcpSocket = connectSocket(connectTimeout, readTimeout, writeTimeout)
             let client = TlsSocket.client(tcpSocket, clientConfig: cfg)
             client.readTimeout = readTimeout
             client.writeTimeout = writeTimeout
-            client.handshake()
+            let handshakeResult:TlsHandshakeResult = client.handshake()
             let realSocket = OKSocket(TlsC(client), readTimeout, writeTimeout)
-            let alpnSelected: ?String = client.alpnProtocolName
+            let alpnSelected: String = handshakeResult.alpnProtocol
             socket = realSocket
             sink = BufferedOutputStream<OutputStream>(realSocket)
             source = OkBuffer(realSocket)
-            if (let Some(alpnSelected) <- alpnSelected) {
+            if (!alpnSelected.isEmpty()) {
                 protocol = Protocol.get(alpnSelected)
             }
         } catch (e: TlsException) {
