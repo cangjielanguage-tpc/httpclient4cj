@@ -29,6 +29,10 @@ public class OkBuffer <: Source {
         if (read == 0) {
             throw EOFException()
         } else if (read != -1) {
+            // 缓冲排空时先clear再写入,回收已读空间, 避免容量随累计接收字节数无限增长。
+            if (buffer.remainLength == 0) {
+                buffer.clear()
+            }
             buffer.write(bytes[..read])
         }
 
