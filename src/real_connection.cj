@@ -329,12 +329,11 @@ public class Connection {
      * The Function is newCodec
      *
      * @param client of HttpClient
-     * @param chain of Chain
      *
      * @return Type of ExchangeCodec
      * @since 0.29.3
      */
-    func newCodec(client: HttpClient, _: Chain): ExchangeCodec {
+    func newCodec(client: HttpClient): ExchangeCodec {
         match (h2conn) {
             case None => Http1ExchangeCodec(client, this, this.source.getOrThrow(), this.sink.getOrThrow())
             case Some(_) => Http2ExchangeCodec(client, this, h2conn.getOrThrow())

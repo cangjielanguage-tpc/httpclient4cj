@@ -44,7 +44,10 @@ public class HttpClientBuilder <: Builder<HttpClient> {
     var authenticatorBuild: (Option<Route>, Response) -> Option<Request> = {
         _, _ => None
     }
+    // 记录认证器/监听器是否仍为默认实现，供简单 GET 快路径门控使用
+    var authenticatorIsDefault: Bool = true
     var listenerBuild: EventListener = NoneEventListener()
+    var listenerIsDefault: Bool = true
     var cacheBuild: Option<Cache> = Option<Cache>.None
 
     /**
@@ -221,6 +224,7 @@ public class HttpClientBuilder <: Builder<HttpClient> {
 
     public func authenticator(authenticator: (Option<Route>, Response) -> Option<Request>): HttpClientBuilder {
         this.authenticatorBuild = authenticator
+        this.authenticatorIsDefault = false
         return this
     }
 
@@ -231,6 +235,7 @@ public class HttpClientBuilder <: Builder<HttpClient> {
 
     public func eventListener(listener: EventListener): HttpClientBuilder {
         this.listenerBuild = listener
+        this.listenerIsDefault = false
         return this
     }
 

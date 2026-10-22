@@ -242,74 +242,67 @@ public class CacheControl <: ToString {
         var canUseHeaderValue: Bool = true
         var headerValue: String = ""
 
-        for ((name, v) in header) {
-            for (value in v) {
-                if (equalsIgnoreCase(name, "cache-control")) {
-                    if (v.size > 1) {
-                        // Multiple cache-control headers means we can't use the raw value.
-                        canUseHeaderValue = false
-                    } else {
-                        headerValue = value
-                    }
-                } else if (equalsIgnoreCase("name", "pragma")) {
-                    // Might specify additional cache-control params. We invalidate just in case.
-                    canUseHeaderValue = false
+        // 只关心 Cache-Control 头，直接按名字查找，避免遍历全部响应头
+        let cacheControlValues = header.getAll("cache-control")
+        for (value in cacheControlValues) {
+            if (cacheControlValues.size > 1) {
+                // Multiple cache-control headers means we can't use the raw value.
+                canUseHeaderValue = false
+            } else {
+                headerValue = value
+            }
+
+            var pos: Int64 = 0
+
+            while (pos < value.size) {
+                let tokenStart: Int64 = pos
+                pos = Util.skipUntil(value, pos, "=,;")
+                let directive: String = value.substring(tokenStart, pos - tokenStart).trim()
+                var parameter: String = ""
+                if (pos == value.size || value[pos] == b',' || value[pos] == b';') {
+                    pos++ // consume ',' or ';' (if necessary)
+                    parameter = ""
                 } else {
-                    continue
+                    pos++ // consume '='
+                    pos = Util.skipWhitespace(value, pos)
+
+                    if (pos < value.size && value[pos] == b'\"') {
+                        pos++ // consume '"' open quote
+                        let parameterStart: Int64 = pos
+                        pos = Util.skipUntil(value, pos, "\"")
+                        parameter = value.substring(parameterStart, pos - parameterStart)
+                        pos++ // consume '"' close quote (if necessary)
+                    } else {
+                        let parameterStart: Int64 = pos
+                        pos = Util.skipUntil(value, pos, ",;")
+                        parameter = value.substring(parameterStart, pos - parameterStart).trim()
+                    }
                 }
 
-                var pos: Int64 = 0
-
-                while (pos < value.size) {
-                    let tokenStart: Int64 = pos
-                    pos = Util.skipUntil(value, pos, "=,;")
-                    let directive: String = value.substring(tokenStart, pos - tokenStart).trim()
-                    var parameter: String = ""
-                    if (pos == value.size || value[pos] == b',' || value[pos] == b';') {
-                        pos++ // consume ',' or ';' (if necessary)
-                        parameter = ""
-                    } else {
-                        pos++ // consume '='
-                        pos = Util.skipWhitespace(value, pos)
-
-                        if (pos < value.size && value[pos] == b'\"') {
-                            pos++ // consume '"' open quote
-                            let parameterStart: Int64 = pos
-                            pos = Util.skipUntil(value, pos, "\"")
-                            parameter = value.substring(parameterStart, pos - parameterStart)
-                            pos++ // consume '"' close quote (if necessary)
-                        } else {
-                            let parameterStart: Int64 = pos
-                            pos = Util.skipUntil(value, pos, ",;")
-                            parameter = value.substring(parameterStart, pos - parameterStart).trim()
-                        }
-                    }
-
-                    if (equalsIgnoreCase("no-cache", directive)) {
-                        noCache = true
-                    } else if (equalsIgnoreCase("no-store", directive)) {
-                        noStore = true
-                    } else if (equalsIgnoreCase("max-age", directive)) {
-                        maxAgeSeconds = Util.parseSeconds(parameter, -1)
-                    } else if (equalsIgnoreCase("s-maxage", directive)) {
-                        sMaxAgeSeconds = Util.parseSeconds(parameter, -1)
-                    } else if (equalsIgnoreCase("private", directive)) {
-                        isPrivate = true
-                    } else if (equalsIgnoreCase("public", directive)) {
-                        isPublic = true
-                    } else if (equalsIgnoreCase("must-revalidate", directive)) {
-                        mustRevalidate = true
-                    } else if (equalsIgnoreCase("max-stale", directive)) {
-                        maxStaleSeconds = Util.parseSeconds(parameter, Int64(Int32.Max))
-                    } else if (equalsIgnoreCase("min-fresh", directive)) {
-                        minFreshSeconds = Util.parseSeconds(parameter, -1)
-                    } else if (equalsIgnoreCase("only-if-cached", directive)) {
-                        onlyIfCached = true
-                    } else if (equalsIgnoreCase("no-transform", directive)) {
-                        noTransform = true
-                    } else if (equalsIgnoreCase("immutable", directive)) {
-                        immutable = true
-                    }
+                if (equalsIgnoreCase("no-cache", directive)) {
+                    noCache = true
+                } else if (equalsIgnoreCase("no-store", directive)) {
+                    noStore = true
+                } else if (equalsIgnoreCase("max-age", directive)) {
+                    maxAgeSeconds = Util.parseSeconds(parameter, -1)
+                } else if (equalsIgnoreCase("s-maxage", directive)) {
+                    sMaxAgeSeconds = Util.parseSeconds(parameter, -1)
+                } else if (equalsIgnoreCase("private", directive)) {
+                    isPrivate = true
+                } else if (equalsIgnoreCase("public", directive)) {
+                    isPublic = true
+                } else if (equalsIgnoreCase("must-revalidate", directive)) {
+                    mustRevalidate = true
+                } else if (equalsIgnoreCase("max-stale", directive)) {
+                    maxStaleSeconds = Util.parseSeconds(parameter, Int64(Int32.Max))
+                } else if (equalsIgnoreCase("min-fresh", directive)) {
+                    minFreshSeconds = Util.parseSeconds(parameter, -1)
+                } else if (equalsIgnoreCase("only-if-cached", directive)) {
+                    onlyIfCached = true
+                } else if (equalsIgnoreCase("no-transform", directive)) {
+                    noTransform = true
+                } else if (equalsIgnoreCase("immutable", directive)) {
+                    immutable = true
                 }
             }
         }

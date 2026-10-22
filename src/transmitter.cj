@@ -34,7 +34,7 @@ public class Transmitter {
     private var request: Option<Request> = Option<Request>.None
 
     /* var member address type is Address */
-    private var address: Address = Address(URL.parse(""), ArrayList<String>(), Option<TlsClientConfig>.None)
+    private var address: Option<Address> = Option<Address>.None
 
     /* var member exchangeFinder type is Option<ExchangeFinder> */
     private var exchangeFinder: Option<ExchangeFinder> = None
@@ -64,8 +64,6 @@ public class Transmitter {
                 this.connectionPool = pool
                 client.connectionPool = pool
         }
-        let conn = ConnectionPool()
-        this.connectionPool = client.getConnectionPool() ?? conn
         this.eventListener = client.getEventListener()
         this.call = call
     }
@@ -184,9 +182,10 @@ public class Transmitter {
             case None => ()
         }
         this.request = request
-        address = createAddress(request.getUrl())
+        let addr = createAddress(request.getUrl())
+        address = Option<Address>.Some(addr)
         this.exchangeFinder = Option<ExchangeFinder>.Some(
-            ExchangeFinder(this, connectionPool, address, call, eventListener))
+            ExchangeFinder(this, connectionPool, address.getOrThrow(), call, eventListener))
     }
 
     private func createAddress(url: URL): Address {
@@ -206,9 +205,20 @@ public class Transmitter {
      * @return Type of Exchange
      * @since 0.29.3
      */
-    func newExchange(chain: Chain, doExtensiveHealthChecks: Bool): Exchange {
+    func newExchange(_: Chain, doExtensiveHealthChecks: Bool): Exchange {
+        return createExchange(doExtensiveHealthChecks)
+    }
+
+    /**
+     * 快路径创建 Exchange：不构造 Chain，直接复用 ExchangeFinder/连接池。
+     */
+    func newExchangeForFastPath(): Exchange {
+        return createExchange(false)
+    }
+
+    private func createExchange(doExtensiveHealthChecks: Bool): Exchange {
         let finder: ExchangeFinder = exchangeFinder.getOrThrow()
-        let exchangeCodec: ExchangeCodec = finder.find(client, chain, doExtensiveHealthChecks)
+        let exchangeCodec: ExchangeCodec = finder.find(client, doExtensiveHealthChecks)
         let result: Exchange = Exchange(this, call, finder, exchangeCodec, eventListener)
         synchronized(connectionPool.mutex) {
             this.exchange = Some(result)

@@ -9,6 +9,8 @@
 
 package httpclient4cj
 
+internal import std.sync.*
+
 /**
  * The class is Request
  * @author guo_tingtingtekla,luoyukai4
@@ -29,7 +31,13 @@ public class Request <: ToString {
 
     private var cacheControl: Option<CacheControl> = Option<CacheControl>.None
 
-    let tags: HashMap<String, Tag>
+    // 快路径请求字节：首次使用时在锁内计算并写回（内容确定，重复写回同值无害）
+    private var fastPathWire: Array<Byte> = Array<Byte>(0, repeat: 0)
+    private var fastPathWireGzip: Bool = false
+    private var fastPathWireModCount: Int64 = -1
+    private static let FAST_PATH_WIRE_LOCK: Mutex = Mutex()
+
+    let tags: Option<HashMap<String, Tag>>
 
     /**
      * The Function is init constructor
@@ -42,7 +50,7 @@ public class Request <: ToString {
         this.header = builder.headerBuild.clone()
         this.method = builder.methodBuild
         this.body = builder.bodyBuild
-        this.tags = builder.tagsBuild
+        this.tags = builder.getTagsOpt()
     }
 
     /**
@@ -151,16 +159,43 @@ public class Request <: ToString {
     }
 
     public func getTag(s: String): Tag {
-        if (tags.contains(s)) {
-            return tags[s]
-        } else {
-            return Tag("")
+        match (tags) {
+            case Some(m) => if (m.contains(s)) {
+                return m[s]
+            } else {
+                return Tag("")
+            }
+            case None => return Tag("")
         }
     }
 
     public func removeTag(s: String): Unit {
-        this.tags.remove(s)
+        match (tags) {
+            case Some(m) => m.remove(s)
+            case None => ()
+        }
     }
+
+    /**
+     * 返回快路径可直接写入 socket 的请求字节，以及是否为透明 gzip 添加了 Accept-Encoding。
+     * 首次使用时计算并写回；header 变更（modCount 变化）时重算。
+     */
+    func getFastPathWire(): (Array<Byte>, Bool) {
+        if (fastPathWire.size > 0 && fastPathWireModCount == header.modCount) {
+            return (fastPathWire, fastPathWireGzip)
+        }
+        synchronized(FAST_PATH_WIRE_LOCK) {
+            if (fastPathWire.size > 0 && fastPathWireModCount == header.modCount) {
+                return (fastPathWire, fastPathWireGzip)
+            }
+            let wire = buildFastPathRequestBytes(this)
+            fastPathWire = wire[0]
+            fastPathWireGzip = wire[1]
+            fastPathWireModCount = header.modCount
+            return wire
+        }
+    }
+
 }
 
 public class Tag {

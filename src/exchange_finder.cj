@@ -70,14 +70,14 @@ class ExchangeFinder {
      * @return Type of ExchangeCodec
      * @since 0.29.3
      */
-    public func find(client: HttpClient, chain: Chain, _: Bool): ExchangeCodec {
+    public func find(client: HttpClient, _: Bool): ExchangeCodec {
         let connectTimeout: Option<Duration> = client.getConnectTimeout()
         let readTimeout: Option<Duration> = client.getReadTimeout()
         let writeTimeout: Option<Duration> = client.getWriteTimeout()
         let connectionRetryEnabled: Bool = client.getRetryOnConnectionFailure()
         try {
             let conn = findHealthyConnection(connectTimeout, readTimeout, writeTimeout, connectionRetryEnabled)
-            return conn.getOrThrow().newCodec(client, chain)
+            return conn.getOrThrow().newCodec(client)
         } catch (e: RouteException) {
             trackFailure()
             throw e
@@ -198,10 +198,11 @@ class ExchangeFinder {
             hasStreamFailure = false
             match (transmitter.connection) {
                 case Some(conn) =>
-                    result = transmitter.connection
                     if (conn.noNewExchanges) {
+                        // 已标记不可复用的连接必须先释放；不能把它当作候选继续返回
                         toClose = transmitter.releaseConnectionNoEvents()
                     } else {
+                        result = transmitter.connection
                         toClose = Option<OKSocket>.None
                     }
                 case _ => toClose = Option<OKSocket>.None
@@ -364,6 +365,14 @@ public class Exchange {
 
     func responseHeadersStart(): Unit {
         eventListener.responseHeadersStart(call)
+    }
+
+    /**
+     * 快路径响应体打开失败：保持与 openResponseBody 相同的失败通知与失败标记。
+     */
+    func fastResponseBodyFailed(e: HttpException): Unit {
+        eventListener.responseFailed(call, e)
+        trackFailure(e)
     }
 
     func responseHeadersEnd(response: Response): Unit {

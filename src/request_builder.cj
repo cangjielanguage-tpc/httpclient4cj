@@ -15,18 +15,68 @@ package httpclient4cj
  * @since 0.29.3
  */
 public class RequestBuilder <: Builder<Request> {
+    // 延迟创建：默认构造的 Builder 常被立即覆盖，避免无谓的 URL/Header/HashMap 分配
+    private var urlBuildOpt: Option<URL> = Option<URL>.None
+
     /** var member urlBuild type is URL */
-    var urlBuild: URL = URL.parse("")
+    mut prop urlBuild: URL {
+        get() {
+            match (urlBuildOpt) {
+                case Some(v) => return v
+                case None =>
+                    let v = URL.parse("")
+                    urlBuildOpt = Some(v)
+                    return v
+            }
+        }
+        set(v) {
+            urlBuildOpt = Some(v)
+        }
+    }
+
+    private var headerBuildOpt: Option<Header> = Option<Header>.None
 
     /** var member headerBuild type is Header */
-    var headerBuild: Header = Header()
+    mut prop headerBuild: Header {
+        get() {
+            match (headerBuildOpt) {
+                case Some(v) => return v
+                case None =>
+                    let v = Header()
+                    headerBuildOpt = Some(v)
+                    return v
+            }
+        }
+        set(v) {
+            headerBuildOpt = Some(v)
+        }
+    }
 
     /** var member methodBuild type is String */
     var methodBuild: String = "GET"
 
     /** var member bodyBuild type is Option<RequestBody> */
     var bodyBuild: Option<RequestBody> = Option<RequestBody>.None
-    var tagsBuild: HashMap<String, Tag> = HashMap<String, Tag>()
+    private var tagsBuildOpt: Option<HashMap<String, Tag>> = Option<HashMap<String, Tag>>.None
+
+    mut prop tagsBuild: HashMap<String, Tag> {
+        get() {
+            match (tagsBuildOpt) {
+                case Some(v) => return v
+                case None =>
+                    let v = HashMap<String, Tag>()
+                    tagsBuildOpt = Some(v)
+                    return v
+            }
+        }
+        set(v) {
+            tagsBuildOpt = Some(v)
+        }
+    }
+
+    func getTagsOpt(): Option<HashMap<String, Tag>> {
+        return tagsBuildOpt
+    }
 
     /**
      * The Function is init constructor
@@ -35,11 +85,14 @@ public class RequestBuilder <: Builder<Request> {
      * @since 0.29.3
      */
     init(request: Request) {
-        this.urlBuild = request.getUrl()
+        this.urlBuildOpt = Some(request.getUrl())
         this.methodBuild = request.getMethod()
         this.bodyBuild = request.getBody()
-        this.headerBuild = request.getHeaders().clone()
-        this.tagsBuild = HashMap<String, Tag>(request.tags)
+        this.headerBuildOpt = Some(request.getHeaders().clone())
+        this.tagsBuildOpt = match (request.tags) {
+            case Some(m) => Some(HashMap<String, Tag>(m))
+            case None => None
+        }
     }
 
     /**
@@ -86,6 +139,13 @@ public class RequestBuilder <: Builder<Request> {
      */
     public func header(name: String, value: Array<String>): RequestBuilder {
         headerBuild.set(name, ArrayList(value))
+        return this
+    }
+
+    // 单值重载：避免每次 header 调用都构造 ArrayList
+    public func header(name: String, value: String): RequestBuilder {
+        headerBuild.del(name)
+        headerBuild.add(name, value)
         return this
     }
 

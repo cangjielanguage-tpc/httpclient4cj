@@ -87,7 +87,8 @@ public class BridgeInterceptor <: Interceptor {
         receiveHeaders(cookieJar, request.getUrl(), responseHeader)
         let responseBuilder: ResponseBuilder = response.newBuilder().request(request)
 
-        if (transparentGzip && "gzip".equals(response.getHeader("Content-Encoding", "")) && hasBody(response)) {
+        if (transparentGzip && equalsIgnoreCase("gzip", response.getHeader("Content-Encoding", "")) &&
+            hasBody(response)) {
             let strippedHeader = response.getHeaders().clone()
             strippedHeader.remove("Content-Encoding")
             strippedHeader.remove("Content-Length")
@@ -132,6 +133,11 @@ func hasBody(response: Response): Bool {
     }
 
     let responseCode: Int64 = response.getCode()
+
+    // RFC 7230 §3.3.2：304 的 Content-Length 不代表 body 长度，不能用于分帧
+    if (responseCode == HttpStatusCode.STATUS_NOT_MODIFIED) {
+        return false
+    }
 
     if ((responseCode < HttpStatusCode.STATUS_CONTINUE || responseCode >= HttpStatusCode.STATUS_OK) && responseCode !=
         HttpStatusCode.STATUS_NO_CONTENT && responseCode != HttpStatusCode.STATUS_NOT_MODIFIED) {

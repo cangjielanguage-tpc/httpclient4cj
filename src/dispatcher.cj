@@ -276,10 +276,14 @@ public class Dispatcher {
         let executableCalls: ArrayList<AsyncCall> = ArrayList<AsyncCall>()
         var isRunning: Bool
         synchronized(mutex) {
+            if (readyAsyncCalls.size() == 0) {
+                // 同步请求的常见路径：无需 promote，避免两次 toArrayList 拷贝
+                return runningAsyncCalls.size() + runningSyncCalls.size() > 0
+            }
             let arr = ArrayList<Int64>()
             for (index in 0..readyAsyncCalls.size()) {
                 let asyncCall: AsyncCall = readyAsyncCalls.get(index)
-                if (runningAsyncCalls.toArrayList().size >= maxRequests) {
+                if (runningAsyncCalls.size() >= maxRequests) {
                     break
                     // Max capacity.
                 }
@@ -298,7 +302,7 @@ public class Dispatcher {
                 readyAsyncCalls.remove(at: arr[i])
             }
 
-            isRunning = runningAsyncCalls.toArrayList().size + runningSyncCalls.toArrayList().size > 0
+            isRunning = runningAsyncCalls.size() + runningSyncCalls.size() > 0
         }
 
         for (i in 0..executableCalls.size) {
