@@ -46,7 +46,7 @@ public class CallServerInterceptor <: Interceptor {
 
         if (permitsRequestBody(request.getMethod()) && has(request.getBody())) {
             let body = request.getBody().getOrThrow()
-            if ("100-continue" == request.getHeader("Expect", "").toLower()) {
+            if (equalsIgnoreCase("100-continue", request.getHeader("Expect", ""))) {
                 exchange.flushRequest()
                 responseHeadersStarted = true
                 exchange.responseHeadersStart()
@@ -100,8 +100,8 @@ public class CallServerInterceptor <: Interceptor {
 
         exchange.responseHeadersEnd(response)
 
-        if ("close".equals(response.getRequest().getHeader("Connection", "")) || "close".equals(
-            response.getHeader("Connection", ""))) {
+        if (equalsIgnoreCase("close", response.getRequest().getHeader("Connection", "")) ||
+            equalsIgnoreCase("close", response.getHeader("Connection", ""))) {
             exchange.noNewExchangesOnConnection()
         }
 

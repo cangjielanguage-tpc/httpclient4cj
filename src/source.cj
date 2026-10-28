@@ -74,9 +74,19 @@ class FixedLengthSource <: AbstractSource {
             return
         }
 
-        if (bytesRemaining != 0 && !disCard(this)) {
-            exchangeCode.getConnection().noExchanges()
-            exchangeCode.responseBodyComplete()
+        if (bytesRemaining != 0) {
+            try {
+                exchangeCode.source.skipBytes(bytesRemaining)
+                bytesRemaining = 0
+                exchangeCode.responseBodyComplete()
+            } catch (e: SocketTimeoutException) {
+                exchangeCode.getConnection().noExchanges()
+                exchangeCode.responseBodyComplete()
+            } catch (e: ProtocolException) {
+                exchangeCode.getConnection().noExchanges()
+                exchangeCode.responseBodyComplete()
+                throw e
+            }
         }
 
         closed = true

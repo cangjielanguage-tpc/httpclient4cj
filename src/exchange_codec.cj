@@ -9,8 +9,6 @@
 
 package httpclient4cj
 
-/* let member CRLF_CRLF type is Array<Byte> */
-let CRLF_CRLF: Array<Byte> = "\r\n\r\n".toArray()
 
 /* let member CRLF type is Array<Byte> */
 let CRLF: Array<Byte> = "\r\n".toArray()
@@ -160,8 +158,34 @@ public class Http1ExchangeCodec <: ExchangeCodec {
     }
 
     public func writeRequestHeaders(request: Request): Unit {
-        let requestLine: String = RequestLine.get(request)
-        writeRequest(request.getHeaders(), requestLine)
+        if (state != STATE_IDLE) {
+            throw IllegalStateException("state: ${state}")
+        }
+        let headers = request.getHeaders()
+        let bytes = buildRequestBytes(headers, RequestLine.get(request))
+        sink.write(bytes)
+        state = STATE_OPEN_REQUEST_BODY
+    }
+
+    private func buildRequestBytes(headers: Header, requestLine: String): Array<Byte> {
+        var buffer: StringBuilder = StringBuilder()
+        buffer.append(requestLine)
+        buffer.append(CRLF)
+        let count = headers.fieldCount()
+        for (i in 0..count) {
+            buffer.append(headers.fieldNameAt(i))
+            buffer.append(": ")
+            let v = headers.fieldValuesAt(i)
+            for (j in 0..v.size) {
+                if (j > 0) {
+                    buffer.append(";")
+                }
+                buffer.append(v[j])
+            }
+            buffer.append(CRLF)
+        }
+        buffer.append(CRLF_STR)
+        return buffer.toString().toUtf8Array()
     }
 
     public func writeRequest(headers: Header, requestLine: String): Unit {
@@ -170,23 +194,82 @@ public class Http1ExchangeCodec <: ExchangeCodec {
         }
 
         var buffer: StringBuilder = StringBuilder()
-        buffer.append(requestLine + CRLF)
+        buffer.append(requestLine)
+        buffer.append(CRLF)
 
-        for ((ks, v) in headers) {
-            // var k = HeaderDfaUtil.canonicalHeaderKey(ks)
-            var k = ks
-            buffer.append("${k}: ")
-            var str = ""
-            for (i in v) {
-                str += ";${i}"
+        let count = headers.fieldCount()
+        for (i in 0..count) {
+            buffer.append(headers.fieldNameAt(i))
+            buffer.append(": ")
+            let v = headers.fieldValuesAt(i)
+            for (j in 0..v.size) {
+                if (j > 0) {
+                    buffer.append(";")
+                }
+                buffer.append(v[j])
             }
-            buffer.append(str[1..])
             buffer.append(CRLF)
         }
 
         buffer.append(CRLF_STR)
         sink.write(buffer.toString().toUtf8Array())
         state = STATE_OPEN_REQUEST_BODY
+    }
+
+    /**
+     * 快路径：写入已缓存的请求行+请求头字节，跳过 Header 遍历与字符串拼接。
+     */
+    func writeRequestBytes(bytes: Array<Byte>): Unit {
+        if (state != STATE_IDLE) {
+            throw IllegalStateException("state: ${state}")
+        }
+        sink.write(bytes)
+        state = STATE_OPEN_REQUEST_BODY
+    }
+
+    /**
+     * 快路径：读取状态行与响应头，使用轻量结构承载，避免 ResponseBuilder 分配。
+     */
+    func readResponseHeadForFastPath(): FastPathHead {
+        if (state != STATE_OPEN_REQUEST_BODY && state != STATE_READ_RESPONSE_HEADERS) {
+            throw IllegalStateException("state: ${state}")
+        }
+        let statusLine = StatusLine.parse(readHeaderLine())
+        let (rawHeaders, headerBytes) = source.readHeaderBlockStrict(headerLimit)
+        headerLimit -= headerBytes
+        let header = Header(rawHeaders)
+        let meta = scanFastHeaders(rawHeaders)
+        // 与通用路径 checkResponse 对齐：204 + 非零 Content-Length 直接抛协议异常
+        if (statusLine.code == HttpStatusCode.STATUS_NO_CONTENT && !meta.chunked && meta.contentLength > 0) {
+            throw ProtocolException("HTTP 204 had non-zero Content-Length: ${meta.contentLength}")
+        }
+        // chunked 解码后的长度与 Content-Length 无关；204/304 不允许 body
+        if (meta.chunked) {
+            meta.contentLength = -1
+        }
+        if (statusLine.code == HttpStatusCode.STATUS_NO_CONTENT ||
+            statusLine.code == HttpStatusCode.STATUS_NOT_MODIFIED) {
+            meta.contentLength = 0
+            meta.chunked = false
+            meta.gzipEncoded = false
+        }
+        let head = FastPathHead(
+            statusLine.protocol,
+            statusLine.code,
+            statusLine.message,
+            header,
+            meta.contentType,
+            meta.contentLength,
+            meta.chunked,
+            meta.gzipEncoded,
+            meta.connectionClose
+        )
+        if (statusLine.code == HttpStatusCode.STATUS_CONTINUE) {
+            state = STATE_READ_RESPONSE_HEADERS
+        } else {
+            state = STATE_OPEN_RESPONSE_BODY
+        }
+        return head
     }
 
     /**
@@ -242,7 +325,7 @@ public class Http1ExchangeCodec <: ExchangeCodec {
             case None => throw ProtocolException("no request body")
         }
 
-        if ("chunked" == request.getHeader("Transfer-Encoding", "").toLower()) {
+        if (equalsIgnoreCase("chunked", request.getHeader("Transfer-Encoding", ""))) {
             return newChunkedSink()
         }
 
@@ -264,7 +347,7 @@ public class Http1ExchangeCodec <: ExchangeCodec {
             return 0
         }
 
-        if ("chunked" == response.getHeader("Transfer-Encoding", "").toLower()) {
+        if (equalsIgnoreCase("chunked", response.getHeader("Transfer-Encoding", ""))) {
             return -1
         }
 
@@ -281,7 +364,7 @@ public class Http1ExchangeCodec <: ExchangeCodec {
             return newFixedLengthSource(0)
         }
 
-        if ("chunked" == response.getHeader("Transfer-Encoding", "").toLower()) {
+        if (equalsIgnoreCase("chunked", response.getHeader("Transfer-Encoding", ""))) {
             return newChunkedSource(response.getRequest().getUrl())
         }
 
@@ -291,6 +374,19 @@ public class Http1ExchangeCodec <: ExchangeCodec {
             return newFixedLengthSource(contentLength)
         }
 
+        return newUnknownLengthSource()
+    }
+
+    /**
+     * 快路径：按已解析的 Content-Length/Transfer-Encoding 直接选择 body source。
+     */
+    func openResponseBodySourceFast(url: URL, contentLength: Int64, chunked: Bool): Source {
+        if (chunked) {
+            return newChunkedSource(url)
+        }
+        if (contentLength != -1) {
+            return newFixedLengthSource(contentLength)
+        }
         return newUnknownLengthSource()
     }
 

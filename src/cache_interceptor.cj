@@ -179,7 +179,7 @@ class CacheStrategyFactory {
     var expires: Option<DateTime> = Option<DateTime>.None
     var etag: String = ""
     var ageSeconds: Int64 = 0
-    let nowMillis = DateTime.now().toUnixTimeStamp().toMilliseconds()
+    private var nowMillisCache: Option<Int64> = Option<Int64>.None
     var sentRequestMillis: Int64 = 0
     var receivedResponseMillis: Int64 = 0
 
@@ -207,6 +207,16 @@ class CacheStrategyFactory {
                     ageSeconds = Util.parseSeconds(value, -1)
                 }
             }
+        }
+    }
+
+    private func nowMillis(): Int64 {
+        match (nowMillisCache) {
+            case Some(v) => return v
+            case None =>
+                let v = DateTime.now().toUnixTimeStamp().toMilliseconds()
+                nowMillisCache = Option<Int64>.Some(v)
+                return v
         }
     }
 
@@ -356,7 +366,7 @@ class CacheStrategyFactory {
         }
 
         let responseDuration = receivedResponseMillis - sentRequestMillis
-        let residentDuration = nowMillis - receivedResponseMillis
+        let residentDuration = nowMillis() - receivedResponseMillis
 
         return receivedAge + responseDuration + residentDuration
     }

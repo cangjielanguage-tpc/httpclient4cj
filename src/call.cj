@@ -152,35 +152,23 @@ class RealCall <: Call {
      * @since 0.29.3
      */
     func getResponseWithInterceptorChain(): Response {
-        let interceptors: ArrayList<Interceptor> = ArrayList<Interceptor>()
-        interceptors.add(all: client.getInterceptors())
-        interceptors.add(RetryAndFollowUpInterceptor(client))
-        interceptors.add(BridgeInterceptor(client.getCookieJar()))
-        interceptors.add(CacheInterceptor(client.getCache()))
-        interceptors.add(ConnectInterceptor(client))
-
-        if (!forWebSocket) {
-            interceptors.add(all: client.getNetworkInterceptors())
-        }
-
-        interceptors.add(CallServerInterceptor(forWebSocket))
-        let chain: Chain = Chain(
-            interceptors,
-            getTransmitter(),
-            0,
-            originalRequest,
-            this,
-            Option<Exchange>.None,
-            client.getConnectTimeout(),
-            client.getReadTimeout(),
-            client.getWriteTimeout()
-        )
-        let response: Response
+        let transmitter = getTransmitter()
         var calledNoMoreExchanges = false
 
         try {
-            response = chain.proceed(originalRequest)
-            if (getTransmitter().isCanceled()) {
+            var response: Response
+            if (forWebSocket) {
+                response = proceedWithInterceptorChain(transmitter)
+            } else if (client.canUseFastPath(originalRequest)) {
+                match (FastPath.execute(originalRequest, transmitter)) {
+                    case Some(fastResponse) => response = fastResponse
+                    case None => response = proceedWithInterceptorChain(transmitter)
+                }
+            } else {
+                response = proceedWithInterceptorChain(transmitter)
+            }
+
+            if (transmitter.isCanceled()) {
                 match (response.getBody()) {
                     case Some(body) => body.close()
                     case None => ()
@@ -189,10 +177,9 @@ class RealCall <: Call {
             return response
         } catch (e: HttpException) {
             calledNoMoreExchanges = true
-            getTransmitter().noMoreExchanges()
+            transmitter.noMoreExchanges()
             throw e
         } finally {
-            let transmitter = getTransmitter()
             transmitter.ref = false
 
             if (has(transmitter.connection)) {
@@ -200,9 +187,28 @@ class RealCall <: Call {
             }
 
             if (!calledNoMoreExchanges) {
-                getTransmitter().noMoreExchanges()
+                transmitter.noMoreExchanges()
             }
         }
+    }
+
+    /**
+     * 走通用拦截器链（快路径门控不通过或不可用时）。
+     */
+    private func proceedWithInterceptorChain(transmitter: Transmitter): Response {
+        let interceptors: ArrayList<Interceptor> = client.getInterceptorChain(forWebSocket)
+        let chain: Chain = Chain(
+            interceptors,
+            transmitter,
+            0,
+            originalRequest,
+            this,
+            Option<Exchange>.None,
+            client.getConnectTimeout(),
+            client.getReadTimeout(),
+            client.getWriteTimeout()
+        )
+        return chain.proceed(originalRequest)
     }
 
     /**

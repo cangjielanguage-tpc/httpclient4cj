@@ -15,8 +15,42 @@ package httpclient4cj
  * @since 0.29.3
  */
 public open class ResponseBuilder <: Builder<Response> {
+    // 延迟创建：Builder 的默认对象多数会被立即覆盖，避免无谓分配
+    private var requestBuildOpt: Option<Request> = Option<Request>.None
+
     /* var member requestBuild type is Request */
-    var requestBuild: Request = Request.builder().build()
+    mut prop requestBuild: Request {
+        get() {
+            match (requestBuildOpt) {
+                case Some(v) => return v
+                case None =>
+                    let v = Request.builder().build()
+                    requestBuildOpt = Some(v)
+                    return v
+            }
+        }
+        set(v) {
+            requestBuildOpt = Some(v)
+        }
+    }
+
+    private var headerBuildOpt: Option<Header> = Option<Header>.None
+
+    /* var member headerBuild type is Header */
+    mut prop headerBuild: Header {
+        get() {
+            match (headerBuildOpt) {
+                case Some(v) => return v
+                case None =>
+                    let v = Header()
+                    headerBuildOpt = Some(v)
+                    return v
+            }
+        }
+        set(v) {
+            headerBuildOpt = Some(v)
+        }
+    }
 
     /* var member protocolBuild type is Protocol */
     var protocolBuild: Protocol = HTTP_1_1
@@ -26,9 +60,6 @@ public open class ResponseBuilder <: Builder<Response> {
 
     /* var member messageBuild type is String */
     var messageBuild: String = ""
-
-    /* var member headerBuild type is Header */
-    var headerBuild: Header = Header()
 
     /* var member bodyBuild type is Option<ResponseBody> */
     var bodyBuild: Option<ResponseBody> = Option<ResponseBody>.None
@@ -55,11 +86,11 @@ public open class ResponseBuilder <: Builder<Response> {
      * @since 0.29.3
      */
     init(response: Response) {
-        this.requestBuild = response.getRequest()
+        this.requestBuildOpt = Option<Request>.Some(response.getRequest())
         this.protocolBuild = response.getProtocol()
         this.codeBuild = response.getCode()
         this.messageBuild = response.getMessage()
-        this.headerBuild = response.getHeaders().clone()
+        this.headerBuildOpt = Option<Header>.Some(response.getHeaders().clone())
         this.bodyBuild = response.getBody()
         this.exchange = response.exchange
         this.networkResponseBuild = response.networkResponse

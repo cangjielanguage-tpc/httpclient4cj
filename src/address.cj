@@ -78,7 +78,17 @@ public class Address <: Hashable & Equatable<Address> {
     }
 
     public operator func ==(rhs: Address): Bool {
-        return url.toString().equals(rhs.getUrl().toString()) && equalsProtocols(rhs) && equalsTlsConfig(rhs)
+        if (!equalsProtocols(rhs)) {
+            return false
+        }
+        let tlsEqual = equalsTlsConfig(rhs)
+        // 同一 URL 对象（复用 Request 时常见）无需再序列化比较字符串
+        if (!refEq(url, rhs.url)) {
+            if (!url.toString().equals(rhs.getUrl().toString())) {
+                return false
+            }
+        }
+        return tlsEqual
     }
 
     public operator func !=(rhs: Address): Bool {
@@ -86,26 +96,14 @@ public class Address <: Hashable & Equatable<Address> {
     }
 
     func equalsProtocols(rhs: Address): Bool {
-        let it1 = protocols.iterator()
-        let it2 = rhs.getProtocols().iterator()
-
-        while (true) {
-            let next1 = match (it1.next()) {
-                case Some(conn) => conn
-                case None => ""
-            }
-            let next2 = match (it2.next()) {
-                case Some(conn) => conn
-                case None => ""
-            }
-            if (!next1.equals(next2)) {
+        if (protocols.size != rhs.protocols.size) {
+            return false
+        }
+        for (i in 0..protocols.size) {
+            if (protocols[i] != rhs.protocols[i]) {
                 return false
             }
-            if (next1 == "" || next2 == "") {
-                break
-            }
         }
-
         return true
     }
 

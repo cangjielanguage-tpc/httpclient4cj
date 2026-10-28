@@ -64,10 +64,13 @@ public class ConnectionPool {
             }
             return true
         } else {
-            // Awake the cleanup thread
-            mutex.lock()
-            mutex.notifyAll()
-            mutex.unlock()
+            // 只有连接数超过空闲上限时才需要立即唤醒清理线程；
+            // 普通请求结束时不唤醒，避免清理线程被每个请求唤醒后空转。
+            if (connections.size() > maxIdleConnections) {
+                mutex.lock()
+                mutex.notifyAll()
+                mutex.unlock()
+            }
             return false
         }
     }

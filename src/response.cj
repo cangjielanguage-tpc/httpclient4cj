@@ -64,6 +64,34 @@ public class Response <: ToString {
     }
 
     /**
+     * 快路径专用：直接由已解析的响应头构造，避免额外的 ResponseBuilder/Request 克隆。
+     */
+    init(
+        request: Request,
+        protocol: Protocol,
+        code: Int64,
+        message: String,
+        header: Header,
+        body: Option<ResponseBody>,
+        exchange: Option<Exchange>,
+        sentRequestAtMillis: Int64,
+        receivedResponseAtMillis: Int64
+    ) {
+        this.request = request
+        this.protocol = protocol
+        this.code = code
+        this.message = message
+        this.header = header
+        this.body = body
+        this.prevResponse = Option<Response>.None
+        this.exchange = exchange
+        this.sentRequestAtMillis = sentRequestAtMillis
+        this.receivedResponseAtMillis = receivedResponseAtMillis
+        this.networkResponse = Option<Response>.None
+        this.cacheResponse = Option<Response>.None
+    }
+
+    /**
      * The Function is getRequest
      *
      * @return Type of Request

@@ -44,7 +44,12 @@ public class HttpClient {
     private var authenticator: (Option<Route>, Response) -> Option<Request>
     private var followSslRedirects: Bool
     private var eventListener: EventListener
+    private var authenticatorIsDefault: Bool
+    private var listenerIsDefault: Bool
     var cache: Option<Cache>
+    // 无自定义拦截器时复用内建链，避免每个请求 new 5 个拦截器 + ArrayList
+    private var builtinChain: Option<ArrayList<Interceptor>> = None
+    private var builtinWsChain: Option<ArrayList<Interceptor>> = None
 
     /**
      * The Function is init constructor
@@ -68,6 +73,8 @@ public class HttpClient {
         this.protocols = builder.protocolsBuild
         this.authenticator = builder.authenticatorBuild
         this.eventListener = builder.listenerBuild
+        this.authenticatorIsDefault = builder.authenticatorIsDefault
+        this.listenerIsDefault = builder.listenerIsDefault
         this.cache = builder.cacheBuild
     }
 
@@ -196,5 +203,85 @@ public class HttpClient {
 
     public func getCache(): Option<Cache> {
         return cache
+    }
+
+    // 简单 GET 快路径门控：任一条件不满足则回退通用拦截器链
+    func canUseFastPath(request: Request): Bool {
+        if (!interceptors.isEmpty() || !networkInterceptors.isEmpty()) {
+            return false
+        }
+        if (has(cache)) {
+            return false
+        }
+        match (cookieJar) {
+            case _: NoCookieJar => ()
+            case _ => return false
+        }
+        if (!authenticatorIsDefault || !listenerIsDefault) {
+            return false
+        }
+        // 仅纯 HTTP/1.1；默认 TLS 配置始终存在，因此用 URL scheme 判断是否走 TLS
+        if (protocols.size != 1 || !equalsIgnoreCase(protocols[0], Protocol.HTTP_1_1.toString())) {
+            return false
+        }
+        if (request.getUrl().scheme != "http") {
+            return false
+        }
+        // 这些配置非默认时会改变响应处理语义，直接走通用链
+        if (!followRedirects || !followSslRedirects || !retryOnConnectionFailure) {
+            return false
+        }
+        let method = request.getMethod()
+        if (method != "GET") {
+            return false
+        }
+        if (has(request.getBody())) {
+            return false
+        }
+        if (equalsIgnoreCase("close", request.getHeader("Connection", ""))) {
+            return false
+        }
+        // 无缓存时 only-if-cached 应返回 504 而不是发起网络请求
+        if (request.getHeader("Cache-Control", "") != "" && request.getCacheControl().onlyIfCached()) {
+            return false
+        }
+        return true
+    }
+
+    func getInterceptorChain(forWebSocket: Bool): ArrayList<Interceptor> {
+        if (interceptors.isEmpty() && networkInterceptors.isEmpty()) {
+            if (forWebSocket) {
+                match (builtinWsChain) {
+                    case Some(v) => return v
+                    case None =>
+                        let v = buildInterceptorChain(true)
+                        builtinWsChain = Some(v)
+                        return v
+                }
+            } else {
+                match (builtinChain) {
+                    case Some(v) => return v
+                    case None =>
+                        let v = buildInterceptorChain(false)
+                        builtinChain = Some(v)
+                        return v
+                }
+            }
+        }
+        return buildInterceptorChain(forWebSocket)
+    }
+
+    private func buildInterceptorChain(forWebSocket: Bool): ArrayList<Interceptor> {
+        let interceptors: ArrayList<Interceptor> = ArrayList<Interceptor>()
+        interceptors.add(all: this.interceptors)
+        interceptors.add(RetryAndFollowUpInterceptor(this))
+        interceptors.add(BridgeInterceptor(cookieJar))
+        interceptors.add(CacheInterceptor(cache))
+        interceptors.add(ConnectInterceptor(this))
+        if (!forWebSocket) {
+            interceptors.add(all: networkInterceptors)
+        }
+        interceptors.add(CallServerInterceptor(forWebSocket))
+        return interceptors
     }
 }
