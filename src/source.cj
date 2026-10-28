@@ -299,9 +299,15 @@ class FramingSource <: Source {
         while (true) {
             var readBytesDelivered = -1
             var errorExceptionToDeliver: Bool = false
+            var errExceptionStr = ""
+            var errCode = Option<ErrorCode>.None
             synchronized(h2Stream.mutex) {
                 if (has(h2Stream.errorCode)) {
+                    // 对标 Java FramingSource.read (L377-427): 锁内取出错误信息,
+                    // 锁外仅负责抛出, 避免锁外读取锁保护状态的撕裂窗口
                     errorExceptionToDeliver = true
+                    errExceptionStr = h2Stream.errorException
+                    errCode = h2Stream.errorCode
                 }
 
                 if (isClosed()) {
@@ -328,8 +334,8 @@ class FramingSource <: Source {
             }
 
             if (errorExceptionToDeliver) {
-                if (h2Stream.errorException == "") {
-                    throw StreamResetException(h2Stream.errorCode.getOrThrow())
+                if (errExceptionStr == "") {
+                    throw StreamResetException(errCode.getOrThrow())
                 } else {
                     throw HttpException("errorException")
                 }

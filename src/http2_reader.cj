@@ -65,6 +65,11 @@ class Http2Reader {
             return false
         } catch (e: SocketException) {
             throw HttpException("SocketException")
+        } catch (e: SocketTimeoutException) {
+            // 对标 Java IOException 传播语义: Java 中 SocketTimeoutException <: IOException,
+            // 由 ReaderRunnable 的 catch (IOException) 统一处理; 仓颉中它与 SocketException
+            // 无继承关系, 故在此转为 HttpException 上抛, 交由 H2Connection.start 读循环处理
+            throw HttpException("SocketTimeoutException")
         } catch (e: Exception) {
             e.printStackTrace()
             throw e

@@ -14,7 +14,7 @@ package httpclient4cj
  * @author guo_tingtingtekla,luoyukai4
  * @since 0.29.3
  */
-public open class HttpException <: Exception {
+public open class HttpException <: IOException {
     /**
      * The Function is init constructor
      *
@@ -29,7 +29,7 @@ public open class HttpException <: Exception {
     }
 }
 
-public class EOFException <: Exception {
+public class EOFException <: IOException {
     /**
      * The Function is init constructor
      *
