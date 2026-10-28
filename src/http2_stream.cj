@@ -85,6 +85,14 @@ public class H2Stream {
      * @since 0.34.3
      */
     public func getSink(): Sink {
+        // 对标 OkHttp getSink (L247-254): synchronized 方法, 非本地发起的流在
+        // 未发响应头前禁止取 sink。仓颉为纯客户端实现(流 id 恒为奇数, 均本地
+        // 发起 ≙ Java isLocallyInitiated 恒 true), 该检查恒不触发, 保持结构对标
+        synchronized(mutex) {
+            if (!hasResponseHeaders && (id % 2) == 0) {
+                throw IllegalStateException("reply before requesting the sink")
+            }
+        }
         return sink
     }
 
@@ -143,17 +151,25 @@ public class H2Stream {
      * @since 0.34.3
      */
     public func takeHeaders(): Header {
+        // 对标 OkHttp takeHeaders (L147-160): synchronized 方法, 出队与错误抛出均在锁内。
+        // headersQueue 会被读线程(receiveHeaders, 持锁 add)并发访问,
+        // 锁外 remove 与之构成 ArrayList 并发修改竞争; 错误路径也须在锁内
+        // 基于 errorCode/errorException 构造异常, 消除锁外读取的撕裂窗口
         synchronized(mutex) {
             while (headersQueue.size == 0 && !has(errorCode)) {
                 mutex.wait()
             }
-        }
 
-        if (headersQueue.size != 0) {
-            return headersQueue.remove(at: 0)
-        }
+            if (headersQueue.size != 0) {
+                return headersQueue.remove(at: 0)
+            }
 
-        throwErrorException()
+            if (errorException == "") {
+                throw StreamResetException(errorCode.getOrThrow())
+            } else {
+                throw HttpException("errorException")
+            }
+        }
     }
 
     func throwErrorException() {
@@ -217,17 +233,21 @@ public class H2Stream {
      * @since 0.34.3
      */
     public func getTrailers(): Header {
-        if (has(errorCode)) {
-            throwErrorException()
-        }
+        // 对标 OkHttp trailers (L166-174): synchronized 方法,
+        // errorCode/source 状态均由流锁保护
+        synchronized(mutex) {
+            if (has(errorCode)) {
+                throwErrorException()
+            }
 
-        if (!source.finished || source.receiveBuffer.remainLength != 0 || source.readBuffer.remainLength != 0) {
-            throw IllegalStateException("too early; can't read the trailers yet")
-        }
+            if (!source.finished || source.receiveBuffer.remainLength != 0 || source.readBuffer.remainLength != 0) {
+                throw IllegalStateException("too early; can't read the trailers yet")
+            }
 
-        match (source.trailers) {
-            case Some(v) => return v
-            case None => return Header()
+            match (source.trailers) {
+                case Some(v) => return v
+                case None => return Header()
+            }
         }
     }
 
@@ -252,11 +272,13 @@ public class H2Stream {
     }
 
     func receiveRstStream(errorCode: ErrorCode) {
+        // 对标 OkHttp receiveRstStream (L327-332): synchronized 方法,
+        // 仅在首次设置 errorCode 时 notifyAll
         synchronized(mutex) {
             if (!has(this.errorCode)) {
                 this.errorCode = errorCode
+                mutex.notifyAll()
             }
-            mutex.notifyAll()
         }
     }
 
@@ -276,12 +298,14 @@ public class H2Stream {
     }
 
     func addBytesToWriteWindow(delta: Int64) {
+        // 对标 OkHttp addBytesToWriteWindow (L639-642): Java 方法本身无锁,
+        // 由调用方(windowUpdate 处理器/applyAndAckSettings)持流锁调用并 notifyAll;
+        // 仓颉此处锁外 notifyAll 属 Monitor 误用, 移入锁内
         synchronized(mutex) {
             bytesLeftInWriteWindow += delta
-        }
-
-        if (delta > 0) {
-            mutex.notifyAll()
+            if (delta > 0) {
+                mutex.notifyAll()
+            }
         }
     }
 
@@ -303,15 +327,19 @@ public class H2Stream {
      * @since 0.34.3
      */
     public func isOpen() {
-        if (has(errorCode)) {
-            return false
-        }
+        // 对标 OkHttp isOpen (L120-130): synchronized 方法; Monitor 可重入,
+        // receiveHeaders/cancelStreamIfNecessary 等锁内调用安全(与 Java 内在锁一致)
+        synchronized(mutex) {
+            if (has(errorCode)) {
+                return false
+            }
 
-        if ((source.finished || source.closed) && (sink.finished || sink.closed) && hasResponseHeaders) {
-            return false
-        }
+            if ((source.finished || source.closed) && (sink.finished || sink.closed) && hasResponseHeaders) {
+                return false
+            }
 
-        return true
+            return true
+        }
     }
 
     func receiveData(source: OkBuffer, length: Int64) {
