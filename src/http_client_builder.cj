@@ -47,6 +47,8 @@ public class HttpClientBuilder <: Builder<HttpClient> {
     // 记录认证器/监听器是否仍为默认实现，供简单 GET 快路径门控使用
     var authenticatorIsDefault: Bool = true
     var listenerBuild: EventListener = NoneEventListener()
+    // 每个 Call 独立创建监听器（对齐 OkHttp 的 EventListener.Factory 语义）
+    var listenerFactoryBuild: Option<(Call) -> EventListener> = Option<(Call) -> EventListener>.None
     var listenerIsDefault: Bool = true
     var cacheBuild: Option<Cache> = Option<Cache>.None
 
@@ -218,7 +220,8 @@ public class HttpClientBuilder <: Builder<HttpClient> {
         if (protocols.size == 0) {
             throw IllegalArgumentException("protocols must not contain empty")
         }
-        this.protocolsBuild = protocols
+        // 与 OkHttp 的 Builder.protocols 一致：拷贝调用方列表，避免外部持有引用后并发修改客户端配置
+        this.protocolsBuild = protocols.clone()
         return this
     }
 
@@ -233,8 +236,22 @@ public class HttpClientBuilder <: Builder<HttpClient> {
         return this
     }
 
+    /**
+     * 设置事件监听器。注意：传入的实例会被所有 Call 共享，
+     * 因此实现方需自行保证线程安全；需要每 Call 独立状态时请使用 eventListenerFactory。
+     */
     public func eventListener(listener: EventListener): HttpClientBuilder {
         this.listenerBuild = listener
+        this.listenerFactoryBuild = Option<(Call) -> EventListener>.Some({ _: Call => listener })
+        this.listenerIsDefault = false
+        return this
+    }
+
+    /**
+     * 设置事件监听器工厂：每个 Call 创建独立监听器实例，避免多线程共享同一监听器状态。
+     */
+    public func eventListenerFactory(factory: (Call) -> EventListener): HttpClientBuilder {
+        this.listenerFactoryBuild = Option<(Call) -> EventListener>.Some(factory)
         this.listenerIsDefault = false
         return this
     }

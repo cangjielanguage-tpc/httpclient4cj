@@ -37,7 +37,6 @@ public class Response <: ToString {
     let prevResponse: Option<Response>
     let cacheResponse: Option<Response>
     let networkResponse: Option<Response>
-    private var cacheControl: Option<CacheControl> = Option<CacheControl>.None
     var exchange: Option<Exchange>
     let sentRequestAtMillis: Int64
     let receivedResponseAtMillis: Int64
@@ -53,7 +52,12 @@ public class Response <: ToString {
         this.protocol = builder.protocolBuild
         this.code = builder.codeBuild
         this.message = builder.messageBuild
-        this.header = builder.headerBuild
+        // 与 OkHttp 的 Headers.Builder.build() 一致：取快照后再冻结，
+        // builder 仍可继续修改并再次 build
+        let header = builder.headerBuild.clone()
+        // 冻结响应头：Response 构建后只读，可被缓存/多线程安全共享
+        header.freeze()
+        this.header = header
         this.body = builder.bodyBuild
         this.prevResponse = builder.prevResponseBuild
         this.exchange = builder.exchange
@@ -82,6 +86,8 @@ public class Response <: ToString {
         this.code = code
         this.message = message
         this.header = header
+        // 冻结响应头：Response 构建后只读，可被缓存/多线程安全共享
+        this.header.freeze()
         this.body = body
         this.prevResponse = Option<Response>.None
         this.exchange = exchange
@@ -247,13 +253,8 @@ public class Response <: ToString {
      * @since 0.30.4
      */
     public func getCacheControl(): CacheControl {
-        match (cacheControl) {
-            case Some(b) => return b
-            case None =>
-                let cacheControl = CacheControl.parse(header)
-                this.cacheControl = cacheControl
-                return cacheControl
-        }
+        // 不做惰性缓存：避免共享 Response 上的竞争写；header 已冻结，直接解析即可
+        return CacheControl.parse(header)
     }
 
     public func getSentRequestAtMillis(): Int64 {

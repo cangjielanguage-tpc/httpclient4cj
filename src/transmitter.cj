@@ -57,15 +57,25 @@ public class Transmitter {
      */
     public init(client: HttpClient, call: Call) {
         this.client = client
-        match (client.getConnectionPool()) {
-            case Some(pool) => this.connectionPool = pool
-            case None =>
-                let pool = ConnectionPool()
-                this.connectionPool = pool
-                client.connectionPool = pool
-        }
-        this.eventListener = client.getEventListener()
+        // 连接池由 HttpClient 构造期创建，所有 Call 共享同一实例，这里只读引用
+        this.connectionPool = client.connectionPool
+        // 与 OkHttp 一致：每个 Call 持有独立的 EventListener 实例
+        this.eventListener = client.createEventListener(call)
         this.call = call
+    }
+
+    func getEventListener(): EventListener {
+        return eventListener
+    }
+
+    /**
+     * 标记该 Call 已结束。ref 的写入必须在连接池锁内进行，
+     * 连接池清理逻辑在持锁状态下读取该字段。
+     */
+    func markCallFinished(): Unit {
+        synchronized(connectionPool.mutex) {
+            ref = false
+        }
     }
 
     /**
@@ -189,10 +199,11 @@ public class Transmitter {
     }
 
     private func createAddress(url: URL): Address {
+        // 内部只读场景直接复用客户端持有的列表，避免取 getter 时的防御性拷贝
         if (url.scheme == "https") {
-            return Address(url, client.getProtocols(), client.getTlsConfig())
+            return Address(url, client.protocols, client.getTlsConfig())
         } else {
-            return Address(url, client.getProtocols())
+            return Address(url, client.protocols)
         }
     }
 

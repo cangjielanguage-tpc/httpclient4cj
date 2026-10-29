@@ -410,6 +410,8 @@ public class Header <: Iterable<(String, ArrayList<String>)> {
     var shared: Bool = false
     // 修改计数：供 Request 快路径序列化缓存判断是否需要失效
     var modCount: Int64 = 0
+    // 冻结后只读：Request/Response 构造完成后置位，保证跨线程共享不被改写
+    var frozen: Bool = false
     // 惰性头：保留不可变原始头块，首次访问时在锁内物化并原子发布
     var rawHeaders: Option<String> = Option<String>.None
     // None=eager；Some 仅在惰性头物化完成前为 true，物化后保留 Some(false) 供 acquire 发布
@@ -429,6 +431,19 @@ public class Header <: Iterable<(String, ArrayList<String>)> {
     private func toValueArr(value: String): ArrayList<String> {
         value.split(";") |> map {s: String => s.trim()} |> collectArrayList
     }
+    /**
+     * 冻结为只读（构造完成后调用）；之后的修改操作会抛出异常。
+     */
+    public func freeze(): Unit {
+        this.frozen = true
+    }
+
+    private func checkMutable(): Unit {
+        if (frozen) {
+            throw IllegalStateException("Header is immutable")
+        }
+    }
+
     /**
      * 惰性物化：解析到临时 Header，成功后在锁内一次性发布，避免并发读到半成品。
      */
@@ -565,6 +580,7 @@ public class Header <: Iterable<(String, ArrayList<String>)> {
         shared = false
     }
     public func add(name: String, value: String): Unit {
+        checkMutable()
         if (name.startsWith(":")) {
             let valueTrim = value.trim()
             let i = findFieldIndex(name)
@@ -613,6 +629,7 @@ public class Header <: Iterable<(String, ArrayList<String>)> {
      * 校验规则与通用 add 保持一致。
      */
     func addResponseHeader(name: String, value: String): Unit {
+        checkMutable()
         if (name.startsWith(":")) {
             add(name, value)
             return
@@ -644,6 +661,7 @@ public class Header <: Iterable<(String, ArrayList<String>)> {
         }
     }
     public func set(name: String, value: ArrayList<String>): Unit {
+        checkMutable()
         if (name.startsWith(":")) {
             let i = findFieldIndex(name)
             ensureOwned()
@@ -668,11 +686,13 @@ public class Header <: Iterable<(String, ArrayList<String>)> {
         }
         let fi = findFieldIndex(name)
         if (fi >= 0) {
-            return fieldValues[fi]
+            // 与普通头一致返回副本，避免冻结后仍可通过伪头列表绕过只读约束
+            return fieldValues[fi].clone()
         }
         return None
     }
     public func del(name: String): Unit {
+        checkMutable()
         let fi = findFieldIndex(name)
         let i = findIndex(name)
         if (fi < 0 && i < 0) {
@@ -736,7 +756,8 @@ class HeaderIterator <: Iterator<(String, ArrayList<String>)> {
         }
         if (fi < header.fieldNames.size) {
             let name = header.fieldNames[fi]
-            let vals = header.fieldValues[fi]
+            // 伪头同样返回副本，保持与普通头相同的只读语义
+            let vals = header.fieldValues[fi].clone()
             fi++
             return (name, vals)
         }

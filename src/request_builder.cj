@@ -265,7 +265,8 @@ public class RequestBuilder <: Builder<Request> {
      * @since 0.29.3
      */
     public func header(header: Header): RequestBuilder {
-        this.headerBuild = header
+        // 防御性拷贝：调用方传入的 Header 可能是已冻结的 Request/Response 头
+        this.headerBuild = header.clone()
         return this
     }
 
