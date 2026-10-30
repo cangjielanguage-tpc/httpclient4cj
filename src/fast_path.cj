@@ -316,17 +316,7 @@ class FastPath {
                 exchange.noNewExchangesOnConnection()
             }
             let receivedResponseMillis = DateTime.now().toUnixTimeStamp().toMilliseconds()
-            var response = Response(
-                request,
-                head.protocol,
-                head.code,
-                head.message,
-                head.header,
-                Option<ResponseBody>.Some(body),
-                Option<Exchange>.Some(exchange),
-                sentRequestMillis,
-                receivedResponseMillis
-            )
+            var header = head.header
 
             // 与 BridgeInterceptor 的透明 gzip 处理保持一致
             if (wire[1] && head.gzipEncoded) {
@@ -334,18 +324,19 @@ class FastPath {
                 strippedHeader.remove("Content-Encoding")
                 strippedHeader.remove("Content-Length")
                 body = ResponseBody(head.contentType, -1, OkGzipSource(body.getSource()))
-                response = Response(
-                    request,
-                    head.protocol,
-                    head.code,
-                    head.message,
-                    strippedHeader,
-                    Option<ResponseBody>.Some(body),
-                    Option<Exchange>.Some(exchange),
-                    sentRequestMillis,
-                    receivedResponseMillis
-                )
+                header = strippedHeader
             }
+            let response = Response(
+                request,
+                head.protocol,
+                head.code,
+                head.message,
+                header,
+                Option<ResponseBody>.Some(body),
+                Option<Exchange>.Some(exchange),
+                sentRequestMillis,
+                receivedResponseMillis
+            )
             return Option<Response>.Some(response)
         } catch (e: Exception) {
             closeForFallback(transmitter)

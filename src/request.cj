@@ -17,19 +17,18 @@ internal import std.sync.*
  * @since 0.29.3
  */
 public class Request <: ToString {
+    // Request 构造后不再变化（对齐 OkHttp 的不可变 Request），可安全跨线程共享
     /* var member url type is URL */
-    var url: URL
+    let url: URL
 
-    /* var member header type is Header */
-    var header: Header
+    /* var member header type is Header，构造时冻结为只读 */
+    let header: Header
 
     /* var member method type is String */
-    var method: String
+    let method: String
 
     /* var member body type is Option<RequestBody> */
-    var body: Option<RequestBody>
-
-    private var cacheControl: Option<CacheControl> = Option<CacheControl>.None
+    let body: Option<RequestBody>
 
     // 快路径请求字节：首次使用时在锁内计算并写回（内容确定，重复写回同值无害）
     private var fastPathWire: Array<Byte> = Array<Byte>(0, repeat: 0)
@@ -47,10 +46,18 @@ public class Request <: ToString {
      */
     public init(builder: RequestBuilder) {
         this.url = builder.urlBuild
-        this.header = builder.headerBuild.clone()
+        // clone 是写时复制：与 Builder 共享底层存储，任一实例修改时才真正拷贝
+        let header = builder.headerBuild.clone()
+        // 冻结请求头：Request 构造后不允许再被修改，避免共享请求被并发改写
+        header.freeze()
+        this.header = header
         this.method = builder.methodBuild
         this.body = builder.bodyBuild
-        this.tags = builder.getTagsOpt()
+        // 拷贝 tags，避免构造后仍与 Builder 共享同一个可变 Map
+        this.tags = match (builder.getTagsOpt()) {
+            case Some(m) => Option<HashMap<String, Tag>>.Some(HashMap<String, Tag>(m))
+            case None => Option<HashMap<String, Tag>>.None
+        }
     }
 
     /**
@@ -149,13 +156,9 @@ public class Request <: ToString {
      * @since 0.30.4
      */
     public func getCacheControl(): CacheControl {
-        match (cacheControl) {
-            case Some(b) => return b
-            case None =>
-                let cacheControl = CacheControl.parse(header)
-                this.cacheControl = cacheControl
-                return cacheControl
-        }
+        // 不做惰性缓存：Request 可跨线程共享，缓存字段的写入会引入数据竞争；
+        // 解析开销很小，且 header 已冻结，直接解析即可
+        return CacheControl.parse(header)
     }
 
     public func getTag(s: String): Tag {
@@ -169,6 +172,7 @@ public class Request <: ToString {
         }
     }
 
+    // 保留原有 API；tags 已在构造时拷贝，因此只会修改本实例的私有副本
     public func removeTag(s: String): Unit {
         match (tags) {
             case Some(m) => m.remove(s)
@@ -178,12 +182,9 @@ public class Request <: ToString {
 
     /**
      * 返回快路径可直接写入 socket 的请求字节，以及是否为透明 gzip 添加了 Accept-Encoding。
-     * 首次使用时计算并写回；header 变更（modCount 变化）时重算。
+     * 读写缓存字段全程持锁，避免并发首次计算时读到未完整发布的数据。
      */
     func getFastPathWire(): (Array<Byte>, Bool) {
-        if (fastPathWire.size > 0 && fastPathWireModCount == header.modCount) {
-            return (fastPathWire, fastPathWireGzip)
-        }
         synchronized(FAST_PATH_WIRE_LOCK) {
             if (fastPathWire.size > 0 && fastPathWireModCount == header.modCount) {
                 return (fastPathWire, fastPathWireGzip)

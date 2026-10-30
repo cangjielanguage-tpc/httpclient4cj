@@ -71,13 +71,14 @@ class RealCall <: Call {
      * @since 0.29.3
      */
     public func execute(): Response {
+        // 只在锁内翻转执行标记，用户回调必须放到锁外，避免持锁调用外部代码
         synchronized(this.mutex) {
             if (executed) {
                 throw HttpException("Already Executed")
             }
             executed = true
-            client.getEventListener().callStart(this)
         }
+        getTransmitter().getEventListener().callStart(this)
         try {
             client.getDispatcher().executed(this)
             return getResponseWithInterceptorChain()
@@ -99,9 +100,9 @@ class RealCall <: Call {
             if (executed) {
                 throw HttpException("Already Executed")
             }
+            executed = true
         }
-        executed = true
-        client.getEventListener().callStart(this)
+        getTransmitter().getEventListener().callStart(this)
         client.getDispatcher().enqueue(AsyncCall(responseCallback, this))
     }
 
@@ -122,7 +123,10 @@ class RealCall <: Call {
      * @since 0.29.3
      */
     public func isExecuted(): Bool {
-        return executed
+        // 与 execute/enqueue 的写入使用同一把锁，保证读取可见性
+        synchronized(this.mutex) {
+            return executed
+        }
     }
 
     /**
@@ -180,11 +184,9 @@ class RealCall <: Call {
             transmitter.noMoreExchanges()
             throw e
         } finally {
-            transmitter.ref = false
-
-            if (has(transmitter.connection)) {
-                transmitter.connection.getOrThrow().idleAtNanos = DateTime.now()
-            }
+            // 标记 Call 结束（在连接池锁内写 ref）；
+            // 连接空闲时间由 releaseConnectionNoEvents 在锁内统一维护，这里不再重复写
+            transmitter.markCallFinished()
 
             if (!calledNoMoreExchanges) {
                 transmitter.noMoreExchanges()

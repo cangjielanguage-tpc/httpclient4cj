@@ -330,10 +330,11 @@ public class Dispatcher {
      * @since 0.34.3
      */
     public func queuedCalls(): ArrayList<Call> {
-        let list = readyAsyncCalls.toArrayList()
         let result = ArrayList<Call>()
 
+        // 拷贝必须在锁内完成，否则会遍历正被其他线程修改的列表（对齐 okhttp 的 synchronized getter）
         synchronized(mutex) {
+            let list = readyAsyncCalls.toArrayList()
             for (i in 0..list.size) {
                 result.add(list[i].get())
             }
@@ -349,18 +350,18 @@ public class Dispatcher {
      * @since 0.34.3
      */
     public func runningCalls(): ArrayList<Call> {
-        let syncList: ArrayList<RealCall> = runningSyncCalls.toArrayList()
-        let asyncList: ArrayList<AsyncCall> = runningAsyncCalls.toArrayList()
         let result = ArrayList<Call>()
 
+        // 拷贝必须在锁内完成，否则会遍历正被其他线程修改的列表（对齐 okhttp 的 synchronized getter）
         synchronized(mutex) {
-            for (i in 0..asyncList.size) {
-                syncList.add(asyncList[i].get())
+            let syncList: ArrayList<RealCall> = runningSyncCalls.toArrayList()
+            for (i in 0..syncList.size) {
+                result.add(syncList[i])
             }
-        }
-
-        for (i in 0..syncList.size) {
-            result.add(syncList[i])
+            let asyncList: ArrayList<AsyncCall> = runningAsyncCalls.toArrayList()
+            for (i in 0..asyncList.size) {
+                result.add(asyncList[i].get())
+            }
         }
 
         return result

@@ -65,7 +65,8 @@ public class Http2ExchangeCodec <: ExchangeCodec {
         this.client = client
         this.realConnection = realConnection
         this.http2Connection = http2Connection
-        if (client.getProtocols().contains("h2_prior_knowledge")) {
+        // 内部只读，直接读包内字段，跳过 getProtocols() 的防御性拷贝
+        if (client.protocols.contains("h2_prior_knowledge")) {
             protocol = H2_PRIOR_KNOWLEDGE
         } else {
             protocol = HTTP_2

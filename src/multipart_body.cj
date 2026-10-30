@@ -303,11 +303,12 @@ func randomBoundary(): String {
 
 func appendQuotedString(target: StringBuilder, key: String): Unit {
     target.append('"')
-    for (i in key) {
+    // 按 Rune 迭代：直接按 Byte 迭代时 StringBuilder.append(Byte) 会写十进制码位而非字符
+    for (i in key.toRuneArray()) {
         match (i) {
-            case b'\n' => target.append("%0A")
-            case b'\r' => target.append("%0D")
-            case b'"' => target.append("%22")
+            case r'\n' => target.append("%0A")
+            case r'\r' => target.append("%0D")
+            case r'"' => target.append("%22")
             case _ => target.append(i)
         }
     }

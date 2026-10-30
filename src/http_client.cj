@@ -15,41 +15,44 @@ package httpclient4cj
  * @since 0.29.3
  */
 public class HttpClient {
+    // 以下配置在构造后不再变化（与 OkHttp 的 final 字段语义一致），
+    // 因此可以被多个线程安全地共享读取。
     /* var member dispatcher type is Dispatcher */
-    var dispatcher: Dispatcher
+    private let dispatcher: Dispatcher
 
     /* var member interceptors type is ArrayList<Interceptor> */
-    var interceptors: ArrayList<Interceptor>
+    private let interceptors: ArrayList<Interceptor>
 
     /* var member networkInterceptors type is ArrayList<Interceptor> */
-    var networkInterceptors: ArrayList<Interceptor>
+    private let networkInterceptors: ArrayList<Interceptor>
 
     /* var member followRedirects type is Bool */
-    var followRedirects: Bool
+    private let followRedirects: Bool
 
     /* var member retryOnConnectionFailure type is Bool */
-    var retryOnConnectionFailure: Bool
+    private let retryOnConnectionFailure: Bool
 
-    /* var member connectionPool type is Option<ConnectionPool> */
-    var connectionPool: Option<ConnectionPool> = Option<ConnectionPool>.None
+    /* var member connectionPool type is ConnectionPool，构造期创建后不再变更 */
+    let connectionPool: ConnectionPool
 
     /* var member cookieJar type is CookieJar */
-    var cookieJar: CookieJar
-    private var connectTimeout: Option<Duration>
-    private var readTimeout: Option<Duration>
-    private var writeTimeout: Option<Duration>
+    private let cookieJar: CookieJar
+    private let connectTimeout: Option<Duration>
+    private let readTimeout: Option<Duration>
+    private let writeTimeout: Option<Duration>
 
-    private var protocols: ArrayList<String>
-    private var tlsConfig: Option<TlsClientConfig>
-    private var authenticator: (Option<Route>, Response) -> Option<Request>
-    private var followSslRedirects: Bool
-    private var eventListener: EventListener
-    private var authenticatorIsDefault: Bool
-    private var listenerIsDefault: Bool
-    var cache: Option<Cache>
-    // 无自定义拦截器时复用内建链，避免每个请求 new 5 个拦截器 + ArrayList
-    private var builtinChain: Option<ArrayList<Interceptor>> = None
-    private var builtinWsChain: Option<ArrayList<Interceptor>> = None
+    let protocols: ArrayList<String>
+    private let tlsConfig: Option<TlsClientConfig>
+    private let authenticator: (Option<Route>, Response) -> Option<Request>
+    private let followSslRedirects: Bool
+    private let eventListener: EventListener
+    private let eventListenerFactory: Option<(Call) -> EventListener>
+    private let authenticatorIsDefault: Bool
+    private let listenerIsDefault: Bool
+    private let cache: Option<Cache>
+    // 无自定义拦截器时复用内建链：构造期一次性构建，之后只读
+    private var builtinChain: Option<ArrayList<Interceptor>> = Option<ArrayList<Interceptor>>.None
+    private var builtinWsChain: Option<ArrayList<Interceptor>> = Option<ArrayList<Interceptor>>.None
 
     /**
      * The Function is init constructor
@@ -59,12 +62,17 @@ public class HttpClient {
      */
     public init(builder: HttpClientBuilder) {
         this.dispatcher = builder.dispatcherBuild
-        this.interceptors = builder.interceptorsBuild
-        this.networkInterceptors = builder.networkInterceptorsBuild
+        // 拷贝 Builder 的拦截器列表，避免构造后仍与 Builder 共享可变 ArrayList
+        this.interceptors = builder.interceptorsBuild.clone()
+        this.networkInterceptors = builder.networkInterceptorsBuild.clone()
         this.followRedirects = builder.followRedirectsBuild
         this.followSslRedirects = builder.followSslRedirectsBuild
         this.retryOnConnectionFailure = builder.retryOnConnectionFailureBuild
-        this.connectionPool = builder.connectionPoolBuild
+        // 与 OkHttp 一致：连接池在客户端构造期创建，所有 Call 共享同一实例
+        this.connectionPool = match (builder.connectionPoolBuild) {
+            case Some(pool) => pool
+            case None => ConnectionPool()
+        }
         this.cookieJar = builder.cookieJarBuild
         this.connectTimeout = builder.connectTimeoutBuild
         this.readTimeout = builder.readTimeoutBuild
@@ -73,9 +81,16 @@ public class HttpClient {
         this.protocols = builder.protocolsBuild
         this.authenticator = builder.authenticatorBuild
         this.eventListener = builder.listenerBuild
+        this.eventListenerFactory = builder.listenerFactoryBuild
         this.authenticatorIsDefault = builder.authenticatorIsDefault
         this.listenerIsDefault = builder.listenerIsDefault
         this.cache = builder.cacheBuild
+
+        // 无自定义拦截器时在构造期预构建内建链，避免请求线程上的惰性写共享状态
+        if (this.interceptors.isEmpty() && this.networkInterceptors.isEmpty()) {
+            this.builtinChain = Option<ArrayList<Interceptor>>.Some(buildInterceptorChain(false))
+            this.builtinWsChain = Option<ArrayList<Interceptor>>.Some(buildInterceptorChain(true))
+        }
     }
 
     /**
@@ -126,7 +141,7 @@ public class HttpClient {
      * @since 0.29.3
      */
     public func getConnectionPool(): Option<ConnectionPool> {
-        return connectionPool
+        return Option<ConnectionPool>.Some(connectionPool)
     }
 
     /**
@@ -146,7 +161,8 @@ public class HttpClient {
      * @since 0.29.3
      */
     public func getInterceptors(): ArrayList<Interceptor> {
-        return interceptors
+        // 返回副本，避免调用方修改影响客户端内部状态
+        return interceptors.clone()
     }
 
     /**
@@ -156,7 +172,8 @@ public class HttpClient {
      * @since 0.29.3
      */
     public func getNetworkInterceptors(): ArrayList<Interceptor> {
-        return networkInterceptors
+        // 返回副本，避免调用方修改影响客户端内部状态
+        return networkInterceptors.clone()
     }
 
     /**
@@ -182,7 +199,8 @@ public class HttpClient {
     }
 
     public func getProtocols(): ArrayList<String> {
-        return protocols
+        // 返回副本，避免调用方修改影响客户端内部状态
+        return protocols.clone()
     }
 
     public func getTlsConfig(): Option<TlsClientConfig> {
@@ -197,8 +215,22 @@ public class HttpClient {
         return followSslRedirects
     }
 
+    /**
+     * 返回配置的监听器实例。使用 eventListenerFactory 时该实例仅作默认回退，
+     * 真实监听器请通过 createEventListener 按 Call 获取。
+     */
     public func getEventListener(): EventListener {
         return eventListener
+    }
+
+    /**
+     * 为单个 Call 创建监听器：配置了工厂则每 Call 一份，否则复用共享实例。
+     */
+    func createEventListener(call: Call): EventListener {
+        return match (eventListenerFactory) {
+            case Some(factory) => factory(call)
+            case None => eventListener
+        }
     }
 
     public func getCache(): Option<Cache> {
@@ -248,40 +280,30 @@ public class HttpClient {
         return true
     }
 
+    // 内建链在构造期预构建，这里只读；有自定义拦截器时每次按当前配置构建
     func getInterceptorChain(forWebSocket: Bool): ArrayList<Interceptor> {
-        if (interceptors.isEmpty() && networkInterceptors.isEmpty()) {
-            if (forWebSocket) {
-                match (builtinWsChain) {
-                    case Some(v) => return v
-                    case None =>
-                        let v = buildInterceptorChain(true)
-                        builtinWsChain = Some(v)
-                        return v
-                }
-            } else {
-                match (builtinChain) {
-                    case Some(v) => return v
-                    case None =>
-                        let v = buildInterceptorChain(false)
-                        builtinChain = Some(v)
-                        return v
-                }
-            }
+        let cached = if (forWebSocket) {
+            builtinWsChain
+        } else {
+            builtinChain
         }
-        return buildInterceptorChain(forWebSocket)
+        return match (cached) {
+            case Some(v) => v
+            case None => buildInterceptorChain(forWebSocket)
+        }
     }
 
     private func buildInterceptorChain(forWebSocket: Bool): ArrayList<Interceptor> {
-        let interceptors: ArrayList<Interceptor> = ArrayList<Interceptor>()
-        interceptors.add(all: this.interceptors)
-        interceptors.add(RetryAndFollowUpInterceptor(this))
-        interceptors.add(BridgeInterceptor(cookieJar))
-        interceptors.add(CacheInterceptor(cache))
-        interceptors.add(ConnectInterceptor(this))
+        let result: ArrayList<Interceptor> = ArrayList<Interceptor>()
+        result.add(all: this.interceptors)
+        result.add(RetryAndFollowUpInterceptor(this))
+        result.add(BridgeInterceptor(cookieJar))
+        result.add(CacheInterceptor(cache))
+        result.add(ConnectInterceptor(this))
         if (!forWebSocket) {
-            interceptors.add(all: networkInterceptors)
+            result.add(all: networkInterceptors)
         }
-        interceptors.add(CallServerInterceptor(forWebSocket))
-        return interceptors
+        result.add(CallServerInterceptor(forWebSocket))
+        return result
     }
 }
